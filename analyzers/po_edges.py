@@ -5,13 +5,11 @@
   2. 受渡日エッジ    : 普通株、受渡日 GD で寄りロング → 引け売り EV +0.80%
   3. リートエッジ    : REIT、翌日寄りショート → 決定日引け買戻  EV +1.12%
 
-注意事項:
-  - 戦略 1 の "9:10売り" は粒度の細かい intraday データを必要とし、現状の
-    po_records.json には含まれない。本実装では参考値として
-      * open_to_max (next_open → 翌日高値) : 上限ベンチマーク
-      * ret_open    (next_open → dec_open) : 翌寄り→決定日寄り保有時のリターン
-    を併記する。
-  - リピーター罠 (3 年連続同月の同銘柄 PO) は filter_repeaters() で除外可能。
+データ定義 (po-tracker docs/FIELDS.md):
+  - GD (ギャップダウン) : delivery_gap_pct <= -0.5 (%)
+  - 9:10 売りリターン   : next_day_910_ret (J-Quants 1 分足から算出済、2 年以内のみ)
+
+リピーター罠 (3 年連続同月の同銘柄 PO) は filter_repeaters() で除外可能。
 """
 from __future__ import annotations
 
@@ -64,42 +62,48 @@ def _stats(name: str, returns_pct: Sequence[float], note: str = "") -> EdgeStat:
 
 # ---- 個別エッジ ---------------------------------------------------------
 
+_INTRADAY_FIELDS = [
+    ("next_day_905_ret", "9:05"),
+    ("next_day_910_ret", "9:10"),
+    ("next_day_915_ret", "9:15"),
+    ("next_day_930_ret", "9:30"),
+    ("next_day_1000_ret", "10:00"),
+    ("next_day_morning_ret", "前場引"),
+]
+
+
 def announce_next_day_edge(records: Iterable[dict[str, Any]]) -> dict[str, EdgeStat]:
-    """発表翌日エッジ (普通株)。9:10 売り相当データが無いため参考値 2 種を返す。"""
-    samples_open_to_max: list[float] = []   # ロング上限ベンチ
-    samples_open_to_dec_open: list[float] = []  # 翌寄り→決定日寄りまで持った場合
+    """発表翌日エッジ (普通株、翌日寄りロング → next_day_XXX_ret で利確)。
+
+    9:05 〜 前場引まで全時刻を返す。主戦略は 9:10。
+    """
+    buckets: dict[str, list[float]] = {field: [] for field, _ in _INTRADAY_FIELDS}
     for r in records:
         if r.get("type") != "普通":
             continue
         if r.get("status") not in ("complete", "nextday"):
             continue
-        otm = r.get("open_to_max")
-        ro = r.get("ret_open")
-        if otm is not None:
-            samples_open_to_max.append(float(otm))
-        if ro is not None:
-            samples_open_to_dec_open.append(float(ro))
+        for field, _ in _INTRADAY_FIELDS:
+            v = r.get(field)
+            if v is not None:
+                buckets[field].append(float(v))
     return {
-        "open_to_max": _stats(
-            "発表翌日(普通) next_open→翌日高値",
-            samples_open_to_max,
-            note="ロング上限ベンチ。実取引で取り切るのは困難",
-        ),
-        "open_to_dec_open": _stats(
-            "発表翌日(普通) next_open→決定日寄り",
-            samples_open_to_dec_open,
-            note="9:10 相当の intraday データ未整備のため代替指標",
-        ),
+        field: _stats(f"発表翌日(普通) next_open→{label}", buckets[field])
+        for field, label in _INTRADAY_FIELDS
     }
+
+
+GD_THRESHOLD_PCT = -0.5  # delivery_gap_pct がこの値以下で GD と判定 (po-tracker FIELDS.md 準拠)
 
 
 def delivery_day_edge(
     records: Iterable[dict[str, Any]],
-    gd_only: bool = False,
+    gd_only: bool = True,
 ) -> EdgeStat:
-    """受渡日エッジ (普通株、受渡日 GD で寄りロング → 引け売り)。delivery_ret を使用。
+    """受渡日エッジ (普通株、受渡日 GD で寄りロング → 引け売り)。
 
-    gd_only=True で「受渡日寄りが発行価格 (issue_price) を下回る = GD」のみに絞る。
+    GD 判定: delivery_gap_pct <= -0.5 (% : 受渡日始値が前営業日終値より 0.5% 以上下)。
+    gd_only=False にすると GD 条件無しの全件平均を返す (参考値)。
     """
     samples: list[float] = []
     for r in records:
@@ -111,13 +115,16 @@ def delivery_day_edge(
         if dr is None:
             continue
         if gd_only:
-            ip = r.get("issue_price")
-            do = r.get("delivery_open")
-            if ip is None or do is None or do >= ip:
+            gap = r.get("delivery_gap_pct")
+            if gap is None or gap > GD_THRESHOLD_PCT:
                 continue
         samples.append(float(dr))
-    name = "受渡日エッジ(普通) 受渡日寄り→引け" + (" [GD条件付]" if gd_only else "")
-    return _stats(name, samples)
+    label = "受渡日エッジ(普通) 受渡日寄り→引け"
+    if gd_only:
+        label += f" [GD: gap<={GD_THRESHOLD_PCT}%]"
+    else:
+        label += " [GD条件なし]"
+    return _stats(label, samples)
 
 
 def reit_short_edge(records: Iterable[dict[str, Any]]) -> EdgeStat:
@@ -206,10 +213,9 @@ def main() -> None:
     def run(name: str, source: Sequence[dict[str, Any]]) -> None:
         print(f"\n=== {name} ===")
         print(overview(source))
-        announce = announce_next_day_edge(source)
-        print(announce["open_to_max"].format())
-        print(announce["open_to_dec_open"].format())
-        print(delivery_day_edge(source).format())
+        for stat in announce_next_day_edge(source).values():
+            print(stat.format())
+        print(delivery_day_edge(source, gd_only=False).format())
         print(delivery_day_edge(source, gd_only=True).format())
         print(reit_short_edge(source).format())
 
