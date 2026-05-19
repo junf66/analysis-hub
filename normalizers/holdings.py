@@ -12,6 +12,7 @@ SOURCE = "edinet"
 _VALID_EVENT_TYPES = {
     "holdings_filing",
     "holdings_change",
+    "holdings_correction",
     "holdings_filing_correction",
     "holdings_change_correction",
 }

@@ -115,6 +115,7 @@ def _summary_line(event: dict[str, Any]) -> str:
         kind = {
             "holdings_filing": "大量保有報告",
             "holdings_change": "変更報告",
+            "holdings_correction": "訂正報告",
             "holdings_filing_correction": "訂正報告",
             "holdings_change_correction": "訂正変更報告",
         }.get(et, et)
