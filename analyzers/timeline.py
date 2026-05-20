@@ -17,8 +17,10 @@ from datetime import date, timedelta
 from typing import Any, Iterable
 
 from fetchers import holdings as holdings_fetcher
+from fetchers import kouaku as kouaku_fetcher
 from fetchers import po as po_fetcher
 from normalizers import holdings as holdings_normalizer
+from normalizers import kouaku as kouaku_normalizer
 from normalizers import po as po_normalizer
 
 
@@ -32,7 +34,11 @@ def _parse_date(s: str | None) -> date | None:
 
 
 def load_all_events(refresh: bool = False) -> list[dict[str, Any]]:
-    """両ソースを fetch (or キャッシュ) → 正規化 → 結合した events を返す。"""
+    """各ソースを fetch (or キャッシュ) → 正規化 → 結合した events を返す。
+
+    kouaku_mixed はローカル成果物 (data/kouaku_records.json) のみ。リモート fetch は
+    別途 scripts/fetch_disclosures.py + extract_mixed_disclosures.py で更新する。
+    """
     if refresh:
         po_fetcher.fetch()
         holdings_fetcher.fetch()
@@ -43,6 +49,11 @@ def load_all_events(refresh: bool = False) -> list[dict[str, Any]]:
     events: list[dict[str, Any]] = []
     events.extend(po_normalizer.normalize(po_payload["records"]))
     events.extend(holdings_normalizer.normalize(holdings_payload["records"]))
+    try:
+        kouaku_payload = kouaku_fetcher.load_cached()
+        events.extend(kouaku_normalizer.normalize(kouaku_payload.get("records", [])))
+    except FileNotFoundError:
+        pass  # kouaku 未実行でも他ソースだけで継続
     return events
 
 
@@ -105,6 +116,23 @@ def _summary_line(event: dict[str, Any]) -> str:
             return f"PO 価格決定{f' 発行価格 {ip}円' if ip else ''} " + " / ".join(bits)
         if et == "po_deliver":
             return "PO 受渡 " + " / ".join(bits)
+
+    if et == "kouaku_mixed":
+        sub = attrs.get("subpattern", "?")
+        goods = attrs.get("good_factors", [])
+        bads = attrs.get("bad_factors", [])
+        good_hints = "/".join(sorted({g.get("subpattern_hint") for g in goods if g.get("subpattern_hint")}))
+        bad_hints = "/".join(sorted({b.get("subpattern_hint") for b in bads if b.get("subpattern_hint")}))
+        gap = attrs.get("gap_pct")
+        oc = attrs.get("next_day_open_to_close_ret")
+        price = ""
+        if gap is not None:
+            price = f"  GAP={gap:+.2f}%"
+        if oc is not None:
+            price += f" 寄→引={oc:+.2f}%"
+        if attrs.get("limit_locked"):
+            price += " [LIMIT]"
+        return f"好悪材料 [{sub}] 好:{good_hints} / 悪:{bad_hints}{price}"
 
     if et.startswith("holdings_"):
         filer = attrs.get("filer_name", "")
