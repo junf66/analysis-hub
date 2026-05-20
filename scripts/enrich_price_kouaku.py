@@ -5,12 +5,10 @@
   - 翌営業日   始値 → next_open
   - 翌営業日   終値 → next_close
   - gap_pct, next_day_close_ret, next_day_open_to_close_ret を計算
+  - 分足アドオン (`/equities/bars/minute`) で 9:05/9:10/9:15/9:30/10:00/前場引 リターン
 
-J-Quants v2 `/equities/bars/daily?code=...&from=...&to=...` を利用し、
-event_date ±5 営業日のローソク足を一度に取得して使い回す。
-
-分足 (~9:10 リターン) は v2 では `/equities/bars/minute` 等を契約次第で使える想定。
-現環境では未契約 / 未確認なので、まずは日足ベースで EV を計算しておく。
+J-Quants v2 `/equities/bars/daily?code=...&from=...&to=...` で event_date ±10 営業日のローソク足を、
+`/equities/bars/minute?code=...&date=...` で翌営業日の分足を取得する。
 """
 from __future__ import annotations
 
@@ -38,10 +36,55 @@ def _bars(code: str, since: date, until: date) -> list[dict[str, Any]]:
     return rows
 
 
+def _minute_bars(code: str, d: str) -> list[dict[str, Any]]:
+    """指定日 1 日分の分足。`d` は ISO 形式 (YYYY-MM-DD) or YYYYMMDD。"""
+    rows = _jquants.get_list("/equities/bars/minute", code=code, date=d)
+    rows.sort(key=lambda r: r.get("Time") or "")
+    return rows
+
+
 def _pct(new: float | None, old: float | None) -> float | None:
     if new is None or old is None or old == 0:
         return None
     return (new - old) / old * 100.0
+
+
+# 9:00 寄り → 各時刻 (bar の close) の経過時刻でリターンを取る。
+_INTRADAY_TARGETS = [
+    ("09:05", "next_day_905_ret"),
+    ("09:10", "next_day_910_ret"),
+    ("09:15", "next_day_915_ret"),
+    ("09:30", "next_day_930_ret"),
+    ("10:00", "next_day_1000_ret"),
+    ("11:30", "next_day_morning_ret"),
+]
+
+
+def _enrich_minute(rec: dict[str, Any], code: str, next_date: str) -> None:
+    """翌営業日の分足から 9:05〜前場引リターンを補完。失敗時は静かに skip。"""
+    try:
+        mbars = _minute_bars(code, next_date)
+    except _jquants.JQuantsError as e:
+        rec["attrs"]["minute_error"] = str(e)
+        return
+    if not mbars:
+        rec["attrs"]["minute_error"] = "no minute bars"
+        return
+    by_time = {b.get("Time"): b for b in mbars}
+    open_bar = by_time.get("09:00")
+    if not open_bar:
+        rec["attrs"]["minute_error"] = "no 09:00 bar"
+        return
+    base = open_bar.get("O")
+    if not base:
+        return
+    rec["attrs"]["next_open_900"] = base
+    for t, key in _INTRADAY_TARGETS:
+        b = by_time.get(t)
+        if not b:
+            continue
+        c = b.get("C")
+        rec["attrs"][key] = _pct(c, base)
 
 
 def enrich_record(rec: dict[str, Any], *, window_days: int = 10) -> dict[str, Any]:
@@ -93,6 +136,9 @@ def enrich_record(rec: dict[str, Any], *, window_days: int = 10) -> dict[str, An
         "event_bar_date": today.get("Date"),
         "next_bar_date": nxt.get("Date"),
     })
+    next_date = nxt.get("Date")
+    if next_date:
+        _enrich_minute(rec, code, next_date)
     return rec
 
 

@@ -22,6 +22,12 @@ SUB_REPORT_DIR = REPORT_DIR / "kouaku_by_subpattern"
 
 _METRIC_FIELDS = [
     ("gap_pct", "GAP (寄付前→翌寄り)"),
+    ("next_day_905_ret", "翌寄り→09:05"),
+    ("next_day_910_ret", "翌寄り→09:10"),
+    ("next_day_915_ret", "翌寄り→09:15"),
+    ("next_day_930_ret", "翌寄り→09:30"),
+    ("next_day_1000_ret", "翌寄り→10:00"),
+    ("next_day_morning_ret", "翌寄り→前場引"),
     ("next_day_open_to_close_ret", "翌寄り→翌引け"),
     ("next_day_open_to_high_ret", "翌寄り→翌高値"),
     ("next_day_open_to_low_ret", "翌寄り→翌安値"),
