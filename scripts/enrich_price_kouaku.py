@@ -61,7 +61,12 @@ _INTRADAY_TARGETS = [
 
 
 def _enrich_minute(rec: dict[str, Any], code: str, next_date: str) -> None:
-    """翌営業日の分足から 9:05〜前場引リターンを補完。失敗時は静かに skip。"""
+    """翌営業日の分足から 9:05〜前場引リターンを補完。失敗時は静かに skip。
+
+    illiquid 銘柄では 9:00 に歩み値がない (= bar が存在しない) ことがあるので、
+    初値は「Time が最も早い bar の O」を採用。各 target 時刻 t は「Time >= t の
+    最初の bar の C」(なければ最後の bar の C) を採用する。
+    """
     try:
         mbars = _minute_bars(code, next_date)
     except _jquants.JQuantsError as e:
@@ -70,20 +75,23 @@ def _enrich_minute(rec: dict[str, Any], code: str, next_date: str) -> None:
     if not mbars:
         rec["attrs"]["minute_error"] = "no minute bars"
         return
-    by_time = {b.get("Time"): b for b in mbars}
-    open_bar = by_time.get("09:00")
-    if not open_bar:
-        rec["attrs"]["minute_error"] = "no 09:00 bar"
-        return
-    base = open_bar.get("O")
+    # 初値: 最初の bar の O
+    first = mbars[0]
+    base = first.get("O")
     if not base:
+        rec["attrs"]["minute_error"] = "no open in first bar"
         return
     rec["attrs"]["next_open_900"] = base
+    rec["attrs"]["next_open_first_time"] = first.get("Time")
+    rec["attrs"].pop("minute_error", None)
     for t, key in _INTRADAY_TARGETS:
-        b = by_time.get(t)
-        if not b:
+        # Time >= t を満たす最初の bar
+        b = next((mb for mb in mbars if (mb.get("Time") or "") >= t), None)
+        if b is None:
             continue
         c = b.get("C")
+        if c is None:
+            continue
         rec["attrs"][key] = _pct(c, base)
 
 

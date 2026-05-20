@@ -53,7 +53,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": -0.2840909090909091,
         "event_bar_date": "2023-02-10",
-        "next_bar_date": "2023-02-13"
+        "next_bar_date": "2023-02-13",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=1380&date=2023-02-13: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -110,7 +111,15 @@
         "next_day_open_to_low_ret": -3.0864197530864197,
         "next_day_full_ret": 0.743099787685775,
         "event_bar_date": "2025-11-14",
-        "next_bar_date": "2025-11-17"
+        "next_bar_date": "2025-11-17",
+        "next_open_900": 972.0,
+        "next_open_first_time": "09:03",
+        "next_day_905_ret": 0.0,
+        "next_day_910_ret": -2.366255144032922,
+        "next_day_915_ret": -3.0864197530864197,
+        "next_day_930_ret": -2.983539094650206,
+        "next_day_1000_ret": -1.5432098765432098,
+        "next_day_morning_ret": -1.440329218106996
       }
     },
     {
@@ -206,7 +215,13 @@
         "next_day_open_to_low_ret": -18.75,
         "next_day_full_ret": -12.5,
         "event_bar_date": "2025-08-07",
-        "next_bar_date": "2025-08-08"
+        "next_bar_date": "2025-08-08",
+        "next_open_900": 16.0,
+        "next_day_905_ret": -6.25,
+        "next_day_910_ret": -12.5,
+        "next_day_930_ret": -12.5,
+        "next_day_1000_ret": -12.5,
+        "next_day_morning_ret": -12.5
       }
     },
     {
@@ -256,7 +271,8 @@
         "next_day_open_to_low_ret": -0.4282655246252677,
         "next_day_full_ret": 0.5399568034557235,
         "event_bar_date": "2024-05-08",
-        "next_bar_date": "2024-05-09"
+        "next_bar_date": "2024-05-09",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=1768&date=2024-05-09: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -306,7 +322,8 @@
         "next_day_open_to_low_ret": -0.9459459459459434,
         "next_day_full_ret": 0.318181818181813,
         "event_bar_date": "2023-01-30",
-        "next_bar_date": "2023-01-31"
+        "next_bar_date": "2023-01-31",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=1798&date=2023-01-31: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -356,7 +373,11 @@
         "next_day_open_to_low_ret": -4.680696661828737,
         "next_day_full_ret": -3.302752293577982,
         "event_bar_date": "2025-02-13",
-        "next_bar_date": "2025-02-14"
+        "next_bar_date": "2025-02-14",
+        "next_open_900": 2756.0,
+        "next_day_905_ret": -0.21770682148040638,
+        "next_day_915_ret": -2.1770682148040637,
+        "next_day_1000_ret": -3.5921625544267055
       }
     },
     {
@@ -406,7 +427,8 @@
         "next_day_open_to_low_ret": -5.620608899297424,
         "next_day_full_ret": -8.803611738148984,
         "event_bar_date": "2022-11-09",
-        "next_bar_date": "2022-11-10"
+        "next_bar_date": "2022-11-10",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=1821&date=2022-11-10: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -453,7 +475,8 @@
         "next_day_open_to_low_ret": -1.0794896957801767,
         "next_day_full_ret": 4.485219164118247,
         "event_bar_date": "2023-05-12",
-        "next_bar_date": "2023-05-15"
+        "next_bar_date": "2023-05-15",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=1828&date=2023-05-15: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -503,7 +526,8 @@
         "next_day_open_to_low_ret": -1.238938053097345,
         "next_day_full_ret": -1.2367491166077738,
         "event_bar_date": "2022-11-11",
-        "next_bar_date": "2022-11-14"
+        "next_bar_date": "2022-11-14",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=1833&date=2022-11-14: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -550,7 +574,15 @@
         "next_day_open_to_low_ret": -0.7246376811594203,
         "next_day_full_ret": 10.012674271229404,
         "event_bar_date": "2025-02-12",
-        "next_bar_date": "2025-02-13"
+        "next_bar_date": "2025-02-13",
+        "next_open_900": 4140.0,
+        "next_open_first_time": "09:06",
+        "next_day_905_ret": 1.4492753623188406,
+        "next_day_910_ret": 1.328502415458937,
+        "next_day_915_ret": 2.1739130434782608,
+        "next_day_930_ret": 2.7777777777777777,
+        "next_day_1000_ret": 3.6231884057971016,
+        "next_day_morning_ret": 4.1062801932367154
       }
     },
     {
@@ -636,7 +668,8 @@
         "next_day_open_to_low_ret": -2.33160621761658,
         "next_day_full_ret": 2.3243387656959626,
         "event_bar_date": "2022-11-07",
-        "next_bar_date": "2022-11-08"
+        "next_bar_date": "2022-11-08",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=1909&date=2022-11-08: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -686,7 +719,15 @@
         "next_day_open_to_low_ret": -2.410901467505241,
         "next_day_full_ret": 3.4103410341034106,
         "event_bar_date": "2024-10-29",
-        "next_bar_date": "2024-10-30"
+        "next_bar_date": "2024-10-30",
+        "next_open_900": 954.0,
+        "next_open_first_time": "09:07",
+        "next_day_905_ret": -0.628930817610063,
+        "next_day_910_ret": -1.1530398322851152,
+        "next_day_915_ret": -1.6771488469601679,
+        "next_day_930_ret": -0.7337526205450734,
+        "next_day_1000_ret": -1.1530398322851152,
+        "next_day_morning_ret": -1.5723270440251573
       }
     },
     {
@@ -736,7 +777,8 @@
         "next_day_open_to_low_ret": -1.6638935108153077,
         "next_day_full_ret": -1.3050570962479608,
         "event_bar_date": "2023-02-06",
-        "next_bar_date": "2023-02-07"
+        "next_bar_date": "2023-02-07",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=1960&date=2023-02-07: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -793,7 +835,15 @@
         "next_day_open_to_low_ret": -6.341463414634147,
         "next_day_full_ret": 6.368563685636857,
         "event_bar_date": "2025-01-15",
-        "next_bar_date": "2025-01-16"
+        "next_bar_date": "2025-01-16",
+        "next_open_900": 820.0,
+        "next_open_first_time": "09:15",
+        "next_day_905_ret": 0.6097560975609756,
+        "next_day_910_ret": 0.6097560975609756,
+        "next_day_915_ret": 0.6097560975609756,
+        "next_day_930_ret": -2.317073170731707,
+        "next_day_1000_ret": -4.390243902439024,
+        "next_day_morning_ret": -4.878048780487805
       }
     },
     {
@@ -840,7 +890,8 @@
         "next_day_open_to_low_ret": -0.39920159680638717,
         "next_day_full_ret": 0.5970149253731344,
         "event_bar_date": "2025-10-02",
-        "next_bar_date": "2025-10-03"
+        "next_bar_date": "2025-10-03",
+        "next_open_900": 1002.0
       }
     },
     {
@@ -887,7 +938,13 @@
         "next_day_open_to_low_ret": -0.7656967840735069,
         "next_day_full_ret": -1.7964071856287425,
         "event_bar_date": "2025-02-03",
-        "next_bar_date": "2025-02-04"
+        "next_bar_date": "2025-02-04",
+        "next_open_900": 1306.0,
+        "next_day_905_ret": 3.7519142419601836,
+        "next_day_910_ret": 3.522205206738132,
+        "next_day_915_ret": 3.7519142419601836,
+        "next_day_930_ret": 2.2970903522205206,
+        "next_day_morning_ret": 3.3690658499234303
       }
     },
     {
@@ -937,7 +994,15 @@
         "next_day_open_to_low_ret": -2.839756592292089,
         "next_day_full_ret": 4.07098121085595,
         "event_bar_date": "2025-02-10",
-        "next_bar_date": "2025-02-12"
+        "next_bar_date": "2025-02-12",
+        "next_open_900": 4930.0,
+        "next_open_first_time": "09:04",
+        "next_day_905_ret": -0.9127789046653144,
+        "next_day_910_ret": -0.2028397565922921,
+        "next_day_915_ret": -1.0141987829614605,
+        "next_day_930_ret": -1.2170385395537524,
+        "next_day_1000_ret": -1.0141987829614605,
+        "next_day_morning_ret": 0.7099391480730223
       }
     },
     {
@@ -986,7 +1051,8 @@
         "next_day_open_to_low_ret": -1.740506329113924,
         "next_day_full_ret": 18.115942028985508,
         "event_bar_date": "2023-05-29",
-        "next_bar_date": "2023-05-30"
+        "next_bar_date": "2023-05-30",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=2114&date=2023-05-30: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -1035,7 +1101,8 @@
         "next_day_open_to_low_ret": -0.2688172043010753,
         "next_day_full_ret": 0.0,
         "event_bar_date": "2022-10-31",
-        "next_bar_date": "2022-11-01"
+        "next_bar_date": "2022-11-01",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=2139&date=2022-11-01: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -1095,7 +1162,15 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": -18.941979522184305,
         "event_bar_date": "2024-11-13",
-        "next_bar_date": "2024-11-14"
+        "next_bar_date": "2024-11-14",
+        "next_open_900": 2137.0,
+        "next_open_first_time": "10:12",
+        "next_day_905_ret": 0.0,
+        "next_day_910_ret": 0.0,
+        "next_day_915_ret": 0.0,
+        "next_day_930_ret": 0.0,
+        "next_day_1000_ret": 0.0,
+        "next_day_morning_ret": 0.0
       }
     },
     {
@@ -1142,7 +1217,15 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 19.556714471968707,
         "event_bar_date": "2025-08-13",
-        "next_bar_date": "2025-08-14"
+        "next_bar_date": "2025-08-14",
+        "next_open_900": 917.0,
+        "next_open_first_time": "15:30",
+        "next_day_905_ret": 0.0,
+        "next_day_910_ret": 0.0,
+        "next_day_915_ret": 0.0,
+        "next_day_930_ret": 0.0,
+        "next_day_1000_ret": 0.0,
+        "next_day_morning_ret": 0.0
       }
     },
     {
@@ -1189,7 +1272,9 @@
         "next_day_open_to_low_ret": -1.7676767676767675,
         "next_day_full_ret": -1.0025062656641603,
         "event_bar_date": "2026-04-28",
-        "next_bar_date": "2026-04-30"
+        "next_bar_date": "2026-04-30",
+        "next_open_900": 396.0,
+        "next_day_930_ret": -1.7676767676767675
       }
     },
     {
@@ -1246,7 +1331,11 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 5.764411027568922,
         "event_bar_date": "2026-05-11",
-        "next_bar_date": "2026-05-12"
+        "next_bar_date": "2026-05-12",
+        "next_open_900": 397.0,
+        "next_day_915_ret": 0.7556675062972292,
+        "next_day_930_ret": 0.7556675062972292,
+        "next_day_morning_ret": 1.7632241813602016
       }
     },
     {
@@ -1296,7 +1385,8 @@
         "next_day_open_to_low_ret": -1.0294117647058822,
         "next_day_full_ret": 0.0,
         "event_bar_date": "2024-02-09",
-        "next_bar_date": "2024-02-13"
+        "next_bar_date": "2024-02-13",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=2293&date=2024-02-13: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -1353,7 +1443,15 @@
         "next_day_open_to_low_ret": -4.015556635877487,
         "next_day_full_ret": -7.028020211299954,
         "event_bar_date": "2025-05-13",
-        "next_bar_date": "2025-05-14"
+        "next_bar_date": "2025-05-14",
+        "next_open_900": 1028.5,
+        "next_open_first_time": "09:05",
+        "next_day_905_ret": -0.24307243558580457,
+        "next_day_910_ret": -2.1876519202722413,
+        "next_day_915_ret": -1.5070491006319884,
+        "next_day_930_ret": -3.655809431210503,
+        "next_day_1000_ret": -3.27661643169665,
+        "next_day_morning_ret": -2.8099173553718986
       }
     },
     {
@@ -1400,7 +1498,12 @@
         "next_day_open_to_low_ret": -3.255813953488372,
         "next_day_full_ret": -2.7906976744186047,
         "event_bar_date": "2025-07-15",
-        "next_bar_date": "2025-07-16"
+        "next_bar_date": "2025-07-16",
+        "next_open_900": 215.0,
+        "next_day_905_ret": -1.8604651162790697,
+        "next_day_910_ret": -2.3255813953488373,
+        "next_day_915_ret": -2.3255813953488373,
+        "next_day_930_ret": -2.7906976744186047
       }
     },
     {
@@ -1449,7 +1552,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": -23.547880690737834,
         "event_bar_date": "2022-11-14",
-        "next_bar_date": "2022-11-15"
+        "next_bar_date": "2022-11-15",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=2427&date=2022-11-15: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -1499,7 +1603,13 @@
         "next_day_open_to_low_ret": -1.3779527559055118,
         "next_day_full_ret": -0.7905138339920948,
         "event_bar_date": "2025-08-08",
-        "next_bar_date": "2025-08-12"
+        "next_bar_date": "2025-08-12",
+        "next_open_900": 508.0,
+        "next_day_905_ret": -0.984251968503937,
+        "next_day_910_ret": -1.1811023622047243,
+        "next_day_915_ret": 0.5905511811023622,
+        "next_day_1000_ret": -0.7874015748031495,
+        "next_day_morning_ret": -0.19685039370078738
       }
     },
     {
@@ -1549,7 +1659,15 @@
         "next_day_open_to_low_ret": -1.4634146341463417,
         "next_day_full_ret": -13.304721030042918,
         "event_bar_date": "2025-07-15",
-        "next_bar_date": "2025-07-16"
+        "next_bar_date": "2025-07-16",
+        "next_open_900": 205.0,
+        "next_open_first_time": "09:09",
+        "next_day_905_ret": 0.4878048780487805,
+        "next_day_910_ret": 0.0,
+        "next_day_915_ret": -1.4634146341463417,
+        "next_day_930_ret": -0.975609756097561,
+        "next_day_1000_ret": -0.975609756097561,
+        "next_day_morning_ret": -1.4634146341463417
       }
     },
     {
@@ -1598,7 +1716,8 @@
         "next_day_open_to_low_ret": -1.3775290572535515,
         "next_day_full_ret": -1.881145788798632,
         "event_bar_date": "2023-04-12",
-        "next_bar_date": "2023-04-13"
+        "next_bar_date": "2023-04-13",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=2653&date=2023-04-13: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -1645,7 +1764,14 @@
         "next_day_open_to_low_ret": -4.554455445544554,
         "next_day_full_ret": -3.4722222222222223,
         "event_bar_date": "2024-07-05",
-        "next_bar_date": "2024-07-08"
+        "next_bar_date": "2024-07-08",
+        "next_open_900": 5050.0,
+        "next_day_905_ret": -1.188118811881188,
+        "next_day_910_ret": -1.5841584158415842,
+        "next_day_915_ret": -2.4752475247524752,
+        "next_day_930_ret": -3.2673267326732676,
+        "next_day_1000_ret": -3.663366336633663,
+        "next_day_morning_ret": -4.0594059405940595
       }
     },
     {
@@ -1692,7 +1818,15 @@
         "next_day_open_to_low_ret": -1.2422360248447204,
         "next_day_full_ret": -3.9358600583090384,
         "event_bar_date": "2024-10-08",
-        "next_bar_date": "2024-10-09"
+        "next_bar_date": "2024-10-09",
+        "next_open_900": 3220.0,
+        "next_open_first_time": "09:08",
+        "next_day_905_ret": -0.4658385093167702,
+        "next_day_910_ret": 1.0869565217391304,
+        "next_day_915_ret": 0.0,
+        "next_day_930_ret": 0.15527950310559005,
+        "next_day_1000_ret": 0.6211180124223602,
+        "next_day_morning_ret": 1.3975155279503106
       }
     },
     {
@@ -1739,7 +1873,8 @@
         "next_day_open_to_low_ret": -0.2971768202080238,
         "next_day_full_ret": 3.7147102526002973,
         "event_bar_date": "2024-03-13",
-        "next_bar_date": "2024-03-14"
+        "next_bar_date": "2024-03-14",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=2751&date=2024-03-14: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -1786,7 +1921,13 @@
         "next_day_open_to_low_ret": -1.0714285714285714,
         "next_day_full_ret": 0.3588516746411483,
         "event_bar_date": "2025-01-06",
-        "next_bar_date": "2025-01-07"
+        "next_bar_date": "2025-01-07",
+        "next_open_900": 840.0,
+        "next_day_905_ret": -0.8333333333333334,
+        "next_day_910_ret": -1.0714285714285714,
+        "next_day_915_ret": -0.7142857142857143,
+        "next_day_930_ret": -0.7142857142857143,
+        "next_day_morning_ret": -0.35714285714285715
       }
     },
     {
@@ -1833,7 +1974,10 @@
         "next_day_open_to_low_ret": -4.276069017254313,
         "next_day_full_ret": -2.941176470588235,
         "event_bar_date": "2025-12-19",
-        "next_bar_date": "2025-12-22"
+        "next_bar_date": "2025-12-22",
+        "next_open_900": 1333.0,
+        "next_day_915_ret": -1.4253563390847712,
+        "next_day_morning_ret": -2.0255063765941483
       }
     },
     {
@@ -1883,7 +2027,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": -7.658643326039387,
         "event_bar_date": "2023-02-01",
-        "next_bar_date": "2023-02-02"
+        "next_bar_date": "2023-02-02",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=2907&date=2023-02-02: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -1930,7 +2075,8 @@
         "next_day_open_to_low_ret": -0.8976660682226212,
         "next_day_full_ret": -0.05955926146515784,
         "event_bar_date": "2023-09-12",
-        "next_bar_date": "2023-09-13"
+        "next_bar_date": "2023-09-13",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=2910&date=2023-09-13: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -2018,7 +2164,8 @@
         "next_day_open_to_low_ret": -4.651162790697675,
         "next_day_full_ret": 1.9832985386221296,
         "event_bar_date": "2024-03-11",
-        "next_bar_date": "2024-03-12"
+        "next_bar_date": "2024-03-12",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=2929&date=2024-03-12: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -2068,7 +2215,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 20.161290322580644,
         "event_bar_date": "2022-10-14",
-        "next_bar_date": "2022-10-17"
+        "next_bar_date": "2022-10-17",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=2930&date=2022-10-17: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -2157,7 +2305,15 @@
         "next_day_open_to_low_ret": -1.1969532100108813,
         "next_day_full_ret": 0.2185792349726776,
         "event_bar_date": "2025-05-15",
-        "next_bar_date": "2025-05-16"
+        "next_bar_date": "2025-05-16",
+        "next_open_900": 919.0,
+        "next_open_first_time": "09:16",
+        "next_day_905_ret": 0.0,
+        "next_day_910_ret": 0.0,
+        "next_day_915_ret": 0.0,
+        "next_day_930_ret": 0.1088139281828074,
+        "next_day_1000_ret": 0.1088139281828074,
+        "next_day_morning_ret": 0.1088139281828074
       }
     },
     {
@@ -2207,7 +2363,8 @@
         "next_day_open_to_low_ret": -2.9291553133514987,
         "next_day_full_ret": -2.839756592292089,
         "event_bar_date": "2022-04-08",
-        "next_bar_date": "2022-04-11"
+        "next_bar_date": "2022-04-11",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=3087&date=2022-04-11: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -2274,7 +2431,15 @@
         "next_day_open_to_low_ret": -7.237354085603114,
         "next_day_full_ret": -10.655737704918032,
         "event_bar_date": "2025-03-31",
-        "next_bar_date": "2025-04-01"
+        "next_bar_date": "2025-04-01",
+        "next_open_900": 1285.0,
+        "next_open_first_time": "09:03",
+        "next_day_905_ret": -3.035019455252918,
+        "next_day_910_ret": -2.9571984435797662,
+        "next_day_915_ret": -3.501945525291829,
+        "next_day_930_ret": -5.058365758754864,
+        "next_day_1000_ret": -5.214007782101167,
+        "next_day_morning_ret": -4.747081712062257
       }
     },
     {
@@ -2324,7 +2489,15 @@
         "next_day_open_to_low_ret": -5.92173017507724,
         "next_day_full_ret": 10.81081081081081,
         "event_bar_date": "2025-07-07",
-        "next_bar_date": "2025-07-08"
+        "next_bar_date": "2025-07-08",
+        "next_open_900": 1942.0,
+        "next_open_first_time": "09:15",
+        "next_day_905_ret": -0.46343975283213185,
+        "next_day_910_ret": -0.46343975283213185,
+        "next_day_915_ret": -0.46343975283213185,
+        "next_day_930_ret": -0.8753861997940269,
+        "next_day_1000_ret": -2.5746652935118437,
+        "next_day_morning_ret": -3.7075180226570548
       }
     },
     {
@@ -2371,7 +2544,15 @@
         "next_day_open_to_low_ret": -3.08955807587016,
         "next_day_full_ret": -9.832561453509085,
         "event_bar_date": "2024-11-07",
-        "next_bar_date": "2024-11-08"
+        "next_bar_date": "2024-11-08",
+        "next_open_900": 2557.0,
+        "next_open_first_time": "09:12",
+        "next_day_905_ret": 1.838091513492374,
+        "next_day_910_ret": 1.838091513492374,
+        "next_day_915_ret": -1.7207665232694564,
+        "next_day_930_ret": -0.8212749315604223,
+        "next_day_1000_ret": -2.2682831443097378,
+        "next_day_morning_ret": -1.838091513492374
       }
     },
     {
@@ -2421,7 +2602,8 @@
         "next_day_open_to_low_ret": -1.9047619047619049,
         "next_day_full_ret": -2.358490566037736,
         "event_bar_date": "2022-05-16",
-        "next_bar_date": "2022-05-17"
+        "next_bar_date": "2022-05-17",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=3370&date=2022-05-17: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -2468,7 +2650,14 @@
         "next_day_open_to_low_ret": -3.0717827117913346,
         "next_day_full_ret": -1.8304431599229312,
         "event_bar_date": "2025-04-04",
-        "next_bar_date": "2025-04-07"
+        "next_bar_date": "2025-04-07",
+        "next_open_900": 9278.0,
+        "next_day_905_ret": -0.5928001724509593,
+        "next_day_910_ret": -2.4035352446647984,
+        "next_day_915_ret": -2.74843716318172,
+        "next_day_930_ret": -0.15089458935115327,
+        "next_day_1000_ret": 0.07544729467557663,
+        "next_day_morning_ret": -0.549687432636344
       }
     },
     {
@@ -2518,7 +2707,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 0.38167938931297707,
         "event_bar_date": "2022-05-12",
-        "next_bar_date": "2022-05-13"
+        "next_bar_date": "2022-05-13",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=3392&date=2022-05-13: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -2567,7 +2757,14 @@
         "next_day_open_to_low_ret": -2.2111081863648328,
         "next_day_full_ret": -0.21287919105907396,
         "event_bar_date": "2026-05-15",
-        "next_bar_date": "2026-05-18"
+        "next_bar_date": "2026-05-18",
+        "next_open_900": 3799.0,
+        "next_day_905_ret": -0.18425901553040272,
+        "next_day_910_ret": -0.42116346406949196,
+        "next_day_915_ret": -0.21058173203474598,
+        "next_day_930_ret": -0.7370360621216109,
+        "next_day_1000_ret": -1.6583311397736247,
+        "next_day_morning_ret": -1.2898131087128193
       }
     },
     {
@@ -2656,7 +2853,8 @@
         "next_day_open_to_low_ret": -4.225352112676056,
         "next_day_full_ret": 1.4285714285714286,
         "event_bar_date": "2023-11-09",
-        "next_bar_date": "2023-11-10"
+        "next_bar_date": "2023-11-10",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=3521&date=2023-11-10: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -2703,7 +2901,15 @@
         "next_day_open_to_low_ret": -0.29840266807092247,
         "next_day_full_ret": 20.462451401677935,
         "event_bar_date": "2025-06-16",
-        "next_bar_date": "2025-06-17"
+        "next_bar_date": "2025-06-17",
+        "next_open_900": 1709.0,
+        "next_open_first_time": "09:18",
+        "next_day_905_ret": 2.047981275599766,
+        "next_day_910_ret": 2.047981275599766,
+        "next_day_915_ret": 2.047981275599766,
+        "next_day_930_ret": 2.8671737858396726,
+        "next_day_1000_ret": 3.3352837916910474,
+        "next_day_morning_ret": 3.3352837916910474
       }
     },
     {
@@ -2752,7 +2958,8 @@
         "next_day_open_to_low_ret": -2.981651376146789,
         "next_day_full_ret": 9.848484848484848,
         "event_bar_date": "2022-11-11",
-        "next_bar_date": "2022-11-14"
+        "next_bar_date": "2022-11-14",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=3680&date=2022-11-14: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -2835,7 +3042,15 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 19.047619047619047,
         "event_bar_date": "2025-08-08",
-        "next_bar_date": "2025-08-12"
+        "next_bar_date": "2025-08-12",
+        "next_open_900": 6250.0,
+        "next_open_first_time": "15:30",
+        "next_day_905_ret": 0.0,
+        "next_day_910_ret": 0.0,
+        "next_day_915_ret": 0.0,
+        "next_day_930_ret": 0.0,
+        "next_day_1000_ret": 0.0,
+        "next_day_morning_ret": 0.0
       }
     },
     {
@@ -2884,7 +3099,8 @@
         "next_day_open_to_low_ret": -0.9569377990430622,
         "next_day_full_ret": 5.016181229773463,
         "event_bar_date": "2023-05-15",
-        "next_bar_date": "2023-05-16"
+        "next_bar_date": "2023-05-16",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=3853&date=2023-05-16: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -2931,7 +3147,15 @@
         "next_day_open_to_low_ret": -1.223021582733813,
         "next_day_full_ret": 17.107438016528924,
         "event_bar_date": "2024-11-12",
-        "next_bar_date": "2024-11-13"
+        "next_bar_date": "2024-11-13",
+        "next_open_900": 1390.0,
+        "next_open_first_time": "09:15",
+        "next_day_905_ret": -0.6474820143884892,
+        "next_day_910_ret": -0.6474820143884892,
+        "next_day_915_ret": -0.6474820143884892,
+        "next_day_930_ret": 1.9424460431654675,
+        "next_day_1000_ret": 1.7266187050359711,
+        "next_day_morning_ret": 1.7266187050359711
       }
     },
     {
@@ -2984,7 +3208,12 @@
         "next_day_open_to_low_ret": -0.2,
         "next_day_full_ret": 0.32916392363396973,
         "event_bar_date": "2025-04-25",
-        "next_bar_date": "2025-04-28"
+        "next_bar_date": "2025-04-28",
+        "next_open_900": 1500.0,
+        "next_day_905_ret": 0.8666666666666666,
+        "next_day_910_ret": 0.8666666666666666,
+        "next_day_930_ret": 1.4000000000000001,
+        "next_day_morning_ret": 1.2
       }
     },
     {
@@ -3034,7 +3263,8 @@
         "next_day_open_to_low_ret": -0.639386189258312,
         "next_day_full_ret": -2.5094102885821834,
         "event_bar_date": "2023-03-22",
-        "next_bar_date": "2023-03-23"
+        "next_bar_date": "2023-03-23",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=3933&date=2023-03-23: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -3084,7 +3314,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 4.29042904290429,
         "event_bar_date": "2024-03-11",
-        "next_bar_date": "2024-03-12"
+        "next_bar_date": "2024-03-12",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=3933&date=2024-03-12: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -3131,7 +3362,14 @@
         "next_day_open_to_low_ret": -0.969684597325712,
         "next_day_full_ret": 0.8097165991902834,
         "event_bar_date": "2025-11-06",
-        "next_bar_date": "2025-11-07"
+        "next_bar_date": "2025-11-07",
+        "next_open_900": 979.7,
+        "next_day_905_ret": -0.2755945697662596,
+        "next_day_910_ret": -0.285801776053901,
+        "next_day_915_ret": -0.12248647545167352,
+        "next_day_930_ret": -0.2653873634786182,
+        "next_day_1000_ret": 0.23476574461569402,
+        "next_day_morning_ret": -0.5307747269572364
       }
     },
     {
@@ -3248,7 +3486,15 @@
         "next_day_open_to_low_ret": -3.4423407917383817,
         "next_day_full_ret": -8.653846153846153,
         "event_bar_date": "2024-06-14",
-        "next_bar_date": "2024-06-17"
+        "next_bar_date": "2024-06-17",
+        "next_open_900": 581.0,
+        "next_open_first_time": "09:12",
+        "next_day_905_ret": -0.6884681583476765,
+        "next_day_910_ret": -0.6884681583476765,
+        "next_day_915_ret": 3.2702237521514634,
+        "next_day_930_ret": 2.4096385542168677,
+        "next_day_1000_ret": -0.17211703958691912,
+        "next_day_morning_ret": 0.17211703958691912
       }
     },
     {
@@ -3305,7 +3551,8 @@
         "next_day_open_to_low_ret": -8.19964349376114,
         "next_day_full_ret": -8.514190317195327,
         "event_bar_date": "2023-08-10",
-        "next_bar_date": "2023-08-14"
+        "next_bar_date": "2023-08-14",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=4056&date=2023-08-14: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -3355,7 +3602,8 @@
         "next_day_open_to_low_ret": -6.438213914849429,
         "next_day_full_ret": -7.3146292585170345,
         "event_bar_date": "2023-05-15",
-        "next_bar_date": "2023-05-16"
+        "next_bar_date": "2023-05-16",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=4200&date=2023-05-16: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -3404,7 +3652,8 @@
         "next_day_open_to_low_ret": -3.6196319018404908,
         "next_day_full_ret": -5.162064825930372,
         "event_bar_date": "2022-08-12",
-        "next_bar_date": "2022-08-15"
+        "next_bar_date": "2022-08-15",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=4242&date=2022-08-15: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -3461,7 +3710,9 @@
         "next_day_open_to_low_ret": -1.326053042121685,
         "next_day_full_ret": -0.07757951900698215,
         "event_bar_date": "2024-12-20",
-        "next_bar_date": "2024-12-23"
+        "next_bar_date": "2024-12-23",
+        "next_open_900": 1282.0,
+        "next_day_morning_ret": -0.858034321372855
       }
     },
     {
@@ -3511,7 +3762,15 @@
         "next_day_open_to_low_ret": -7.475083056478406,
         "next_day_full_ret": 3.985507246376811,
         "event_bar_date": "2025-11-14",
-        "next_bar_date": "2025-11-17"
+        "next_bar_date": "2025-11-17",
+        "next_open_900": 602.0,
+        "next_open_first_time": "09:13",
+        "next_day_905_ret": -0.33222591362126247,
+        "next_day_910_ret": -0.33222591362126247,
+        "next_day_915_ret": -0.9966777408637874,
+        "next_day_930_ret": -3.488372093023256,
+        "next_day_1000_ret": -3.488372093023256,
+        "next_day_morning_ret": -4.152823920265781
       }
     },
     {
@@ -3560,7 +3819,8 @@
         "next_day_open_to_low_ret": -9.6045197740113,
         "next_day_full_ret": -7.2727272727272725,
         "event_bar_date": "2022-12-09",
-        "next_bar_date": "2022-12-12"
+        "next_bar_date": "2022-12-12",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=4382&date=2022-12-12: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -3617,7 +3877,15 @@
         "next_day_open_to_low_ret": -1.841620626151013,
         "next_day_full_ret": -4.7957371225577266,
         "event_bar_date": "2026-05-13",
-        "next_bar_date": "2026-05-14"
+        "next_bar_date": "2026-05-14",
+        "next_open_900": 543.0,
+        "next_open_first_time": "09:03",
+        "next_day_905_ret": 0.1841620626151013,
+        "next_day_910_ret": -0.9208103130755065,
+        "next_day_915_ret": -0.5524861878453038,
+        "next_day_930_ret": -0.1841620626151013,
+        "next_day_1000_ret": 0.7366482504604052,
+        "next_day_morning_ret": 0.7366482504604052
       }
     },
     {
@@ -3665,7 +3933,8 @@
         "next_day_open_to_low_ret": -1.9746835443037976,
         "next_day_full_ret": -3.7283950617283947,
         "event_bar_date": "2024-05-14",
-        "next_bar_date": "2024-05-15"
+        "next_bar_date": "2024-05-15",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=4587&date=2024-05-15: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -3714,7 +3983,8 @@
         "next_day_open_to_low_ret": -0.21097046413502107,
         "next_day_full_ret": -5.571847507331378,
         "event_bar_date": "2022-08-10",
-        "next_bar_date": "2022-08-12"
+        "next_bar_date": "2022-08-12",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=4619&date=2022-08-12: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -3764,7 +4034,8 @@
         "next_day_open_to_low_ret": -0.743801652892562,
         "next_day_full_ret": -1.0682004930156122,
         "event_bar_date": "2023-03-17",
-        "next_bar_date": "2023-03-20"
+        "next_bar_date": "2023-03-20",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=4626&date=2023-03-20: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -3811,7 +4082,8 @@
         "next_day_open_to_low_ret": -0.1349072512647478,
         "next_day_full_ret": -1.9110378912685375,
         "event_bar_date": "2023-02-08",
-        "next_bar_date": "2023-02-09"
+        "next_bar_date": "2023-02-09",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=4635&date=2023-02-09: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -3861,7 +4133,8 @@
         "next_day_open_to_low_ret": -0.5263157894736842,
         "next_day_full_ret": -2.674897119341564,
         "event_bar_date": "2022-03-23",
-        "next_bar_date": "2022-03-24"
+        "next_bar_date": "2022-03-24",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=4644&date=2022-03-24: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -3911,7 +4184,8 @@
         "next_day_open_to_low_ret": -2.1484375,
         "next_day_full_ret": 0.1998001998001998,
         "event_bar_date": "2024-03-21",
-        "next_bar_date": "2024-03-22"
+        "next_bar_date": "2024-03-22",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=4644&date=2024-03-22: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -3958,7 +4232,8 @@
         "next_day_open_to_low_ret": -1.2195121951219512,
         "next_day_full_ret": 12.206196581196595,
         "event_bar_date": "2023-02-02",
-        "next_bar_date": "2023-02-03"
+        "next_bar_date": "2023-02-03",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=4689&date=2023-02-03: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -4115,7 +4390,15 @@
         "next_day_open_to_low_ret": -1.0897203051216855,
         "next_day_full_ret": 15.083571137382796,
         "event_bar_date": "2025-05-15",
-        "next_bar_date": "2025-05-16"
+        "next_bar_date": "2025-05-16",
+        "next_open_900": 1376.5,
+        "next_open_first_time": "09:12",
+        "next_day_905_ret": -0.5448601525608427,
+        "next_day_910_ret": -0.5448601525608427,
+        "next_day_915_ret": -0.6901561932437341,
+        "next_day_930_ret": 2.070468579731202,
+        "next_day_1000_ret": 3.4144569560479474,
+        "next_day_morning_ret": 1.7798764983654194
       }
     },
     {
@@ -4162,7 +4445,10 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 1.0396361273554255,
         "event_bar_date": "2026-01-30",
-        "next_bar_date": "2026-02-02"
+        "next_bar_date": "2026-02-02",
+        "next_open_900": 1555.0,
+        "next_day_905_ret": 0.8360128617363344,
+        "next_day_910_ret": 0.9003215434083601
       }
     },
     {
@@ -4212,7 +4498,8 @@
         "next_day_open_to_low_ret": -3.125,
         "next_day_full_ret": 1.9607843137254901,
         "event_bar_date": "2022-07-14",
-        "next_bar_date": "2022-07-15"
+        "next_bar_date": "2022-07-15",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=4829&date=2022-07-15: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -4262,7 +4549,12 @@
         "next_day_open_to_low_ret": -0.8547008547008548,
         "next_day_full_ret": 0.0,
         "event_bar_date": "2025-07-11",
-        "next_bar_date": "2025-07-14"
+        "next_bar_date": "2025-07-14",
+        "next_open_900": 117.0,
+        "next_day_905_ret": 0.0,
+        "next_day_910_ret": 0.0,
+        "next_day_915_ret": 0.0,
+        "next_day_morning_ret": 1.7094017094017095
       }
     },
     {
@@ -4312,7 +4604,8 @@
         "next_day_open_to_low_ret": -1.8711018711018712,
         "next_day_full_ret": -2.3394131641554323,
         "event_bar_date": "2022-11-10",
-        "next_bar_date": "2022-11-11"
+        "next_bar_date": "2022-11-11",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=4849&date=2022-11-11: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -4362,7 +4655,15 @@
         "next_day_open_to_low_ret": -3.327596098680436,
         "next_day_full_ret": -12.706611570247933,
         "event_bar_date": "2025-02-13",
-        "next_bar_date": "2025-02-14"
+        "next_bar_date": "2025-02-14",
+        "next_open_900": 1743.0,
+        "next_open_first_time": "09:12",
+        "next_day_905_ret": -0.5737234652897304,
+        "next_day_910_ret": -0.5737234652897304,
+        "next_day_915_ret": -1.2048192771084338,
+        "next_day_930_ret": -3.327596098680436,
+        "next_day_1000_ret": -2.63912794033276,
+        "next_day_morning_ret": -2.4096385542168677
       }
     },
     {
@@ -4429,7 +4730,8 @@
         "next_day_open_to_low_ret": -0.07262164124909223,
         "next_day_full_ret": 0.07267441860465117,
         "event_bar_date": "2025-11-21",
-        "next_bar_date": "2025-11-25"
+        "next_bar_date": "2025-11-25",
+        "next_open_900": 1377.0
       }
     },
     {
@@ -4479,7 +4781,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 17.636684303350968,
         "event_bar_date": "2023-09-01",
-        "next_bar_date": "2023-09-04"
+        "next_bar_date": "2023-09-04",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=4963&date=2023-09-04: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -4529,7 +4832,14 @@
         "next_day_open_to_low_ret": -2.7922385234264078,
         "next_day_full_ret": -2.231718898385565,
         "event_bar_date": "2025-02-12",
-        "next_bar_date": "2025-02-13"
+        "next_bar_date": "2025-02-13",
+        "next_open_900": 1056.5,
+        "next_day_905_ret": 1.183151916706105,
+        "next_day_910_ret": -0.18930430667297682,
+        "next_day_915_ret": -1.2304779933743493,
+        "next_day_930_ret": -0.8518693800283956,
+        "next_day_1000_ret": -0.7572172266919073,
+        "next_day_morning_ret": -0.8991954566966399
       }
     },
     {
@@ -4579,7 +4889,14 @@
         "next_day_open_to_low_ret": -2.0,
         "next_day_full_ret": 1.3654984069185254,
         "event_bar_date": "2025-11-11",
-        "next_bar_date": "2025-11-12"
+        "next_bar_date": "2025-11-12",
+        "next_open_900": 1125.0,
+        "next_day_905_ret": 1.5555555555555556,
+        "next_day_910_ret": 1.2,
+        "next_day_915_ret": 1.1111111111111112,
+        "next_day_930_ret": 0.8,
+        "next_day_1000_ret": 0.35555555555555557,
+        "next_day_morning_ret": -0.9333333333333335
       }
     },
     {
@@ -4626,7 +4943,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 0.0,
         "event_bar_date": "2024-02-14",
-        "next_bar_date": "2024-02-15"
+        "next_bar_date": "2024-02-15",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=5103&date=2024-02-15: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -4673,7 +4991,9 @@
         "next_day_open_to_low_ret": -0.6666666666666667,
         "next_day_full_ret": -0.4983388704318937,
         "event_bar_date": "2025-08-14",
-        "next_bar_date": "2025-08-15"
+        "next_bar_date": "2025-08-15",
+        "next_open_900": 600.0,
+        "next_day_1000_ret": -0.16666666666666669
       }
     },
     {
@@ -4723,7 +5043,8 @@
         "next_day_open_to_low_ret": -3.7149355572403335,
         "next_day_full_ret": -2.208682406702209,
         "event_bar_date": "2022-10-31",
-        "next_bar_date": "2022-11-01"
+        "next_bar_date": "2022-11-01",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=5440&date=2022-11-01: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -4773,7 +5094,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": -2.543186180422265,
         "event_bar_date": "2023-11-01",
-        "next_bar_date": "2023-11-02"
+        "next_bar_date": "2023-11-02",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=5461&date=2023-11-02: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -4823,7 +5145,15 @@
         "next_day_open_to_low_ret": -2.4600246002460024,
         "next_day_full_ret": -5.0,
         "event_bar_date": "2025-10-31",
-        "next_bar_date": "2025-11-04"
+        "next_bar_date": "2025-11-04",
+        "next_open_900": 813.0,
+        "next_open_first_time": "09:03",
+        "next_day_905_ret": 1.968019680196802,
+        "next_day_910_ret": 0.24600246002460024,
+        "next_day_915_ret": 0.6150061500615006,
+        "next_day_930_ret": -0.36900369003690037,
+        "next_day_1000_ret": -1.7220172201722017,
+        "next_day_morning_ret": -1.8450184501845017
       }
     },
     {
@@ -4870,7 +5200,9 @@
         "next_day_open_to_low_ret": -1.7870722433460076,
         "next_day_full_ret": -1.2952380952380953,
         "event_bar_date": "2025-03-25",
-        "next_bar_date": "2025-03-26"
+        "next_bar_date": "2025-03-26",
+        "next_open_900": 2630.0,
+        "next_day_morning_ret": -1.1026615969581748
       }
     },
     {
@@ -4917,7 +5249,15 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 23.310023310023308,
         "event_bar_date": "2025-03-14",
-        "next_bar_date": "2025-03-17"
+        "next_bar_date": "2025-03-17",
+        "next_open_900": 2116.0,
+        "next_open_first_time": "15:30",
+        "next_day_905_ret": 0.0,
+        "next_day_910_ret": 0.0,
+        "next_day_915_ret": 0.0,
+        "next_day_930_ret": 0.0,
+        "next_day_1000_ret": 0.0,
+        "next_day_morning_ret": 0.0
       }
     },
     {
@@ -4967,7 +5307,8 @@
         "next_day_open_to_low_ret": -1.557377049180328,
         "next_day_full_ret": -0.7407407407407408,
         "event_bar_date": "2023-11-10",
-        "next_bar_date": "2023-11-13"
+        "next_bar_date": "2023-11-13",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=5702&date=2023-11-13: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -5017,7 +5358,8 @@
         "next_day_open_to_low_ret": -3.783783783783784,
         "next_day_full_ret": -6.005221932114883,
         "event_bar_date": "2023-02-13",
-        "next_bar_date": "2023-02-14"
+        "next_bar_date": "2023-02-14",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=5949&date=2023-02-14: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -5064,7 +5406,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 21.70138888888889,
         "event_bar_date": "2023-02-08",
-        "next_bar_date": "2023-02-09"
+        "next_bar_date": "2023-02-09",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=5999&date=2023-02-09: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -5113,7 +5456,8 @@
         "next_day_open_to_low_ret": -1.5789473684210527,
         "next_day_full_ret": 2.1505376344086025,
         "event_bar_date": "2026-05-15",
-        "next_bar_date": "2026-05-18"
+        "next_bar_date": "2026-05-18",
+        "next_open_900": 190.0
       }
     },
     {
@@ -5160,7 +5504,14 @@
         "next_day_open_to_low_ret": -12.990196078431374,
         "next_day_full_ret": -7.5,
         "event_bar_date": "2025-02-25",
-        "next_bar_date": "2025-02-26"
+        "next_bar_date": "2025-02-26",
+        "next_open_900": 408.0,
+        "next_day_905_ret": -2.696078431372549,
+        "next_day_910_ret": -2.2058823529411766,
+        "next_day_915_ret": -2.2058823529411766,
+        "next_day_930_ret": -6.127450980392156,
+        "next_day_1000_ret": -9.558823529411764,
+        "next_day_morning_ret": -12.009803921568627
       }
     },
     {
@@ -5210,7 +5561,8 @@
         "next_day_open_to_low_ret": -3.571428571428571,
         "next_day_full_ret": -1.1204481792717087,
         "event_bar_date": "2023-11-10",
-        "next_bar_date": "2023-11-13"
+        "next_bar_date": "2023-11-13",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=6059&date=2023-11-13: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -5259,7 +5611,15 @@
         "next_day_open_to_low_ret": -12.16738685467364,
         "next_day_full_ret": -13.801295896328295,
         "event_bar_date": "2024-08-02",
-        "next_bar_date": "2024-08-05"
+        "next_bar_date": "2024-08-05",
+        "next_open_900": 2198.5,
+        "next_open_first_time": "09:06",
+        "next_day_905_ret": -2.092335683420514,
+        "next_day_910_ret": -2.365249033431885,
+        "next_day_915_ret": -3.183989083466,
+        "next_day_930_ret": -1.9786217875824426,
+        "next_day_1000_ret": -3.6843302251535133,
+        "next_day_morning_ret": -5.958608141914942
       }
     },
     {
@@ -5316,7 +5676,9 @@
         "next_day_open_to_low_ret": -4.15335463258786,
         "next_day_full_ret": 0.9836065573770493,
         "event_bar_date": "2025-01-10",
-        "next_bar_date": "2025-01-14"
+        "next_bar_date": "2025-01-14",
+        "next_open_900": 313.0,
+        "next_day_910_ret": -4.15335463258786
       }
     },
     {
@@ -5366,7 +5728,8 @@
         "next_day_open_to_low_ret": -5.445026178010471,
         "next_day_full_ret": -14.976744186046512,
         "event_bar_date": "2022-10-24",
-        "next_bar_date": "2022-10-25"
+        "next_bar_date": "2022-10-25",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=6205&date=2022-10-25: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -5416,7 +5779,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 2.07667731629393,
         "event_bar_date": "2023-04-27",
-        "next_bar_date": "2023-04-28"
+        "next_bar_date": "2023-04-28",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=6210&date=2023-04-28: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -5466,7 +5830,8 @@
         "next_day_open_to_low_ret": -0.7905138339920948,
         "next_day_full_ret": 0.7984031936127743,
         "event_bar_date": "2022-07-13",
-        "next_bar_date": "2022-07-14"
+        "next_bar_date": "2022-07-14",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=6217&date=2022-07-14: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -5515,7 +5880,8 @@
         "next_day_open_to_low_ret": -5.714285714285714,
         "next_day_full_ret": -16.80672268907563,
         "event_bar_date": "2023-04-13",
-        "next_bar_date": "2023-04-14"
+        "next_bar_date": "2023-04-14",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=6217&date=2023-04-14: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -5562,7 +5928,14 @@
         "next_day_open_to_low_ret": -1.4883346741753822,
         "next_day_full_ret": 2.9134181370537546,
         "event_bar_date": "2025-06-24",
-        "next_bar_date": "2025-06-25"
+        "next_bar_date": "2025-06-25",
+        "next_open_900": 2486.0,
+        "next_day_905_ret": -0.8045052292839904,
+        "next_day_910_ret": -0.32180209171359614,
+        "next_day_915_ret": -1.246983105390185,
+        "next_day_930_ret": 2.2928399034593725,
+        "next_day_1000_ret": 1.0458567980691875,
+        "next_day_morning_ret": 0.16090104585679807
       }
     },
     {
@@ -5609,7 +5982,15 @@
         "next_day_open_to_low_ret": -1.9607843137254901,
         "next_day_full_ret": 13.662456946039036,
         "event_bar_date": "2026-05-14",
-        "next_bar_date": "2026-05-15"
+        "next_bar_date": "2026-05-15",
+        "next_open_900": 4845.0,
+        "next_open_first_time": "09:19",
+        "next_day_905_ret": 2.683178534571723,
+        "next_day_910_ret": 2.683178534571723,
+        "next_day_915_ret": 2.683178534571723,
+        "next_day_930_ret": 4.024767801857585,
+        "next_day_1000_ret": 4.437564499484004,
+        "next_day_morning_ret": 4.437564499484004
       }
     },
     {
@@ -5666,7 +6047,10 @@
         "next_day_open_to_low_ret": -0.4878048780487805,
         "next_day_full_ret": -0.9523809523809524,
         "event_bar_date": "2025-02-13",
-        "next_bar_date": "2025-02-14"
+        "next_bar_date": "2025-02-14",
+        "next_open_900": 205.0,
+        "next_day_910_ret": 0.0,
+        "next_day_morning_ret": 0.4878048780487805
       }
     },
     {
@@ -5716,7 +6100,8 @@
         "next_day_open_to_low_ret": -0.2808988764044944,
         "next_day_full_ret": -12.618296529968454,
         "event_bar_date": "2023-10-31",
-        "next_bar_date": "2023-11-01"
+        "next_bar_date": "2023-11-01",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=6337&date=2023-11-01: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -5766,7 +6151,11 @@
         "next_day_open_to_low_ret": -0.9771986970684038,
         "next_day_full_ret": -0.21691973969631237,
         "event_bar_date": "2026-03-18",
-        "next_bar_date": "2026-03-19"
+        "next_bar_date": "2026-03-19",
+        "next_open_900": 921.0,
+        "next_day_905_ret": 0.0,
+        "next_day_910_ret": 0.10857763300760044,
+        "next_day_1000_ret": 0.43431053203040176
       }
     },
     {
@@ -5833,7 +6222,14 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 36.029411764705884,
         "event_bar_date": "2025-10-31",
-        "next_bar_date": "2025-11-04"
+        "next_bar_date": "2025-11-04",
+        "next_open_900": 139.0,
+        "next_day_905_ret": 1.4388489208633095,
+        "next_day_910_ret": 15.827338129496402,
+        "next_day_915_ret": 22.302158273381295,
+        "next_day_930_ret": 25.179856115107913,
+        "next_day_1000_ret": 23.021582733812952,
+        "next_day_morning_ret": 23.021582733812952
       }
     },
     {
@@ -5880,7 +6276,8 @@
         "next_day_open_to_low_ret": -1.0,
         "next_day_full_ret": 1.5108593012275733,
         "event_bar_date": "2023-11-09",
-        "next_bar_date": "2023-11-10"
+        "next_bar_date": "2023-11-10",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=6562&date=2023-11-10: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -5937,7 +6334,15 @@
         "next_day_open_to_low_ret": -4.195804195804196,
         "next_day_full_ret": -8.296164139161464,
         "event_bar_date": "2025-11-14",
-        "next_bar_date": "2025-11-17"
+        "next_bar_date": "2025-11-17",
+        "next_open_900": 1001.0,
+        "next_open_first_time": "09:09",
+        "next_day_905_ret": 1.098901098901099,
+        "next_day_910_ret": -1.898101898101898,
+        "next_day_915_ret": -3.3966033966033966,
+        "next_day_930_ret": 0.0999000999000999,
+        "next_day_1000_ret": 2.797202797202797,
+        "next_day_morning_ret": 0.8991008991008992
       }
     },
     {
@@ -6004,7 +6409,8 @@
         "next_day_open_to_low_ret": -8.32408435072142,
         "next_day_full_ret": -15.061475409836063,
         "event_bar_date": "2023-11-14",
-        "next_bar_date": "2023-11-15"
+        "next_bar_date": "2023-11-15",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=6563&date=2023-11-15: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -6064,7 +6470,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": -21.945866861741038,
         "event_bar_date": "2023-03-14",
-        "next_bar_date": "2023-03-15"
+        "next_bar_date": "2023-03-15",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=6630&date=2023-03-15: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -6114,7 +6521,8 @@
         "next_day_open_to_low_ret": -2.571428571428571,
         "next_day_full_ret": 5.182926829268292,
         "event_bar_date": "2022-12-27",
-        "next_bar_date": "2022-12-28"
+        "next_bar_date": "2022-12-28",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=6664&date=2022-12-28: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -6161,7 +6569,15 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 26.007802340702213,
         "event_bar_date": "2026-02-05",
-        "next_bar_date": "2026-02-06"
+        "next_bar_date": "2026-02-06",
+        "next_open_900": 1938.0,
+        "next_open_first_time": "15:30",
+        "next_day_905_ret": 0.0,
+        "next_day_910_ret": 0.0,
+        "next_day_915_ret": 0.0,
+        "next_day_930_ret": 0.0,
+        "next_day_1000_ret": 0.0,
+        "next_day_morning_ret": 0.0
       }
     },
     {
@@ -6209,7 +6625,8 @@
         "next_day_open_to_low_ret": -4.867256637168142,
         "next_day_full_ret": -4.424778761061947,
         "event_bar_date": "2024-02-09",
-        "next_bar_date": "2024-02-13"
+        "next_bar_date": "2024-02-13",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=6704&date=2024-02-13: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -6259,7 +6676,8 @@
         "next_day_open_to_low_ret": -4.216867469879518,
         "next_day_full_ret": -4.464285714285714,
         "event_bar_date": "2023-11-10",
-        "next_bar_date": "2023-11-13"
+        "next_bar_date": "2023-11-13",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=6772&date=2023-11-13: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -6309,7 +6727,15 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 3.7296037296037294,
         "event_bar_date": "2025-01-31",
-        "next_bar_date": "2025-02-03"
+        "next_bar_date": "2025-02-03",
+        "next_open_900": 873.0,
+        "next_open_first_time": "09:02",
+        "next_day_905_ret": 0.22909507445589922,
+        "next_day_910_ret": 0.22909507445589922,
+        "next_day_915_ret": 0.22909507445589922,
+        "next_day_930_ret": 0.9163802978235969,
+        "next_day_1000_ret": 1.9473081328751431,
+        "next_day_morning_ret": 1.9473081328751431
       }
     },
     {
@@ -6359,7 +6785,8 @@
         "next_day_open_to_low_ret": -4.51505016722408,
         "next_day_full_ret": 1.4084507042253522,
         "event_bar_date": "2023-02-03",
-        "next_bar_date": "2023-02-06"
+        "next_bar_date": "2023-02-06",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=6901&date=2023-02-06: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -6426,7 +6853,14 @@
         "next_day_open_to_low_ret": -5.37232233934036,
         "next_day_full_ret": -5.204835460040296,
         "event_bar_date": "2026-05-15",
-        "next_bar_date": "2026-05-18"
+        "next_bar_date": "2026-05-18",
+        "next_open_900": 2941.0,
+        "next_day_905_ret": -3.4342060523631415,
+        "next_day_910_ret": -4.216252975178511,
+        "next_day_915_ret": -4.35226113566814,
+        "next_day_930_ret": -3.910234614076845,
+        "next_day_1000_ret": -3.876232573954437,
+        "next_day_morning_ret": -5.304318259095546
       }
     },
     {
@@ -6476,7 +6910,8 @@
         "next_day_open_to_low_ret": -2.65625,
         "next_day_full_ret": -0.24,
         "event_bar_date": "2024-02-09",
-        "next_bar_date": "2024-02-13"
+        "next_bar_date": "2024-02-13",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=6998&date=2024-02-13: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -6526,7 +6961,8 @@
         "next_day_open_to_low_ret": -5.6000000000000005,
         "next_day_full_ret": -12.727272727272727,
         "event_bar_date": "2023-02-14",
-        "next_bar_date": "2023-02-15"
+        "next_bar_date": "2023-02-15",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=7044&date=2023-02-15: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -6576,7 +7012,10 @@
         "next_day_open_to_low_ret": -3.2692307692307696,
         "next_day_full_ret": 1.9723865877712032,
         "event_bar_date": "2025-01-14",
-        "next_bar_date": "2025-01-15"
+        "next_bar_date": "2025-01-15",
+        "next_open_900": 1040.0,
+        "next_day_910_ret": -0.2884615384615385,
+        "next_day_930_ret": -1.25
       }
     },
     {
@@ -6643,7 +7082,8 @@
         "next_day_open_to_low_ret": -5.901639344262295,
         "next_day_full_ret": 1.6351118760757317,
         "event_bar_date": "2023-05-10",
-        "next_bar_date": "2023-05-11"
+        "next_bar_date": "2023-05-11",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=7105&date=2023-05-11: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -6710,7 +7150,12 @@
         "next_day_open_to_low_ret": -6.909090909090909,
         "next_day_full_ret": -7.414104882459313,
         "event_bar_date": "2025-09-04",
-        "next_bar_date": "2025-09-05"
+        "next_bar_date": "2025-09-05",
+        "next_open_900": 1100.0,
+        "next_day_905_ret": -2.4545454545454546,
+        "next_day_910_ret": -3.1818181818181817,
+        "next_day_915_ret": -3.3636363636363638,
+        "next_day_morning_ret": -4.454545454545455
       }
     },
     {
@@ -6760,7 +7205,12 @@
         "next_day_open_to_low_ret": -1.054481546572935,
         "next_day_full_ret": 1.9590382902938557,
         "event_bar_date": "2024-07-26",
-        "next_bar_date": "2024-07-29"
+        "next_bar_date": "2024-07-29",
+        "next_open_900": 2276.0,
+        "next_day_910_ret": -0.21968365553602814,
+        "next_day_915_ret": -0.13181019332161686,
+        "next_day_930_ret": 0.39543057996485065,
+        "next_day_morning_ret": 0.17574692442882248
       }
     },
     {
@@ -6847,7 +7297,15 @@
         "next_day_open_to_low_ret": -0.8152173913043478,
         "next_day_full_ret": -0.35149384885764495,
         "event_bar_date": "2026-03-05",
-        "next_bar_date": "2026-03-06"
+        "next_bar_date": "2026-03-06",
+        "next_open_900": 11040.0,
+        "next_open_first_time": "09:03",
+        "next_day_905_ret": 0.4528985507246377,
+        "next_day_910_ret": 1.5398550724637683,
+        "next_day_915_ret": 2.083333333333333,
+        "next_day_930_ret": 2.717391304347826,
+        "next_day_1000_ret": 2.083333333333333,
+        "next_day_morning_ret": 1.5398550724637683
       }
     },
     {
@@ -6896,7 +7354,8 @@
         "next_day_open_to_low_ret": -1.9743863393810033,
         "next_day_full_ret": -13.997214484679665,
         "event_bar_date": "2023-08-02",
-        "next_bar_date": "2023-08-03"
+        "next_bar_date": "2023-08-03",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=7240&date=2023-08-03: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -6943,7 +7402,15 @@
         "next_day_open_to_low_ret": -1.0425020048115476,
         "next_day_full_ret": -2.2709475332811273,
         "event_bar_date": "2025-04-25",
-        "next_bar_date": "2025-04-28"
+        "next_bar_date": "2025-04-28",
+        "next_open_900": 1247.0,
+        "next_open_first_time": "09:02",
+        "next_day_905_ret": 0.7217321571772253,
+        "next_day_910_ret": -0.7217321571772253,
+        "next_day_915_ret": -0.24057738572574178,
+        "next_day_930_ret": -0.24057738572574178,
+        "next_day_1000_ret": -0.32076984763432237,
+        "next_day_morning_ret": 0.0
       }
     },
     {
@@ -7010,7 +7477,8 @@
         "next_day_open_to_low_ret": -1.3333333333333335,
         "next_day_full_ret": 0.6711409395973155,
         "event_bar_date": "2023-06-27",
-        "next_bar_date": "2023-06-28"
+        "next_bar_date": "2023-06-28",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=7256&date=2023-06-28: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -7057,7 +7525,13 @@
         "next_day_open_to_low_ret": -6.666666666666667,
         "next_day_full_ret": -3.7735849056603774,
         "event_bar_date": "2025-11-14",
-        "next_bar_date": "2025-11-17"
+        "next_bar_date": "2025-11-17",
+        "next_open_900": 105.0,
+        "next_day_905_ret": -4.761904761904762,
+        "next_day_910_ret": -4.761904761904762,
+        "next_day_915_ret": -3.8095238095238098,
+        "next_day_1000_ret": -5.714285714285714,
+        "next_day_morning_ret": -4.761904761904762
       }
     },
     {
@@ -7114,7 +7588,12 @@
         "next_day_open_to_low_ret": -1.1814345991561181,
         "next_day_full_ret": 1.838392475416845,
         "event_bar_date": "2025-09-30",
-        "next_bar_date": "2025-10-01"
+        "next_bar_date": "2025-10-01",
+        "next_open_900": 2370.0,
+        "next_day_905_ret": 1.4345991561181435,
+        "next_day_910_ret": 0.9282700421940928,
+        "next_day_915_ret": -0.25316455696202533,
+        "next_day_930_ret": 1.350210970464135
       }
     },
     {
@@ -7165,7 +7644,9 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 1.336405529953917,
         "event_bar_date": "2026-01-29",
-        "next_bar_date": "2026-01-30"
+        "next_bar_date": "2026-01-30",
+        "next_open_900": 2165.0,
+        "next_day_905_ret": 0.09237875288683603
       }
     },
     {
@@ -7215,7 +7696,8 @@
         "next_day_open_to_low_ret": -6.657420249653259,
         "next_day_full_ret": 16.10305958132045,
         "event_bar_date": "2023-04-14",
-        "next_bar_date": "2023-04-17"
+        "next_bar_date": "2023-04-17",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=7351&date=2023-04-17: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -7262,7 +7744,15 @@
         "next_day_open_to_low_ret": -0.3883495145631068,
         "next_day_full_ret": -9.581881533101045,
         "event_bar_date": "2026-04-14",
-        "next_bar_date": "2026-04-15"
+        "next_bar_date": "2026-04-15",
+        "next_open_900": 515.0,
+        "next_open_first_time": "09:15",
+        "next_day_905_ret": 1.3592233009708738,
+        "next_day_910_ret": 1.3592233009708738,
+        "next_day_915_ret": 1.3592233009708738,
+        "next_day_930_ret": 2.1359223300970873,
+        "next_day_1000_ret": 1.9417475728155338,
+        "next_day_morning_ret": 0.3883495145631068
       }
     },
     {
@@ -7329,7 +7819,8 @@
         "next_day_open_to_low_ret": -0.8104738154613467,
         "next_day_full_ret": -3.6724864539434074,
         "event_bar_date": "2024-03-27",
-        "next_bar_date": "2024-03-28"
+        "next_bar_date": "2024-03-28",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=7506&date=2024-03-28: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -7376,7 +7867,8 @@
         "next_day_open_to_low_ret": -0.9345794392523363,
         "next_day_full_ret": 0.4694835680751174,
         "event_bar_date": "2024-08-20",
-        "next_bar_date": "2024-08-21"
+        "next_bar_date": "2024-08-21",
+        "next_open_900": 214.0
       }
     },
     {
@@ -7426,7 +7918,8 @@
         "next_day_open_to_low_ret": -1.185770750988142,
         "next_day_full_ret": -0.1314060446780552,
         "event_bar_date": "2024-02-27",
-        "next_bar_date": "2024-02-28"
+        "next_bar_date": "2024-02-28",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=7525&date=2024-02-28: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -7476,7 +7969,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 0.821917808219178,
         "event_bar_date": "2025-02-13",
-        "next_bar_date": "2025-02-14"
+        "next_bar_date": "2025-02-14",
+        "next_open_900": 2914.0
       }
     },
     {
@@ -7526,7 +8020,8 @@
         "next_day_open_to_low_ret": -2.980132450331126,
         "next_day_full_ret": -2.980132450331126,
         "event_bar_date": "2023-02-14",
-        "next_bar_date": "2023-02-15"
+        "next_bar_date": "2023-02-15",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=7531&date=2023-02-15: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -7576,7 +8071,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 0.7252946509519492,
         "event_bar_date": "2023-11-10",
-        "next_bar_date": "2023-11-13"
+        "next_bar_date": "2023-11-13",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=7554&date=2023-11-13: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -7623,7 +8119,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": -2.7149321266968327,
         "event_bar_date": "2023-08-09",
-        "next_bar_date": "2023-08-10"
+        "next_bar_date": "2023-08-10",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=7602&date=2023-08-10: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -7670,7 +8167,9 @@
         "next_day_open_to_low_ret": -0.21929824561403508,
         "next_day_full_ret": -0.1092896174863388,
         "event_bar_date": "2024-11-08",
-        "next_bar_date": "2024-11-11"
+        "next_bar_date": "2024-11-11",
+        "next_open_900": 912.0,
+        "next_day_1000_ret": -0.10964912280701754
       }
     },
     {
@@ -7717,7 +8216,15 @@
         "next_day_open_to_low_ret": -4.223227752639517,
         "next_day_full_ret": 2.503912363067293,
         "event_bar_date": "2025-03-07",
-        "next_bar_date": "2025-03-10"
+        "next_bar_date": "2025-03-10",
+        "next_open_900": 1989.0,
+        "next_open_first_time": "09:03",
+        "next_day_905_ret": -1.9105077928607341,
+        "next_day_910_ret": -1.4580191050779285,
+        "next_day_915_ret": -1.4580191050779285,
+        "next_day_930_ret": -3.569632981397687,
+        "next_day_1000_ret": -3.8210155857214683,
+        "next_day_morning_ret": -3.167420814479638
       }
     },
     {
@@ -7764,7 +8271,8 @@
         "next_day_open_to_low_ret": -0.4154302670623145,
         "next_day_full_ret": 1.7490952955367913,
         "event_bar_date": "2024-04-08",
-        "next_bar_date": "2024-04-09"
+        "next_bar_date": "2024-04-09",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=7811&date=2024-04-09: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -7811,7 +8319,9 @@
         "next_day_open_to_low_ret": -2.2556390977443606,
         "next_day_full_ret": 1.5267175572519083,
         "event_bar_date": "2024-09-06",
-        "next_bar_date": "2024-09-09"
+        "next_bar_date": "2024-09-09",
+        "next_open_900": 133.0,
+        "next_day_905_ret": -1.5037593984962405
       }
     },
     {
@@ -7861,7 +8371,8 @@
         "next_day_open_to_low_ret": -6.2727272727272725,
         "next_day_full_ret": 0.7626310772163966,
         "event_bar_date": "2024-02-09",
-        "next_bar_date": "2024-02-13"
+        "next_bar_date": "2024-02-13",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=7874&date=2024-02-13: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -7911,7 +8422,15 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 19.302949061662197,
         "event_bar_date": "2025-03-14",
-        "next_bar_date": "2025-03-17"
+        "next_bar_date": "2025-03-17",
+        "next_open_900": 3115.0,
+        "next_open_first_time": "15:30",
+        "next_day_905_ret": 0.0,
+        "next_day_910_ret": 0.0,
+        "next_day_915_ret": 0.0,
+        "next_day_930_ret": 0.0,
+        "next_day_1000_ret": 0.0,
+        "next_day_morning_ret": 0.0
       }
     },
     {
@@ -7978,7 +8497,12 @@
         "next_day_open_to_low_ret": -0.04032258064516129,
         "next_day_full_ret": 2.1782977006857602,
         "event_bar_date": "2024-10-31",
-        "next_bar_date": "2024-11-01"
+        "next_bar_date": "2024-11-01",
+        "next_open_900": 2480.0,
+        "next_day_905_ret": 1.8145161290322582,
+        "next_day_910_ret": 2.540322580645161,
+        "next_day_915_ret": 2.0967741935483875,
+        "next_day_morning_ret": 2.8629032258064515
       }
     },
     {
@@ -8028,7 +8552,15 @@
         "next_day_open_to_low_ret": -5.307599517490953,
         "next_day_full_ret": -1.875,
         "event_bar_date": "2025-07-15",
-        "next_bar_date": "2025-07-16"
+        "next_bar_date": "2025-07-16",
+        "next_open_900": 829.0,
+        "next_open_first_time": "09:03",
+        "next_day_905_ret": -1.6887816646562124,
+        "next_day_910_ret": -2.2919179734620023,
+        "next_day_915_ret": -1.6887816646562124,
+        "next_day_930_ret": -0.48250904704463204,
+        "next_day_1000_ret": -0.48250904704463204,
+        "next_day_morning_ret": -2.6537997587454765
       }
     },
     {
@@ -8078,7 +8610,12 @@
         "next_day_open_to_low_ret": -0.6615214994487321,
         "next_day_full_ret": -0.8781558726673985,
         "event_bar_date": "2026-02-12",
-        "next_bar_date": "2026-02-13"
+        "next_bar_date": "2026-02-13",
+        "next_open_900": 907.0,
+        "next_day_905_ret": 0.33076074972436603,
+        "next_day_910_ret": 0.2205071664829107,
+        "next_day_915_ret": 0.0,
+        "next_day_930_ret": 0.2205071664829107
       }
     },
     {
@@ -8125,7 +8662,15 @@
         "next_day_open_to_low_ret": -1.2173913043478262,
         "next_day_full_ret": -3.697478991596639,
         "event_bar_date": "2025-11-10",
-        "next_bar_date": "2025-11-11"
+        "next_bar_date": "2025-11-11",
+        "next_open_900": 575.0,
+        "next_open_first_time": "09:03",
+        "next_day_905_ret": 0.0,
+        "next_day_910_ret": -0.6956521739130435,
+        "next_day_915_ret": -0.8695652173913043,
+        "next_day_930_ret": 0.17391304347826086,
+        "next_day_1000_ret": -0.8695652173913043,
+        "next_day_morning_ret": -0.5217391304347827
       }
     },
     {
@@ -8238,7 +8783,8 @@
         "next_day_open_to_low_ret": -0.25173064820641916,
         "next_day_full_ret": 0.0,
         "event_bar_date": "2023-11-14",
-        "next_bar_date": "2023-11-15"
+        "next_bar_date": "2023-11-15",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=8182&date=2023-11-15: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -8288,7 +8834,8 @@
         "next_day_open_to_low_ret": -4.027777777777778,
         "next_day_full_ret": -10.723514211886306,
         "event_bar_date": "2022-10-12",
-        "next_bar_date": "2022-10-13"
+        "next_bar_date": "2022-10-13",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=8185&date=2022-10-13: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -8371,7 +8918,13 @@
         "next_day_open_to_low_ret": -0.5847953216374269,
         "next_day_full_ret": 0.8645533141210375,
         "event_bar_date": "2025-05-30",
-        "next_bar_date": "2025-06-02"
+        "next_bar_date": "2025-06-02",
+        "next_open_900": 342.0,
+        "next_day_905_ret": 0.29239766081871343,
+        "next_day_910_ret": 0.0,
+        "next_day_915_ret": 0.29239766081871343,
+        "next_day_930_ret": 0.5847953216374269,
+        "next_day_1000_ret": 1.461988304093567
       }
     },
     {
@@ -8421,7 +8974,15 @@
         "next_day_open_to_low_ret": -2.1797752808988764,
         "next_day_full_ret": -9.281314168377824,
         "event_bar_date": "2026-05-13",
-        "next_bar_date": "2026-05-14"
+        "next_bar_date": "2026-05-14",
+        "next_open_900": 4450.0,
+        "next_open_first_time": "09:16",
+        "next_day_905_ret": -0.853932584269663,
+        "next_day_910_ret": -0.853932584269663,
+        "next_day_915_ret": -0.853932584269663,
+        "next_day_930_ret": -0.3820224719101124,
+        "next_day_1000_ret": -0.3820224719101124,
+        "next_day_morning_ret": 1.595505617977528
       }
     },
     {
@@ -8471,7 +9032,8 @@
         "next_day_open_to_low_ret": -5.507246376811594,
         "next_day_full_ret": -3.768115942028986,
         "event_bar_date": "2023-05-12",
-        "next_bar_date": "2023-05-15"
+        "next_bar_date": "2023-05-15",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=8848&date=2023-05-15: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -8521,7 +9083,9 @@
         "next_day_open_to_low_ret": -1.1940298507462688,
         "next_day_full_ret": -1.4705882352941175,
         "event_bar_date": "2025-02-14",
-        "next_bar_date": "2025-02-17"
+        "next_bar_date": "2025-02-17",
+        "next_open_900": 670.0,
+        "next_day_910_ret": -0.2985074626865672
       }
     },
     {
@@ -8571,7 +9135,8 @@
         "next_day_open_to_low_ret": -0.5303030303030304,
         "next_day_full_ret": 3.048780487804878,
         "event_bar_date": "2023-03-23",
-        "next_bar_date": "2023-03-24"
+        "next_bar_date": "2023-03-24",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=9024&date=2023-03-24: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -8618,7 +9183,14 @@
         "next_day_open_to_low_ret": -3.1218274111675126,
         "next_day_full_ret": -2.5393600812595225,
         "event_bar_date": "2024-11-08",
-        "next_bar_date": "2024-11-11"
+        "next_bar_date": "2024-11-11",
+        "next_open_900": 1970.0,
+        "next_day_905_ret": -0.17766497461928935,
+        "next_day_910_ret": -0.6091370558375634,
+        "next_day_915_ret": -1.2690355329949239,
+        "next_day_930_ret": -1.1421319796954315,
+        "next_day_1000_ret": -0.7106598984771574,
+        "next_day_morning_ret": -0.7106598984771574
       }
     },
     {
@@ -8675,7 +9247,8 @@
         "next_day_open_to_low_ret": -1.710526315789474,
         "next_day_full_ret": -0.26246719160104987,
         "event_bar_date": "2022-11-14",
-        "next_bar_date": "2022-11-15"
+        "next_bar_date": "2022-11-15",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=9082&date=2022-11-15: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -8725,7 +9298,15 @@
         "next_day_open_to_low_ret": -0.9280742459396751,
         "next_day_full_ret": -8.695652173913043,
         "event_bar_date": "2025-02-14",
-        "next_bar_date": "2025-02-17"
+        "next_bar_date": "2025-02-17",
+        "next_open_900": 862.0,
+        "next_open_first_time": "09:18",
+        "next_day_905_ret": 0.0,
+        "next_day_910_ret": 0.0,
+        "next_day_915_ret": 0.0,
+        "next_day_930_ret": 0.9280742459396751,
+        "next_day_1000_ret": 0.6960556844547563,
+        "next_day_morning_ret": 1.2761020881670533
       }
     },
     {
@@ -8772,7 +9353,15 @@
         "next_day_open_to_low_ret": -7.1904127829560585,
         "next_day_full_ret": -3.474903474903475,
         "event_bar_date": "2025-05-15",
-        "next_bar_date": "2025-05-16"
+        "next_bar_date": "2025-05-16",
+        "next_open_900": 751.0,
+        "next_open_first_time": "09:03",
+        "next_day_905_ret": -2.796271637816245,
+        "next_day_910_ret": -4.793608521970706,
+        "next_day_915_ret": -3.5952063914780292,
+        "next_day_930_ret": -4.26098535286285,
+        "next_day_1000_ret": -2.6631158455392807,
+        "next_day_morning_ret": -1.7310252996005324
       }
     },
     {
@@ -8829,7 +9418,15 @@
         "next_day_open_to_low_ret": -3.166953528399314,
         "next_day_full_ret": -11.121642969984205,
         "event_bar_date": "2024-10-18",
-        "next_bar_date": "2024-10-21"
+        "next_bar_date": "2024-10-21",
+        "next_open_900": 2905.0,
+        "next_open_first_time": "09:09",
+        "next_day_905_ret": -0.2065404475043029,
+        "next_day_910_ret": -0.17211703958691912,
+        "next_day_915_ret": -0.9638554216867471,
+        "next_day_930_ret": -0.7917383820998278,
+        "next_day_1000_ret": 0.34423407917383825,
+        "next_day_morning_ret": -2.2719449225473323
       }
     },
     {
@@ -8878,7 +9475,8 @@
         "next_day_open_to_low_ret": -0.49079754601227,
         "next_day_full_ret": 12.99165673420739,
         "event_bar_date": "2023-05-11",
-        "next_bar_date": "2023-05-12"
+        "next_bar_date": "2023-05-12",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=9272&date=2023-05-12: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -8927,7 +9525,8 @@
         "next_day_open_to_low_ret": -3.459637561779242,
         "next_day_full_ret": 2.2608695652173916,
         "event_bar_date": "2022-05-13",
-        "next_bar_date": "2022-05-16"
+        "next_bar_date": "2022-05-16",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=9385&date=2022-05-16: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -8977,7 +9576,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": null,
         "event_bar_date": "2023-02-10",
-        "next_bar_date": "2023-02-13"
+        "next_bar_date": "2023-02-13",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=9408&date=2023-02-13: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -9034,7 +9634,8 @@
         "next_day_open_to_low_ret": -0.17391304347826086,
         "next_day_full_ret": 2.256944444444444,
         "event_bar_date": "2023-11-20",
-        "next_bar_date": "2023-11-21"
+        "next_bar_date": "2023-11-21",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=9438&date=2023-11-21: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -9081,7 +9682,8 @@
         "next_day_open_to_low_ret": -0.5738880918220948,
         "next_day_full_ret": 0.5788712011577424,
         "event_bar_date": "2024-03-18",
-        "next_bar_date": "2024-03-19"
+        "next_bar_date": "2024-03-19",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=9444&date=2024-03-19: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -9158,7 +9760,8 @@
         "next_day_open_to_low_ret": -0.16583747927031509,
         "next_day_full_ret": 0.33167495854063017,
         "event_bar_date": "2025-02-14",
-        "next_bar_date": "2025-02-17"
+        "next_bar_date": "2025-02-17",
+        "next_open_900": 603.0
       }
     },
     {
@@ -9235,7 +9838,12 @@
         "next_day_open_to_low_ret": -12.159709618874773,
         "next_day_full_ret": -13.725490196078432,
         "event_bar_date": "2025-10-31",
-        "next_bar_date": "2025-11-04"
+        "next_bar_date": "2025-11-04",
+        "next_open_900": 551.0,
+        "next_day_915_ret": -1.9963702359346642,
+        "next_day_930_ret": -2.35934664246824,
+        "next_day_1000_ret": -4.174228675136116,
+        "next_day_morning_ret": -7.078039927404718
       }
     },
     {
@@ -9282,7 +9890,8 @@
         "next_day_open_to_low_ret": -0.3424657534246575,
         "next_day_full_ret": 4.195804195804196,
         "event_bar_date": "2024-01-30",
-        "next_bar_date": "2024-01-31"
+        "next_bar_date": "2024-01-31",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=9478&date=2024-01-31: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -9332,7 +9941,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": -1.723543605653223,
         "event_bar_date": "2022-11-02",
-        "next_bar_date": "2022-11-04"
+        "next_bar_date": "2022-11-04",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=9537&date=2022-11-04: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -9382,7 +9992,8 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": -0.136986301369863,
         "event_bar_date": "2024-02-08",
-        "next_bar_date": "2024-02-09"
+        "next_bar_date": "2024-02-09",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=9537&date=2024-02-09: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -9432,7 +10043,8 @@
         "next_day_open_to_low_ret": -2.9865125240847785,
         "next_day_full_ret": -2.3032629558541267,
         "event_bar_date": "2023-01-13",
-        "next_bar_date": "2023-01-16"
+        "next_bar_date": "2023-01-16",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=9601&date=2023-01-16: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -9482,7 +10094,8 @@
         "next_day_open_to_low_ret": -3.9438085327783563,
         "next_day_full_ret": -4.84599589322382,
         "event_bar_date": "2023-10-12",
-        "next_bar_date": "2023-10-13"
+        "next_bar_date": "2023-10-13",
+        "minute_error": "HTTP 400 https://api.jquants.com/v2/equities/bars/minute?code=9601&date=2023-10-13: {\"message\": \"Your subscription covers the following dates: 2024-05-21 ~ . If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
       }
     },
     {
@@ -9549,7 +10162,13 @@
         "next_day_open_to_low_ret": -7.586206896551724,
         "next_day_full_ret": -8.666666666666668,
         "event_bar_date": "2025-06-18",
-        "next_bar_date": "2025-06-19"
+        "next_bar_date": "2025-06-19",
+        "next_open_900": 145.0,
+        "next_day_905_ret": -6.206896551724138,
+        "next_day_910_ret": -6.206896551724138,
+        "next_day_915_ret": -6.206896551724138,
+        "next_day_930_ret": -6.206896551724138,
+        "next_day_morning_ret": -4.827586206896552
       }
     },
     {
@@ -9596,7 +10215,13 @@
         "next_day_open_to_low_ret": -0.8415841584158417,
         "next_day_full_ret": 4.3868394815553335,
         "event_bar_date": "2024-06-14",
-        "next_bar_date": "2024-06-17"
+        "next_bar_date": "2024-06-17",
+        "next_open_900": 2020.0,
+        "next_day_910_ret": 0.5445544554455445,
+        "next_day_915_ret": 1.1386138613861385,
+        "next_day_930_ret": 0.891089108910891,
+        "next_day_1000_ret": 0.891089108910891,
+        "next_day_morning_ret": 1.3366336633663367
       }
     },
     {
@@ -9663,7 +10288,9 @@
         "next_day_open_to_low_ret": 0.0,
         "next_day_full_ret": 1.532725766362883,
         "event_bar_date": "2026-03-31",
-        "next_bar_date": "2026-04-01"
+        "next_bar_date": "2026-04-01",
+        "next_open_900": 2420.0,
+        "next_day_morning_ret": 0.7024793388429752
       }
     }
   ]
