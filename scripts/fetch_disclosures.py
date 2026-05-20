@@ -29,7 +29,11 @@ CACHE_DIR = REPO_ROOT / "cache" / "disclosures"
 
 
 def _trading_days(since: date, until: date) -> list[date]:
-    """営業日 (HolDiv=='0' / 半休 '2') のみ返す。"""
+    """営業日 (HolDiv=='1') と半休 ('2') のみ返す。
+
+    J-Quants /markets/calendar の HolDiv:
+      0 = 非営業日 (祝日), 1 = 営業日, 2 = 半休日 (大納会等), 3 = 非営業日 (週末)
+    """
     rows = _jquants.get_list(
         "/markets/calendar",
         holidaydivision="1",
@@ -37,7 +41,7 @@ def _trading_days(since: date, until: date) -> list[date]:
     )
     out: list[date] = []
     for r in rows:
-        if r.get("HolDiv") in ("0", "2"):  # 0=営業, 2=半休
+        if r.get("HolDiv") in ("1", "2"):
             out.append(date.fromisoformat(r["Date"]))
     return sorted(out)
 
@@ -91,13 +95,22 @@ def fetch_fins_summary(*, code: str | None = None, since: date | None = None, un
     return _jquants.get_list("/fins/summary", **params)
 
 
-def fetch_fins_summary_range_by_date(since: date, until: date) -> dict[str, list[dict[str, Any]]]:
+def fetch_fins_summary_range_by_date(
+    since: date,
+    until: date,
+    *,
+    sleep_sec: float = 0.15,
+) -> dict[str, list[dict[str, Any]]]:
     """日次で /fins/summary を回収。営業日のみ。
 
     /fins/summary は `date` 単独パラメータも受ける (公式 v1 互換)。
+    レート制限対策のため標準で 0.15s sleep を挟む。
     """
+    import time as _time
+
     days = _trading_days(since, until)
     out: dict[str, list[dict[str, Any]]] = {}
+    total = 0
     for i, d in enumerate(days, 1):
         try:
             rows = _jquants.get_list("/fins/summary", date=d.isoformat())
@@ -105,8 +118,11 @@ def fetch_fins_summary_range_by_date(since: date, until: date) -> dict[str, list
             print(f"  ! {d}: {e}")
             continue
         out[d.isoformat()] = rows
+        total += len(rows)
+        if sleep_sec:
+            _time.sleep(sleep_sec)
         if i % 50 == 0:
-            print(f"  ... fins/summary {i}/{len(days)} days, last={d}: {len(rows)} rows")
+            print(f"  ... fins/summary {i}/{len(days)} days, last={d}: total {total} rows")
     return out
 
 
