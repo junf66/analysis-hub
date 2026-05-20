@@ -35,10 +35,12 @@ _METRIC_FIELDS = [
 ]
 
 
-def _collect_metrics(records: list[dict[str, Any]]) -> dict[str, list[float]]:
+def _collect_metrics(records: list[dict[str, Any]], *, exclude_locked: bool = False) -> dict[str, list[float]]:
     out: dict[str, list[float]] = {k: [] for k, _ in _METRIC_FIELDS}
     for r in records:
         attrs = r.get("attrs") or {}
+        if exclude_locked and attrs.get("limit_locked"):
+            continue
         for k, _ in _METRIC_FIELDS:
             v = attrs.get(k)
             if v is not None:
@@ -46,9 +48,11 @@ def _collect_metrics(records: list[dict[str, Any]]) -> dict[str, list[float]]:
     return out
 
 
-def _stat_lines(records: list[dict[str, Any]], label: str) -> list[str]:
-    metrics = _collect_metrics(records)
-    lines = [f"### {label}  n_records={len(records)}", "", "```"]
+def _stat_lines(records: list[dict[str, Any]], label: str, *, exclude_locked: bool = True) -> list[str]:
+    metrics = _collect_metrics(records, exclude_locked=exclude_locked)
+    locked = sum(1 for r in records if (r.get("attrs") or {}).get("limit_locked"))
+    suffix = f" (limit-lock 除外 {locked} 件)" if exclude_locked and locked else ""
+    lines = [f"### {label}  n_records={len(records)}{suffix}", "", "```"]
     for key, name in _METRIC_FIELDS:
         s = _stats(name, metrics[key])
         lines.append(s.format())
@@ -81,6 +85,24 @@ def _record_lines(rec: dict[str, Any]) -> list[str]:
     return out
 
 
+def _disc_bucket(rec: dict[str, Any]) -> str:
+    """レコードの最も早い disc_time から開示タイミング bucket を決定。"""
+    times = [f.get("disc_time") for f in rec.get("good_factors", []) + rec.get("bad_factors", []) if f.get("disc_time")]
+    if not times:
+        return "unknown"
+    t = min(times)
+    h = t[:2]
+    if h < "09":
+        return "寄前 (~9:00)"
+    if h < "11":
+        return "寄り中 (9-11)"
+    if h < "15":
+        return "昼 (11-15)"
+    if h == "15" and t < "15:30":
+        return "引け間際 (15:00-15:29)"
+    return "大引け後 (15:30+)"
+
+
 def build_main_report(payload: dict[str, Any]) -> str:
     records = payload.get("records", [])
     by_sub: dict[str, list[dict[str, Any]]] = defaultdict(list)
@@ -105,6 +127,22 @@ def build_main_report(payload: dict[str, Any]) -> str:
         lines.append("")
         lines.extend(_stat_lines(sub_recs, sub))
     lines.append("")
+
+    # 開示タイミング別 (純粋な翌寄りギャップ反応か、当日織り込み済かを切り分け)
+    by_bucket: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for r in records:
+        by_bucket[_disc_bucket(r)].append(r)
+    lines.append("## 開示タイミング別 (DiscTime)")
+    lines.append("")
+    bucket_order = ["大引け後 (15:30+)", "引け間際 (15:00-15:29)", "昼 (11-15)", "寄り中 (9-11)", "寄前 (~9:00)", "unknown"]
+    for bk in bucket_order:
+        recs = by_bucket.get(bk)
+        if not recs:
+            continue
+        lines.append("")
+        lines.extend(_stat_lines(recs, f"DiscTime {bk}"))
+    lines.append("")
+
     lines.append("## 全レコード")
     for r in sorted(records, key=lambda r: (r["code"], r["event_date"])):
         lines.extend(_record_lines(r))

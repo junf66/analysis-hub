@@ -143,6 +143,14 @@ def enrich_record(rec: dict[str, Any], *, window_days: int = 10) -> dict[str, An
         "next_day_full_ret": _pct(next_close, prev_close),
         "event_bar_date": today.get("Date"),
         "next_bar_date": nxt.get("Date"),
+        # 値幅制限ロック検出: 翌寄り = 翌高 = 翌安 = 翌引で実質約定不能、
+        # かつ |gap| が極端 (±15% 以上) → S 高/S 安ロック扱い
+        "limit_locked": (
+            next_open is not None and next_high is not None and next_low is not None
+            and next_close is not None
+            and next_high == next_low == next_open == next_close
+            and abs(((next_open - prev_close) / prev_close * 100) if prev_close else 0) >= 15.0
+        ),
     })
     next_date = nxt.get("Date")
     if next_date:
