@@ -143,6 +143,42 @@ def build_main_report(payload: dict[str, Any]) -> str:
         lines.extend(_stat_lines(recs, f"DiscTime {bk}"))
     lines.append("")
 
+    # サブパターン × DiscTime のクロス集計 (主要エッジの絞り込み)
+    lines.append("## サブパターン × DiscTime クロス集計")
+    lines.append("")
+    lines.append("limit-lock 除外。n>=5 のセルのみ。\n")
+    lines.append("| subpattern | DiscTime | n | 翌寄り→9:15 EV (n,t) | 翌寄り→翌引 EV (n,t) | 翌寄り→翌高 EV (n,t) |")
+    lines.append("|---|---|---|---|---|---|")
+
+    def _cell_stat(recs: list[dict[str, Any]], field: str) -> str:
+        vals = [(r.get("attrs") or {}).get(field) for r in recs]
+        vals = [float(v) for v in vals if v is not None]
+        if len(vals) < 2:
+            return f"n={len(vals)}"
+        import statistics as _stx
+        import math as _mt
+        m = _stx.fmean(vals)
+        s = _stx.stdev(vals)
+        se = s / _mt.sqrt(len(vals)) if s else 0
+        t = m / se if se else 0
+        return f"n={len(vals)} {m:+.2f}% t={t:+.1f}"
+
+    cross: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
+    for r in records:
+        if (r.get("attrs") or {}).get("limit_locked"):
+            continue
+        cross[(r.get("subpattern", "other"), _disc_bucket(r))].append(r)
+    for (sub, bk), recs in sorted(cross.items()):
+        if len(recs) < 5:
+            continue
+        lines.append(
+            f"| {sub} | {bk} | {len(recs)} | "
+            f"{_cell_stat(recs, 'next_day_915_ret')} | "
+            f"{_cell_stat(recs, 'next_day_open_to_close_ret')} | "
+            f"{_cell_stat(recs, 'next_day_open_to_high_ret')} |"
+        )
+    lines.append("")
+
     lines.append("## 全レコード")
     for r in sorted(records, key=lambda r: (r["code"], r["event_date"])):
         lines.extend(_record_lines(r))
