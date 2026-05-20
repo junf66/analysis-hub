@@ -2,8 +2,10 @@
   "schema_version": 1,
   "event_type": "kouaku_mixed",
   "subpattern_counts": {
-    "other": 164,
-    "zouhai_genshu": 22
+    "kouhou_genshu": 112,
+    "kouhou_kahou": 42,
+    "zouhai_genshu": 22,
+    "other": 10
   },
   "records": [
     {
@@ -13,7 +15,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1380_2023-02-10",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -64,7 +66,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "143A0_2025-11-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -129,7 +131,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1738_2025-02-07",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -168,7 +170,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1757_2025-08-07",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -231,7 +233,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1768_2024-05-08",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -282,7 +284,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1798_2023-01-30",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -333,7 +335,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1815_2025-02-13",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -387,7 +389,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1821_2022-11-09",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -486,7 +488,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1833_2022-11-11",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -592,7 +594,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1869_2023-01-27",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -631,7 +633,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1909_2022-11-07",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -679,7 +681,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1946_2024-10-29",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -737,7 +739,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1960_2023-02-06",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -788,7 +790,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1960_2025-01-15",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -853,7 +855,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1960_2025-10-02",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -901,7 +903,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1967_2025-02-03",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -954,7 +956,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "1979_2025-02-10",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -1062,7 +1064,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2139_2022-10-31",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -1112,7 +1114,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2146_2024-11-13",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -1235,7 +1237,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2162_2026-04-28",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -1284,7 +1286,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2162_2026-05-11",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -1345,7 +1347,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2293_2024-02-09",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -1396,7 +1398,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2331_2025-05-13",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -1461,7 +1463,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2345_2025-07-15",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -1513,7 +1515,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2427_2022-11-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_IFRS",
@@ -1563,7 +1565,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2461_2025-08-08",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -1619,7 +1621,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2484_2025-07-15",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -1677,7 +1679,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2653_2023-04-12",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "FYFinancialStatements_NonConsolidated_JP",
@@ -1781,7 +1783,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2698_2024-10-08",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -1836,7 +1838,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2751_2024-03-13",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -1884,7 +1886,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2874_2025-01-06",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -1937,7 +1939,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2874_2025-12-19",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -1987,7 +1989,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2907_2023-02-01",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -2038,7 +2040,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2910_2023-09-12",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -2086,7 +2088,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2928_2025-05-15",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_IFRS",
@@ -2124,7 +2126,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2929_2024-03-11",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -2175,7 +2177,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2930_2022-10-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -2226,7 +2228,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "2976_2024-05-13",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -2265,7 +2267,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "3079_2025-05-15",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "FYFinancialStatements_NonConsolidated_JP",
@@ -2374,7 +2376,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "3182_2025-03-31",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -2449,7 +2451,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "3186_2025-07-07",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -2562,7 +2564,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "3370_2022-05-16",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "FYFinancialStatements_NonConsolidated_JP",
@@ -2613,7 +2615,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "3391_2025-04-04",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -2667,7 +2669,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "3392_2022-05-12",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -2718,7 +2720,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "3397_2026-05-15",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_IFRS",
@@ -2774,7 +2776,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "3419_2025-12-12",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -2813,7 +2815,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "3521_2023-11-09",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -2919,7 +2921,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "3680_2022-11-11",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -2969,7 +2971,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "3808_2023-05-15",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -3060,7 +3062,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "3853_2023-05-15",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -3165,7 +3167,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "3877_2025-04-25",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -3379,7 +3381,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4014_2024-06-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_NonConsolidated_JP",
@@ -3504,7 +3506,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4056_2023-08-10",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -3562,7 +3564,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4200_2023-05-15",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -3613,7 +3615,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4242_2022-08-12",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -3663,7 +3665,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4298_2024-12-20",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -3722,7 +3724,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4381_2025-11-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -3780,7 +3782,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4382_2022-12-09",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -3830,7 +3832,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4552_2026-05-13",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -3895,7 +3897,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4587_2024-05-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -3944,7 +3946,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4619_2022-08-10",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -4045,7 +4047,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4635_2023-02-08",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -4195,7 +4197,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4689_2023-02-02",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_IFRS",
@@ -4243,7 +4245,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4751_2025-05-15",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -4458,7 +4460,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4829_2022-07-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -4509,7 +4511,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4829_2025-07-11",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -4564,7 +4566,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4849_2022-11-10",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -4615,7 +4617,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4849_2025-02-13",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -4673,7 +4675,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "4957_2025-11-21",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_NonConsolidated_JP",
@@ -4792,7 +4794,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "5019_2025-02-12",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -4849,7 +4851,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "5019_2025-11-11",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -4906,7 +4908,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "5103_2024-02-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -4954,7 +4956,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "5355_2025-08-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -5003,7 +5005,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "5440_2022-10-31",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -5054,7 +5056,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "5461_2023-11-01",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -5105,7 +5107,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "5491_2025-10-31",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -5163,7 +5165,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "5532_2025-03-25",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_NonConsolidated_JP",
@@ -5267,7 +5269,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "5702_2023-11-10",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -5318,7 +5320,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "5949_2023-02-13",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -5417,7 +5419,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6029_2026-05-15",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -5467,7 +5469,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6031_2025-02-25",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -5521,7 +5523,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6059_2023-11-10",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -5572,7 +5574,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6134_2024-08-02",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -5629,7 +5631,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6173_2025-01-10",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -5688,7 +5690,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6205_2022-10-24",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -5739,7 +5741,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6210_2023-04-27",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -5790,7 +5792,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6217_2022-07-13",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -5841,7 +5843,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6217_2023-04-13",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -5891,7 +5893,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6254_2025-06-24",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -6000,7 +6002,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6319_2025-02-13",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -6060,7 +6062,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6337_2023-10-31",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -6165,7 +6167,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6548_2025-10-31",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -6239,7 +6241,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6562_2023-11-09",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_IFRS",
@@ -6287,7 +6289,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6562_2025-11-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_IFRS",
@@ -6352,7 +6354,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6563_2023-11-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -6481,7 +6483,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6664_2022-12-27",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -6587,7 +6589,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6704_2024-02-09",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -6636,7 +6638,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6772_2023-11-10",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -6687,7 +6689,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6882_2025-01-31",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -6745,7 +6747,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6901_2023-02-03",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -6796,7 +6798,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6995_2026-05-15",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -6870,7 +6872,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "6998_2024-02-09",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -6921,7 +6923,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7044_2023-02-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -6972,7 +6974,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7077_2025-01-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -7025,7 +7027,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7105_2023-05-10",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -7093,7 +7095,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7116_2025-09-04",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -7220,7 +7222,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7173_2026-03-05",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -7315,7 +7317,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7240_2023-08-02",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -7420,7 +7422,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7256_2023-06-27",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -7488,7 +7490,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7256_2025-11-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -7541,7 +7543,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7320_2025-09-30",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -7603,7 +7605,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7326_2026-01-29",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -7656,7 +7658,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7351_2023-04-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -7762,7 +7764,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7506_2024-03-27",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_NonConsolidated_JP",
@@ -7830,7 +7832,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7524_2024-08-20",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_NonConsolidated_JP",
@@ -7878,7 +7880,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7525_2024-02-27",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -7929,7 +7931,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7525_2025-02-13",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -7980,7 +7982,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7531_2023-02-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -8031,7 +8033,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7554_2023-11-10",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -8082,7 +8084,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7602_2023-08-09",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -8130,7 +8132,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7604_2024-11-08",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -8179,7 +8181,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7806_2025-03-07",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -8234,7 +8236,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7811_2024-04-08",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -8282,7 +8284,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7831_2024-09-06",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -8331,7 +8333,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7874_2024-02-09",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -8440,7 +8442,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7976_2024-10-31",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -8512,7 +8514,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "7997_2025-07-15",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -8570,7 +8572,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "8007_2026-02-12",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -8625,7 +8627,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "8104_2025-11-10",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -8680,7 +8682,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "8145_2024-04-15",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "2QFinancialStatements_NonConsolidated_JP",
@@ -8736,7 +8738,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "8182_2023-11-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -8794,7 +8796,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "8185_2022-10-12",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -8881,7 +8883,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "8783_2025-05-30",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -8934,7 +8936,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "8830_2026-05-13",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -8992,7 +8994,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "8848_2023-05-12",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -9043,7 +9045,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "8938_2025-02-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -9146,7 +9148,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9072_2024-11-08",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -9200,7 +9202,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9082_2022-11-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -9258,7 +9260,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9213_2025-02-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -9316,7 +9318,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9218_2025-05-15",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "1QFinancialStatements_Consolidated_JP",
@@ -9371,7 +9373,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9252_2024-10-18",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_IFRS",
@@ -9436,7 +9438,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9272_2023-05-11",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "FYFinancialStatements_NonConsolidated_JP",
@@ -9486,7 +9488,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9385_2022-05-13",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -9536,7 +9538,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9408_2023-02-10",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -9587,7 +9589,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9438_2023-11-20",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -9693,7 +9695,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9444_2025-02-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -9771,7 +9773,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9444_2025-10-31",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -9901,7 +9903,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9537_2022-11-02",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "2QFinancialStatements_Consolidated_JP",
@@ -9952,7 +9954,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9537_2024-02-08",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -10003,7 +10005,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9601_2023-01-13",
-      "subpattern": "other",
+      "subpattern": "kouhou_kahou",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -10054,7 +10056,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9601_2023-10-12",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "EarnForecastRevision",
@@ -10105,7 +10107,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9610_2025-06-18",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",
@@ -10178,7 +10180,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9612_2024-06-14",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "FYFinancialStatements_Consolidated_JP",
@@ -10231,7 +10233,7 @@
       "event_type": "kouaku_mixed",
       "source": "tdnet+fins",
       "ref_id": "9908_2026-03-31",
-      "subpattern": "other",
+      "subpattern": "kouhou_genshu",
       "good_factors": [
         {
           "title": "3QFinancialStatements_Consolidated_JP",

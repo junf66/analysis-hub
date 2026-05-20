@@ -229,6 +229,9 @@ _SUBPATTERN_RULES = [
     ("fukuhai_genshu", {"fukuhai"}, {"genshu", "kessan", "kahou"}),
     ("zouhai_genshu", {"zouhai"}, {"genshu", "kessan", "kahou"}),
     ("tokubai_kahou", {"tokubai"}, {"kahou", "genshu", "kessan"}),
+    # /fins/summary 由来の主要発見 (Phase 1.5 で追加):
+    ("kouhou_genshu", {"kouhou"}, {"genshu", "kessan"}),
+    ("kouhou_kahou", {"kouhou"}, {"kahou"}),
 ]
 
 
