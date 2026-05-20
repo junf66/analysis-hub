@@ -1,0 +1,36 @@
+polarity,subpattern_hint,pattern,note
+good,jisha,自己株式.*取得,自社株買い (取得決定/総会決議)
+good,jisha,自社株.*取得,自社株買い (略記)
+good,jisha,自社株買い,自社株買い (口語表記)
+good,jisha,自己株式.*消却,自社株消却 (発行体価値増)
+good,zouhai,配当予想.*上方修正,配当上方修正
+good,zouhai,増配,増配
+good,fukuhai,復配,復配
+good,tokubai,特別配当,特別配当
+good,tokubai,記念配当,記念配当
+good,kouhou,業績予想.*上方修正,業績上方修正
+good,kouhou,業績.*上方修正,業績上方修正 (短縮表記)
+good,kouhou,通期業績予想.*上方修正,通期業績上方修正
+good,kouhou,株式分割,株式分割
+good,touki,東証プライム.*指定,東証プライム市場昇格
+good,kouhou,公開買付.*賛同,TOB 賛同
+good,kouhou,業務.*資本提携,資本業務提携 (好材料寄り)
+good,kouhou,新製品,新製品リリース
+bad,kahou,業績予想.*下方修正,業績下方修正
+bad,kahou,業績.*下方修正,業績下方修正 (短縮表記)
+bad,kahou,通期業績予想.*下方修正,通期業績下方修正
+bad,kahou,配当予想.*下方修正,配当下方修正
+bad,muhai,無配,無配転落
+bad,muhai,配当.*見送り,配当見送り
+bad,muhai,減配,減配
+bad,genshu,決算短信,決算短信 (中身で減益判定)
+bad,genshu,通期業績,通期業績 (中身で減益判定)
+bad,seikyu,特別損失,特別損失計上
+bad,seikyu,減損,減損損失
+bad,seikyu,不適切.*会計,不適切会計
+bad,seikyu,有価証券報告書.*訂正,有報訂正
+bad,seikyu,公募増資,公募増資 (希薄化)
+bad,seikyu,第三者割当,第三者割当増資
+bad,seikyu,行政処分,行政処分
+bad,seikyu,業務改善命令,業務改善命令
+bad,seikyu,訴訟,訴訟提起

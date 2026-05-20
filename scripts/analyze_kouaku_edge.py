@@ -1,0 +1,148 @@
+"""kouaku_records.json (price 付与済) からエッジ統計とレポートを生成。
+
+出力:
+  reports/kouaku_analysis.md
+  reports/kouaku_by_subpattern/{subpattern}.md
+"""
+from __future__ import annotations
+
+import argparse
+import json
+from collections import defaultdict
+from pathlib import Path
+from typing import Any
+
+from analyzers.po_edges import EdgeStat, _stats  # noqa: E402  (内部関数を流用)
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_PATH = REPO_ROOT / "data" / "kouaku_records.json"
+REPORT_DIR = REPO_ROOT / "reports"
+SUB_REPORT_DIR = REPORT_DIR / "kouaku_by_subpattern"
+
+
+_METRIC_FIELDS = [
+    ("gap_pct", "GAP (寄付前→翌寄り)"),
+    ("next_day_open_to_close_ret", "翌寄り→翌引け"),
+    ("next_day_open_to_high_ret", "翌寄り→翌高値"),
+    ("next_day_open_to_low_ret", "翌寄り→翌安値"),
+    ("next_day_full_ret", "前日終→翌引け"),
+]
+
+
+def _collect_metrics(records: list[dict[str, Any]]) -> dict[str, list[float]]:
+    out: dict[str, list[float]] = {k: [] for k, _ in _METRIC_FIELDS}
+    for r in records:
+        attrs = r.get("attrs") or {}
+        for k, _ in _METRIC_FIELDS:
+            v = attrs.get(k)
+            if v is not None:
+                out[k].append(float(v))
+    return out
+
+
+def _stat_lines(records: list[dict[str, Any]], label: str) -> list[str]:
+    metrics = _collect_metrics(records)
+    lines = [f"### {label}  n_records={len(records)}", "", "```"]
+    for key, name in _METRIC_FIELDS:
+        s = _stats(name, metrics[key])
+        lines.append(s.format())
+    lines.append("```")
+    return lines
+
+
+def _record_lines(rec: dict[str, Any]) -> list[str]:
+    attrs = rec.get("attrs") or {}
+    gap = attrs.get("gap_pct")
+    full = attrs.get("next_day_full_ret")
+    open_close = attrs.get("next_day_open_to_close_ret")
+    out = [
+        f"- **{rec['code']} {rec['event_date']}**  "
+        f"GAP={gap:+.2f}% " if gap is not None else f"- **{rec['code']} {rec['event_date']}**  "
+    ]
+    if gap is not None:
+        head = f"- **{rec['code']} {rec['event_date']}** GAP={gap:+.2f}%"
+    else:
+        head = f"- **{rec['code']} {rec['event_date']}**"
+    if open_close is not None:
+        head += f"  寄→引={open_close:+.2f}%"
+    if full is not None:
+        head += f"  前日終→翌引={full:+.2f}%"
+    out = [head]
+    for g in rec.get("good_factors", []):
+        out.append(f"  - 好: [{g.get('subpattern_hint')}] {g.get('title')} ({g.get('reason')})")
+    for b in rec.get("bad_factors", []):
+        out.append(f"  - 悪: [{b.get('subpattern_hint')}] {b.get('title')} ({b.get('reason')})")
+    return out
+
+
+def build_main_report(payload: dict[str, Any]) -> str:
+    records = payload.get("records", [])
+    by_sub: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for r in records:
+        by_sub[r.get("subpattern", "other")].append(r)
+
+    lines: list[str] = []
+    lines.append("# 好悪エッジ検証 (kouaku_mixed)")
+    lines.append("")
+    lines.append(
+        f"対象期間の同日両材料 (好+悪) レコード: **{len(records)} 件**  "
+        f"サブパターン分布: {dict(sorted({k: len(v) for k, v in by_sub.items()}.items()))}"
+    )
+    lines.append("")
+    lines.append("## 全体統計")
+    lines.append("")
+    lines.extend(_stat_lines(records, "全件"))
+    lines.append("")
+    lines.append("## サブパターン別 (詳細は reports/kouaku_by_subpattern/*.md)")
+    for sub in sorted(by_sub):
+        sub_recs = by_sub[sub]
+        lines.append("")
+        lines.extend(_stat_lines(sub_recs, sub))
+    lines.append("")
+    lines.append("## 全レコード")
+    for r in sorted(records, key=lambda r: (r["code"], r["event_date"])):
+        lines.extend(_record_lines(r))
+    lines.append("")
+    return "\n".join(lines)
+
+
+def build_sub_report(subpattern: str, records: list[dict[str, Any]]) -> str:
+    lines: list[str] = []
+    lines.append(f"# {subpattern}")
+    lines.append("")
+    lines.append(f"n_records = **{len(records)}**")
+    lines.append("")
+    lines.extend(_stat_lines(records, subpattern))
+    lines.append("")
+    lines.append("## レコード一覧")
+    for r in sorted(records, key=lambda r: r["event_date"], reverse=True):
+        lines.extend(_record_lines(r))
+    return "\n".join(lines)
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--path", type=Path, default=DEFAULT_PATH)
+    args = ap.parse_args()
+
+    payload = json.loads(args.path.read_text())
+    records = payload.get("records", [])
+    by_sub: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for r in records:
+        by_sub[r.get("subpattern", "other")].append(r)
+
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    SUB_REPORT_DIR.mkdir(parents=True, exist_ok=True)
+
+    main_md = REPORT_DIR / "kouaku_analysis.md"
+    main_md.write_text(build_main_report(payload))
+    print(f"wrote {main_md}")
+
+    for sub, recs in by_sub.items():
+        path = SUB_REPORT_DIR / f"{sub}.md"
+        path.write_text(build_sub_report(sub, recs))
+        print(f"wrote {path}")
+
+
+if __name__ == "__main__":
+    main()
