@@ -538,6 +538,51 @@ def section_cli_help() -> None:
                 add("X-cli-no-help", f"{p.relative_to(REPO_ROOT)}:{node.lineno}  {flag}")
 
 
+def section_test_assertions() -> None:
+    """tests/ の test_* メソッドが直接 or 経由する helper method 経由で必ず assertX を呼ぶか。"""
+    print("\n=== B. Test has assertion ===")
+
+    def _func_calls_assert(func: ast.FunctionDef, helpers: dict[str, ast.FunctionDef]) -> bool:
+        """この関数本体か、self._helper() 経由で assertX が呼ばれるか。"""
+        for inner in ast.walk(func):
+            if isinstance(inner, ast.Call):
+                f = inner.func
+                if isinstance(f, ast.Attribute) and f.attr.startswith("assert"):
+                    return True
+                # self._helper(...) を呼ぶ場合、helper を再帰チェック
+                if isinstance(f, ast.Attribute) and isinstance(f.value, ast.Name) and f.value.id == "self":
+                    helper = helpers.get(f.attr)
+                    if helper and _func_calls_assert(helper, helpers):
+                        return True
+            if isinstance(inner, ast.With):
+                for item in inner.items:
+                    if isinstance(item.context_expr, ast.Call):
+                        ff = item.context_expr.func
+                        if isinstance(ff, ast.Attribute) and ff.attr.startswith("assert"):
+                            return True
+            if isinstance(inner, ast.Raise):
+                return True  # assertRaises 等の代わりに raise
+        return False
+
+    for p in (REPO_ROOT / "tests").glob("*.py"):
+        if p.stem == "__init__":
+            continue
+        try:
+            tree = ast.parse(p.read_text())
+        except SyntaxError:
+            continue
+        for cls in ast.walk(tree):
+            if not isinstance(cls, ast.ClassDef):
+                continue
+            # クラス内の全 helper を収集 (_method)
+            helpers = {f.name: f for f in cls.body if isinstance(f, ast.FunctionDef)}
+            for func in cls.body:
+                if not (isinstance(func, ast.FunctionDef) and func.name.startswith("test_")):
+                    continue
+                if not _func_calls_assert(func, helpers):
+                    add("B-test-no-assert", f"{p.relative_to(REPO_ROOT)}::{cls.name}::{func.name}")
+
+
 def section_anti_patterns() -> None:
     """Python ベストプラクティス違反 (wildcard import / mutable default / bare except / broad except)。"""
     print("\n=== S. Anti-patterns ===")
@@ -691,6 +736,7 @@ def main() -> None:
     section_open_encoding()
     section_trailing_newline()
     section_test_main_guard()
+    section_test_assertions()
     section_anti_patterns()
     section_xref()
     section_invariants()

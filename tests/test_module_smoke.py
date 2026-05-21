@@ -16,9 +16,11 @@ class TestImportable(unittest.TestCase):
     """import が syntax error / missing dep で死なないこと。"""
 
     def _check(self, mod: str) -> None:
-        # 副作用ありの main() は触らず、module import だけ
+        # 副作用ありの main() は触らず、module import + 属性存在を assert
         import importlib
-        importlib.import_module(mod)
+        m = importlib.import_module(mod)
+        self.assertTrue(hasattr(m, "main") or mod.endswith("_buckets"),
+                        f"{mod}: main() がない (CLI module の規約違反)")
 
     def test_fetch_disclosures(self) -> None:
         self._check("scripts.fetch_disclosures")
