@@ -10,19 +10,28 @@ export JQUANTS_API_KEY=...   # J-Quants v2 dashboard で発行
 
 ネットワーク allowlist:
 - `api.jquants.com` — 必須 (daily/minute/fins/master)
-- `api.jquants-pro.com` — Pro 契約者のみ (自社株買い TDnet)
+- `webapi.yanoshin.jp` — 推奨 (TDnet 全タイトル: 自社株買い/TOB/優待/分割 等)
+- `api.jquants-pro.com` — Pro 契約者のみ (自社株買い TDnet, 任意フォールバック)
 
-## 2. 初回フル fetch (~25 分)
+## 2. 初回フル fetch (~30 分)
 
 ```bash
-python -m scripts.fetch_disclosures             # /fins/summary 5年分 (95k 行)
+python -m scripts.fetch_disclosures             # /fins/summary 5年分 + yanoshin TDnet 5年分
 python -m scripts.update_all                    # extract→enrich→analyze→backtest
 ```
 
 完走時間:
-- fetch: 約 20 分 (1221 営業日 × ~1秒)
-- enrich: 約 5 分 (186 records × ~1.5秒/件、分足込み)
+- fetch (/fins/summary): 約 20 分 (1221 営業日 × ~1秒)
+- fetch (TDnet, yanoshin): 約 10 分 (1221 営業日 × 0.5 秒)
+- enrich: 約 5 分 (記録件数 × ~1.5秒/件、分足込み)
 - analyze + backtest: 数秒
+
+ソースを別々に取りたい場合:
+
+```bash
+python -m scripts.fetch_disclosures --skip-tdnet                # /fins/summary だけ
+python -m scripts.fetch_disclosures --skip-fins --skip-buyback  # TDnet (yanoshin) だけ
+```
 
 ## 3. 日次更新 (~2 分)
 
@@ -90,7 +99,11 @@ python -m unittest tests.test_kouaku_known_cases tests.test_pipeline_integration
 ```
                     ┌─────────────────────────────────┐
 JQUANTS_API_KEY ──→ │  scripts/fetch_disclosures.py   │
-                    │  → cache/disclosures/*.json     │
+yanoshin (公開)   ─→ │  → cache/disclosures/{         │
+                    │    fins_summary.json,           │
+                    │    tdnet_all.json (yanoshin),   │
+                    │    share_buyback_tdnet.json     │
+                    │  }                              │
                     └────────────────┬────────────────┘
                                      ↓
                     ┌─────────────────────────────────┐

@@ -4,6 +4,7 @@
 """
 from __future__ import annotations
 
+import io
 import json
 import tempfile
 import unittest
@@ -132,16 +133,25 @@ class TestDataHealthChecks(unittest.TestCase):
         }))
         (td / "cache" / "buyback.json").write_text(json.dumps({"by_date": {}}))
         (td / "cache" / "bars.json").write_text(json.dumps({"7203": [{"Date": "2025-01-22"}]}))
+        (td / "cache" / "tdnet.json").write_text(json.dumps({
+            "source": "yanoshin:tdnet",
+            "by_date": {"2025-01-22": [{"code": "7203", "title": "自己株式の取得"}]},
+            "record_count": 1,
+        }))
 
         # path swap
-        self._orig = (m.RECORDS_PATH, m.FINS_PATH, m.BUYBACK_PATH, m.BARS_PATH)
+        self._orig = (m.RECORDS_PATH, m.FINS_PATH, m.BUYBACK_PATH, m.BARS_PATH, m.TDNET_PATH)
         m.RECORDS_PATH = td / "data" / "records.json"
         m.FINS_PATH = td / "cache" / "fins.json"
         m.BUYBACK_PATH = td / "cache" / "buyback.json"
         m.BARS_PATH = td / "cache" / "bars.json"
+        m.TDNET_PATH = td / "cache" / "tdnet.json"
 
     def tearDown(self) -> None:
-        self.m.RECORDS_PATH, self.m.FINS_PATH, self.m.BUYBACK_PATH, self.m.BARS_PATH = self._orig
+        (
+            self.m.RECORDS_PATH, self.m.FINS_PATH, self.m.BUYBACK_PATH,
+            self.m.BARS_PATH, self.m.TDNET_PATH,
+        ) = self._orig
         self._td.cleanup()
 
     def test_check_records(self) -> None:
@@ -164,6 +174,18 @@ class TestDataHealthChecks(unittest.TestCase):
         lines: list[str] = []
         result = self.m.check_bars(lines)
         self.assertEqual(result.get("codes"), 1)
+
+    def test_check_tdnet(self) -> None:
+        lines: list[str] = []
+        result = self.m.check_tdnet(lines)
+        self.assertEqual(result.get("rows"), 1)
+        self.assertTrue(any("tdnet_all" in ln for ln in lines))
+
+    def test_check_tdnet_missing(self) -> None:
+        self.m.TDNET_PATH = Path(self._td.name) / "cache" / "does-not-exist.json"
+        lines: list[str] = []
+        self.m.check_tdnet(lines)
+        self.assertTrue(any("なし" in ln or "missing" in ln for ln in lines))
 
 
 # ---- enrich_price_kouaku ----------------------------------------------------
@@ -234,7 +256,7 @@ class TestFetchSavers(unittest.TestCase):
 
 
 class TestFetchFallbacks(unittest.TestCase):
-    """EDINET / TDnet 公式 fetcher (Phase 2 スタブ) は NotImplementedError を投げる仕様。"""
+    """EDINET fetcher は NotImplementedError スタブ (現環境では allowlist 未許可)。"""
 
     def test_edinet_raises(self) -> None:
         from scripts.fetch_disclosures import fetch_edinet_day
@@ -242,11 +264,96 @@ class TestFetchFallbacks(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             fetch_edinet_day(date(2025, 1, 22))
 
-    def test_tdnet_public_raises(self) -> None:
-        from scripts.fetch_disclosures import fetch_tdnet_public_day
+
+class TestTdnetYanoshin(unittest.TestCase):
+    """yanoshin TDnet 取り口 (mock 経由でレスポンス正規化を検証)。"""
+
+    def _build_response(self, *items: dict) -> bytes:
+        return json.dumps({"total_count": len(items), "items": items}).encode()
+
+    def test_tdnet_public_day_normalizes(self) -> None:
         from datetime import date
-        with self.assertRaises(NotImplementedError):
-            fetch_tdnet_public_day(date(2025, 1, 22))
+        from scripts import fetch_disclosures as fd
+        body = self._build_response(
+            {"Tdnet": {
+                "id": "1234567", "pubdate": "2025-01-22 15:30:00",
+                "company_code": "72030", "company_name": "トヨタ自動車",
+                "title": "自己株式の取得に関するお知らせ",
+                "document_url": "https://example.com/x.pdf",
+                "markets_string": "東", "url_xbrl": None,
+            }},
+            {"Tdnet": {
+                "id": "1234568", "pubdate": "2025-01-22 16:00:00",
+                "company_code": "4246", "company_name": "ダイキョーニシカワ",
+                "title": "業績予想の修正に関するお知らせ",
+                "document_url": "https://example.com/y.pdf",
+                "markets_string": "東",
+            }},
+        )
+
+        class _Resp:
+            def __enter__(self_inner): return self_inner
+            def __exit__(self_inner, *a): return False
+            def read(self_inner): return body
+
+        with patch("urllib.request.urlopen", return_value=_Resp()):
+            rows = fd.fetch_tdnet_public_day(date(2025, 1, 22))
+        self.assertEqual(len(rows), 2)
+        # 5桁→4桁 正規化
+        self.assertEqual(rows[0]["code"], "7203")
+        # 既に 4 桁ならそのまま
+        self.assertEqual(rows[1]["code"], "4246")
+        self.assertEqual(rows[0]["title"], "自己株式の取得に関するお知らせ")
+        self.assertEqual(rows[0]["pubdate"], "2025-01-22 15:30:00")
+        self.assertEqual(rows[0]["company_name"], "トヨタ自動車")
+
+    def test_tdnet_public_day_http_error_raises(self) -> None:
+        from datetime import date
+        from scripts import fetch_disclosures as fd
+        import urllib.error
+        with patch(
+            "urllib.request.urlopen",
+            side_effect=urllib.error.HTTPError("u", 404, "Not Found", {}, io.BytesIO(b"missing")),
+        ):
+            with self.assertRaises(fd.TdnetFetchError):
+                fd.fetch_tdnet_public_day(date(2025, 1, 22), retries=1)
+
+    def test_save_tdnet_all(self) -> None:
+        from scripts.fetch_disclosures import save_tdnet_all
+        with tempfile.TemporaryDirectory() as td:
+            p = save_tdnet_all(
+                {"2025-01-22": [{"code": "7203", "title": "自己株式の取得"}]},
+                cache_dir=Path(td),
+            )
+            data = json.loads(p.read_text())
+            self.assertEqual(data["source"], "yanoshin:tdnet")
+            self.assertEqual(data["record_count"], 1)
+
+    def test_fetch_tdnet_range_iterates_trading_days(self) -> None:
+        from datetime import date
+        from scripts import fetch_disclosures as fd
+        # _trading_days と fetch_tdnet_public_day を mock して呼び出し回数だけ確認
+        with patch.object(fd, "_trading_days", return_value=[date(2025, 1, 22), date(2025, 1, 23)]):
+            with patch.object(
+                fd, "fetch_tdnet_public_day",
+                side_effect=[[{"code": "7203", "title": "x"}], [{"code": "4246", "title": "y"}]],
+            ) as fmock:
+                out = fd.fetch_tdnet_range(date(2025, 1, 22), date(2025, 1, 23), sleep_sec=0)
+        self.assertEqual(fmock.call_count, 2)
+        self.assertEqual(out["2025-01-22"][0]["code"], "7203")
+        self.assertEqual(out["2025-01-23"][0]["code"], "4246")
+
+    def test_fetch_tdnet_range_skips_failed_day(self) -> None:
+        from datetime import date
+        from scripts import fetch_disclosures as fd
+        with patch.object(fd, "_trading_days", return_value=[date(2025, 1, 22), date(2025, 1, 23)]):
+            with patch.object(
+                fd, "fetch_tdnet_public_day",
+                side_effect=[fd.TdnetFetchError("boom"), [{"code": "9999", "title": "z"}]],
+            ):
+                out = fd.fetch_tdnet_range(date(2025, 1, 22), date(2025, 1, 23), sleep_sec=0)
+        self.assertNotIn("2025-01-22", out)
+        self.assertIn("2025-01-23", out)
 
 
 class TestFetchNetworkBoundEntrypoints(unittest.TestCase):

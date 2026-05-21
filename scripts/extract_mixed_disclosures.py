@@ -39,7 +39,9 @@ from scripts.classify_kouaku import (
     ClassifiedDisclosure,
     _code4,
     classify_buyback_record,
+    classify_by_title,
     classify_fins_record,
+    load_rules,
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -253,16 +255,67 @@ def _classify_revision_vs_prior(
 
 # ---- 抽出本体 -------------------------------------------------------------
 
+# タイトルだけでは判定できず、数値 (NP YoY / NxFNp vs NP) で初めて方向が決まる hint。
+# CSV の「決算短信→genshu」「通期業績→genshu」等を TDnet 経路で拾うと、
+# 増益決算短信も bad/genshu に誤分類されてしまうため除外する。
+# 当該 hint は /fins/summary 経路 (extract の _classify_financial_statements) で判定。
+_TDNET_NUMERIC_ONLY_HINTS = {"genshu", "kahou_nx", "kouhou_nx", "kessan"}
+
+
+def _classify_tdnet_rows(rows: list[dict[str, Any]]) -> list[ClassifiedDisclosure]:
+    """yanoshin TDnet 行をタイトル正規表現 (data/kouaku_classification.csv) で分類。
+
+    polarity=neutral / 数値判定専用 hint は除外。
+    pubdate "YYYY-MM-DD HH:MM:SS" を event_date / disc_time に分解。
+    """
+    rules = load_rules()
+    out: list[ClassifiedDisclosure] = []
+    for r in rows:
+        title = r.get("title") or ""
+        if not title:
+            continue
+        polarity, hint, note = classify_by_title(title, rules=rules)
+        if polarity == "neutral":
+            continue
+        if hint in _TDNET_NUMERIC_ONLY_HINTS:
+            continue
+        code = _code4(r.get("code"))
+        if not code:
+            continue
+        pubdate = r.get("pubdate") or ""
+        ev_date, _, disc_time = pubdate.partition(" ")
+        out.append(
+            ClassifiedDisclosure(
+                polarity=polarity,
+                subpattern_hint=hint,
+                reason=f"tdnet:{note}" if note else "tdnet:title-match",
+                code=code,
+                event_date=ev_date,
+                title=title,
+                disc_no=r.get("id"),
+                disc_time=disc_time or None,
+                raw=r,
+            )
+        )
+    return out
+
+
 def classify_all(
     buyback_rows: list[dict[str, Any]],
     fins_rows: list[dict[str, Any]],
+    tdnet_rows: list[dict[str, Any]] | None = None,
 ) -> list[ClassifiedDisclosure]:
-    """自社株買い + /fins/summary を一括分類して polarity 付き ClassifiedDisclosure 列を返す。"""
+    """自社株買い + /fins/summary + TDnet (yanoshin) を一括分類して polarity 付き列を返す。"""
     out: list[ClassifiedDisclosure] = []
-    # 自社株買い (常に good/jisha)
+    # 自社株買い (Pro: 常に good/jisha)
     for r in buyback_rows:
         cd = classify_buyback_record(r)
         out.append(cd)
+
+    # TDnet 全タイトル (yanoshin): jisha / tob / yutai_new / kabushiki_bunkatsu /
+    # yutai_end / seikyu / tokubai 等をタイトル regex で拾う
+    if tdnet_rows:
+        out.extend(_classify_tdnet_rows(tdnet_rows))
 
     # /fins/summary: code 履歴で時系列判定 (1 row が複数 judgment を返しうる)
     by_code = _build_history_by_code(fins_rows)
@@ -368,6 +421,22 @@ def _load_buyback() -> list[dict[str, Any]]:
     return rows
 
 
+def _load_tdnet() -> list[dict[str, Any]]:
+    """cache/disclosures/tdnet_all.json から TDnet 全タイトルを読み込む。
+
+    yanoshin 取得時は by_date 形式。各 item は既に正規化済 (code/title/pubdate)。
+    """
+    p = CACHE_DIR / "tdnet_all.json"
+    if not p.exists():
+        print(f"  (info) {p} not found - TDnet パスは skip")
+        return []
+    data = json.loads(p.read_text())
+    rows: list[dict[str, Any]] = []
+    for items in data.get("by_date", {}).values():
+        rows.extend(items)
+    return rows
+
+
 def _load_fins() -> list[dict[str, Any]]:
     p_by_date = CACHE_DIR / "fins_summary.json"
     p_by_code = CACHE_DIR / "fins_summary_by_code.json"
@@ -412,9 +481,10 @@ def main() -> None:
 
     buyback = _load_buyback()
     fins = _load_fins()
-    print(f"loaded {len(buyback)} buyback rows, {len(fins)} fins/summary rows")
+    tdnet = _load_tdnet()
+    print(f"loaded {len(buyback)} buyback rows, {len(fins)} fins/summary rows, {len(tdnet)} tdnet rows")
 
-    classified = classify_all(buyback, fins)
+    classified = classify_all(buyback, fins, tdnet_rows=tdnet)
     pol_count: dict[str, int] = defaultdict(int)
     for c in classified:
         pol_count[c.polarity] += 1

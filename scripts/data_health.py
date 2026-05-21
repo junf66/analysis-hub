@@ -23,6 +23,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 RECORDS_PATH = REPO_ROOT / "data" / "kouaku_records.json"
 FINS_PATH = REPO_ROOT / "cache" / "disclosures" / "fins_summary.json"
 BUYBACK_PATH = REPO_ROOT / "cache" / "disclosures" / "share_buyback_tdnet.json"
+TDNET_PATH = REPO_ROOT / "cache" / "disclosures" / "tdnet_all.json"
 BARS_PATH = REPO_ROOT / "cache" / "noon_experiment" / "daily_bars_by_code.json"
 HEALTH_MD = REPO_ROOT / "reports" / "data_health.md"
 
@@ -146,6 +147,27 @@ def check_buyback(lines: list[str]) -> dict[str, int]:
     return {"critical": 0}
 
 
+def check_tdnet(lines: list[str]) -> dict[str, int]:
+    """cache/disclosures/tdnet_all.json (yanoshin) の有無・件数を lines に追記。"""
+    lines.append("## cache/disclosures/tdnet_all.json (yanoshin TDnet 全タイトル)")
+    lines.append("")
+    if not TDNET_PATH.exists():
+        lines.append("- (なし) — `python -m scripts.fetch_disclosures` (--skip-tdnet なしで実行) で生成")
+        lines.append("")
+        return {"critical": 0}
+    size = _size_mb(TDNET_PATH)
+    data = json.loads(TDNET_PATH.read_text())
+    by_date = data.get("by_date", {})
+    dates = sorted(by_date)
+    total = sum(len(v) for v in by_date.values())
+    lines.append(f"- ファイルサイズ: {size:.1f} MB")
+    if dates:
+        lines.append(f"- 日付範囲: {dates[0]} 〜 {dates[-1]}  ({len(dates)} 営業日)")
+    lines.append(f"- 行数合計: **{total:,}**")
+    lines.append("")
+    return {"critical": 0, "rows": total, "days": len(dates)}
+
+
 def check_bars(lines: list[str]) -> dict[str, int]:
     """noon_experiment daily_bars キャッシュのサイズ・銘柄数を lines に追記。"""
     lines.append("## cache/noon_experiment/daily_bars_by_code.json (全銘柄 5y 日足)")
@@ -176,6 +198,7 @@ def main() -> None:
     summary = {}
     summary["records"] = check_records(lines)
     summary["fins"] = check_fins(lines)
+    summary["tdnet"] = check_tdnet(lines)
     summary["buyback"] = check_buyback(lines)
     summary["bars"] = check_bars(lines)
 
