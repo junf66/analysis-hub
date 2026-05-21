@@ -2,11 +2,11 @@
   "schema_version": 1,
   "event_type": "kouaku_mixed",
   "subpattern_counts": {
+    "kouhou_genhai": 4,
     "kouhou_genshu": 112,
     "kouhou_kahou": 42,
-    "zouhai_genshu": 22,
     "kouhou_muhai": 6,
-    "kouhou_genhai": 4
+    "zouhai_genshu": 22
   },
   "records": [
     {

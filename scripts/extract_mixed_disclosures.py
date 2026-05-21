@@ -384,7 +384,7 @@ def main() -> None:
     atomic_write_json(args.out, {
         "schema_version": 1,
         "event_type": "kouaku_mixed",
-        "subpattern_counts": dict(sub_count),
+        "subpattern_counts": dict(sorted(sub_count.items())),  # alphabetical for stable diff
         "records": records,
     })
     print(f"saved → {args.out}")
