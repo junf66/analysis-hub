@@ -226,14 +226,42 @@ def build_report(events: list[dict[str, Any]]) -> str:
         lines.append(f"| {bk} | {hint} | {n_oc} | {m_g:+.2f}% | {m_oc:+.2f}% | {t_oc:+.2f} |")
     lines.append("")
 
-    # 結論ガイド
+    # 結論
+    bk_oc_ev: dict[str, float | None] = {}
+    for bk in bucket_order:
+        recs = by_bk.get(bk, [])
+        ocs = [r["next_day_open_to_close_ret"] for r in recs if r.get("next_day_open_to_close_ret") is not None]
+        if len(ocs) >= 2:
+            bk_oc_ev[bk] = statistics.fmean(ocs)
+    noon_ev = bk_oc_ev.get("場中")
+    after_ev = bk_oc_ev.get("大引け後")
+
     lines.append("## 解釈")
     lines.append("")
-    lines.append(
-        "「場中バケットの 寄→引 EV」と「大引け後バケットの 寄→引 EV」を比較する。"
-    )
-    lines.append("差が 0 に近ければ「場中発表が本質」、")
-    lines.append("差が大きければ「kouaku 特殊性が本質」(場中 bad 単独は弱い)。")
+    if noon_ev is not None and after_ev is not None:
+        diff = noon_ev - after_ev
+        lines.append(f"場中 bad 単独 寄→引 EV = **{noon_ev:+.2f}%**, 大引け後 = **{after_ev:+.2f}%** (差 {diff:+.2f}%)")
+        lines.append("")
+        lines.append(
+            f"参考: kouaku_mixed × 場中 (kouhou_genshu) 寄→引 EV = **-1.71%** "
+            f"(n=20, t=-3.62, /reports/kouaku_backtest.md より)"
+        )
+        lines.append("")
+        if abs(noon_ev) < 0.5:
+            lines.append(
+                "→ **結論: 場中 bad 単独では EV ≈ 0**。kouaku_mixed × 場中 の強い"
+                "マイナス EV (-1.71%) は **場中タイミング由来ではない**。"
+            )
+            lines.append("")
+            lines.append(
+                "**H1 (kouaku 特殊性が本質) を支持**: 同日に好材料が同居する銘柄に限り、"
+                "場中発表で翌日尾を引く現象が観測される。"
+            )
+            lines.append("")
+            lines.append("直感的説明:")
+            lines.append("- 悪材料単独 → 寄りで売り尽くされ、その後リバウンド (寄→引 ~0%)")
+            lines.append("- 好+悪同居 → 寄りで「好材料を重視」して買われがち → 悪材料の織り込み遅延 → 後場で売り直し")
+            lines.append("- 特に場中発表は引け前に decoupling できず、翌日もさらに尾を引く")
     return "\n".join(lines)
 
 
