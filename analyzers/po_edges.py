@@ -18,7 +18,7 @@ import statistics
 from collections import Counter
 from dataclasses import dataclass
 from datetime import date
-from typing import Any, Callable, Iterable, Sequence
+from typing import Any, Iterable, Sequence
 
 
 @dataclass

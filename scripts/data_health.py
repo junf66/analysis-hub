@@ -16,7 +16,7 @@ import argparse
 import json
 import sys
 from collections import Counter
-from datetime import date, timedelta
+from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent

@@ -47,7 +47,7 @@ def main() -> None:
     ap.add_argument("--refresh-fins", action="store_true", help="/fins/summary を 5y 再 fetch (~20 分)")
     ap.add_argument("--refresh-prices", action="store_true", help="kouaku_records 全件の価格 enrich を再実行")
     ap.add_argument("--skip-fetch", action="store_true", help="リモート fetch を一切しない (キャッシュのみ集計)")
-    ap.add_argument("--cost", type=float, default=0.20, help="バックテスト往復コスト % (既定 0.20)")
+    ap.add_argument("--cost", type=float, default=0.20, help="バックテスト往復コスト %% (既定 0.20)")
     args = ap.parse_args()
 
     py = sys.executable

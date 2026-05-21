@@ -306,7 +306,7 @@ def main() -> None:
     ap.add_argument("--group-by", choices=list(_GROUP_KEYS), help="グルーピング集計 (subpattern/disc_time_bucket/year/code)")
     ap.add_argument("--histogram", action="store_true", help="ASCII ヒストグラムを表示")
     ap.add_argument("--histogram-bins", type=int, default=20)
-    ap.add_argument("--bootstrap", action="store_true", help="平均の bootstrap 95% CI")
+    ap.add_argument("--bootstrap", action="store_true", help="平均の bootstrap 95%% CI")
     ap.add_argument("--bootstrap-iter", type=int, default=2000)
     ap.add_argument("--plot-cumul", action="store_true", help="event_date 順の累積 PnL ASCII プロット")
     args = ap.parse_args()

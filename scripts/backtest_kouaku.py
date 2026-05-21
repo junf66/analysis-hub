@@ -118,7 +118,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--path", type=Path, default=DATA_PATH)
     ap.add_argument("--out", type=Path, default=REPORT_PATH)
-    ap.add_argument("--cost", type=float, default=COST_PCT_DEFAULT, help="往復コスト % (既定 0.20)")
+    ap.add_argument("--cost", type=float, default=COST_PCT_DEFAULT, help="往復コスト %% (既定 0.20)")
     args = ap.parse_args()
 
     data = json.loads(args.path.read_text())

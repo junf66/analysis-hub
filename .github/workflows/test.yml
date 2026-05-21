@@ -15,4 +15,8 @@ jobs:
           python-version: "3.11"
       - name: Run unit tests (stdlib unittest, no network)
         run: |
-          python -m unittest tests.test_kouaku_known_cases tests.test_pipeline_integration -v
+          python -m unittest discover -s tests -v
+      - name: Run static + cross-ref audit (audit_all)
+        # data 整合性は data/kouaku_records.json があるとき限定の最終ゲート
+        run: |
+          python -m scripts.audit_all
