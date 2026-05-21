@@ -67,36 +67,49 @@
 }
 ```
 
-## subpattern 一覧
+## subpattern 命名規約 (動的)
 
-| subpattern | 構成 | 説明 |
-|---|---|---|
-| `jisha_kahou` | 自社株買い + 業績下方修正 | 現状 Light 契約で 0 件 |
-| `jisha_genshu` | 自社株買い + 減益決算 | 同上 |
-| `fukuhai_genshu` | 復配 + 減益 | 配当復活と減益が同日 |
-| `zouhai_genshu` | 増配 + 減益 | 配当増額と減益が同日 |
-| `tokubai_kahou` | 特別配当 + 下方修正 | 一時的還元 + 業績悪化 |
-| `kouhou_genshu` | 業績上方修正 + 減益決算 | 「次期は明るいが今期は減益」 |
-| `kouhou_kahou` | 業績上方修正 + 業績下方修正 | 同日に上方と下方が混在 |
-| `kouhou_muhai` | 業績上方修正 + 無配転落 | 上方なのに配当ゼロ |
-| `kouhou_genhai` | 業績上方修正 + 減配 | 上方なのに減配 |
-| `other` | 上記いずれにも当てはまらない | 残余 |
+`{positive_hint}_{negative_hint}` の組合せで動的に命名される。
+hint 優先度は `extract_mixed_disclosures._POSITIVE_HINT_ORDER` /
+`_NEGATIVE_HINT_ORDER` の宣言順。両方未マッチなら `other`。
+
+例: 上方修正 + 減益 = `kouhou_genshu` / 増配 + 減益 = `zouhai_genshu` /
+来期増益予想 + 当期下方修正 = `kouhou_nx_kahou` /
+TOB 賛同 + 減配 = `tob_genhai` (TDnet 必要)。
 
 ## subpattern_hint 一覧 (好/悪材料の分類タグ)
 
-| hint | polarity | 由来 |
+### ポジティブ (POSITIVE_HINT_ORDER)
+
+| hint | 由来 | 取得状態 |
 |---|---|---|
-| `jisha` | good | 自社株買い (TDnet) |
-| `fukuhai` | good | 復配 (DividendForecastRevision で旧0→新>0) |
-| `zouhai` | good | 増配 (DividendForecastRevision Div +3% 以上) |
-| `tokubai` | good | 特別配当 (タイトルマッチ) |
-| `kouhou` | good | 業績上方修正 (EarnForecastRevision NP +3% 以上) または 決算短信 NP YoY +10% 以上 |
-| `kahou` | bad | 業績下方修正 (EarnForecastRevision NP -3% 以下) |
-| `genshu` | bad | 減益決算 (決算短信 NP YoY -10% 以下) |
-| `kessan` | neutral | 決算短信 (中立、prior と比較できない場合) |
-| `muhai` | bad | 無配転落 (DividendForecastRevision で旧>0→新0) |
-| `genhai` | bad | 減配 (DividendForecastRevision Div -3% 以下) |
-| `seikyu` | bad | 公募増資・特別損失等 (タイトルマッチ、現状未活性) |
+| `jisha` | 自社株買い (TDnet) | TDnet only、現環境 0 |
+| `tob` | TOB 賛同 (TDnet タイトル) | TDnet only、現環境 0 |
+| `kouhou` | 業績上方修正 (EarnForecastRevision NP +3% 以上) または 決算短信 NP YoY +10% 以上 | ✅ |
+| `kouhou_nx` | 来期増益予想 (決算短信FY 内 NxFNp vs 当期 NP +10% 以上) | ✅ |
+| `zouhai` | 増配 (DividendForecastRevision または 決算短信 DivAnn YoY +3% 以上) | ✅ |
+| `fukuhai` | 復配 (旧 DivAnn=0 → 新 >0) | ✅ |
+| `tokubai` | 特別配当・記念配当 (TDnet タイトル) | TDnet 必要 |
+| `yutai_new` | 株主優待新設・拡充 (TDnet タイトル) | TDnet only |
+| `kabushiki_bunkatsu` | 株式分割 (TDnet タイトル) | TDnet only |
+
+### ネガティブ (NEGATIVE_HINT_ORDER)
+
+| hint | 由来 | 取得状態 |
+|---|---|---|
+| `kahou` | 業績下方修正 (EarnForecastRevision NP -3% 以下) | ✅ |
+| `kahou_nx` | 来期減益予想 (決算短信FY 内 NxFNp vs 当期 NP -10% 以下) | ✅ |
+| `genshu` | 減益決算 (決算短信 NP YoY -10% 以下) | ✅ |
+| `genhai` | 減配 (DivAnn YoY -3% 以下) | ✅ |
+| `muhai` | 無配転落 (旧 DivAnn>0 → 新 =0) | ✅ |
+| `seikyu` | 公募増資・第三者割当・特別損失・減損・行政処分・訴訟等 (TDnet タイトル) | TDnet only |
+| `yutai_end` | 株主優待廃止 (TDnet タイトル) | TDnet only |
+
+### 中立 (subpattern 命名から除外される)
+
+| hint | 由来 |
+|---|---|
+| `kessan` | 決算短信そのもの (前年比不明の場合) — polarity=neutral |
 
 ## メトリクス一覧 (query_kouaku の `--metric` で指定可能)
 

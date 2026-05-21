@@ -73,21 +73,37 @@ class TestSubpatternDecision(unittest.TestCase):
         self.assertEqual(decide_subpattern({"jisha"}, {"kahou"}), "jisha_kahou")
 
     def test_jisha_genshu_via_kessan(self) -> None:
+        # 新仕様: kessan は polarity=neutral として hint 集合に入らないので、
+        # bad_hints={"genshu"} のみが decide_subpattern に到達する。
         self.assertEqual(decide_subpattern({"jisha"}, {"genshu"}), "jisha_genshu")
-        self.assertEqual(decide_subpattern({"jisha"}, {"kessan"}), "jisha_genshu")
 
     def test_fukuhai_genshu(self) -> None:
         self.assertEqual(decide_subpattern({"fukuhai"}, {"genshu"}), "fukuhai_genshu")
 
     def test_zouhai_genshu(self) -> None:
-        self.assertEqual(decide_subpattern({"zouhai"}, {"kessan"}), "zouhai_genshu")
+        # 新仕様: bad_hints={"genshu"} (kessan は polarity=neutral で hint 集合から除外)
+        self.assertEqual(decide_subpattern({"zouhai"}, {"genshu"}), "zouhai_genshu")
 
     def test_tokubai_kahou(self) -> None:
         self.assertEqual(decide_subpattern({"tokubai"}, {"kahou"}), "tokubai_kahou")
 
     def test_other(self) -> None:
+        # 好材料があっても悪材料が空なら other
         self.assertEqual(decide_subpattern({"jisha"}, set()), "other")
-        self.assertEqual(decide_subpattern({"kouhou"}, {"seikyu"}), "other")
+        # kouhou (好) + seikyu (悪) は両方既知 hint なので命名される (旧仕様の "other" 期待は誤り)
+        self.assertEqual(decide_subpattern({"kouhou"}, {"seikyu"}), "kouhou_seikyu")
+        # 未知 hint だけなら other
+        self.assertEqual(decide_subpattern({"unknown_pos"}, {"unknown_neg"}), "other")
+
+    def test_new_subpatterns(self) -> None:
+        # 来期予想 系
+        self.assertEqual(decide_subpattern({"kouhou_nx"}, {"genshu"}), "kouhou_nx_genshu")
+        self.assertEqual(decide_subpattern({"zoueki"} if False else {"kouhou"}, {"kahou_nx"}), "kouhou_kahou_nx")
+        # TDnet 系 (現環境では取れないが命名は動く)
+        self.assertEqual(decide_subpattern({"tob"}, {"genshu"}), "tob_genshu")
+        self.assertEqual(decide_subpattern({"yutai_new"}, {"kahou"}), "yutai_new_kahou")
+        self.assertEqual(decide_subpattern({"kabushiki_bunkatsu"}, {"genhai"}), "kabushiki_bunkatsu_genhai")
+        self.assertEqual(decide_subpattern({"zouhai"}, {"yutai_end"}), "zouhai_yutai_end")
 
 
 class TestExtractMixed(unittest.TestCase):

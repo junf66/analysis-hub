@@ -209,6 +209,16 @@ def _classify_financial_statements(
             elif div_delta <= REVISION_BAD_THRESHOLD_PCT:
                 judgments.append(("bad", "genhai", f"{cur_per_type}決算短信 DivAnn YoY{div_delta:+.1f}%", div_metric))
 
+    # --- 来期予想 NxFNp vs 今期 NP 判定 (FYFinancialStatements のみ NxF* を持つ) ---
+    nx_np = _f(row.get("NxFNp"))
+    if nx_np is not None and new_np is not None and new_np != 0:
+        nx_delta = (nx_np - new_np) / abs(new_np) * 100.0
+        nx_metric = {"NxFNp_vs_NP_pct": nx_delta}
+        if nx_delta <= NP_YOY_BAD_THRESHOLD_PCT:
+            judgments.append(("bad", "kahou_nx", f"{cur_per_type}決算短信 来期予想 NxFNp vs NP {nx_delta:+.1f}%", nx_metric))
+        elif nx_delta >= -NP_YOY_BAD_THRESHOLD_PCT:
+            judgments.append(("good", "kouhou_nx", f"{cur_per_type}決算短信 来期予想 NxFNp vs NP {nx_delta:+.1f}%", nx_metric))
+
     return judgments
 
 
@@ -262,26 +272,25 @@ def classify_all(
 
 # ---- サブパターン確定 ---------------------------------------------------
 
-_SUBPATTERN_RULES = [
-    ("jisha_kahou", {"jisha"}, {"kahou"}),
-    ("jisha_genshu", {"jisha"}, {"genshu", "kessan"}),
-    ("fukuhai_genshu", {"fukuhai"}, {"genshu", "kessan", "kahou"}),
-    ("zouhai_genshu", {"zouhai"}, {"genshu", "kessan", "kahou"}),
-    ("tokubai_kahou", {"tokubai"}, {"kahou", "genshu", "kessan"}),
-    # /fins/summary 由来の主要発見 (Phase 1.5 で追加):
-    ("kouhou_genshu", {"kouhou"}, {"genshu", "kessan"}),
-    ("kouhou_kahou", {"kouhou"}, {"kahou"}),
-    # 配当系の悪材料を含むもの (Phase 1.5 で追加, 小 N だが分類完全化):
-    ("kouhou_muhai", {"kouhou"}, {"muhai"}),
-    ("kouhou_genhai", {"kouhou"}, {"genhai"}),
+_POSITIVE_HINT_ORDER = [
+    "jisha", "tob", "kouhou", "kouhou_nx", "zouhai", "fukuhai",
+    "tokubai", "yutai_new", "kabushiki_bunkatsu",
+]
+_NEGATIVE_HINT_ORDER = [
+    "kahou", "kahou_nx", "genshu", "genhai", "muhai", "seikyu", "yutai_end",
 ]
 
 
 def decide_subpattern(good_hints: set[str], bad_hints: set[str]) -> str:
-    """好/悪 hint の集合から subpattern 名を決定する (順序は _SUBPATTERN_RULES の宣言順)。"""
-    for name, need_good, need_bad in _SUBPATTERN_RULES:
-        if good_hints & need_good and bad_hints & need_bad:
-            return name
+    """好/悪 hint の集合から `{pos}_{neg}` 形式の subpattern 名を決定する。
+
+    優先度は `_POSITIVE_HINT_ORDER` / `_NEGATIVE_HINT_ORDER` の宣言順。
+    既知 hint の組合せは全て命名され、未知 hint 同士なら `other`。
+    """
+    pos = next((h for h in _POSITIVE_HINT_ORDER if h in good_hints), None)
+    neg = next((h for h in _NEGATIVE_HINT_ORDER if h in bad_hints), None)
+    if pos and neg:
+        return f"{pos}_{neg}"
     return "other"
 
 

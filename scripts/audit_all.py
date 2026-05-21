@@ -101,17 +101,18 @@ def section_static() -> None:
 def section_xref() -> None:
     """SCHEMA.md ⇄ code の subpattern / metric / bucket / CLI 名一致を検査。"""
     print("\n=== X. Cross-reference ===")
-    # SCHEMA.md の subpattern と _SUBPATTERN_RULES が一致するか
-    from scripts.extract_mixed_disclosures import _SUBPATTERN_RULES
-    code_subs = {name for name, _, _ in _SUBPATTERN_RULES} | {"other"}
+    # SCHEMA.md の subpattern と code の動的命名規約の整合
+    # 新仕様 (動的命名 {pos}_{neg}) では SUBPATTERN_RULES がなく hint order のみ
+    from scripts.extract_mixed_disclosures import _POSITIVE_HINT_ORDER, _NEGATIVE_HINT_ORDER
+    code_hints_pos = set(_POSITIVE_HINT_ORDER)
+    code_hints_neg = set(_NEGATIVE_HINT_ORDER)
     schema_md = (REPO_ROOT / "docs" / "SCHEMA.md").read_text()
-    doc_subs = set(re.findall(r"`(jisha_\w+|fukuhai_\w+|zouhai_\w+|tokubai_\w+|kouhou_\w+|other)`", schema_md))
-    miss_in_doc = code_subs - doc_subs
-    miss_in_code = doc_subs - code_subs
-    if miss_in_doc:
-        add("X-subpattern-doc", f"code にあるが SCHEMA.md にない: {sorted(miss_in_doc)}")
+    # SCHEMA.md に列挙されている hint
+    doc_hints = set(re.findall(r"`(jisha|tob|kouhou|kouhou_nx|zouhai|fukuhai|tokubai|yutai_new|kabushiki_bunkatsu|kahou|kahou_nx|genshu|genhai|muhai|seikyu|yutai_end)`", schema_md))
+    # SCHEMA.md にあるが code に無い hint
+    miss_in_code = doc_hints - (code_hints_pos | code_hints_neg)
     if miss_in_code:
-        add("X-subpattern-code", f"SCHEMA.md にあるが code にない: {sorted(miss_in_code)}")
+        add("X-hint-code", f"SCHEMA.md にあるが code に無い hint: {sorted(miss_in_code)}")
 
     # query_kouaku._METRIC_CHOICES と SCHEMA.md のメトリクス
     from scripts.query_kouaku import _METRIC_CHOICES
@@ -160,8 +161,9 @@ def section_invariants() -> None:
         add("I-dup-id", f"重複 id: {sorted(dups)[:5]}")
 
     # 2. subpattern が既知集合に入る
-    from scripts.extract_mixed_disclosures import _SUBPATTERN_RULES
-    valid_subs = {name for name, _, _ in _SUBPATTERN_RULES} | {"other"}
+    from scripts.extract_mixed_disclosures import _POSITIVE_HINT_ORDER, _NEGATIVE_HINT_ORDER
+    # 動的命名 {pos}_{neg} なので、actual subpattern が pos x neg の組合せか other で確認
+    valid_subs = {f"{p}_{n}" for p in _POSITIVE_HINT_ORDER for n in _NEGATIVE_HINT_ORDER} | {"other"}
     bad_subs = {r.get("subpattern") for r in records} - valid_subs
     if bad_subs:
         add("I-bad-subpattern", f"未知 subpattern: {bad_subs}")
