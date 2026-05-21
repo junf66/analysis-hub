@@ -152,13 +152,20 @@ def _classify_dividend_revision(
 
 def _classify_financial_statements(
     row: dict[str, Any], prior: list[dict[str, Any]]
-) -> tuple[str, str | None, str, dict[str, float]]:
-    """決算短信を前年同期 NP と比較。"""
+) -> list[tuple[str, str | None, str, dict[str, float]]]:
+    """決算短信を前年同期 NP と配当 (DivAnn) で比較し、**複数の judgment** を返す。
+
+    決算短信は NP 結果と同時に DivAnn (年間配当実績/予定) も内包するため、
+    片方を見るだけだと「減益+増配」のような同一 row 内の好悪同居を取りこぼす。
+    NP 判定と Div 判定をそれぞれ独立に評価し、検出ヒット全てをリストで返す。
+    """
     cur_per_type = row.get("CurPerType")
     cur_per_st = row.get("CurPerSt") or ""
     cur_year = cur_per_st[:4] if cur_per_st else ""
-    new_np = _f(row.get("NP"))
-    old_np = None
+    judgments: list[tuple[str, str | None, str, dict[str, float]]] = []
+
+    # 前年同期決算短信を探す
+    prev_row = None
     for prev in reversed(prior):
         if prev is row:
             continue
@@ -168,35 +175,59 @@ def _classify_financial_statements(
         if not prev_st or not cur_year:
             continue
         if prev_st[:4] == str(int(cur_year) - 1):
-            old_np = _f(prev.get("NP"))
+            prev_row = prev
             break
-    delta = _pct_delta(new_np, old_np)
-    if delta is None:
-        return ("neutral", "kessan", f"{cur_per_type}決算短信 (前年比不明)", {})
-    metric = {"NP_YoY_pct": delta}
-    if delta <= NP_YOY_BAD_THRESHOLD_PCT:
-        return ("bad", "genshu", f"{cur_per_type}決算短信 NP YoY{delta:+.1f}%", metric)
-    if delta >= -NP_YOY_BAD_THRESHOLD_PCT:
-        return ("good", "kouhou", f"{cur_per_type}決算短信 NP YoY{delta:+.1f}%", metric)
-    return ("neutral", "kessan", f"{cur_per_type}決算短信 NP YoY{delta:+.1f}%", metric)
+
+    # --- NP YoY 判定 ---
+    new_np = _f(row.get("NP"))
+    old_np = _f(prev_row.get("NP")) if prev_row else None
+    np_delta = _pct_delta(new_np, old_np)
+    if np_delta is None:
+        judgments.append(("neutral", "kessan", f"{cur_per_type}決算短信 (前年比不明)", {}))
+    else:
+        np_metric = {"NP_YoY_pct": np_delta}
+        if np_delta <= NP_YOY_BAD_THRESHOLD_PCT:
+            judgments.append(("bad", "genshu", f"{cur_per_type}決算短信 NP YoY{np_delta:+.1f}%", np_metric))
+        elif np_delta >= -NP_YOY_BAD_THRESHOLD_PCT:
+            judgments.append(("good", "kouhou", f"{cur_per_type}決算短信 NP YoY{np_delta:+.1f}%", np_metric))
+        else:
+            judgments.append(("neutral", "kessan", f"{cur_per_type}決算短信 NP YoY{np_delta:+.1f}%", np_metric))
+
+    # --- Div YoY 判定 (DivAnn = 通期配当合計) ---
+    new_div = _f(row.get("DivAnn"))
+    old_div = _f(prev_row.get("DivAnn")) if prev_row else None
+    if new_div is not None and old_div is not None:
+        if old_div == 0 and new_div > 0:
+            judgments.append(("good", "fukuhai", f"{cur_per_type}決算短信 (復配 0→{new_div})", {"DivAnn_YoY_pct": float("inf")}))
+        elif new_div == 0 and old_div > 0:
+            judgments.append(("bad", "muhai", f"{cur_per_type}決算短信 (無配 {old_div}→0)", {"DivAnn_YoY_pct": -100.0}))
+        elif old_div > 0:
+            div_delta = (new_div - old_div) / old_div * 100.0
+            div_metric = {"DivAnn_YoY_pct": div_delta}
+            if div_delta >= REVISION_GOOD_THRESHOLD_PCT:
+                judgments.append(("good", "zouhai", f"{cur_per_type}決算短信 DivAnn YoY{div_delta:+.1f}%", div_metric))
+            elif div_delta <= REVISION_BAD_THRESHOLD_PCT:
+                judgments.append(("bad", "genhai", f"{cur_per_type}決算短信 DivAnn YoY{div_delta:+.1f}%", div_metric))
+
+    return judgments
 
 
 def _classify_revision_vs_prior(
     row: dict[str, Any],
     prior: list[dict[str, Any]],
-) -> tuple[str, str | None, str, dict[str, float]]:
-    """業績/配当予想/決算短信の修正を「前回公表 (同一 FY) or 前年同期」と比較し方向判定。
+) -> list[tuple[str, str | None, str, dict[str, float]]]:
+    """業績/配当予想/決算短信を「前回公表 or 前年同期」と比較し方向判定。
 
-    DocType によって 3 つの専用ヘルパに dispatch する。
+    1 row から複数の好悪 judgment が出る (e.g. 決算短信は NP YoY と Div YoY の両方)。
     """
     doctype = row.get("DocType") or ""
     if "EarnForecastRevision" in doctype:
-        return _classify_earn_revision(row, prior)
+        return [_classify_earn_revision(row, prior)]
     if "DividendForecastRevision" in doctype:
-        return _classify_dividend_revision(row, prior)
+        return [_classify_dividend_revision(row, prior)]
     if "FinancialStatements" in doctype:
         return _classify_financial_statements(row, prior)
-    return ("neutral", None, "", {})
+    return []
 
 
 # ---- 抽出本体 -------------------------------------------------------------
@@ -212,20 +243,20 @@ def classify_all(
         cd = classify_buyback_record(r)
         out.append(cd)
 
-    # /fins/summary: code 履歴で時系列判定
+    # /fins/summary: code 履歴で時系列判定 (1 row が複数 judgment を返しうる)
     by_code = _build_history_by_code(fins_rows)
     for code, hist in by_code.items():
         for idx, row in enumerate(hist):
             prior = hist[:idx]
-            polarity, hint, reason, metric = _classify_revision_vs_prior(row, prior)
-            if polarity == "neutral" and not hint:
-                continue
-            cd = classify_fins_record(row)
-            cd.polarity = polarity
-            cd.subpattern_hint = hint
-            cd.reason = reason
-            cd.metric = metric
-            out.append(cd)
+            for polarity, hint, reason, metric in _classify_revision_vs_prior(row, prior):
+                if polarity == "neutral" and not hint:
+                    continue
+                cd = classify_fins_record(row)
+                cd.polarity = polarity
+                cd.subpattern_hint = hint
+                cd.reason = reason
+                cd.metric = metric
+                out.append(cd)
     return out
 
 
