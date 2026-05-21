@@ -47,6 +47,7 @@ def _stat_block(values: list[float]) -> dict[str, float]:
 
 
 def build_report(records: list[dict[str, Any]], cost_pct: float) -> str:
+    """subpattern × DiscTime セルごとに寄→引 短期戦略の net PnL を集計して md 文字列で返す。"""
     # cell 構成
     cells: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
     for r in records:

@@ -145,6 +145,7 @@ def _save(path: Path, payload: Any) -> None:
 
 
 def save_buyback(by_date: dict[str, list[dict[str, Any]]], cache_dir: Path = CACHE_DIR) -> Path:
+    """自社株買い by_date dict を share_buyback_tdnet.json にアトミック書き込み。"""
     out = cache_dir / "share_buyback_tdnet.json"
     payload = {
         "source": "jquants-pro:share_buyback_tdnet",
@@ -156,6 +157,7 @@ def save_buyback(by_date: dict[str, list[dict[str, Any]]], cache_dir: Path = CAC
 
 
 def save_fins_summary(by_date: dict[str, list[dict[str, Any]]], cache_dir: Path = CACHE_DIR) -> Path:
+    """/fins/summary by_date dict を fins_summary.json にアトミック書き込み。"""
     out = cache_dir / "fins_summary.json"
     payload = {
         "source": "jquants:fins/summary",
@@ -167,6 +169,7 @@ def save_fins_summary(by_date: dict[str, list[dict[str, Any]]], cache_dir: Path 
 
 
 def save_fins_summary_by_code(by_code: dict[str, list[dict[str, Any]]], cache_dir: Path = CACHE_DIR) -> Path:
+    """/fins/summary by_code dict を fins_summary_by_code.json にアトミック書き込み。"""
     out = cache_dir / "fins_summary_by_code.json"
     payload = {
         "source": "jquants:fins/summary",

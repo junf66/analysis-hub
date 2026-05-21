@@ -19,6 +19,7 @@ _VALID_EVENT_TYPES = {
 
 
 def normalize_record(record: dict[str, Any]) -> Iterator[dict[str, Any]]:
+    """1 holdings record を共通スキーマ event 1 件として yield する。"""
     code = record.get("code")
     event_date = record.get("event_date")
     event_type = record.get("event_type")
@@ -39,6 +40,7 @@ def normalize_record(record: dict[str, Any]) -> Iterator[dict[str, Any]]:
 
 
 def normalize(records: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
+    """全 holdings records を共通スキーマ events 配列に展開して結合する。"""
     out: list[dict[str, Any]] = []
     for r in records:
         out.extend(normalize_record(r))

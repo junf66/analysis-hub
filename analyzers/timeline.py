@@ -65,6 +65,7 @@ def filter_events(
     since: date | None = None,
     until: date | None = None,
 ) -> list[dict[str, Any]]:
+    """events を code 集合 / 日付範囲で絞り込む。"""
     out: list[dict[str, Any]] = []
     for e in events:
         if codes is not None and e["code"] not in codes:

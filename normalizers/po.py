@@ -61,6 +61,7 @@ def normalize_record(record: dict[str, Any]) -> Iterator[dict[str, Any]]:
 
 
 def normalize(records: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
+    """全 PO レコードを共通スキーマ events に展開して結合する。"""
     out: list[dict[str, Any]] = []
     for r in records:
         out.extend(normalize_record(r))

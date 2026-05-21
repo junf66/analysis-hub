@@ -43,6 +43,7 @@ from scripts._buckets import disc_bucket_from_time as _bucket  # noqa: E402
 
 
 def collect_bad_events() -> list[dict[str, Any]]:
+    """fins_summary.json から bad polarity 判定された全 disclosure を抽出。"""
     data = json.loads(FINS_CACHE.read_text())
     fins_rows: list[dict[str, Any]] = []
     for items in data["by_date"].values():
@@ -158,6 +159,7 @@ def _st(values: list[float]) -> tuple[int, float, float, float, float]:
 
 
 def build_report(events: list[dict[str, Any]]) -> str:
+    """bad event 群を bucket × hint で集計し、解釈付き md レポート文字列を返す。"""
     lines: list[str] = []
     lines.append("# 場中発表 bad disclosure エッジ検証")
     lines.append("")

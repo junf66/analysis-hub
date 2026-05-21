@@ -80,115 +80,122 @@ def _build_history_by_code(rows: list[dict[str, Any]]) -> dict[str, list[dict[st
     return by_code
 
 
+def _classify_earn_revision(
+    row: dict[str, Any], prior: list[dict[str, Any]]
+) -> tuple[str, str | None, str, dict[str, float]]:
+    """EarnForecastRevision を直近の同 FY 予想と比較し方向判定。"""
+    new = {k: _f(row.get(f"F{k}")) for k in ("Sales", "OP", "OdP", "NP")}
+    cur_fy = (row.get("CurFYSt"), row.get("CurFYEn"))
+    old: dict[str, float | None] = {k: None for k in new}
+    for prev in reversed(prior):
+        if prev is row:
+            continue
+        if (prev.get("CurFYSt"), prev.get("CurFYEn")) == cur_fy:
+            for k in new:
+                if old[k] is None:
+                    old[k] = _f(prev.get(f"F{k}"))
+        if (prev.get("NxtFYSt"), prev.get("NxtFYEn")) == cur_fy:
+            for k in new:
+                if old[k] is None:
+                    old[k] = _f(prev.get(f"NxF{k}"))
+        if all(v is not None for v in old.values()):
+            break
+
+    deltas: dict[str, float] = {}
+    for k in ("NP", "OP", "OdP", "Sales"):
+        d = _pct_delta(new[k], old[k])
+        if d is not None:
+            deltas[k] = d
+    if not deltas:
+        return ("neutral", None, "EarnForecastRevision (prior不明)", {})
+    primary = deltas.get("NP", next(iter(deltas.values())))
+    metric = {f"{k}_revision_pct": v for k, v in deltas.items()}
+    if primary <= REVISION_BAD_THRESHOLD_PCT:
+        return ("bad", "kahou", f"EarnForecastRevision NP{primary:+.1f}%", metric)
+    if primary >= REVISION_GOOD_THRESHOLD_PCT:
+        return ("good", "kouhou", f"EarnForecastRevision NP{primary:+.1f}%", metric)
+    return ("neutral", None, f"EarnForecastRevision NP{primary:+.1f}% (微修正)", metric)
+
+
+def _classify_dividend_revision(
+    row: dict[str, Any], prior: list[dict[str, Any]]
+) -> tuple[str, str | None, str, dict[str, float]]:
+    """DividendForecastRevision を直近の同 FY 配当予想と比較。"""
+    new_div = _f(row.get("FDivAnn"))
+    cur_fy = (row.get("CurFYSt"), row.get("CurFYEn"))
+    old_div: float | None = None
+    for prev in reversed(prior):
+        if prev is row:
+            continue
+        if (prev.get("CurFYSt"), prev.get("CurFYEn")) == cur_fy:
+            if old_div is None:
+                old_div = _f(prev.get("FDivAnn")) or _f(prev.get("DivAnn"))
+        if (prev.get("NxtFYSt"), prev.get("NxtFYEn")) == cur_fy:
+            if old_div is None:
+                old_div = _f(prev.get("NxFDivAnn"))
+        if old_div is not None:
+            break
+    delta = _pct_delta(new_div, old_div)
+    if delta is None:
+        return ("neutral", None, "DividendForecastRevision (prior不明)", {})
+    metric = {"Div_revision_pct": delta}
+    if old_div == 0 and new_div and new_div > 0:
+        return ("good", "fukuhai", "DividendForecastRevision (復配)", metric)
+    if new_div == 0 and old_div and old_div > 0:
+        return ("bad", "muhai", "DividendForecastRevision (無配)", metric)
+    if delta >= REVISION_GOOD_THRESHOLD_PCT:
+        return ("good", "zouhai", f"DividendForecastRevision Div{delta:+.1f}%", metric)
+    if delta <= REVISION_BAD_THRESHOLD_PCT:
+        return ("bad", "genhai", f"DividendForecastRevision Div{delta:+.1f}%", metric)
+    return ("neutral", None, f"DividendForecastRevision Div{delta:+.1f}%", metric)
+
+
+def _classify_financial_statements(
+    row: dict[str, Any], prior: list[dict[str, Any]]
+) -> tuple[str, str | None, str, dict[str, float]]:
+    """決算短信を前年同期 NP と比較。"""
+    cur_per_type = row.get("CurPerType")
+    cur_per_st = row.get("CurPerSt") or ""
+    cur_year = cur_per_st[:4] if cur_per_st else ""
+    new_np = _f(row.get("NP"))
+    old_np = None
+    for prev in reversed(prior):
+        if prev is row:
+            continue
+        if prev.get("CurPerType") != cur_per_type:
+            continue
+        prev_st = prev.get("CurPerSt") or ""
+        if not prev_st or not cur_year:
+            continue
+        if prev_st[:4] == str(int(cur_year) - 1):
+            old_np = _f(prev.get("NP"))
+            break
+    delta = _pct_delta(new_np, old_np)
+    if delta is None:
+        return ("neutral", "kessan", f"{cur_per_type}決算短信 (前年比不明)", {})
+    metric = {"NP_YoY_pct": delta}
+    if delta <= NP_YOY_BAD_THRESHOLD_PCT:
+        return ("bad", "genshu", f"{cur_per_type}決算短信 NP YoY{delta:+.1f}%", metric)
+    if delta >= -NP_YOY_BAD_THRESHOLD_PCT:
+        return ("good", "kouhou", f"{cur_per_type}決算短信 NP YoY{delta:+.1f}%", metric)
+    return ("neutral", "kessan", f"{cur_per_type}決算短信 NP YoY{delta:+.1f}%", metric)
+
+
 def _classify_revision_vs_prior(
     row: dict[str, Any],
     prior: list[dict[str, Any]],
 ) -> tuple[str, str | None, str, dict[str, float]]:
-    """業績/配当予想の修正を「前回公表 (同一 FY)」と比較し方向判定。
+    """業績/配当予想/決算短信の修正を「前回公表 (同一 FY) or 前年同期」と比較し方向判定。
 
-    現行行 row の (CurFYSt, CurFYEn) と一致する直近の予想公表 (F* もしくは NxF*) を遡る。
+    DocType によって 3 つの専用ヘルパに dispatch する。
     """
     doctype = row.get("DocType") or ""
     if "EarnForecastRevision" in doctype:
-        # 今回の予想 (F* 系) を取得
-        new = {
-            "Sales": _f(row.get("FSales")),
-            "OP": _f(row.get("FOP")),
-            "OdP": _f(row.get("FOdP")),
-            "NP": _f(row.get("FNP")),
-        }
-        cur_fy = (row.get("CurFYSt"), row.get("CurFYEn"))
-        old: dict[str, float | None] = {k: None for k in new}
-        # 遡って同 FY の F* を持つ行を探す
-        for prev in reversed(prior):
-            if prev is row:
-                continue
-            # 前期決算短信内で次期予想 (NxF*) として出ているケースもある
-            if (prev.get("CurFYSt"), prev.get("CurFYEn")) == cur_fy:
-                for k in new:
-                    if old[k] is None:
-                        old[k] = _f(prev.get(f"F{k}"))
-            if (prev.get("NxtFYSt"), prev.get("NxtFYEn")) == cur_fy:
-                for k in new:
-                    if old[k] is None:
-                        old[k] = _f(prev.get(f"NxF{k}"))
-            if all(v is not None for v in old.values()):
-                break
-
-        # 最も大きな相対変化 (NP 優先) で polarity 決定
-        deltas: dict[str, float] = {}
-        for k in ("NP", "OP", "OdP", "Sales"):
-            d = _pct_delta(new[k], old[k])
-            if d is not None:
-                deltas[k] = d
-        if not deltas:
-            return ("neutral", None, "EarnForecastRevision (prior不明)", {})
-        primary = deltas.get("NP", next(iter(deltas.values())))
-        metric = {f"{k}_revision_pct": v for k, v in deltas.items()}
-        if primary <= REVISION_BAD_THRESHOLD_PCT:
-            return ("bad", "kahou", f"EarnForecastRevision NP{primary:+.1f}%", metric)
-        if primary >= REVISION_GOOD_THRESHOLD_PCT:
-            return ("good", "kouhou", f"EarnForecastRevision NP{primary:+.1f}%", metric)
-        return ("neutral", None, f"EarnForecastRevision NP{primary:+.1f}% (微修正)", metric)
-
+        return _classify_earn_revision(row, prior)
     if "DividendForecastRevision" in doctype:
-        new_div = _f(row.get("FDivAnn"))
-        cur_fy = (row.get("CurFYSt"), row.get("CurFYEn"))
-        old_div: float | None = None
-        for prev in reversed(prior):
-            if prev is row:
-                continue
-            if (prev.get("CurFYSt"), prev.get("CurFYEn")) == cur_fy:
-                if old_div is None:
-                    old_div = _f(prev.get("FDivAnn")) or _f(prev.get("DivAnn"))
-            if (prev.get("NxtFYSt"), prev.get("NxtFYEn")) == cur_fy:
-                if old_div is None:
-                    old_div = _f(prev.get("NxFDivAnn"))
-            if old_div is not None:
-                break
-        delta = _pct_delta(new_div, old_div)
-        if delta is None:
-            return ("neutral", None, "DividendForecastRevision (prior不明)", {})
-        metric = {"Div_revision_pct": delta}
-        # 大幅減配/復配 (前期 0 → > 0) ハンドリング
-        if old_div == 0 and new_div and new_div > 0:
-            return ("good", "fukuhai", "DividendForecastRevision (復配)", metric)
-        if new_div == 0 and old_div and old_div > 0:
-            return ("bad", "muhai", "DividendForecastRevision (無配)", metric)
-        if delta >= REVISION_GOOD_THRESHOLD_PCT:
-            return ("good", "zouhai", f"DividendForecastRevision Div{delta:+.1f}%", metric)
-        if delta <= REVISION_BAD_THRESHOLD_PCT:
-            return ("bad", "genhai", f"DividendForecastRevision Div{delta:+.1f}%", metric)
-        return ("neutral", None, f"DividendForecastRevision Div{delta:+.1f}%", metric)
-
+        return _classify_dividend_revision(row, prior)
     if "FinancialStatements" in doctype:
-        # 同一 CurPerType の前年実績 (前年同期決算短信) と NP を比較
-        cur_per_type = row.get("CurPerType")
-        cur_per_st = row.get("CurPerSt") or ""
-        cur_year = cur_per_st[:4] if cur_per_st else ""
-        new_np = _f(row.get("NP"))
-        old_np = None
-        for prev in reversed(prior):
-            if prev is row:
-                continue
-            if prev.get("CurPerType") != cur_per_type:
-                continue
-            prev_st = prev.get("CurPerSt") or ""
-            if not prev_st or not cur_year:
-                continue
-            if prev_st[:4] == str(int(cur_year) - 1):
-                old_np = _f(prev.get("NP"))
-                break
-        delta = _pct_delta(new_np, old_np)
-        if delta is None:
-            return ("neutral", "kessan", f"{cur_per_type}決算短信 (前年比不明)", {})
-        metric = {"NP_YoY_pct": delta}
-        if delta <= NP_YOY_BAD_THRESHOLD_PCT:
-            return ("bad", "genshu", f"{cur_per_type}決算短信 NP YoY{delta:+.1f}%", metric)
-        if delta >= -NP_YOY_BAD_THRESHOLD_PCT:
-            return ("good", "kouhou", f"{cur_per_type}決算短信 NP YoY{delta:+.1f}%", metric)
-        return ("neutral", "kessan", f"{cur_per_type}決算短信 NP YoY{delta:+.1f}%", metric)
-
+        return _classify_financial_statements(row, prior)
     return ("neutral", None, "", {})
 
 
@@ -198,6 +205,7 @@ def classify_all(
     buyback_rows: list[dict[str, Any]],
     fins_rows: list[dict[str, Any]],
 ) -> list[ClassifiedDisclosure]:
+    """自社株買い + /fins/summary を一括分類して polarity 付き ClassifiedDisclosure 列を返す。"""
     out: list[ClassifiedDisclosure] = []
     # 自社株買い (常に good/jisha)
     for r in buyback_rows:
@@ -239,6 +247,7 @@ _SUBPATTERN_RULES = [
 
 
 def decide_subpattern(good_hints: set[str], bad_hints: set[str]) -> str:
+    """好/悪 hint の集合から subpattern 名を決定する (順序は _SUBPATTERN_RULES の宣言順)。"""
     for name, need_good, need_bad in _SUBPATTERN_RULES:
         if good_hints & need_good and bad_hints & need_bad:
             return name

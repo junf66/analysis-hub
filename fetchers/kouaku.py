@@ -15,6 +15,7 @@ RECORDS_PATH = REPO_ROOT / "data" / "kouaku_records.json"
 
 
 def load_cached(path: Path | None = None) -> dict[str, Any]:
+    """data/kouaku_records.json を読み込んで返す。存在しなければ FileNotFoundError。"""
     p = path or RECORDS_PATH
     if not p.exists():
         raise FileNotFoundError(

@@ -28,6 +28,7 @@ issues: list[tuple[str, str]] = []  # [(category, message), ...]
 
 
 def add(category: str, msg: str) -> None:
+    """検査結果に問題を 1 件追加。"""
     issues.append((category, msg))
 
 
@@ -36,6 +37,7 @@ def add(category: str, msg: str) -> None:
 # ============================================================
 
 def section_static() -> None:
+    """syntax / unused import / compile sanity を検査。"""
     print("\n=== S. Static analysis ===")
     py_files = list((REPO_ROOT).rglob("*.py"))
     py_files = [p for p in py_files if "/.git/" not in str(p) and "/__pycache__/" not in str(p)]
@@ -85,10 +87,10 @@ def section_static() -> None:
                 # __future__ 除く
                 add("S-unused-import", f"{p.relative_to(REPO_ROOT)}: '{name}'")
 
-        # 3. compile sanity
+        # 3. compile sanity (SyntaxError 以外は ValueError / TypeError の可能性)
         try:
             compile(src, str(p), "exec")
-        except Exception as e:
+        except (SyntaxError, ValueError, TypeError) as e:
             add("S-compile", f"{p.relative_to(REPO_ROOT)}: {e}")
 
 
@@ -97,6 +99,7 @@ def section_static() -> None:
 # ============================================================
 
 def section_xref() -> None:
+    """SCHEMA.md ⇄ code の subpattern / metric / bucket / CLI 名一致を検査。"""
     print("\n=== X. Cross-reference ===")
     # SCHEMA.md の subpattern と _SUBPATTERN_RULES が一致するか
     from scripts.extract_mixed_disclosures import _SUBPATTERN_RULES
@@ -141,6 +144,7 @@ def section_xref() -> None:
 # ============================================================
 
 def section_invariants() -> None:
+    """kouaku_records.json の id 一意 / subpattern 妥当 / 日付 / code / attrs 整合を検査。"""
     print("\n=== I. Data invariants ===")
     path = REPO_ROOT / "data" / "kouaku_records.json"
     if not path.exists():
@@ -232,6 +236,7 @@ def section_invariants() -> None:
 # ============================================================
 
 def section_behavior() -> None:
+    """全 CLI script が --help で exit 0 で返ることを smoke 確認。"""
     print("\n=== B. Behavior smoke ===")
     scripts = [
         "scripts.fetch_disclosures",
@@ -260,6 +265,7 @@ def section_behavior() -> None:
 # ============================================================
 
 def section_determinism() -> None:
+    """extract→analyze→backtest を 2 回連続実行して同じ出力か検査 (--full 時のみ)。"""
     print("\n=== D. Determinism ===")
     py = sys.executable
     out1: dict[str, str] = {}
@@ -326,7 +332,180 @@ def section_schema_version() -> None:
         add("I-schema-version", "kouaku_records.json に schema_version 未宣言")
 
 
+def section_docstrings() -> None:
+    """top-level の公開関数 (アンダースコア始まりと main を除く) が docstring を持つか。"""
+    print("\n=== S. Docstrings ===")
+    py_files = [p for p in REPO_ROOT.rglob("*.py")
+                if "/.git/" not in str(p) and "/__pycache__/" not in str(p) and "/tests/" not in str(p)]
+    for p in py_files:
+        try:
+            tree = ast.parse(p.read_text())
+        except SyntaxError:
+            continue
+        # トップレベルの関数 (nested は除外)
+        for node in tree.body:
+            funcs: list[ast.FunctionDef] = []
+            if isinstance(node, ast.FunctionDef):
+                funcs.append(node)
+            elif isinstance(node, ast.ClassDef):
+                for inner in node.body:
+                    if isinstance(inner, ast.FunctionDef):
+                        funcs.append(inner)
+            for f in funcs:
+                if f.name.startswith("_") or f.name == "main":
+                    continue
+                if not ast.get_docstring(f):
+                    add("S-docstring", f"{p.relative_to(REPO_ROOT)}::{f.name}")
+
+
+def section_float_equality() -> None:
+    """価格系の float == 比較を検出 (浮動小数の正確性問題)。"""
+    print("\n=== S. Float equality ===")
+    py_files = [p for p in REPO_ROOT.rglob("*.py")
+                if "/.git/" not in str(p) and "/__pycache__/" not in str(p)]
+    seen: set[tuple[str, int]] = set()
+    price_tokens = ("next_high", "next_low", "next_open", "next_close", "AdjFactor")
+    for p in py_files:
+        try:
+            tree = ast.parse(p.read_text())
+        except SyntaxError:
+            continue
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Compare):
+                continue
+            if not any(isinstance(op, (ast.Eq, ast.NotEq)) for op in node.ops):
+                continue
+            s = ast.unparse(node)
+            if not any(t in s for t in price_tokens):
+                continue
+            key = (str(p.relative_to(REPO_ROOT)), node.lineno)
+            if key in seen:
+                continue
+            seen.add(key)
+            add("S-float-eq", f"{key[0]}:{key[1]}  {s[:80]}")
+
+
+def section_assert_in_prod() -> None:
+    """tests 以外で assert を使っていないか (production code では Exception を投げるべき)。"""
+    print("\n=== S. assert in production ===")
+    for p in REPO_ROOT.rglob("*.py"):
+        if "/.git/" in str(p) or "/__pycache__/" in str(p) or "/tests/" in str(p):
+            continue
+        try:
+            tree = ast.parse(p.read_text())
+        except SyntaxError:
+            continue
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Assert):
+                add("S-prod-assert", f"{p.relative_to(REPO_ROOT)}:{node.lineno}")
+
+
+def section_empty_data_robustness() -> None:
+    """空の kouaku_records.json で analyze / backtest / query が exit 0 で返るか。"""
+    print("\n=== B. Empty-data robustness ===")
+    import tempfile
+    with tempfile.TemporaryDirectory() as td:
+        empty = Path(td) / "empty.json"
+        empty.write_text(json.dumps({
+            "schema_version": 1,
+            "event_type": "kouaku_mixed",
+            "subpattern_counts": {},
+            "records": [],
+        }))
+        for mod in ("scripts.query_kouaku", "scripts.analyze_kouaku_edge", "scripts.backtest_kouaku"):
+            proc = subprocess.run(
+                [sys.executable, "-m", mod, "--path", str(empty)],
+                cwd=REPO_ROOT, capture_output=True, timeout=30,
+            )
+            if proc.returncode != 0:
+                add("B-empty-data", f"{mod}: {proc.stderr.decode()[:200]}")
+
+
+def section_idempotency() -> None:
+    """extract を 2 回実行で同じ出力か (副作用テスト)。"""
+    print("\n=== D. Idempotency (extract) ===")
+    p = REPO_ROOT / "data" / "kouaku_records.json"
+    if not p.exists():
+        return
+    import hashlib
+    def _hash(): return hashlib.sha256(p.read_bytes()).hexdigest()
+    subprocess.run([sys.executable, "-m", "scripts.extract_mixed_disclosures"],
+                   cwd=REPO_ROOT, capture_output=True, timeout=60)
+    h1 = _hash()
+    subprocess.run([sys.executable, "-m", "scripts.extract_mixed_disclosures"],
+                   cwd=REPO_ROOT, capture_output=True, timeout=60)
+    h2 = _hash()
+    if h1 != h2:
+        add("D-idempotent-extract", f"extract 2 回実行で出力差分")
+
+
+def section_json_roundtrip() -> None:
+    """kouaku_records.json が json load → dump → load で安定か。"""
+    print("\n=== I. JSON round-trip ===")
+    p = REPO_ROOT / "data" / "kouaku_records.json"
+    if not p.exists():
+        return
+    data = json.loads(p.read_text())
+    redumped = json.loads(json.dumps(data, ensure_ascii=False, indent=2))
+    if data != redumped:
+        add("I-json-roundtrip", "load → dump → load で内容が変化")
+
+
+def section_anti_patterns() -> None:
+    """Python ベストプラクティス違反 (wildcard import / mutable default / bare except / broad except)。"""
+    print("\n=== S. Anti-patterns ===")
+    for p in REPO_ROOT.rglob("*.py"):
+        if "/.git/" in str(p) or "/__pycache__/" in str(p):
+            continue
+        src = p.read_text()
+        # wildcard import
+        for m in re.finditer(r"from \S+ import \*", src):
+            ln = src[: m.start()].count("\n") + 1
+            add("S-wildcard-import", f"{p.relative_to(REPO_ROOT)}:{ln}")
+        # AST checks
+        try:
+            tree = ast.parse(src)
+        except SyntaxError:
+            continue
+        for node in ast.walk(tree):
+            # mutable default argument
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                for d in node.args.defaults:
+                    if isinstance(d, (ast.List, ast.Dict, ast.Set)):
+                        add("S-mutable-default", f"{p.relative_to(REPO_ROOT)}:{d.lineno} {node.name}")
+            # bare except / broad except (production code only)
+            if isinstance(node, ast.ExceptHandler) and "/tests/" not in str(p):
+                if node.type is None:
+                    add("S-bare-except", f"{p.relative_to(REPO_ROOT)}:{node.lineno}")
+
+
+def section_csv_schema() -> None:
+    """data/kouaku_classification.csv の構造妥当性 (列数 / 必須列 / 正規表現)。"""
+    print("\n=== I. CSV schema ===")
+    p = REPO_ROOT / "data" / "kouaku_classification.csv"
+    if not p.exists():
+        return
+    import csv as _csv
+    with p.open() as f:
+        reader = _csv.reader(f)
+        header = next(reader, None)
+        if not header or len(header) != 4:
+            add("I-csv-header", f"列数 {len(header) if header else 0} (期待 4)")
+            return
+        for i, row in enumerate(reader, 2):
+            if len(row) != 4:
+                add("I-csv-row", f"line {i} 列数 {len(row)}")
+                continue
+            if any(not c.strip() for c in row[:3]):
+                add("I-csv-empty", f"line {i} 必須列に空")
+            try:
+                re.compile(row[2])
+            except re.error as e:
+                add("I-csv-pattern", f"line {i} 正規表現エラー: {e}")
+
+
 def section_coverage_gaps() -> None:
+    """tests/ から import されていない scripts module を検出。"""
     print("\n=== C. Coverage gaps ===")
     # 全ての script module を列挙
     modules = sorted(p.stem for p in (REPO_ROOT / "scripts").glob("*.py")
@@ -396,12 +575,20 @@ def main() -> None:
     section_atomic_writes()
     section_doc_links()
     section_schema_version()
+    section_docstrings()
+    section_float_equality()
+    section_assert_in_prod()
+    section_anti_patterns()
     section_xref()
     section_invariants()
+    section_json_roundtrip()
+    section_csv_schema()
     section_behavior()
-    # Determinism は extract が data を上書きするのでスキップ可
+    section_empty_data_robustness()
+    # Determinism / Idempotency は extract が data を上書きするのでスキップ可
     if "--full" in sys.argv:
         section_determinism()
+        section_idempotency()
     section_coverage_gaps()
 
     print(f"\n{'='*60}\n総検査結果: {len(issues)} 件\n{'='*60}")

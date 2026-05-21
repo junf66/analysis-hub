@@ -22,17 +22,19 @@ def atomic_write_text(path: Path, content: str) -> None:
         suffix=".tmp",
         dir=str(path.parent),
     )
+    renamed = False
     try:
         with os.fdopen(fd, "w") as f:
             f.write(content)
             f.flush()
             os.fsync(f.fileno())
         os.replace(tmp_name, str(path))  # POSIX rename = atomic
-    except Exception:
-        if os.path.exists(tmp_name):
+        renamed = True
+    finally:
+        if not renamed and os.path.exists(tmp_name):
             os.unlink(tmp_name)
-        raise
 
 
 def atomic_write_json(path: Path, obj: Any, *, indent: int | None = 2, ensure_ascii: bool = False) -> None:
+    """JSON シリアライズして atomic_write_text で保存 (中断耐性あり)。"""
     atomic_write_text(path, json.dumps(obj, indent=indent, ensure_ascii=ensure_ascii))

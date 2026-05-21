@@ -49,6 +49,7 @@ class ClassifiedDisclosure:
 
 
 def load_rules(path: Path = DICT_PATH) -> list[Rule]:
+    """data/kouaku_classification.csv からタイトル分類ルール一覧をロード。"""
     rules: list[Rule] = []
     with path.open() as f:
         for row in csv.DictReader(f):
@@ -144,10 +145,12 @@ def classify_by_title(title: str, *, rules: list[Rule]) -> tuple[str, str | None
 # ---- バッチ ---------------------------------------------------------------
 
 def classify_buyback(rows: Iterable[dict[str, Any]]) -> list[ClassifiedDisclosure]:
+    """share_buyback_tdnet 行配列を ClassifiedDisclosure 配列に変換。"""
     return [classify_buyback_record(r) for r in rows]
 
 
 def classify_fins(rows: Iterable[dict[str, Any]]) -> list[ClassifiedDisclosure]:
+    """/fins/summary 行配列を ClassifiedDisclosure 配列に変換 (履歴比較は extract 側)。"""
     return [classify_fins_record(r) for r in rows]
 
 

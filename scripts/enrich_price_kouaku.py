@@ -49,6 +49,22 @@ def _pct(new: float | None, old: float | None) -> float | None:
     return (new - old) / old * 100.0
 
 
+# 値幅制限ロック判定: 翌寄り = 翌高 = 翌安 = 翌引 (=> 約定不能) かつ |gap| >= 15%
+# J-Quants 日足は yen 単位の正確な float なので == は安全だが、念のため tolerance を許容。
+_LIMIT_LOCK_PRICE_TOL = 0.01  # 0.01 円
+_LIMIT_LOCK_GAP_PCT = 15.0
+
+
+def _is_limit_locked(prev_close: Any, no: Any, nh: Any, nl: Any, nc: Any) -> bool:
+    if None in (prev_close, no, nh, nl, nc) or not prev_close:
+        return False
+    tol = _LIMIT_LOCK_PRICE_TOL
+    if abs(nh - nl) > tol or abs(nh - no) > tol or abs(nh - nc) > tol:
+        return False
+    gap_pct = (no - prev_close) / prev_close * 100.0
+    return abs(gap_pct) >= _LIMIT_LOCK_GAP_PCT
+
+
 # 9:00 寄り → 各時刻 (bar の close) の経過時刻でリターンを取る。
 _INTRADAY_TARGETS = [
     ("09:05", "next_day_905_ret"),
@@ -96,6 +112,7 @@ def _enrich_minute(rec: dict[str, Any], code: str, next_date: str) -> None:
 
 
 def enrich_record(rec: dict[str, Any], *, window_days: int = 10) -> dict[str, Any]:
+    """1 record に日足 + 分足由来の attrs を書き込んで返す (失敗時は price_error/minute_error をセット)。"""
     code = rec["code"]
     ev = date.fromisoformat(rec["event_date"])
     since = ev - timedelta(days=window_days)
@@ -143,14 +160,7 @@ def enrich_record(rec: dict[str, Any], *, window_days: int = 10) -> dict[str, An
         "next_day_full_ret": _pct(next_close, prev_close),
         "event_bar_date": today.get("Date"),
         "next_bar_date": nxt.get("Date"),
-        # 値幅制限ロック検出: 翌寄り = 翌高 = 翌安 = 翌引で実質約定不能、
-        # かつ |gap| が極端 (±15% 以上) → S 高/S 安ロック扱い
-        "limit_locked": (
-            next_open is not None and next_high is not None and next_low is not None
-            and next_close is not None
-            and next_high == next_low == next_open == next_close
-            and abs(((next_open - prev_close) / prev_close * 100) if prev_close else 0) >= 15.0
-        ),
+        "limit_locked": _is_limit_locked(prev_close, next_open, next_high, next_low, next_close),
     })
     next_date = nxt.get("Date")
     if next_date:
@@ -165,6 +175,7 @@ def _already_enriched(rec: dict[str, Any]) -> bool:
 
 
 def enrich_all(records: list[dict[str, Any]], *, sleep_sec: float = 0.0, force: bool = False) -> list[dict[str, Any]]:
+    """records 全件に enrich を適用 (force=False なら既に enrich 済の record は skip)。"""
     import time as _time
 
     out: list[dict[str, Any]] = []

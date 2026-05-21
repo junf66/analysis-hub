@@ -89,6 +89,7 @@ from scripts._buckets import BUCKET_ORDER, disc_bucket as _disc_bucket  # noqa: 
 
 
 def build_main_report(payload: dict[str, Any]) -> str:
+    """全 records から全体・サブパターン別・DiscTime 別・クロス集計を 1 つの md にまとめる。"""
     records = payload.get("records", [])
     by_sub: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for r in records:
@@ -172,6 +173,7 @@ def build_main_report(payload: dict[str, Any]) -> str:
 
 
 def build_sub_report(subpattern: str, records: list[dict[str, Any]]) -> str:
+    """指定 subpattern のサブレポート md 文字列を返す。"""
     lines: list[str] = []
     lines.append(f"# {subpattern}")
     lines.append("")

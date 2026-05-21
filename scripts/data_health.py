@@ -32,6 +32,7 @@ def _size_mb(p: Path) -> float:
 
 
 def check_records(lines: list[str]) -> dict[str, int]:
+    """data/kouaku_records.json の件数・coverage・subpattern 分布を lines に追記。"""
     if not RECORDS_PATH.exists():
         lines.append("- ❌ `data/kouaku_records.json` **missing** — `python -m scripts.extract_mixed_disclosures` を実行")
         return {"critical": 1}
@@ -64,6 +65,7 @@ def check_records(lines: list[str]) -> dict[str, int]:
 
 
 def check_fins(lines: list[str]) -> dict[str, int]:
+    """cache/disclosures/fins_summary.json のサイズ・日付範囲・重複・決算期変更を lines に追記。"""
     lines.append("## cache/disclosures/fins_summary.json")
     lines.append("")
     if not FINS_PATH.exists():
@@ -131,6 +133,7 @@ def check_fins(lines: list[str]) -> dict[str, int]:
 
 
 def check_buyback(lines: list[str]) -> dict[str, int]:
+    """share_buyback_tdnet キャッシュの有無を lines に追記。"""
     lines.append("## cache/disclosures/share_buyback_tdnet.json (Pro 専用)")
     lines.append("")
     if BUYBACK_PATH.exists():
@@ -144,6 +147,7 @@ def check_buyback(lines: list[str]) -> dict[str, int]:
 
 
 def check_bars(lines: list[str]) -> dict[str, int]:
+    """noon_experiment daily_bars キャッシュのサイズ・銘柄数を lines に追記。"""
     lines.append("## cache/noon_experiment/daily_bars_by_code.json (全銘柄 5y 日足)")
     lines.append("")
     if not BARS_PATH.exists():
