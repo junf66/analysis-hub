@@ -17,7 +17,6 @@
 from __future__ import annotations
 
 import argparse
-import json
 from datetime import date, timedelta
 from pathlib import Path
 from typing import Any, Iterable
@@ -141,8 +140,8 @@ def fetch_tdnet_public_day(d: date) -> list[dict[str, Any]]:
 # ---- 保存 -----------------------------------------------------------------
 
 def _save(path: Path, payload: Any) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2))
+    from scripts._atomic import atomic_write_json
+    atomic_write_json(path, payload)
 
 
 def save_buyback(by_date: dict[str, list[dict[str, Any]]], cache_dir: Path = CACHE_DIR) -> Path:

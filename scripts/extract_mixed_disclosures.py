@@ -371,13 +371,13 @@ def main() -> None:
         if carried:
             print(f"carried over enrich attrs from {carried} records")
 
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps({
+    from scripts._atomic import atomic_write_json
+    atomic_write_json(args.out, {
         "schema_version": 1,
         "event_type": "kouaku_mixed",
         "subpattern_counts": dict(sub_count),
         "records": records,
-    }, ensure_ascii=False, indent=2))
+    })
     print(f"saved → {args.out}")
 
 

@@ -284,6 +284,48 @@ def section_determinism() -> None:
 # C. Coverage gaps: 各 module が何かしらの test に import されているか
 # ============================================================
 
+def section_atomic_writes() -> None:
+    """大きい JSON を直接 write_text で書いている場所 (= 中断で破損リスク) を検出。"""
+    print("\n=== A. Atomic write hygiene ===")
+    py_files = [p for p in REPO_ROOT.rglob("*.py")
+                if "/.git/" not in str(p) and "/__pycache__/" not in str(p)]
+    for p in py_files:
+        src = p.read_text()
+        # tempfile.TemporaryDirectory 内なら誤検知扱い (テストファイル)
+        if "TemporaryDirectory" in src or "/tests/" in str(p):
+            continue
+        for m in re.finditer(r"\.write_text\(\s*json\.dumps", src):
+            ln = src[: m.start()].count("\n") + 1
+            add("A-atomic-write", f"{p.relative_to(REPO_ROOT)}:{ln} 直接 write_text (scripts._atomic.atomic_write_json を使う)")
+
+
+def section_doc_links() -> None:
+    """README / docs 内の相対リンクが実在するか。"""
+    print("\n=== X. Doc links ===")
+    for md in ["README.md", "CLAUDE.md", "docs/RUNBOOK.md", "docs/SCHEMA.md", "docs/kouaku_edge_spec.md"]:
+        p = REPO_ROOT / md
+        if not p.exists():
+            continue
+        for m in re.finditer(r"\[[^\]]+\]\(([^)]+)\)", p.read_text()):
+            link = m.group(1)
+            if link.startswith(("http", "#")):
+                continue
+            target = (p.parent / link).resolve()
+            if not target.exists():
+                add("X-doc-link", f"{md}: 切れリンク → {link}")
+
+
+def section_schema_version() -> None:
+    """schema_version が data に宣言されており、コード側が読み込み時に意識しているか。"""
+    print("\n=== I. Schema version ===")
+    rp = REPO_ROOT / "data" / "kouaku_records.json"
+    if not rp.exists():
+        return
+    data = json.loads(rp.read_text())
+    if "schema_version" not in data:
+        add("I-schema-version", "kouaku_records.json に schema_version 未宣言")
+
+
 def section_coverage_gaps() -> None:
     print("\n=== C. Coverage gaps ===")
     # 全ての script module を列挙
@@ -351,6 +393,9 @@ def main() -> None:
     section_static()
     section_dead_code()
     section_repo_root_consistency()
+    section_atomic_writes()
+    section_doc_links()
+    section_schema_version()
     section_xref()
     section_invariants()
     section_behavior()

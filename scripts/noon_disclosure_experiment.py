@@ -99,11 +99,11 @@ def fetch_all_daily_bars(codes: set[str], *, sleep_sec: float = 0.05) -> dict[st
             time.sleep(sleep_sec)
         if i % 200 == 0:
             print(f"  ... {i}/{len(missing)}")
-            PRICE_CACHE.parent.mkdir(parents=True, exist_ok=True)
-            PRICE_CACHE.write_text(json.dumps(cached, ensure_ascii=False))
+            from scripts._atomic import atomic_write_json
+            atomic_write_json(PRICE_CACHE, cached, indent=None)
 
-    PRICE_CACHE.parent.mkdir(parents=True, exist_ok=True)
-    PRICE_CACHE.write_text(json.dumps(cached, ensure_ascii=False))
+    from scripts._atomic import atomic_write_json
+    atomic_write_json(PRICE_CACHE, cached, indent=0)
     return {c: cached.get(c, []) for c in codes}
 
 

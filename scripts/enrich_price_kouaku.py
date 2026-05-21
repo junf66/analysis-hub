@@ -199,7 +199,8 @@ def main() -> None:
     records = payload["records"]
     print(f"enriching {len(records)} records (force={args.force})")
     payload["records"] = enrich_all(records, sleep_sec=args.sleep, force=args.force)
-    args.path.write_text(json.dumps(payload, ensure_ascii=False, indent=2))
+    from scripts._atomic import atomic_write_json
+    atomic_write_json(args.path, payload)
     print(f"saved → {args.path}")
 
 
