@@ -85,25 +85,11 @@ def _record_lines(rec: dict[str, Any]) -> list[str]:
     return out
 
 
-def _disc_bucket(rec: dict[str, Any]) -> str:
-    """レコードの最も早い disc_time から開示タイミング bucket を決定。"""
-    times = [f.get("disc_time") for f in rec.get("good_factors", []) + rec.get("bad_factors", []) if f.get("disc_time")]
-    if not times:
-        return "unknown"
-    t = min(times)
-    h = t[:2]
-    if h < "09":
-        return "寄前 (~9:00)"
-    if h < "11":
-        return "寄り中 (9-11)"
-    if h < "15":
-        return "昼 (11-15)"
-    if h == "15" and t < "15:30":
-        return "引け間際 (15:00-15:29)"
-    return "大引け後 (15:30+)"
+from scripts._buckets import BUCKET_ORDER, disc_bucket as _disc_bucket  # noqa: E402
 
 
 def build_main_report(payload: dict[str, Any]) -> str:
+    """全 records から全体・サブパターン別・DiscTime 別・クロス集計を 1 つの md にまとめる。"""
     records = payload.get("records", [])
     by_sub: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for r in records:
@@ -134,7 +120,7 @@ def build_main_report(payload: dict[str, Any]) -> str:
         by_bucket[_disc_bucket(r)].append(r)
     lines.append("## 開示タイミング別 (DiscTime)")
     lines.append("")
-    bucket_order = ["大引け後 (15:30+)", "引け間際 (15:00-15:29)", "昼 (11-15)", "寄り中 (9-11)", "寄前 (~9:00)", "unknown"]
+    bucket_order = BUCKET_ORDER
     for bk in bucket_order:
         recs = by_bucket.get(bk)
         if not recs:
@@ -187,6 +173,7 @@ def build_main_report(payload: dict[str, Any]) -> str:
 
 
 def build_sub_report(subpattern: str, records: list[dict[str, Any]]) -> str:
+    """指定 subpattern のサブレポート md 文字列を返す。"""
     lines: list[str] = []
     lines.append(f"# {subpattern}")
     lines.append("")
@@ -202,7 +189,7 @@ def build_sub_report(subpattern: str, records: list[dict[str, Any]]) -> str:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--path", type=Path, default=DEFAULT_PATH)
+    ap.add_argument("--path", type=Path, default=DEFAULT_PATH, help="kouaku_records.json のパス")
     args = ap.parse_args()
 
     payload = json.loads(args.path.read_text())
