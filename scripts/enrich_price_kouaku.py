@@ -158,11 +158,22 @@ def enrich_record(rec: dict[str, Any], *, window_days: int = 10) -> dict[str, An
     return rec
 
 
-def enrich_all(records: list[dict[str, Any]], *, sleep_sec: float = 0.0) -> list[dict[str, Any]]:
+def _already_enriched(rec: dict[str, Any]) -> bool:
+    a = rec.get("attrs") or {}
+    # 価格 enrich 完了サイン: next_open がセットされている、または price_error が記録済
+    return a.get("next_open") is not None or a.get("price_error") is not None
+
+
+def enrich_all(records: list[dict[str, Any]], *, sleep_sec: float = 0.0, force: bool = False) -> list[dict[str, Any]]:
     import time as _time
 
     out: list[dict[str, Any]] = []
+    skipped = 0
     for i, rec in enumerate(records, 1):
+        if not force and _already_enriched(rec):
+            out.append(rec)
+            skipped += 1
+            continue
         try:
             out.append(enrich_record(rec))
         except _jquants.JQuantsError as e:
@@ -171,7 +182,9 @@ def enrich_all(records: list[dict[str, Any]], *, sleep_sec: float = 0.0) -> list
         if sleep_sec:
             _time.sleep(sleep_sec)
         if i % 25 == 0:
-            print(f"  ... enriched {i}/{len(records)}")
+            print(f"  ... enriched {i}/{len(records)} (skipped already-enriched: {skipped})")
+    if skipped:
+        print(f"  skipped {skipped} already-enriched records (use --force to re-fetch)")
     return out
 
 
@@ -179,12 +192,13 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--path", type=Path, default=DEFAULT_PATH)
     ap.add_argument("--sleep", type=float, default=0.05, help="API レート制限緩和")
+    ap.add_argument("--force", action="store_true", help="既存 enrich を破棄して再取得")
     args = ap.parse_args()
 
     payload = json.loads(args.path.read_text())
     records = payload["records"]
-    print(f"enriching {len(records)} records")
-    payload["records"] = enrich_all(records, sleep_sec=args.sleep)
+    print(f"enriching {len(records)} records (force={args.force})")
+    payload["records"] = enrich_all(records, sleep_sec=args.sleep, force=args.force)
     args.path.write_text(json.dumps(payload, ensure_ascii=False, indent=2))
     print(f"saved → {args.path}")
 

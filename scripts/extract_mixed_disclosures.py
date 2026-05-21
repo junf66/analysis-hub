@@ -232,6 +232,9 @@ _SUBPATTERN_RULES = [
     # /fins/summary 由来の主要発見 (Phase 1.5 で追加):
     ("kouhou_genshu", {"kouhou"}, {"genshu", "kessan"}),
     ("kouhou_kahou", {"kouhou"}, {"kahou"}),
+    # 配当系の悪材料を含むもの (Phase 1.5 で追加, 小 N だが分類完全化):
+    ("kouhou_muhai", {"kouhou"}, {"muhai"}),
+    ("kouhou_genhai", {"kouhou"}, {"genhai"}),
 ]
 
 
@@ -320,9 +323,31 @@ def _load_fins() -> list[dict[str, Any]]:
     return rows
 
 
+def _merge_existing_attrs(new_records: list[dict[str, Any]], out_path: Path) -> int:
+    """既存 kouaku_records.json があれば attrs (価格 enrich 等) を保持する。
+
+    id で突合。新規レコードの attrs は空のままにし、既存 id のものは attrs を
+    そのまま継承する。戻り値: 引き継いだ件数。
+    """
+    if not out_path.exists():
+        return 0
+    try:
+        old = json.loads(out_path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return 0
+    old_attrs = {r["id"]: r.get("attrs") or {} for r in old.get("records", [])}
+    carried = 0
+    for r in new_records:
+        if r["id"] in old_attrs and old_attrs[r["id"]]:
+            r["attrs"] = old_attrs[r["id"]]
+            carried += 1
+    return carried
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", type=Path, default=OUT_PATH)
+    ap.add_argument("--reset-attrs", action="store_true", help="既存 attrs (価格 enrich) を引き継がず空で出力")
     args = ap.parse_args()
 
     buyback = _load_buyback()
@@ -340,6 +365,11 @@ def main() -> None:
     for r in records:
         sub_count[r["subpattern"]] += 1
     print(f"mixed records: {len(records)}  subpatterns: {dict(sub_count)}")
+
+    if not args.reset_attrs:
+        carried = _merge_existing_attrs(records, args.out)
+        if carried:
+            print(f"carried over enrich attrs from {carried} records")
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps({

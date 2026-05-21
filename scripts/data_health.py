@@ -1,0 +1,157 @@
+"""データ健全性チェック (探索開始前に走らせる)。
+
+出力: stdout に色なし plain text サマリ + reports/data_health.md
+
+確認内容:
+  - kouaku_records.json: 件数、subpattern 分布、価格 enrich coverage、分足 coverage、limit-lock、price_error
+  - cache/disclosures/fins_summary.json: 行数、日付範囲、欠損日
+  - cache/disclosures/share_buyback_tdnet.json: 存在有無 (Pro 必要)
+  - cache/noon_experiment/daily_bars_by_code.json: ユニーク銘柄数、サイズ
+
+非ゼロ exit: critical な欠損を検出した場合 (--strict 時のみ)。
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from collections import Counter
+from datetime import date, timedelta
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+RECORDS_PATH = REPO_ROOT / "data" / "kouaku_records.json"
+FINS_PATH = REPO_ROOT / "cache" / "disclosures" / "fins_summary.json"
+BUYBACK_PATH = REPO_ROOT / "cache" / "disclosures" / "share_buyback_tdnet.json"
+BARS_PATH = REPO_ROOT / "cache" / "noon_experiment" / "daily_bars_by_code.json"
+HEALTH_MD = REPO_ROOT / "reports" / "data_health.md"
+
+
+def _size_mb(p: Path) -> float:
+    return p.stat().st_size / 1024 / 1024 if p.exists() else 0.0
+
+
+def check_records(lines: list[str]) -> dict[str, int]:
+    if not RECORDS_PATH.exists():
+        lines.append("- ❌ `data/kouaku_records.json` **missing** — `python -m scripts.extract_mixed_disclosures` を実行")
+        return {"critical": 1}
+    data = json.loads(RECORDS_PATH.read_text())
+    recs = data.get("records", [])
+    sub = Counter(r["subpattern"] for r in recs)
+    enriched = sum(1 for r in recs if (r.get("attrs") or {}).get("next_open") is not None)
+    minuted = sum(1 for r in recs if (r.get("attrs") or {}).get("next_open_900") is not None)
+    locked = sum(1 for r in recs if (r.get("attrs") or {}).get("limit_locked"))
+    errored = sum(1 for r in recs if (r.get("attrs") or {}).get("price_error"))
+    dates = sorted({r["event_date"] for r in recs})
+    lines.append("## kouaku_records.json")
+    lines.append("")
+    lines.append(f"- 件数: **{len(recs)}**  ({_size_mb(RECORDS_PATH):.2f} MB)")
+    lines.append(f"- event_date 範囲: {dates[0]} 〜 {dates[-1]}" if dates else "- (空)")
+    lines.append(f"- 価格 enrich coverage: **{enriched}/{len(recs)}** ({enriched*100//max(len(recs),1)}%)")
+    lines.append(f"- 分足 coverage: {minuted}/{len(recs)} ({minuted*100//max(len(recs),1)}%)  ※ J-Quants 分足は 2024-05-21 以降のみ")
+    lines.append(f"- limit-lock (S 高/S 安全日ロック): {locked}")
+    lines.append(f"- price_error (上場廃止等): {errored}")
+    lines.append("")
+    lines.append("### subpattern 分布")
+    lines.append("")
+    lines.append("| subpattern | n |")
+    lines.append("|---|---|")
+    for k in sorted(sub):
+        lines.append(f"| {k} | {sub[k]} |")
+    lines.append("")
+    critical = 1 if enriched < len(recs) * 0.8 else 0  # 80% 未満を critical 扱い
+    return {"critical": critical, "total": len(recs), "enriched": enriched, "minuted": minuted}
+
+
+def check_fins(lines: list[str]) -> dict[str, int]:
+    lines.append("## cache/disclosures/fins_summary.json")
+    lines.append("")
+    if not FINS_PATH.exists():
+        lines.append("- ❌ **missing** — `python -m scripts.fetch_disclosures` を実行")
+        return {"critical": 1}
+    size = _size_mb(FINS_PATH)
+    # 部分パース: by_date キーだけ素早く拾う
+    data = json.loads(FINS_PATH.read_text())
+    by_date = data.get("by_date", {})
+    dates = sorted(by_date)
+    total_rows = sum(len(v) for v in by_date.values())
+    lines.append(f"- ファイルサイズ: {size:.1f} MB")
+    lines.append(f"- 日付範囲: {dates[0]} 〜 {dates[-1]}  ({len(dates)} 営業日)")
+    lines.append(f"- 行数合計: **{total_rows:,}**")
+    # 0 行の日 (= rate-limit failure 跡)
+    zero_days = [d for d in dates if not by_date[d]]
+    if zero_days:
+        lines.append(f"- ⚠ 0 行の営業日: {len(zero_days)} 件 ({zero_days[:5]}...)")
+    # 最終日が今日からどれくらい前か
+    last = date.fromisoformat(dates[-1])
+    age = (date.today() - last).days
+    lines.append(f"- 最終日 → 今日: {age} 日前")
+    if age > 7:
+        lines.append("- ⚠ 1 週間以上更新なし。`python -m scripts.fetch_disclosures` を検討")
+    lines.append("")
+    return {"critical": 0, "rows": total_rows, "days": len(dates), "age": age}
+
+
+def check_buyback(lines: list[str]) -> dict[str, int]:
+    lines.append("## cache/disclosures/share_buyback_tdnet.json (Pro 専用)")
+    lines.append("")
+    if BUYBACK_PATH.exists():
+        data = json.loads(BUYBACK_PATH.read_text())
+        n = sum(len(v) for v in data.get("by_date", {}).values())
+        lines.append(f"- ✅ 存在: {n:,} 行")
+    else:
+        lines.append("- (なし) — J-Quants Light 契約のため未取得。Pro 契約 + `api.jquants-pro.com` allowlist 追加で取得可")
+    lines.append("")
+    return {"critical": 0}
+
+
+def check_bars(lines: list[str]) -> dict[str, int]:
+    lines.append("## cache/noon_experiment/daily_bars_by_code.json (全銘柄 5y 日足)")
+    lines.append("")
+    if not BARS_PATH.exists():
+        lines.append("- (なし) — query/分析高速化用キャッシュ。`python -m scripts.noon_disclosure_experiment` で生成")
+        return {"critical": 0}
+    size = _size_mb(BARS_PATH)
+    data = json.loads(BARS_PATH.read_text())
+    codes = list(data.keys())
+    nonempty = sum(1 for c in codes if data[c])
+    lines.append(f"- ファイルサイズ: {size:.0f} MB")
+    lines.append(f"- 銘柄数: {len(codes):,}  (うち bars あり: {nonempty:,})")
+    lines.append("")
+    return {"critical": 0, "codes": len(codes)}
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--strict", action="store_true", help="critical があれば非ゼロ exit")
+    ap.add_argument("--out", type=Path, default=HEALTH_MD)
+    args = ap.parse_args()
+
+    lines: list[str] = []
+    lines.append("# データ健全性チェック")
+    lines.append("")
+
+    summary = {}
+    summary["records"] = check_records(lines)
+    summary["fins"] = check_fins(lines)
+    summary["buyback"] = check_buyback(lines)
+    summary["bars"] = check_bars(lines)
+
+    critical = sum(s.get("critical", 0) for s in summary.values())
+    lines.append("---")
+    lines.append("")
+    lines.append(f"**critical issues: {critical}**")
+
+    md = "\n".join(lines)
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_text(md)
+
+    # stdout にも要約
+    print(md)
+    print(f"\nwrote {args.out}")
+    if args.strict and critical:
+        sys.exit(critical)
+
+
+if __name__ == "__main__":
+    main()
