@@ -404,14 +404,15 @@ def section_empty_data_robustness() -> None:
     """空の kouaku_records.json で analyze / backtest / query が exit 0 で返るか。"""
     print("\n=== B. Empty-data robustness ===")
     import tempfile
+    from scripts._atomic import atomic_write_json
     with tempfile.TemporaryDirectory() as td:
         empty = Path(td) / "empty.json"
-        empty.write_text(json.dumps({
+        atomic_write_json(empty, {
             "schema_version": 1,
             "event_type": "kouaku_mixed",
             "subpattern_counts": {},
             "records": [],
-        }))
+        })
         for mod in ("scripts.query_kouaku", "scripts.analyze_kouaku_edge", "scripts.backtest_kouaku"):
             proc = subprocess.run(
                 [sys.executable, "-m", mod, "--path", str(empty)],
@@ -449,6 +450,92 @@ def section_json_roundtrip() -> None:
     redumped = json.loads(json.dumps(data, ensure_ascii=False, indent=2))
     if data != redumped:
         add("I-json-roundtrip", "load → dump → load で内容が変化")
+
+
+def section_open_encoding() -> None:
+    """open(..., 'r'|'w') / os.fdopen() に encoding='utf-8' が指定されているか (AST 解析)。"""
+    print("\n=== S. open() encoding ===")
+    text_modes = {"r", "w", "a", "rt", "wt", "at", "r+", "w+", "a+"}
+    for p in REPO_ROOT.rglob("*.py"):
+        if "/.git/" in str(p) or "/__pycache__/" in str(p):
+            continue
+        try:
+            tree = ast.parse(p.read_text())
+        except SyntaxError:
+            continue
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            f = node.func
+            is_open = isinstance(f, ast.Name) and f.id == "open"
+            is_fdopen = isinstance(f, ast.Attribute) and f.attr == "fdopen"
+            if not (is_open or is_fdopen):
+                continue
+            # mode 引数を抽出 (位置 2 番目 or 名前付き mode=)
+            mode = None
+            mode_idx = 1
+            if len(node.args) > mode_idx and isinstance(node.args[mode_idx], ast.Constant):
+                mode = node.args[mode_idx].value
+            for kw in node.keywords:
+                if kw.arg == "mode" and isinstance(kw.value, ast.Constant):
+                    mode = kw.value.value
+            if mode is None or mode not in text_modes:
+                continue
+            # encoding= 指定があるか
+            has_enc = any(kw.arg == "encoding" for kw in node.keywords)
+            # newline= 指定 (csv 等で必須) があれば許容
+            has_newline = any(kw.arg == "newline" for kw in node.keywords)
+            if has_enc or has_newline:
+                continue
+            add("S-no-encoding", f"{p.relative_to(REPO_ROOT)}:{node.lineno}  open/fdopen mode={mode!r} encoding 未指定")
+
+
+def section_trailing_newline() -> None:
+    """全 .py ファイルが末尾改行で終わっているか (POSIX 慣習)。"""
+    print("\n=== S. Trailing newline ===")
+    for p in REPO_ROOT.rglob("*.py"):
+        if "/.git/" in str(p) or "/__pycache__/" in str(p):
+            continue
+        raw = p.read_bytes()
+        if raw and not raw.endswith(b"\n"):
+            add("S-no-newline-eof", f"{p.relative_to(REPO_ROOT)}: 末尾改行なし")
+
+
+def section_test_main_guard() -> None:
+    """tests/ 各ファイルが python -m tests.X で単独実行できる __main__ guard を持つか。"""
+    print("\n=== B. Test main guards ===")
+    for p in (REPO_ROOT / "tests").glob("*.py"):
+        if p.stem == "__init__":
+            continue
+        src = p.read_text()
+        if 'if __name__ == "__main__":' not in src and "if __name__ == '__main__':" not in src:
+            add("B-test-no-main", f"{p.relative_to(REPO_ROOT)}")
+
+
+def section_cli_help() -> None:
+    """argparse の --flag に help= が必ず設定されているか。"""
+    print("\n=== X. CLI help completeness ===")
+    for p in (REPO_ROOT / "scripts").glob("*.py"):
+        if p.stem.startswith("_") or p.stem == "__init__":
+            continue
+        try:
+            tree = ast.parse(p.read_text())
+        except SyntaxError:
+            continue
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            func = node.func
+            if not (isinstance(func, ast.Attribute) and func.attr == "add_argument"):
+                continue
+            if not node.args or not isinstance(node.args[0], ast.Constant):
+                continue
+            flag = node.args[0].value
+            if not (isinstance(flag, str) and flag.startswith("--")):
+                continue
+            has_help = any(kw.arg == "help" for kw in node.keywords)
+            if not has_help:
+                add("X-cli-no-help", f"{p.relative_to(REPO_ROOT)}:{node.lineno}  {flag}")
 
 
 def section_anti_patterns() -> None:
@@ -505,7 +592,10 @@ def section_csv_schema() -> None:
 
 
 def section_coverage_gaps() -> None:
-    """tests/ から import されていない scripts module を検出。"""
+    """tests/ から import されていない scripts module + シンボル単位カバレッジ。
+
+    audit_all の section_* と add/main は除外 (audit 自身は audit 対象外)。
+    """
     print("\n=== C. Coverage gaps ===")
     # 全ての script module を列挙
     modules = sorted(p.stem for p in (REPO_ROOT / "scripts").glob("*.py")
@@ -521,6 +611,25 @@ def section_coverage_gaps() -> None:
             not_tested.append(m)
     if not_tested:
         add("C-no-test", f"テスト未参照の module: {not_tested}")
+
+    # シンボル単位: 公開関数のうち tests のテキストに名前が出てこないもの
+    # (audit_all の section_* / add / main は exempt: audit 自身は audit しない)
+    AUDIT_EXEMPT = {"add", "main"}
+    for p in (REPO_ROOT / "scripts").glob("*.py"):
+        if p.stem.startswith("_") or p.stem == "__init__":
+            continue
+        if p.stem == "audit_all":
+            continue  # audit 自身は exempt
+        try:
+            tree = ast.parse(p.read_text())
+        except SyntaxError:
+            continue
+        for node in tree.body:
+            if isinstance(node, ast.FunctionDef) and not node.name.startswith("_") and node.name != "main":
+                if node.name in AUDIT_EXEMPT:
+                    continue
+                if node.name not in test_src:
+                    add("C-symbol-uncovered", f"scripts/{p.stem}.py::{node.name}")
 
 
 # ============================================================
@@ -578,6 +687,10 @@ def main() -> None:
     section_docstrings()
     section_float_equality()
     section_assert_in_prod()
+    section_cli_help()
+    section_open_encoding()
+    section_trailing_newline()
+    section_test_main_guard()
     section_anti_patterns()
     section_xref()
     section_invariants()

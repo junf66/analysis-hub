@@ -201,7 +201,7 @@ def enrich_all(records: list[dict[str, Any]], *, sleep_sec: float = 0.0, force: 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--path", type=Path, default=DEFAULT_PATH)
+    ap.add_argument("--path", type=Path, default=DEFAULT_PATH, help="kouaku_records.json のパス")
     ap.add_argument("--sleep", type=float, default=0.05, help="API レート制限緩和")
     ap.add_argument("--force", action="store_true", help="既存 enrich を破棄して再取得")
     args = ap.parse_args()

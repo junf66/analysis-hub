@@ -189,7 +189,7 @@ def build_sub_report(subpattern: str, records: list[dict[str, Any]]) -> str:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--path", type=Path, default=DEFAULT_PATH)
+    ap.add_argument("--path", type=Path, default=DEFAULT_PATH, help="kouaku_records.json のパス")
     args = ap.parse_args()
 
     payload = json.loads(args.path.read_text())

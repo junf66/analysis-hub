@@ -258,7 +258,7 @@ def build_report(events: list[dict[str, Any]]) -> str:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--max-codes", type=int, default=None, help="動作確認用に銘柄数制限")
-    ap.add_argument("--sleep", type=float, default=0.05)
+    ap.add_argument("--sleep", type=float, default=0.05, help="API 呼び出し間隔 (秒)、レート制限緩和用")
     args = ap.parse_args()
 
     print("collecting bad events from /fins/summary ...")

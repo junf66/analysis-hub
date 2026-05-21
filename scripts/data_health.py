@@ -166,7 +166,7 @@ def check_bars(lines: list[str]) -> dict[str, int]:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--strict", action="store_true", help="critical があれば非ゼロ exit")
-    ap.add_argument("--out", type=Path, default=HEALTH_MD)
+    ap.add_argument("--out", type=Path, default=HEALTH_MD, help="出力 md ファイル (data_health.md)")
     args = ap.parse_args()
 
     lines: list[str] = []

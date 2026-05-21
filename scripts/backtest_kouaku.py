@@ -117,8 +117,8 @@ def build_report(records: list[dict[str, Any]], cost_pct: float) -> str:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--path", type=Path, default=DATA_PATH)
-    ap.add_argument("--out", type=Path, default=REPORT_PATH)
+    ap.add_argument("--path", type=Path, default=DATA_PATH, help="kouaku_records.json のパス")
+    ap.add_argument("--out", type=Path, default=REPORT_PATH, help="出力 md ファイルのパス")
     ap.add_argument("--cost", type=float, default=COST_PCT_DEFAULT, help="往復コスト %% (既定 0.20)")
     args = ap.parse_args()
 

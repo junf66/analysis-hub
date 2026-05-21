@@ -355,7 +355,7 @@ def _merge_existing_attrs(new_records: list[dict[str, Any]], out_path: Path) -> 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--out", type=Path, default=OUT_PATH)
+    ap.add_argument("--out", type=Path, default=OUT_PATH, help="出力先 kouaku_records.json のパス")
     ap.add_argument("--reset-attrs", action="store_true", help="既存 attrs (価格 enrich) を引き継がず空で出力")
     args = ap.parse_args()
 
