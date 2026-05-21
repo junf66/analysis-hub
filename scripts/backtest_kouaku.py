@@ -26,21 +26,7 @@ COST_PCT_DEFAULT = 0.20
 MIN_CELL_N = 5
 
 
-def _disc_bucket(rec: dict[str, Any]) -> str:
-    times = [f.get("disc_time") for f in rec.get("good_factors", []) + rec.get("bad_factors", []) if f.get("disc_time")]
-    if not times:
-        return "unknown"
-    t = min(times)
-    h = t[:2]
-    if h < "09":
-        return "寄前"
-    if h < "11":
-        return "寄り中"
-    if h < "15":
-        return "場中 (11-15)"
-    if h == "15" and t < "15:30":
-        return "引け間際 (15:00-15:29)"
-    return "大引け後 (15:30+)"
+from scripts._buckets import disc_bucket as _disc_bucket  # noqa: E402
 
 
 def _net_pnl(open_to_close_ret: float, cost_pct: float, direction: str) -> float:

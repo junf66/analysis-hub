@@ -39,19 +39,7 @@ PRICE_CACHE = REPO_ROOT / "cache" / "noon_experiment" / "daily_bars_by_code.json
 OUT_PATH = REPO_ROOT / "reports" / "noon_disclosure_experiment.md"
 
 
-def _bucket(t: str | None) -> str:
-    if not t:
-        return "unknown"
-    h = t[:2]
-    if h < "09":
-        return "寄前"
-    if h < "11":
-        return "寄り中"
-    if h < "15":
-        return "場中"
-    if h == "15" and t < "15:30":
-        return "引け間際"
-    return "大引け後"
+from scripts._buckets import disc_bucket_from_time as _bucket  # noqa: E402
 
 
 def collect_bad_events() -> list[dict[str, Any]]:

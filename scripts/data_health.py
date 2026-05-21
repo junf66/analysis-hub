@@ -70,11 +70,13 @@ def check_fins(lines: list[str]) -> dict[str, int]:
         lines.append("- ❌ **missing** — `python -m scripts.fetch_disclosures` を実行")
         return {"critical": 1}
     size = _size_mb(FINS_PATH)
-    # 部分パース: by_date キーだけ素早く拾う
     data = json.loads(FINS_PATH.read_text())
     by_date = data.get("by_date", {})
     dates = sorted(by_date)
-    total_rows = sum(len(v) for v in by_date.values())
+    fins_rows: list[dict] = []
+    for items in by_date.values():
+        fins_rows.extend(items)
+    total_rows = len(fins_rows)
     lines.append(f"- ファイルサイズ: {size:.1f} MB")
     lines.append(f"- 日付範囲: {dates[0]} 〜 {dates[-1]}  ({len(dates)} 営業日)")
     lines.append(f"- 行数合計: **{total_rows:,}**")
@@ -88,8 +90,44 @@ def check_fins(lines: list[str]) -> dict[str, int]:
     lines.append(f"- 最終日 → 今日: {age} 日前")
     if age > 7:
         lines.append("- ⚠ 1 週間以上更新なし。`python -m scripts.fetch_disclosures` を検討")
+
+    # データ品質サブセクション
+    from collections import Counter as _C, defaultdict as _D
     lines.append("")
-    return {"critical": 0, "rows": total_rows, "days": len(dates), "age": age}
+    lines.append("### データ品質")
+    lines.append("")
+    # 1. 重複 (Code, DiscDate, DocType)
+    keys = _C((r.get("Code"), r.get("DiscDate"), r.get("DocType")) for r in fins_rows)
+    dups = sum(1 for k, n in keys.items() if n > 1)
+    lines.append(f"- 重複 (Code, DiscDate, DocType): {dups} 種類  (重複自体は同日複数Q公表等で実害なし)")
+    # 2. DiscNo 重複
+    dno = _C(r.get("DiscNo") for r in fins_rows if r.get("DiscNo"))
+    dno_dups = sum(1 for n in dno.values() if n > 1)
+    lines.append(f"- 重複 DiscNo: {dno_dups}  (0 が望ましい)")
+    # 3. Code 長さ分布
+    len_dist = _C(len(str(r.get("Code", ""))) for r in fins_rows)
+    lines.append(f"- Code 長さ分布: {dict(len_dist)}  (5 桁末尾0 が標準)")
+    # 4. 決算期変更銘柄
+    by_code: dict[str, list[dict]] = _D(list)
+    for r in fins_rows:
+        if "FinancialStatements" in (r.get("DocType") or ""):
+            by_code[r.get("Code")].append(r)
+    fy_changed = 0
+    for code, items in by_code.items():
+        months = {(r.get("CurFYSt") or "")[5:7] for r in items if r.get("CurFYSt")}
+        if len(months) > 1:
+            fy_changed += 1
+    lines.append(f"- 決算期変更銘柄 (CurFYSt 開始月が複数): {fy_changed}  ※prior 探索で neutral 化する可能性")
+    # 5. 同日複数 disclosure (kouaku mixed 候補) と実際の比率
+    multi_pairs: dict[tuple, set] = _D(set)
+    for r in fins_rows:
+        dt = r.get("DocType") or ""
+        if "FinancialStatements" in dt or "EarnForecastRevision" in dt or "DividendForecastRevision" in dt:
+            multi_pairs[(str(r.get("Code") or "")[:4], r.get("DiscDate"))].add(dt)
+    n_multi = sum(1 for v in multi_pairs.values() if len(v) >= 2)
+    lines.append(f"- 同日複数 disclosure (Code, DiscDate): {n_multi} 件  (kouaku 候補母集団)")
+    lines.append("")
+    return {"critical": 0, "rows": total_rows, "days": len(dates), "age": age, "dups": dups, "fy_changed": fy_changed}
 
 
 def check_buyback(lines: list[str]) -> dict[str, int]:

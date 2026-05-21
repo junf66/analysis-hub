@@ -43,21 +43,7 @@ _METRIC_CHOICES = [
 ]
 
 
-def _disc_bucket(rec: dict[str, Any]) -> str:
-    times = [f.get("disc_time") for f in rec.get("good_factors", []) + rec.get("bad_factors", []) if f.get("disc_time")]
-    if not times:
-        return "unknown"
-    t = min(times)
-    h = t[:2]
-    if h < "09":
-        return "寄前"
-    if h < "11":
-        return "寄り中"
-    if h < "15":
-        return "場中"
-    if h == "15" and t < "15:30":
-        return "引け間際"
-    return "大引け後"
+from scripts._buckets import disc_bucket as _disc_bucket  # noqa: E402
 
 
 def _filter(records: list[dict[str, Any]], args: argparse.Namespace) -> list[dict[str, Any]]:
@@ -113,6 +99,125 @@ def _stats(values: list[float]) -> dict[str, float]:
     }
 
 
+def _bootstrap_ci(values: list[float], *, n_iter: int = 2000, alpha: float = 0.05) -> tuple[float, float]:
+    """平均の bootstrap CI (両側 1-alpha)。stdlib のみで実装。"""
+    import random
+    n = len(values)
+    if n < 2:
+        return (0.0, 0.0)
+    rng = random.Random(42)
+    means: list[float] = []
+    for _ in range(n_iter):
+        sample = [values[rng.randrange(n)] for _ in range(n)]
+        means.append(statistics.fmean(sample))
+    means.sort()
+    lo = means[int(n_iter * alpha / 2)]
+    hi = means[int(n_iter * (1 - alpha / 2))]
+    return (lo, hi)
+
+
+def _ascii_histogram(values: list[float], *, bins: int = 20, width: int = 40) -> list[str]:
+    """ASCII ヒストグラム。"""
+    if not values:
+        return ["(empty)"]
+    lo, hi = min(values), max(values)
+    if lo == hi:
+        return [f"{lo:+.2f}% | {len(values)} all-same"]
+    step = (hi - lo) / bins
+    counts = [0] * bins
+    for v in values:
+        idx = min(int((v - lo) / step), bins - 1)
+        counts[idx] += 1
+    peak = max(counts) or 1
+    out: list[str] = []
+    for i, c in enumerate(counts):
+        left = lo + step * i
+        right = lo + step * (i + 1)
+        bar = "█" * int(c * width / peak)
+        out.append(f"  {left:+6.2f}..{right:+6.2f}%  {c:>3d}  {bar}")
+    return out
+
+
+def _ascii_cumul(values: list[float], *, width: int = 50, height: int = 12) -> list[str]:
+    """累積 PnL ASCII プロット (順序は与えられたまま、time-ordered 想定)。"""
+    if len(values) < 2:
+        return ["(too few samples for cumul plot)"]
+    cumul: list[float] = []
+    s = 0.0
+    for v in values:
+        s += v
+        cumul.append(s)
+    lo, hi = min(cumul), max(cumul)
+    if lo == hi:
+        return [f"flat at {lo:+.2f}%"]
+    n = len(cumul)
+    # サンプリング (n が width より大きい場合は間引く)
+    if n > width:
+        step = n / width
+        sampled = [cumul[int(i * step)] for i in range(width)]
+    else:
+        sampled = cumul + [cumul[-1]] * (width - n)
+    grid = [[" "] * width for _ in range(height)]
+    for x, v in enumerate(sampled):
+        y_pos = int((1 - (v - lo) / (hi - lo)) * (height - 1))
+        y_pos = max(0, min(height - 1, y_pos))
+        grid[y_pos][x] = "•"
+    # y軸ラベルを左に
+    out = [f"  cumul (n={n}, range {lo:+.2f}% .. {hi:+.2f}%):"]
+    for i, row in enumerate(grid):
+        y_val = hi - (hi - lo) * i / (height - 1)
+        out.append(f"  {y_val:>+7.2f}% |{''.join(row)}")
+    out.append(f"            +{'-' * width}")
+    return out
+
+
+_GROUP_KEYS = {
+    "subpattern": lambda r: r.get("subpattern", "?"),
+    "disc_time_bucket": _disc_bucket,
+    "year": lambda r: r["event_date"][:4],
+    "code": lambda r: r["code"],
+}
+
+
+def _print_group(filtered: list[dict[str, Any]], metric: str, group_by: str) -> None:
+    """指定キーでグルーピングし、各 cell の n/EV/t/win を 1 行で並べる。"""
+    if group_by not in _GROUP_KEYS:
+        print(f"unknown --group-by: {group_by} (choices: {list(_GROUP_KEYS)})")
+        return
+    grouper = _GROUP_KEYS[group_by]
+    groups: dict[str, list[dict[str, Any]]] = {}
+    for r in filtered:
+        groups.setdefault(grouper(r), []).append(r)
+
+    print(f"=" * 70)
+    print(f"group_by={group_by}  metric={metric}  total filtered={len(filtered)}")
+    print(f"-" * 70)
+    header = f"  {'key':20s} {'n':>4s}  {'EV':>8s}  {'σ':>6s}  {'t':>6s}  {'win':>6s}  {'cumul':>8s}"
+    print(header)
+    print(f"  {'-' * 20} {'-'*4}  {'-'*8}  {'-'*6}  {'-'*6}  {'-'*6}  {'-'*8}")
+    rows = []
+    for k, recs in groups.items():
+        vals = [(r.get("attrs") or {}).get(metric) for r in recs]
+        vals = [float(v) for v in vals if v is not None]
+        st = _stats(vals)
+        rows.append((k, st, len(recs)))
+    # sort: |t| 降順 (n>=3 のみ、それ以外は末尾)
+    rows.sort(key=lambda x: (-(abs(x[1].get("t", 0)) if x[1].get("n", 0) >= 3 else -1)))
+    for k, st, n_rec in rows:
+        n = st.get("n", 0)
+        if n < 1:
+            print(f"  {str(k):20s} {n_rec:>4d}  (no metric)")
+            continue
+        ev_s = f"{st['ev']:+.3f}%" if n >= 1 else "  -"
+        sig_s = f"{st['stdev']:.2f}%" if n >= 2 else "  -"
+        t_s = f"{st['t']:+.2f}" if n >= 2 else "  -"
+        win_s = f"{st['win']:.0f}%"
+        cum_s = f"{st['cumul']:+.2f}%"
+        marker = " ★" if n >= 5 and abs(st["t"]) >= 2 else ""
+        print(f"  {str(k):20s} {n:>4d}  {ev_s:>8s}  {sig_s:>6s}  {t_s:>6s}  {win_s:>6s}  {cum_s:>8s}{marker}")
+    print("\n  (★ = n>=5 かつ |t|>=2)")
+
+
 def _print_human(filtered: list[dict[str, Any]], metric: str, args: argparse.Namespace) -> None:
     vals = [(r.get("attrs") or {}).get(metric) for r in filtered]
     vals = [float(v) for v in vals if v is not None]
@@ -120,11 +225,16 @@ def _print_human(filtered: list[dict[str, Any]], metric: str, args: argparse.Nam
 
     # フィルタ条件サマリ
     print("=" * 60)
-    print(f"filter: {' '.join(f'{k}={v}' for k,v in vars(args).items() if v and k not in ('json','metric','path','list_records'))}")
+    active_filters = " ".join(
+        f"{k}={v}" for k, v in vars(args).items()
+        if v and k not in ("json", "metric", "path", "list_records", "group_by",
+                          "histogram", "bootstrap", "plot_cumul", "include_locked")
+    )
+    print(f"filter: {active_filters or '(none)'}")
     print(f"metric: {metric}")
     print("-" * 60)
     if st["n"] == 0:
-        print(f"n=0 (該当なし)")
+        print("n=0 (該当なし)")
         return
     print(f"  n         = {st['n']}")
     print(f"  EV        = {st['ev']:+.3f}%")
@@ -133,8 +243,12 @@ def _print_human(filtered: list[dict[str, Any]], metric: str, args: argparse.Nam
     print(f"  SE        = {st['se']:.3f}%")
     print(f"  t-stat    = {st['t']:+.2f}")
     print(f"  win率     = {st['win']:.1f}%")
-    print(f"  cumul     = {st['cumul']:+.2f}% (単純加算)")
+    print(f"  cumul     = {st['cumul']:+.2f}% (単純加算、time-ordered なし)")
     print(f"  range     = {st['min']:+.2f}% .. {st['max']:+.2f}%")
+
+    if args.bootstrap and st["n"] >= 2:
+        lo, hi = _bootstrap_ci(vals, n_iter=args.bootstrap_iter)
+        print(f"  CI 95%    = [{lo:+.3f}%, {hi:+.3f}%] (bootstrap n_iter={args.bootstrap_iter})")
 
     # subpattern 別件数
     subs = Counter(r["subpattern"] for r in filtered)
@@ -149,6 +263,20 @@ def _print_human(filtered: list[dict[str, Any]], metric: str, args: argparse.Nam
         print(f"\nDiscTime 分布:")
         for k, n in bks.most_common():
             print(f"    {k}: {n}")
+
+    if args.histogram:
+        print(f"\nhistogram (bins={args.histogram_bins}):")
+        for line in _ascii_histogram(vals, bins=args.histogram_bins):
+            print(line)
+
+    if args.plot_cumul:
+        # event_date 順
+        ordered = sorted(filtered, key=lambda r: r["event_date"])
+        oc_vals = [(r.get("attrs") or {}).get(metric) for r in ordered]
+        oc_vals = [float(v) for v in oc_vals if v is not None]
+        print()
+        for line in _ascii_cumul(oc_vals):
+            print(line)
 
     if args.list_records:
         print(f"\n=== records (sorted by event_date) ===")
@@ -175,6 +303,12 @@ def main() -> None:
     ap.add_argument("--metric", choices=_METRIC_CHOICES, default="next_day_open_to_close_ret")
     ap.add_argument("--json", action="store_true", help="JSON で stdout 出力")
     ap.add_argument("--list-records", action="store_true", help="該当レコードを一覧表示")
+    ap.add_argument("--group-by", choices=list(_GROUP_KEYS), help="グルーピング集計 (subpattern/disc_time_bucket/year/code)")
+    ap.add_argument("--histogram", action="store_true", help="ASCII ヒストグラムを表示")
+    ap.add_argument("--histogram-bins", type=int, default=20)
+    ap.add_argument("--bootstrap", action="store_true", help="平均の bootstrap 95% CI")
+    ap.add_argument("--bootstrap-iter", type=int, default=2000)
+    ap.add_argument("--plot-cumul", action="store_true", help="event_date 順の累積 PnL ASCII プロット")
     args = ap.parse_args()
     if args.include_locked:
         args.exclude_locked = False
@@ -191,7 +325,14 @@ def main() -> None:
             "stats": _stats(vals),
             "n_records": len(filtered),
         }
+        if args.bootstrap and len(vals) >= 2:
+            lo, hi = _bootstrap_ci(vals, n_iter=args.bootstrap_iter)
+            result["bootstrap_ci"] = {"lo": lo, "hi": hi, "alpha": 0.05}
         print(json.dumps(result, ensure_ascii=False, indent=2))
+        return
+
+    if args.group_by:
+        _print_group(filtered, args.metric, args.group_by)
         return
 
     _print_human(filtered, args.metric, args)
