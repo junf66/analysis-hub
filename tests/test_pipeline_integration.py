@@ -139,6 +139,7 @@ class TestQueryFilter(unittest.TestCase):
         defaults = dict(
             subpattern=None, disc_time_bucket=None, year=None, since=None, until=None,
             code=None, gap_min=None, gap_max=None, exclude_locked=True, include_locked=False,
+            exclude_instrument=None, only_instrument=None,
         )
         defaults.update(kw)
         ns = type("NS", (), defaults)()
@@ -167,6 +168,24 @@ class TestQueryFilter(unittest.TestCase):
     def test_filter_by_gap_range(self) -> None:
         filtered = query_kouaku._filter(self._records(), self._make_args(gap_min=-1.0, gap_max=1.0))
         self.assertEqual([r["code"] for r in filtered], ["7203"])
+
+    def test_instrument_type_default_consolidated_jp(self) -> None:
+        # tag なし record は 'Consolidated_JP'
+        rec = {"good_factors": [{"reason": "FY決算短信 NP YoY+15%"}], "bad_factors": []}
+        self.assertEqual(query_kouaku._instrument_type(rec), "Consolidated_JP")
+
+    def test_instrument_type_reit(self) -> None:
+        rec = {"good_factors": [{"reason": "FY決算短信 [REIT] DivAnn YoY+10%"}], "bad_factors": []}
+        self.assertEqual(query_kouaku._instrument_type(rec), "REIT")
+
+    def test_exclude_instrument(self) -> None:
+        recs = [
+            {**self._records()[0], "good_factors": [{"reason": "FY決算短信 [REIT] DivAnn YoY+5%", "disc_time": "15:30:00"}]},
+            self._records()[0],
+        ]
+        filtered = query_kouaku._filter(recs, self._make_args(exclude_instrument="REIT"))
+        self.assertEqual(len(filtered), 1)
+        self.assertEqual(query_kouaku._instrument_type(filtered[0]), "Consolidated_JP")
 
     def test_disc_bucket_thresholds(self) -> None:
         # 15:29 → 引け間際

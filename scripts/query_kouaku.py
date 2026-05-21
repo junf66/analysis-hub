@@ -46,6 +46,19 @@ _METRIC_CHOICES = [
 from scripts._buckets import disc_bucket as _disc_bucket  # noqa: E402
 
 
+_INSTRUMENT_TAGS = ("REIT", "IFRS", "NonConsol", "Foreign")
+
+
+def _instrument_type(rec: dict[str, Any]) -> str:
+    """factor reason の [TAG] から銘柄性質を推定。tag なしは 'Consolidated_JP' (default)。"""
+    for f in rec.get("good_factors", []) + rec.get("bad_factors", []):
+        reason = f.get("reason") or ""
+        for tag in _INSTRUMENT_TAGS:
+            if f"[{tag}]" in reason:
+                return tag
+    return "Consolidated_JP"
+
+
 def _filter(records: list[dict[str, Any]], args: argparse.Namespace) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     codes: set[str] | None = None
@@ -57,6 +70,12 @@ def _filter(records: list[dict[str, Any]], args: argparse.Namespace) -> list[dic
     buckets: set[str] | None = None
     if args.disc_time_bucket:
         buckets = {b.strip() for b in args.disc_time_bucket.split(",")}
+    exclude_inst: set[str] | None = None
+    if args.exclude_instrument:
+        exclude_inst = {s.strip() for s in args.exclude_instrument.split(",")}
+    only_inst: set[str] | None = None
+    if args.only_instrument:
+        only_inst = {s.strip() for s in args.only_instrument.split(",")}
     for r in records:
         a = r.get("attrs") or {}
         if args.exclude_locked and a.get("limit_locked"):
@@ -78,6 +97,12 @@ def _filter(records: list[dict[str, Any]], args: argparse.Namespace) -> list[dic
             continue
         if args.gap_max is not None and (gap is None or gap > args.gap_max):
             continue
+        if exclude_inst or only_inst:
+            inst = _instrument_type(r)
+            if exclude_inst and inst in exclude_inst:
+                continue
+            if only_inst and inst not in only_inst:
+                continue
         out.append(r)
     return out
 
@@ -300,6 +325,8 @@ def main() -> None:
     ap.add_argument("--gap-max", type=float, help="GAP%% 上限 (含む)")
     ap.add_argument("--exclude-locked", action="store_true", default=True, help="limit-lock 除外 (既定 ON)")
     ap.add_argument("--include-locked", action="store_true", help="limit-lock を含める (--exclude-locked を上書き)")
+    ap.add_argument("--exclude-instrument", help="銘柄性質除外 (e.g. REIT,Foreign / 候補: REIT,IFRS,NonConsol,Foreign,Consolidated_JP)")
+    ap.add_argument("--only-instrument", help="指定銘柄性質のみ (e.g. Consolidated_JP)")
     ap.add_argument("--metric", choices=_METRIC_CHOICES, default="next_day_open_to_close_ret", help="集計対象メトリクス (既定 next_day_open_to_close_ret)")
     ap.add_argument("--json", action="store_true", help="JSON で stdout 出力")
     ap.add_argument("--list-records", action="store_true", help="該当レコードを一覧表示")

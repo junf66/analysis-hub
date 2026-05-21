@@ -67,6 +67,21 @@
 }
 ```
 
+## 銘柄性質タグ (instrument_type)
+
+`/fins/summary` の DocType から推定し、各 factor の `reason` に `[TAG]` として埋め込まれる。
+
+| tag | DocType 由来 | 件数目安 (5y) |
+|---|---|---|
+| (タグなし) | Consolidated_JP (一般株式・日本基準連結) | ~5,700 records |
+| `[NonConsol]` | NonConsolidated_JP (非連結) | ~800 |
+| `[IFRS]` | Consolidated_IFRS (IFRS 採用企業) | ~450 |
+| `[REIT]` | REIT (J-REIT、株式と性質異質) | ~54 |
+| `[Foreign]` | Foreign (外国会社) | ~2 |
+
+`query_kouaku --exclude-instrument REIT,Foreign` で除外可。
+通常株式の純解析は `--exclude-instrument REIT,Foreign` 推奨 (REIT は配当性質特殊で kahou_nx 解釈が異なる)。
+
 ## subpattern 命名規約 (動的)
 
 `{positive_hint}_{negative_hint}` の組合せで動的に命名される。

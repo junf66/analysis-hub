@@ -162,6 +162,17 @@ def _classify_financial_statements(
     cur_per_type = row.get("CurPerType")
     cur_per_st = row.get("CurPerSt") or ""
     cur_year = cur_per_st[:4] if cur_per_st else ""
+    doctype = row.get("DocType") or ""
+    # DocType 由来の追加情報を reason に埋め込む (REIT / IFRS / NonConsolidated 等の識別用)
+    inst_tag = ""
+    if "REIT" in doctype:
+        inst_tag = " [REIT]"
+    elif "IFRS" in doctype:
+        inst_tag = " [IFRS]"
+    elif "NonConsolidated" in doctype:
+        inst_tag = " [NonConsol]"
+    elif "Foreign" in doctype:
+        inst_tag = " [Foreign]"
     judgments: list[tuple[str, str | None, str, dict[str, float]]] = []
 
     # 前年同期決算短信を探す
@@ -183,31 +194,31 @@ def _classify_financial_statements(
     old_np = _f(prev_row.get("NP")) if prev_row else None
     np_delta = _pct_delta(new_np, old_np)
     if np_delta is None:
-        judgments.append(("neutral", "kessan", f"{cur_per_type}決算短信 (前年比不明)", {}))
+        judgments.append(("neutral", "kessan", f"{cur_per_type}決算短信{inst_tag} (前年比不明)", {}))
     else:
         np_metric = {"NP_YoY_pct": np_delta}
         if np_delta <= NP_YOY_BAD_THRESHOLD_PCT:
-            judgments.append(("bad", "genshu", f"{cur_per_type}決算短信 NP YoY{np_delta:+.1f}%", np_metric))
+            judgments.append(("bad", "genshu", f"{cur_per_type}決算短信{inst_tag} NP YoY{np_delta:+.1f}%", np_metric))
         elif np_delta >= -NP_YOY_BAD_THRESHOLD_PCT:
-            judgments.append(("good", "kouhou", f"{cur_per_type}決算短信 NP YoY{np_delta:+.1f}%", np_metric))
+            judgments.append(("good", "kouhou", f"{cur_per_type}決算短信{inst_tag} NP YoY{np_delta:+.1f}%", np_metric))
         else:
-            judgments.append(("neutral", "kessan", f"{cur_per_type}決算短信 NP YoY{np_delta:+.1f}%", np_metric))
+            judgments.append(("neutral", "kessan", f"{cur_per_type}決算短信{inst_tag} NP YoY{np_delta:+.1f}%", np_metric))
 
     # --- Div YoY 判定 (DivAnn = 通期配当合計) ---
     new_div = _f(row.get("DivAnn"))
     old_div = _f(prev_row.get("DivAnn")) if prev_row else None
     if new_div is not None and old_div is not None:
         if old_div == 0 and new_div > 0:
-            judgments.append(("good", "fukuhai", f"{cur_per_type}決算短信 (復配 0→{new_div})", {"DivAnn_YoY_pct": float("inf")}))
+            judgments.append(("good", "fukuhai", f"{cur_per_type}決算短信{inst_tag} (復配 0→{new_div})", {"DivAnn_YoY_pct": float("inf")}))
         elif new_div == 0 and old_div > 0:
-            judgments.append(("bad", "muhai", f"{cur_per_type}決算短信 (無配 {old_div}→0)", {"DivAnn_YoY_pct": -100.0}))
+            judgments.append(("bad", "muhai", f"{cur_per_type}決算短信{inst_tag} (無配 {old_div}→0)", {"DivAnn_YoY_pct": -100.0}))
         elif old_div > 0:
             div_delta = (new_div - old_div) / old_div * 100.0
             div_metric = {"DivAnn_YoY_pct": div_delta}
             if div_delta >= REVISION_GOOD_THRESHOLD_PCT:
-                judgments.append(("good", "zouhai", f"{cur_per_type}決算短信 DivAnn YoY{div_delta:+.1f}%", div_metric))
+                judgments.append(("good", "zouhai", f"{cur_per_type}決算短信{inst_tag} DivAnn YoY{div_delta:+.1f}%", div_metric))
             elif div_delta <= REVISION_BAD_THRESHOLD_PCT:
-                judgments.append(("bad", "genhai", f"{cur_per_type}決算短信 DivAnn YoY{div_delta:+.1f}%", div_metric))
+                judgments.append(("bad", "genhai", f"{cur_per_type}決算短信{inst_tag} DivAnn YoY{div_delta:+.1f}%", div_metric))
 
     # --- 来期予想 NxFNp vs 今期 NP 判定 (FYFinancialStatements のみ NxF* を持つ) ---
     nx_np = _f(row.get("NxFNp"))
@@ -215,9 +226,9 @@ def _classify_financial_statements(
         nx_delta = (nx_np - new_np) / abs(new_np) * 100.0
         nx_metric = {"NxFNp_vs_NP_pct": nx_delta}
         if nx_delta <= NP_YOY_BAD_THRESHOLD_PCT:
-            judgments.append(("bad", "kahou_nx", f"{cur_per_type}決算短信 来期予想 NxFNp vs NP {nx_delta:+.1f}%", nx_metric))
+            judgments.append(("bad", "kahou_nx", f"{cur_per_type}決算短信{inst_tag} 来期予想 NxFNp vs NP {nx_delta:+.1f}%", nx_metric))
         elif nx_delta >= -NP_YOY_BAD_THRESHOLD_PCT:
-            judgments.append(("good", "kouhou_nx", f"{cur_per_type}決算短信 来期予想 NxFNp vs NP {nx_delta:+.1f}%", nx_metric))
+            judgments.append(("good", "kouhou_nx", f"{cur_per_type}決算短信{inst_tag} 来期予想 NxFNp vs NP {nx_delta:+.1f}%", nx_metric))
 
     return judgments
 
