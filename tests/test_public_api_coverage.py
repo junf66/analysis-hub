@@ -138,19 +138,49 @@ class TestDataHealthChecks(unittest.TestCase):
             "by_date": {"2025-01-22": [{"code": "7203", "title": "自己株式の取得"}]},
             "record_count": 1,
         }))
+        (td / "data" / "po.json").write_text(json.dumps({
+            "schema_version": "po.v1",
+            "source": "po-tracker",
+            "count_raw": 1,
+            "count": 1,
+            "stage_counts": {"announce": 1},
+            "type_counts": {"普通": 1},
+            "raw_last_updated": "2024-01-01T00:00:00+00:00",
+            "records": [{
+                "id": "po:test_1:announce",
+                "code": "7203",
+                "event_date": "2024-08-01",
+                "event_type": "po_announce",
+                "source": "po-tracker",
+                "ref_id": "test_1",
+                "stage": "announce",
+                "po_type": "普通",
+                "lending_type": "貸借",
+                "legacy_record": False,
+                "concurrent_earnings": False,
+                "split_within_po_window": False,
+                "stale_incomplete": False,
+                "status": "complete",
+                "attrs": {"next_open": 100.0, "prev_close": 110.0, "next_day_910_ret": 0.5},
+            }],
+        }))
 
         # path swap
-        self._orig = (m.RECORDS_PATH, m.FINS_PATH, m.BUYBACK_PATH, m.BARS_PATH, m.TDNET_PATH)
+        self._orig = (
+            m.RECORDS_PATH, m.FINS_PATH, m.BUYBACK_PATH, m.BARS_PATH,
+            m.TDNET_PATH, m.PO_RECORDS_PATH,
+        )
         m.RECORDS_PATH = td / "data" / "records.json"
         m.FINS_PATH = td / "cache" / "fins.json"
         m.BUYBACK_PATH = td / "cache" / "buyback.json"
         m.BARS_PATH = td / "cache" / "bars.json"
         m.TDNET_PATH = td / "cache" / "tdnet.json"
+        m.PO_RECORDS_PATH = td / "data" / "po.json"
 
     def tearDown(self) -> None:
         (
             self.m.RECORDS_PATH, self.m.FINS_PATH, self.m.BUYBACK_PATH,
-            self.m.BARS_PATH, self.m.TDNET_PATH,
+            self.m.BARS_PATH, self.m.TDNET_PATH, self.m.PO_RECORDS_PATH,
         ) = self._orig
         self._td.cleanup()
 
@@ -186,6 +216,20 @@ class TestDataHealthChecks(unittest.TestCase):
         lines: list[str] = []
         self.m.check_tdnet(lines)
         self.assertTrue(any("なし" in ln or "missing" in ln for ln in lines))
+
+    def test_check_po(self) -> None:
+        lines: list[str] = []
+        result = self.m.check_po(lines)
+        self.assertEqual(result.get("total"), 1)
+        self.assertEqual(result.get("with_price"), 1)
+        self.assertTrue(any("po_records.json" in ln for ln in lines))
+
+    def test_check_po_missing(self) -> None:
+        self.m.PO_RECORDS_PATH = Path(self._td.name) / "data" / "does-not-exist.json"
+        lines: list[str] = []
+        result = self.m.check_po(lines)
+        self.assertEqual(result.get("critical"), 1)
+        self.assertTrue(any("missing" in ln for ln in lines))
 
 
 # ---- enrich_price_kouaku ----------------------------------------------------

@@ -1,6 +1,6 @@
 # RUNBOOK
 
-kouaku_mixed パイプラインの運用手順。
+kouaku_mixed + PO (公募増資) パイプラインの運用手順。
 
 ## 1. 環境準備
 
@@ -12,6 +12,7 @@ export JQUANTS_API_KEY=...   # J-Quants v2 dashboard で発行
 - `api.jquants.com` — 必須 (daily/minute/fins/master)
 - `webapi.yanoshin.jp` — 推奨 (TDnet 全タイトル: 自社株買い/TOB/優待/分割 等)
 - `api.jquants-pro.com` — Pro 契約者のみ (自社株買い TDnet, 任意フォールバック)
+- `raw.githubusercontent.com` — PO データ (po-tracker raw JSON 取得)
 
 ## 2. 初回フル fetch (~30 分)
 
@@ -44,6 +45,33 @@ python -m scripts.update_all
 ```
 
 idempotent なので何度走らせても OK。enrich 済 record は skip される。
+
+## 3.5. PO パイプライン
+
+PO (公募増資) は po-tracker リポジトリの enrich 済 JSON を取り込んで共通スキーマに展開する。
+J-Quants 追加 fetch は不要 (価格は po-tracker 側で既に enrich 済)。
+
+```bash
+# 初回 or raw 再取得時
+python -m fetchers.po                   # raw → cache/po/po_records.json
+python -m scripts.extract_po            # raw → data/po_records.json (1 PO → 最大 3 events)
+python -m scripts.analyze_po_edge       # → reports/po_analysis.md (既知 3 エッジ含む)
+python -m scripts.backtest_po           # → reports/po_backtest.md (cell × 既知エッジ net)
+
+# まとめて
+python -m scripts.update_all --source po --refresh-po-raw
+```
+
+既知 3 エッジ (po-tracker セッション参照 EV):
+- 発表翌日 (普通 announce, 9:10 売り long): EV +0.66%
+- 受渡日 GD (普通 deliver, gap<=-0.5%, 寄→引 long): EV +0.80%
+- リート ショート (REIT decide, next_open→決定日引け short): EV +1.12%
+
+EV 評価除外フラグ (analyze/backtest で自動除外):
+- `legacy_record` : 古い不完全データ
+- `concurrent_earnings` : 決算同時 (材料混在)
+- `split_within_po_window` : 株式分割窓 (価格調整影響)
+- `status != complete` (announce のみ "nextday" も許容)
 
 ## 4. ad-hoc 探索
 
@@ -84,9 +112,10 @@ python -m scripts.data_health --strict  # critical があれば非ゼロ exit (C
 ```
 
 確認ポイント:
-- 価格 enrich coverage >= 90%
+- 価格 enrich coverage >= 90% (kouaku / PO 共に)
 - /fins/summary 最終日 → 今日 が 7 日以内
 - 0行の営業日が異常に多くないか
+- PO: count_raw が po-tracker 側の件数と一致しているか
 
 ## 6. テスト
 
@@ -95,6 +124,8 @@ python -m unittest tests.test_kouaku_known_cases tests.test_pipeline_integration
 ```
 
 ## 7. パイプライン全体図
+
+### kouaku パイプライン
 
 ```
                     ┌─────────────────────────────────┐
@@ -126,6 +157,33 @@ yanoshin (公開)   ─→ │  → cache/disclosures/{         │
         └─── analyzers/timeline.py で 3 ソース横断観察
 ```
 
+### PO パイプライン
+
+```
+                    ┌─────────────────────────────────┐
+po-tracker (公開) ─→ │  fetchers/po.py                 │
+                    │  → cache/po/po_records.json     │  (raw + enriched 価格)
+                    │  → cache/po/po_audit.json       │
+                    └────────────────┬────────────────┘
+                                     ↓
+                    ┌─────────────────────────────────┐
+                    │ scripts/extract_po.py           │
+                    │  → data/po_records.json         │
+                    │  (1 PO → 最大 3 events:         │
+                    │   announce/decide/deliver,      │
+                    │   stage 別に attrs 正規化)       │
+                    └────────────────┬────────────────┘
+                                     ↓
+        ┌────────────────────────────┴──────────────────────────┐
+        ↓                                                       ↓
+┌──────────────────────┐                              ┌──────────────────────┐
+│ analyze_po_edge      │                              │ backtest_po          │
+│ → reports/po_*.md    │                              │ → reports/po_*.md    │
+│  (既知 3 エッジ +    │                              │  (cell × 既知 3 エッジ│
+│   stage × type × lend) │                            │   net 損益)          │
+└──────────────────────┘                              └──────────────────────┘
+```
+
 ## 8. トラブルシュート
 
 | 症状 | 原因 | 対処 |
@@ -136,3 +194,5 @@ yanoshin (公開)   ─→ │  → cache/disclosures/{         │
 | `Host not in allowlist` | 環境の network policy | 環境設定で host 追加 (新セッション必要) |
 | `HTTP 429 Rate limit` | リクエスト過多 | `--sleep 0.2` 等で間隔広げて再実行 |
 | price_error 'no bars' | 上場廃止銘柄 | スキップで OK (data_health で確認) |
+| PO `cache miss: ...` | po-tracker raw 未取得 | `python -m fetchers.po` で先に取得 |
+| PO 価格 enrich coverage < 90% | legacy 古いレコード混入 | EV 評価では自動除外、レポートは無視で OK |

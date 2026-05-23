@@ -21,6 +21,8 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RECORDS_PATH = REPO_ROOT / "data" / "kouaku_records.json"
+PO_RECORDS_PATH = REPO_ROOT / "data" / "po_records.json"
+PO_RAW_PATH = REPO_ROOT / "cache" / "po" / "po_records.json"
 FINS_PATH = REPO_ROOT / "cache" / "disclosures" / "fins_summary.json"
 BUYBACK_PATH = REPO_ROOT / "cache" / "disclosures" / "share_buyback_tdnet.json"
 TDNET_PATH = REPO_ROOT / "cache" / "disclosures" / "tdnet_all.json"
@@ -168,6 +170,41 @@ def check_tdnet(lines: list[str]) -> dict[str, int]:
     return {"critical": 0, "rows": total, "days": len(dates)}
 
 
+def check_po(lines: list[str]) -> dict[str, int]:
+    """data/po_records.json (共通スキーマ展開済) + cache/po/po_records.json 生キャッシュを確認。"""
+    lines.append("## data/po_records.json (PO 共通スキーマ)")
+    lines.append("")
+    if not PO_RECORDS_PATH.exists():
+        lines.append("- ❌ **missing** — `python -m fetchers.po` → `python -m scripts.extract_po` を実行")
+        lines.append("")
+        return {"critical": 1}
+    data = json.loads(PO_RECORDS_PATH.read_text())
+    recs = data.get("records", [])
+    by_stage = Counter(r.get("stage") for r in recs)
+    by_type = Counter(r.get("po_type") for r in recs)
+    legacy = sum(1 for r in recs if r.get("legacy_record"))
+    concurrent = sum(1 for r in recs if r.get("concurrent_earnings"))
+    split = sum(1 for r in recs if r.get("split_within_po_window"))
+    # 価格 enrich coverage (各ステージで attrs に next_open or ref_open があるか)
+    with_price = sum(
+        1 for r in recs
+        if (r.get("attrs") or {}).get("next_open") is not None
+        or (r.get("attrs") or {}).get("ref_open") is not None
+    )
+    dates = sorted({r["event_date"] for r in recs if r.get("event_date")})
+    lines.append(f"- 件数: **{len(recs)}**  ({_size_mb(PO_RECORDS_PATH):.2f} MB)")
+    if dates:
+        lines.append(f"- event_date 範囲: {dates[0]} 〜 {dates[-1]}")
+    lines.append(f"- stage 分布: {dict(by_stage)}")
+    lines.append(f"- po_type 分布: {dict(by_type)}")
+    lines.append(f"- 価格 enrich coverage: {with_price}/{len(recs)} ({with_price*100//max(len(recs),1)}%)")
+    lines.append(f"- EV 評価除外フラグ: legacy={legacy}, concurrent_earnings={concurrent}, split_within_po_window={split}")
+    lines.append(f"- 原本 PO 件数 (raw): {data.get('count_raw', '?')}")
+    lines.append(f"- raw last_updated: {data.get('raw_last_updated', '?')}")
+    lines.append("")
+    return {"critical": 0, "total": len(recs), "with_price": with_price}
+
+
 def check_bars(lines: list[str]) -> dict[str, int]:
     """noon_experiment daily_bars キャッシュのサイズ・銘柄数を lines に追記。"""
     lines.append("## cache/noon_experiment/daily_bars_by_code.json (全銘柄 5y 日足)")
@@ -197,6 +234,7 @@ def main() -> None:
 
     summary = {}
     summary["records"] = check_records(lines)
+    summary["po"] = check_po(lines)
     summary["fins"] = check_fins(lines)
     summary["tdnet"] = check_tdnet(lines)
     summary["buyback"] = check_buyback(lines)
