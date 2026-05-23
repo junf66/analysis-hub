@@ -78,6 +78,7 @@ def get(path: str, *, base: str = BASE_URL, **params: Any) -> Iterator[dict[str,
 
 
 def get_list(path: str, *, base: str = BASE_URL, **params: Any) -> list[dict[str, Any]]:
+    """get() の結果を list として一括取得 (ページネーション込み)。"""
     return list(get(path, base=base, **params))
 
 

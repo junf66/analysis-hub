@@ -1,0 +1,6 @@
+# Runtime dependencies: NONE (Python 3.11 stdlib only).
+# 本リポジトリは pandas/numpy/requests 等を意図的に依存追加していない。
+# stdlib (urllib, json, csv, statistics, math, dataclasses) で完結させる方針。
+
+# Dev (テスト) も unittest (stdlib) のみで OK。
+# 将来的に pytest や ruff を追加する場合のみここに記載。

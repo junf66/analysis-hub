@@ -18,7 +18,7 @@ import statistics
 from collections import Counter
 from dataclasses import dataclass
 from datetime import date
-from typing import Any, Callable, Iterable, Sequence
+from typing import Any, Iterable, Sequence
 
 
 @dataclass
@@ -34,6 +34,7 @@ class EdgeStat:
     note: str = ""
 
     def format(self) -> str:
+        """エッジ統計を 1 行の表示文字列に整形。"""
         sign = "+" if self.mean_pct >= 0 else ""
         return (
             f"[{self.name}] n={self.n:4d}  "
@@ -191,6 +192,7 @@ def filter_repeaters(
 # ---- 概観ヘルパ --------------------------------------------------------
 
 def overview(records: Sequence[dict[str, Any]]) -> str:
+    """records 群の type / status カウントを 1 行で要約。"""
     types = Counter(r.get("type") for r in records)
     statuses = Counter(r.get("status") for r in records)
     return (

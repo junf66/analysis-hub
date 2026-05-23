@@ -39,7 +39,9 @@ from scripts.classify_kouaku import (
     ClassifiedDisclosure,
     _code4,
     classify_buyback_record,
+    classify_by_title,
     classify_fins_record,
+    load_rules,
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -80,165 +82,279 @@ def _build_history_by_code(rows: list[dict[str, Any]]) -> dict[str, list[dict[st
     return by_code
 
 
+def _classify_earn_revision(
+    row: dict[str, Any], prior: list[dict[str, Any]]
+) -> tuple[str, str | None, str, dict[str, float]]:
+    """EarnForecastRevision を直近の同 FY 予想と比較し方向判定。"""
+    new = {k: _f(row.get(f"F{k}")) for k in ("Sales", "OP", "OdP", "NP")}
+    cur_fy = (row.get("CurFYSt"), row.get("CurFYEn"))
+    old: dict[str, float | None] = {k: None for k in new}
+    for prev in reversed(prior):
+        if prev is row:
+            continue
+        if (prev.get("CurFYSt"), prev.get("CurFYEn")) == cur_fy:
+            for k in new:
+                if old[k] is None:
+                    old[k] = _f(prev.get(f"F{k}"))
+        if (prev.get("NxtFYSt"), prev.get("NxtFYEn")) == cur_fy:
+            for k in new:
+                if old[k] is None:
+                    old[k] = _f(prev.get(f"NxF{k}"))
+        if all(v is not None for v in old.values()):
+            break
+
+    deltas: dict[str, float] = {}
+    for k in ("NP", "OP", "OdP", "Sales"):
+        d = _pct_delta(new[k], old[k])
+        if d is not None:
+            deltas[k] = d
+    if not deltas:
+        return ("neutral", None, "EarnForecastRevision (prior不明)", {})
+    primary = deltas.get("NP", next(iter(deltas.values())))
+    metric = {f"{k}_revision_pct": v for k, v in deltas.items()}
+    if primary <= REVISION_BAD_THRESHOLD_PCT:
+        return ("bad", "kahou", f"EarnForecastRevision NP{primary:+.1f}%", metric)
+    if primary >= REVISION_GOOD_THRESHOLD_PCT:
+        return ("good", "kouhou", f"EarnForecastRevision NP{primary:+.1f}%", metric)
+    return ("neutral", None, f"EarnForecastRevision NP{primary:+.1f}% (微修正)", metric)
+
+
+def _classify_dividend_revision(
+    row: dict[str, Any], prior: list[dict[str, Any]]
+) -> tuple[str, str | None, str, dict[str, float]]:
+    """DividendForecastRevision を直近の同 FY 配当予想と比較。"""
+    new_div = _f(row.get("FDivAnn"))
+    cur_fy = (row.get("CurFYSt"), row.get("CurFYEn"))
+    old_div: float | None = None
+    for prev in reversed(prior):
+        if prev is row:
+            continue
+        if (prev.get("CurFYSt"), prev.get("CurFYEn")) == cur_fy:
+            if old_div is None:
+                old_div = _f(prev.get("FDivAnn")) or _f(prev.get("DivAnn"))
+        if (prev.get("NxtFYSt"), prev.get("NxtFYEn")) == cur_fy:
+            if old_div is None:
+                old_div = _f(prev.get("NxFDivAnn"))
+        if old_div is not None:
+            break
+    delta = _pct_delta(new_div, old_div)
+    if delta is None:
+        return ("neutral", None, "DividendForecastRevision (prior不明)", {})
+    metric = {"Div_revision_pct": delta}
+    if old_div == 0 and new_div and new_div > 0:
+        return ("good", "fukuhai", "DividendForecastRevision (復配)", metric)
+    if new_div == 0 and old_div and old_div > 0:
+        return ("bad", "muhai", "DividendForecastRevision (無配)", metric)
+    if delta >= REVISION_GOOD_THRESHOLD_PCT:
+        return ("good", "zouhai", f"DividendForecastRevision Div{delta:+.1f}%", metric)
+    if delta <= REVISION_BAD_THRESHOLD_PCT:
+        return ("bad", "genhai", f"DividendForecastRevision Div{delta:+.1f}%", metric)
+    return ("neutral", None, f"DividendForecastRevision Div{delta:+.1f}%", metric)
+
+
+def _classify_financial_statements(
+    row: dict[str, Any], prior: list[dict[str, Any]]
+) -> list[tuple[str, str | None, str, dict[str, float]]]:
+    """決算短信を前年同期 NP と配当 (DivAnn) で比較し、**複数の judgment** を返す。
+
+    決算短信は NP 結果と同時に DivAnn (年間配当実績/予定) も内包するため、
+    片方を見るだけだと「減益+増配」のような同一 row 内の好悪同居を取りこぼす。
+    NP 判定と Div 判定をそれぞれ独立に評価し、検出ヒット全てをリストで返す。
+    """
+    cur_per_type = row.get("CurPerType")
+    cur_per_st = row.get("CurPerSt") or ""
+    cur_year = cur_per_st[:4] if cur_per_st else ""
+    doctype = row.get("DocType") or ""
+    # DocType 由来の追加情報を reason に埋め込む (REIT / IFRS / NonConsolidated 等の識別用)
+    inst_tag = ""
+    if "REIT" in doctype:
+        inst_tag = " [REIT]"
+    elif "IFRS" in doctype:
+        inst_tag = " [IFRS]"
+    elif "NonConsolidated" in doctype:
+        inst_tag = " [NonConsol]"
+    elif "Foreign" in doctype:
+        inst_tag = " [Foreign]"
+    judgments: list[tuple[str, str | None, str, dict[str, float]]] = []
+
+    # 前年同期決算短信を探す
+    prev_row = None
+    for prev in reversed(prior):
+        if prev is row:
+            continue
+        if prev.get("CurPerType") != cur_per_type:
+            continue
+        prev_st = prev.get("CurPerSt") or ""
+        if not prev_st or not cur_year:
+            continue
+        if prev_st[:4] == str(int(cur_year) - 1):
+            prev_row = prev
+            break
+
+    # --- NP YoY 判定 ---
+    new_np = _f(row.get("NP"))
+    old_np = _f(prev_row.get("NP")) if prev_row else None
+    np_delta = _pct_delta(new_np, old_np)
+    if np_delta is None:
+        judgments.append(("neutral", "kessan", f"{cur_per_type}決算短信{inst_tag} (前年比不明)", {}))
+    else:
+        np_metric = {"NP_YoY_pct": np_delta}
+        if np_delta <= NP_YOY_BAD_THRESHOLD_PCT:
+            judgments.append(("bad", "genshu", f"{cur_per_type}決算短信{inst_tag} NP YoY{np_delta:+.1f}%", np_metric))
+        elif np_delta >= -NP_YOY_BAD_THRESHOLD_PCT:
+            judgments.append(("good", "kouhou", f"{cur_per_type}決算短信{inst_tag} NP YoY{np_delta:+.1f}%", np_metric))
+        else:
+            judgments.append(("neutral", "kessan", f"{cur_per_type}決算短信{inst_tag} NP YoY{np_delta:+.1f}%", np_metric))
+
+    # --- Div YoY 判定 (DivAnn = 通期配当合計) ---
+    new_div = _f(row.get("DivAnn"))
+    old_div = _f(prev_row.get("DivAnn")) if prev_row else None
+    if new_div is not None and old_div is not None:
+        if old_div == 0 and new_div > 0:
+            judgments.append(("good", "fukuhai", f"{cur_per_type}決算短信{inst_tag} (復配 0→{new_div})", {"DivAnn_YoY_pct": float("inf")}))
+        elif new_div == 0 and old_div > 0:
+            judgments.append(("bad", "muhai", f"{cur_per_type}決算短信{inst_tag} (無配 {old_div}→0)", {"DivAnn_YoY_pct": -100.0}))
+        elif old_div > 0:
+            div_delta = (new_div - old_div) / old_div * 100.0
+            div_metric = {"DivAnn_YoY_pct": div_delta}
+            if div_delta >= REVISION_GOOD_THRESHOLD_PCT:
+                judgments.append(("good", "zouhai", f"{cur_per_type}決算短信{inst_tag} DivAnn YoY{div_delta:+.1f}%", div_metric))
+            elif div_delta <= REVISION_BAD_THRESHOLD_PCT:
+                judgments.append(("bad", "genhai", f"{cur_per_type}決算短信{inst_tag} DivAnn YoY{div_delta:+.1f}%", div_metric))
+
+    # --- 来期予想 NxFNp vs 今期 NP 判定 (FYFinancialStatements のみ NxF* を持つ) ---
+    nx_np = _f(row.get("NxFNp"))
+    if nx_np is not None and new_np is not None and new_np != 0:
+        nx_delta = (nx_np - new_np) / abs(new_np) * 100.0
+        nx_metric = {"NxFNp_vs_NP_pct": nx_delta}
+        if nx_delta <= NP_YOY_BAD_THRESHOLD_PCT:
+            judgments.append(("bad", "kahou_nx", f"{cur_per_type}決算短信{inst_tag} 来期予想 NxFNp vs NP {nx_delta:+.1f}%", nx_metric))
+        elif nx_delta >= -NP_YOY_BAD_THRESHOLD_PCT:
+            judgments.append(("good", "kouhou_nx", f"{cur_per_type}決算短信{inst_tag} 来期予想 NxFNp vs NP {nx_delta:+.1f}%", nx_metric))
+
+    return judgments
+
+
 def _classify_revision_vs_prior(
     row: dict[str, Any],
     prior: list[dict[str, Any]],
-) -> tuple[str, str | None, str, dict[str, float]]:
-    """業績/配当予想の修正を「前回公表 (同一 FY)」と比較し方向判定。
+) -> list[tuple[str, str | None, str, dict[str, float]]]:
+    """業績/配当予想/決算短信を「前回公表 or 前年同期」と比較し方向判定。
 
-    現行行 row の (CurFYSt, CurFYEn) と一致する直近の予想公表 (F* もしくは NxF*) を遡る。
+    1 row から複数の好悪 judgment が出る (e.g. 決算短信は NP YoY と Div YoY の両方)。
     """
     doctype = row.get("DocType") or ""
     if "EarnForecastRevision" in doctype:
-        # 今回の予想 (F* 系) を取得
-        new = {
-            "Sales": _f(row.get("FSales")),
-            "OP": _f(row.get("FOP")),
-            "OdP": _f(row.get("FOdP")),
-            "NP": _f(row.get("FNP")),
-        }
-        cur_fy = (row.get("CurFYSt"), row.get("CurFYEn"))
-        old: dict[str, float | None] = {k: None for k in new}
-        # 遡って同 FY の F* を持つ行を探す
-        for prev in reversed(prior):
-            if prev is row:
-                continue
-            # 前期決算短信内で次期予想 (NxF*) として出ているケースもある
-            if (prev.get("CurFYSt"), prev.get("CurFYEn")) == cur_fy:
-                for k in new:
-                    if old[k] is None:
-                        old[k] = _f(prev.get(f"F{k}"))
-            if (prev.get("NxtFYSt"), prev.get("NxtFYEn")) == cur_fy:
-                for k in new:
-                    if old[k] is None:
-                        old[k] = _f(prev.get(f"NxF{k}"))
-            if all(v is not None for v in old.values()):
-                break
-
-        # 最も大きな相対変化 (NP 優先) で polarity 決定
-        deltas: dict[str, float] = {}
-        for k in ("NP", "OP", "OdP", "Sales"):
-            d = _pct_delta(new[k], old[k])
-            if d is not None:
-                deltas[k] = d
-        if not deltas:
-            return ("neutral", None, "EarnForecastRevision (prior不明)", {})
-        primary = deltas.get("NP", next(iter(deltas.values())))
-        metric = {f"{k}_revision_pct": v for k, v in deltas.items()}
-        if primary <= REVISION_BAD_THRESHOLD_PCT:
-            return ("bad", "kahou", f"EarnForecastRevision NP{primary:+.1f}%", metric)
-        if primary >= REVISION_GOOD_THRESHOLD_PCT:
-            return ("good", "kouhou", f"EarnForecastRevision NP{primary:+.1f}%", metric)
-        return ("neutral", None, f"EarnForecastRevision NP{primary:+.1f}% (微修正)", metric)
-
+        return [_classify_earn_revision(row, prior)]
     if "DividendForecastRevision" in doctype:
-        new_div = _f(row.get("FDivAnn"))
-        cur_fy = (row.get("CurFYSt"), row.get("CurFYEn"))
-        old_div: float | None = None
-        for prev in reversed(prior):
-            if prev is row:
-                continue
-            if (prev.get("CurFYSt"), prev.get("CurFYEn")) == cur_fy:
-                if old_div is None:
-                    old_div = _f(prev.get("FDivAnn")) or _f(prev.get("DivAnn"))
-            if (prev.get("NxtFYSt"), prev.get("NxtFYEn")) == cur_fy:
-                if old_div is None:
-                    old_div = _f(prev.get("NxFDivAnn"))
-            if old_div is not None:
-                break
-        delta = _pct_delta(new_div, old_div)
-        if delta is None:
-            return ("neutral", None, "DividendForecastRevision (prior不明)", {})
-        metric = {"Div_revision_pct": delta}
-        # 大幅減配/復配 (前期 0 → > 0) ハンドリング
-        if old_div == 0 and new_div and new_div > 0:
-            return ("good", "fukuhai", "DividendForecastRevision (復配)", metric)
-        if new_div == 0 and old_div and old_div > 0:
-            return ("bad", "muhai", "DividendForecastRevision (無配)", metric)
-        if delta >= REVISION_GOOD_THRESHOLD_PCT:
-            return ("good", "zouhai", f"DividendForecastRevision Div{delta:+.1f}%", metric)
-        if delta <= REVISION_BAD_THRESHOLD_PCT:
-            return ("bad", "genhai", f"DividendForecastRevision Div{delta:+.1f}%", metric)
-        return ("neutral", None, f"DividendForecastRevision Div{delta:+.1f}%", metric)
-
+        return [_classify_dividend_revision(row, prior)]
     if "FinancialStatements" in doctype:
-        # 同一 CurPerType の前年実績 (前年同期決算短信) と NP を比較
-        cur_per_type = row.get("CurPerType")
-        cur_per_st = row.get("CurPerSt") or ""
-        cur_year = cur_per_st[:4] if cur_per_st else ""
-        new_np = _f(row.get("NP"))
-        old_np = None
-        for prev in reversed(prior):
-            if prev is row:
-                continue
-            if prev.get("CurPerType") != cur_per_type:
-                continue
-            prev_st = prev.get("CurPerSt") or ""
-            if not prev_st or not cur_year:
-                continue
-            if prev_st[:4] == str(int(cur_year) - 1):
-                old_np = _f(prev.get("NP"))
-                break
-        delta = _pct_delta(new_np, old_np)
-        if delta is None:
-            return ("neutral", "kessan", f"{cur_per_type}決算短信 (前年比不明)", {})
-        metric = {"NP_YoY_pct": delta}
-        if delta <= NP_YOY_BAD_THRESHOLD_PCT:
-            return ("bad", "genshu", f"{cur_per_type}決算短信 NP YoY{delta:+.1f}%", metric)
-        if delta >= -NP_YOY_BAD_THRESHOLD_PCT:
-            return ("good", "kouhou", f"{cur_per_type}決算短信 NP YoY{delta:+.1f}%", metric)
-        return ("neutral", "kessan", f"{cur_per_type}決算短信 NP YoY{delta:+.1f}%", metric)
-
-    return ("neutral", None, "", {})
+        return _classify_financial_statements(row, prior)
+    return []
 
 
 # ---- 抽出本体 -------------------------------------------------------------
 
+# タイトルだけでは判定できず、数値 (NP YoY / NxFNp vs NP) で初めて方向が決まる hint。
+# CSV の「決算短信→genshu」「通期業績→genshu」等を TDnet 経路で拾うと、
+# 増益決算短信も bad/genshu に誤分類されてしまうため除外する。
+# 当該 hint は /fins/summary 経路 (extract の _classify_financial_statements) で判定。
+_TDNET_NUMERIC_ONLY_HINTS = {"genshu", "kahou_nx", "kouhou_nx", "kessan"}
+
+
+def _classify_tdnet_rows(rows: list[dict[str, Any]]) -> list[ClassifiedDisclosure]:
+    """yanoshin TDnet 行をタイトル正規表現 (data/kouaku_classification.csv) で分類。
+
+    polarity=neutral / 数値判定専用 hint は除外。
+    pubdate "YYYY-MM-DD HH:MM:SS" を event_date / disc_time に分解。
+    """
+    rules = load_rules()
+    out: list[ClassifiedDisclosure] = []
+    for r in rows:
+        title = r.get("title") or ""
+        if not title:
+            continue
+        polarity, hint, note = classify_by_title(title, rules=rules)
+        if polarity == "neutral":
+            continue
+        if hint in _TDNET_NUMERIC_ONLY_HINTS:
+            continue
+        code = _code4(r.get("code"))
+        if not code:
+            continue
+        pubdate = r.get("pubdate") or ""
+        ev_date, _, disc_time = pubdate.partition(" ")
+        out.append(
+            ClassifiedDisclosure(
+                polarity=polarity,
+                subpattern_hint=hint,
+                reason=f"tdnet:{note}" if note else "tdnet:title-match",
+                code=code,
+                event_date=ev_date,
+                title=title,
+                disc_no=r.get("id"),
+                disc_time=disc_time or None,
+                raw=r,
+            )
+        )
+    return out
+
+
 def classify_all(
     buyback_rows: list[dict[str, Any]],
     fins_rows: list[dict[str, Any]],
+    tdnet_rows: list[dict[str, Any]] | None = None,
 ) -> list[ClassifiedDisclosure]:
+    """自社株買い + /fins/summary + TDnet (yanoshin) を一括分類して polarity 付き列を返す。"""
     out: list[ClassifiedDisclosure] = []
-    # 自社株買い (常に good/jisha)
+    # 自社株買い (Pro: 常に good/jisha)
     for r in buyback_rows:
         cd = classify_buyback_record(r)
         out.append(cd)
 
-    # /fins/summary: code 履歴で時系列判定
+    # TDnet 全タイトル (yanoshin): jisha / tob / yutai_new / kabushiki_bunkatsu /
+    # yutai_end / seikyu / tokubai 等をタイトル regex で拾う
+    if tdnet_rows:
+        out.extend(_classify_tdnet_rows(tdnet_rows))
+
+    # /fins/summary: code 履歴で時系列判定 (1 row が複数 judgment を返しうる)
     by_code = _build_history_by_code(fins_rows)
     for code, hist in by_code.items():
         for idx, row in enumerate(hist):
             prior = hist[:idx]
-            polarity, hint, reason, metric = _classify_revision_vs_prior(row, prior)
-            if polarity == "neutral" and not hint:
-                continue
-            cd = classify_fins_record(row)
-            cd.polarity = polarity
-            cd.subpattern_hint = hint
-            cd.reason = reason
-            cd.metric = metric
-            out.append(cd)
+            for polarity, hint, reason, metric in _classify_revision_vs_prior(row, prior):
+                if polarity == "neutral" and not hint:
+                    continue
+                cd = classify_fins_record(row)
+                cd.polarity = polarity
+                cd.subpattern_hint = hint
+                cd.reason = reason
+                cd.metric = metric
+                out.append(cd)
     return out
 
 
 # ---- サブパターン確定 ---------------------------------------------------
 
-_SUBPATTERN_RULES = [
-    ("jisha_kahou", {"jisha"}, {"kahou"}),
-    ("jisha_genshu", {"jisha"}, {"genshu", "kessan"}),
-    ("fukuhai_genshu", {"fukuhai"}, {"genshu", "kessan", "kahou"}),
-    ("zouhai_genshu", {"zouhai"}, {"genshu", "kessan", "kahou"}),
-    ("tokubai_kahou", {"tokubai"}, {"kahou", "genshu", "kessan"}),
-    # /fins/summary 由来の主要発見 (Phase 1.5 で追加):
-    ("kouhou_genshu", {"kouhou"}, {"genshu", "kessan"}),
-    ("kouhou_kahou", {"kouhou"}, {"kahou"}),
+_POSITIVE_HINT_ORDER = [
+    "jisha", "tob", "kouhou", "kouhou_nx", "zouhai", "fukuhai",
+    "tokubai", "yutai_new", "kabushiki_bunkatsu",
+]
+_NEGATIVE_HINT_ORDER = [
+    "kahou", "kahou_nx", "genshu", "genhai", "muhai", "seikyu", "yutai_end",
 ]
 
 
 def decide_subpattern(good_hints: set[str], bad_hints: set[str]) -> str:
-    for name, need_good, need_bad in _SUBPATTERN_RULES:
-        if good_hints & need_good and bad_hints & need_bad:
-            return name
+    """好/悪 hint の集合から `{pos}_{neg}` 形式の subpattern 名を決定する。
+
+    優先度は `_POSITIVE_HINT_ORDER` / `_NEGATIVE_HINT_ORDER` の宣言順。
+    既知 hint の組合せは全て命名され、未知 hint 同士なら `other`。
+    """
+    pos = next((h for h in _POSITIVE_HINT_ORDER if h in good_hints), None)
+    neg = next((h for h in _NEGATIVE_HINT_ORDER if h in bad_hints), None)
+    if pos and neg:
+        return f"{pos}_{neg}"
     return "other"
 
 
@@ -305,6 +421,22 @@ def _load_buyback() -> list[dict[str, Any]]:
     return rows
 
 
+def _load_tdnet() -> list[dict[str, Any]]:
+    """cache/disclosures/tdnet_all.json から TDnet 全タイトルを読み込む。
+
+    yanoshin 取得時は by_date 形式。各 item は既に正規化済 (code/title/pubdate)。
+    """
+    p = CACHE_DIR / "tdnet_all.json"
+    if not p.exists():
+        print(f"  (info) {p} not found - TDnet パスは skip")
+        return []
+    data = json.loads(p.read_text())
+    rows: list[dict[str, Any]] = []
+    for items in data.get("by_date", {}).values():
+        rows.extend(items)
+    return rows
+
+
 def _load_fins() -> list[dict[str, Any]]:
     p_by_date = CACHE_DIR / "fins_summary.json"
     p_by_code = CACHE_DIR / "fins_summary_by_code.json"
@@ -320,16 +452,39 @@ def _load_fins() -> list[dict[str, Any]]:
     return rows
 
 
+def _merge_existing_attrs(new_records: list[dict[str, Any]], out_path: Path) -> int:
+    """既存 kouaku_records.json があれば attrs (価格 enrich 等) を保持する。
+
+    id で突合。新規レコードの attrs は空のままにし、既存 id のものは attrs を
+    そのまま継承する。戻り値: 引き継いだ件数。
+    """
+    if not out_path.exists():
+        return 0
+    try:
+        old = json.loads(out_path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return 0
+    old_attrs = {r["id"]: r.get("attrs") or {} for r in old.get("records", [])}
+    carried = 0
+    for r in new_records:
+        if r["id"] in old_attrs and old_attrs[r["id"]]:
+            r["attrs"] = old_attrs[r["id"]]
+            carried += 1
+    return carried
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--out", type=Path, default=OUT_PATH)
+    ap.add_argument("--out", type=Path, default=OUT_PATH, help="出力先 kouaku_records.json のパス")
+    ap.add_argument("--reset-attrs", action="store_true", help="既存 attrs (価格 enrich) を引き継がず空で出力")
     args = ap.parse_args()
 
     buyback = _load_buyback()
     fins = _load_fins()
-    print(f"loaded {len(buyback)} buyback rows, {len(fins)} fins/summary rows")
+    tdnet = _load_tdnet()
+    print(f"loaded {len(buyback)} buyback rows, {len(fins)} fins/summary rows, {len(tdnet)} tdnet rows")
 
-    classified = classify_all(buyback, fins)
+    classified = classify_all(buyback, fins, tdnet_rows=tdnet)
     pol_count: dict[str, int] = defaultdict(int)
     for c in classified:
         pol_count[c.polarity] += 1
@@ -341,13 +496,18 @@ def main() -> None:
         sub_count[r["subpattern"]] += 1
     print(f"mixed records: {len(records)}  subpatterns: {dict(sub_count)}")
 
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps({
+    if not args.reset_attrs:
+        carried = _merge_existing_attrs(records, args.out)
+        if carried:
+            print(f"carried over enrich attrs from {carried} records")
+
+    from scripts._atomic import atomic_write_json
+    atomic_write_json(args.out, {
         "schema_version": 1,
         "event_type": "kouaku_mixed",
-        "subpattern_counts": dict(sub_count),
+        "subpattern_counts": dict(sorted(sub_count.items())),  # alphabetical for stable diff
         "records": records,
-    }, ensure_ascii=False, indent=2))
+    })
     print(f"saved → {args.out}")
 
 

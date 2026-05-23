@@ -49,6 +49,7 @@ class ClassifiedDisclosure:
 
 
 def load_rules(path: Path = DICT_PATH) -> list[Rule]:
+    """data/kouaku_classification.csv からタイトル分類ルール一覧をロード。"""
     rules: list[Rule] = []
     with path.open() as f:
         for row in csv.DictReader(f):
@@ -64,34 +65,6 @@ def load_rules(path: Path = DICT_PATH) -> list[Rule]:
 
 
 # ---- /fins/summary 専用ロジック ------------------------------------------
-
-def _to_float(v: Any) -> float | None:
-    if v is None or v == "":
-        return None
-    try:
-        return float(v)
-    except (TypeError, ValueError):
-        return None
-
-
-def _classify_earn_forecast(row: dict[str, Any], code: str, date_str: str) -> ClassifiedDisclosure | None:
-    """業績予想修正 (EarnForecastRevision): NxF* 系から判定。
-
-    今期予想 NP の差分が分からなければ売上 (NxFSales) で代替する。
-    実務上は「Forecast 系の修正 = 修正発表」なので、修正方向はタイトルでは特定できない。
-    /fins/summary は予想値そのものを上書きするので、過去の予想値と比較する必要がある。
-    ただしこの関数単体では履歴を持たないので、まずは中立として返し、後段で比較する。
-    """
-    return None  # extract 側で過去予想と比較するためここでは未確定
-
-
-_NP_YOY_KEY_MAP = {
-    "1Q": ("NP_1Q_prev", None),
-    "2Q": ("NP_2Q_prev", None),
-    "3Q": ("NP_3Q_prev", None),
-    "FY": ("NP_FY_prev", None),
-}
-
 
 def _classify_fins_doctype(row: dict[str, Any]) -> tuple[str | None, str | None, str, dict[str, float]]:
     """DocType を見て (polarity, subpattern_hint, reason, metric) を返す。
@@ -172,10 +145,12 @@ def classify_by_title(title: str, *, rules: list[Rule]) -> tuple[str, str | None
 # ---- バッチ ---------------------------------------------------------------
 
 def classify_buyback(rows: Iterable[dict[str, Any]]) -> list[ClassifiedDisclosure]:
+    """share_buyback_tdnet 行配列を ClassifiedDisclosure 配列に変換。"""
     return [classify_buyback_record(r) for r in rows]
 
 
 def classify_fins(rows: Iterable[dict[str, Any]]) -> list[ClassifiedDisclosure]:
+    """/fins/summary 行配列を ClassifiedDisclosure 配列に変換 (履歴比較は extract 側)。"""
     return [classify_fins_record(r) for r in rows]
 
 

@@ -26,21 +26,7 @@ COST_PCT_DEFAULT = 0.20
 MIN_CELL_N = 5
 
 
-def _disc_bucket(rec: dict[str, Any]) -> str:
-    times = [f.get("disc_time") for f in rec.get("good_factors", []) + rec.get("bad_factors", []) if f.get("disc_time")]
-    if not times:
-        return "unknown"
-    t = min(times)
-    h = t[:2]
-    if h < "09":
-        return "寄前"
-    if h < "11":
-        return "寄り中"
-    if h < "15":
-        return "場中 (11-15)"
-    if h == "15" and t < "15:30":
-        return "引け間際 (15:00-15:29)"
-    return "大引け後 (15:30+)"
+from scripts._buckets import disc_bucket as _disc_bucket  # noqa: E402
 
 
 def _net_pnl(open_to_close_ret: float, cost_pct: float, direction: str) -> float:
@@ -61,6 +47,7 @@ def _stat_block(values: list[float]) -> dict[str, float]:
 
 
 def build_report(records: list[dict[str, Any]], cost_pct: float) -> str:
+    """subpattern × DiscTime セルごとに寄→引 短期戦略の net PnL を集計して md 文字列で返す。"""
     # cell 構成
     cells: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
     for r in records:
@@ -130,9 +117,9 @@ def build_report(records: list[dict[str, Any]], cost_pct: float) -> str:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--path", type=Path, default=DATA_PATH)
-    ap.add_argument("--out", type=Path, default=REPORT_PATH)
-    ap.add_argument("--cost", type=float, default=COST_PCT_DEFAULT, help="往復コスト % (既定 0.20)")
+    ap.add_argument("--path", type=Path, default=DATA_PATH, help="kouaku_records.json のパス")
+    ap.add_argument("--out", type=Path, default=REPORT_PATH, help="出力 md ファイルのパス")
+    ap.add_argument("--cost", type=float, default=COST_PCT_DEFAULT, help="往復コスト %% (既定 0.20)")
     args = ap.parse_args()
 
     data = json.loads(args.path.read_text())
