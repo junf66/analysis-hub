@@ -55,6 +55,15 @@ class TestImportable(unittest.TestCase):
     def test_buckets_module(self) -> None:
         self._check("scripts._buckets")
 
+    def test_extract_po(self) -> None:
+        self._check("scripts.extract_po")
+
+    def test_analyze_po_edge(self) -> None:
+        self._check("scripts.analyze_po_edge")
+
+    def test_backtest_po(self) -> None:
+        self._check("scripts.backtest_po")
+
 
 class TestHelpExitsCleanly(unittest.TestCase):
     """全 CLI が --help で exit 0 (argparse の format-string バグ等を検出)。"""
@@ -95,6 +104,15 @@ class TestHelpExitsCleanly(unittest.TestCase):
 
     def test_noon_disclosure_experiment(self) -> None:
         self._run_help("scripts.noon_disclosure_experiment")
+
+    def test_extract_po(self) -> None:
+        self._run_help("scripts.extract_po")
+
+    def test_analyze_po_edge(self) -> None:
+        self._run_help("scripts.analyze_po_edge")
+
+    def test_backtest_po(self) -> None:
+        self._run_help("scripts.backtest_po")
 
 
 if __name__ == "__main__":
