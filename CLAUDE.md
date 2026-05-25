@@ -42,12 +42,18 @@ python -m unittest discover -s tests
 ## キーとなる発見済みエッジ
 
 ### kouaku
-`kouhou_genshu × 場中 (11-15) 開示`:
-- 翌寄り→翌引 EV(net)=+1.51% / t=+3.19 / win=65% / cumul=+30.15% (5y, n=20)
-- bootstrap 95% CI: [-2.62%, -0.86%]
-- 戦略: 翌寄りでショート → 翌引けで買戻
+source of truth は `scripts/backtest_kouaku.py` の net 損益 (往復コスト 0.20%)。
+全 cell の現行ランキングは `reports/kouaku_backtest.md` / `data/kouaku_site.json` を参照。
 
-他の cell は |t|<2 でノイズ範囲 (`scripts/backtest_kouaku.py` の出力参照)。
+現行の高 n 有意セル (net |t|≥2、n≥100、いずれも 寄りショート→引け買戻):
+- `zouhai_kahou_nx × 大引け後` short: EV(net)+0.83% / t+4.37 / win=63% / cumul+199.5% (n=239)
+- `kouhou_seikyu × 大引け後`   short: EV(net)+0.39% / t+2.24 / win=55% / cumul+282.4% (n=715)
+
+`kouhou_genshu × 場中 (11-15) 開示` (旧・主エッジ):
+- 翌寄り→翌引 EV(net)=+0.91% / t=+1.52 / win=55% / cumul=+18.27% (5y, n=20)
+- 生 (cost 前) bootstrap 95% CI: [-2.23%, -0.02%]
+- per-trade は大きいが n が小さく cost 後 |t|<2 に低下。要追検証。
+- 戦略: 翌寄りでショート → 翌引けで買戻
 
 ### PO (発見済 3 エッジ、cost 0% raw)
 - 発表翌日 (普通 announce, 9:10 売り long): EV +0.44% / t +3.07 / n 121
