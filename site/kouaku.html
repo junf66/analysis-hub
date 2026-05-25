@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>好悪同日材料 — analysis-hub</title>
+<!--
+  好悪同日材料 (kouaku_mixed) セクション。大量保有トラッカーサイトへ移植する想定の
+  自己完結ページ。依存ライブラリなし (vanilla JS)。
+
+  データ供給: data/kouaku_site.json (scripts/export_kouaku_site.py が生成)
+  移植時は下の DATA_URL を raw.githubusercontent の URL に差し替えるだけ:
+    ?data=<URL> クエリでも上書き可。
+    例: ...kouaku.html?data=https://raw.githubusercontent.com/junf66/analysis-hub/<branch>/data/kouaku_site.json
+  raw.githubusercontent は CORS 許可 (access-control-allow-origin: *) のため別オリジンから fetch 可能。
+
+  設計意図: n=20 のエッジを n=300 と同格に見せない。
+    confidence=low (n<30) の行は薄く + バッジ。net |t|≥2 は notable バッジ。
+-->
+<style>
+  :root {
+    --bg: #0f1419; --panel: #1a2029; --border: #2a3340; --fg: #d7dee6;
+    --muted: #7c8794; --pos: #46c08a; --neg: #e06a6a; --accent: #5aa9e6;
+    --warn: #d6a64c; --low-dim: 0.45;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+    font-size: 14px; line-height: 1.5;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  h2 { font-size: 15px; margin: 28px 0 10px; color: var(--fg); border-left: 3px solid var(--accent); padding-left: 8px; }
+  .meta-bar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; color: var(--muted); font-size: 12.5px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11.5px; font-weight: 600; }
+  .badge-fresh { background: #1d3a2e; color: var(--pos); }
+  .badge-stale { background: #3a2e1d; color: var(--warn); }
+  .badge-notable { background: #1d2d3a; color: var(--accent); }
+  .badge-low { background: #3a1d1d; color: var(--neg); }
+  .controls { display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: center; margin: 8px 0 12px; font-size: 13px; }
+  .controls label { color: var(--muted); cursor: pointer; user-select: none; }
+  .controls input[type=text], .controls select {
+    background: var(--panel); border: 1px solid var(--border); color: var(--fg);
+    border-radius: 6px; padding: 4px 8px; font-size: 13px;
+  }
+  table { width: 100%; border-collapse: collapse; background: var(--panel); border-radius: 8px; overflow: hidden; }
+  th, td { padding: 7px 9px; text-align: right; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th { background: #141a22; color: var(--muted); font-weight: 600; cursor: pointer; position: sticky; top: 0; }
+  th.l, td.l { text-align: left; }
+  tbody tr:hover { background: #20283280; }
+  tr.low { opacity: var(--low-dim); }
+  .pos { color: var(--pos); } .neg { color: var(--neg); } .mut { color: var(--muted); }
+  .dir-short { color: var(--neg); font-weight: 600; } .dir-long { color: var(--pos); font-weight: 600; }
+  .ci { color: var(--muted); font-size: 12px; }
+  .note { color: var(--muted); font-size: 12px; margin: 6px 0 0; }
+  .err { color: var(--neg); padding: 16px; }
+  .scroll { overflow-x: auto; }
+  .count { color: var(--muted); font-size: 12px; font-weight: 400; margin-left: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>好悪同日材料 <span class="count" id="hdr-count"></span></h1>
+  <div class="meta-bar" id="meta-bar"></div>
+
+  <h2>エッジ（subpattern × 開示タイミング）</h2>
+  <div class="controls">
+    <label><input type="checkbox" id="f-notable"> notable のみ（net |t|≥2）</label>
+    <label><input type="checkbox" id="f-hidelow"> 低信頼（n&lt;30）を隠す</label>
+    <span class="mut" id="edge-count"></span>
+  </div>
+  <div class="scroll">
+    <table id="edges">
+      <thead><tr>
+        <th class="l" data-k="subpattern">subpattern</th>
+        <th class="l" data-k="disc_time_bucket">開示</th>
+        <th class="l" data-k="direction">方向</th>
+        <th data-k="n">n</th>
+        <th data-k="t">t(net)</th>
+        <th data-k="ev_net_pct">EV(net)</th>
+        <th data-k="win_pct">win%</th>
+        <th data-k="cumul_pct">cumul</th>
+        <th class="l">95% CI(net)</th>
+        <th class="l" data-k="confidence">信頼</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="note" id="edge-note"></p>
+
+  <h2>直近の好悪同日材料</h2>
+  <div class="controls">
+    <input type="text" id="ev-search" placeholder="コード / subpattern で絞り込み">
+    <select id="ev-bucket"><option value="">開示タイミング: すべて</option></select>
+    <span class="mut" id="ev-count"></span>
+  </div>
+  <div class="scroll">
+    <table id="events">
+      <thead><tr>
+        <th class="l" data-k="date">日付</th>
+        <th class="l" data-k="code">コード</th>
+        <th class="l" data-k="subpattern">subpattern</th>
+        <th class="l" data-k="disc_time_bucket">開示</th>
+        <th class="l" data-k="disc_time">時刻</th>
+        <th class="l">好材料</th>
+        <th class="l">悪材料</th>
+        <th data-k="gap_pct">GAP</th>
+        <th data-k="next_day_open_to_close_ret_pct">寄→引</th>
+        <th data-k="next_day_full_ret_pct">前日終→翌引</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+"use strict";
+const DATA_URL = new URLSearchParams(location.search).get("data") || "../data/kouaku_site.json";
+const STALE_DAYS = 14; // last_updated がこれより古ければ stale バッジ
+
+const $ = (s) => document.querySelector(s);
+const fmtPct = (v, sign = true) => v == null ? "–" : (sign && v > 0 ? "+" : "") + v.toFixed(2) + "%";
+const fmtNum = (v, d = 2) => v == null ? "–" : (v > 0 ? "+" : "") + v.toFixed(d);
+const cls = (v) => v == null ? "mut" : v > 0 ? "pos" : v < 0 ? "neg" : "mut";
+const esc = (s) => (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+let STATE = { edges: [], events: [], meta: {} };
+
+function daysSince(iso) {
+  if (!iso) return null;
+  const d = new Date(iso + "T00:00:00Z");
+  if (isNaN(d)) return null;
+  return Math.floor((Date.now() - d.getTime()) / 86400000);
+}
+
+function renderMeta(meta) {
+  const [lo, hi] = meta.data_window || [null, null];
+  const age = daysSince(meta.last_updated);
+  const stale = age != null && age > STALE_DAYS;
+  const freshCls = stale ? "badge-stale" : "badge-fresh";
+  const freshTxt = meta.last_updated
+    ? `最終更新 ${meta.last_updated}` + (age != null ? `（${age}日前）` : "")
+    : "最終更新 不明";
+  $("#meta-bar").innerHTML = [
+    `<span class="badge ${freshCls}">${esc(freshTxt)}</span>`,
+    lo && hi ? `<span>データ期間 ${esc(lo)} 〜 ${esc(hi)}</span>` : "",
+    `<span>総イベント ${meta.total_events?.toLocaleString() ?? "?"} 件</span>`,
+    `<span>指標 ${esc(meta.primary_metric ?? "")}</span>`,
+    meta.cost_assumption_pct != null ? `<span>往復コスト ${meta.cost_assumption_pct}%（net 反映）</span>` : "",
+  ].filter(Boolean).join("");
+  $("#hdr-count").textContent = `（${meta.total_events?.toLocaleString() ?? "?"} 件）`;
+}
+
+function renderEdges() {
+  const notableOnly = $("#f-notable").checked;
+  const hideLow = $("#f-hidelow").checked;
+  const rows = STATE.edges.filter((e) =>
+    (!notableOnly || e.notable) && (!hideLow || e.confidence !== "low"));
+  const tb = $("#edges tbody");
+  tb.innerHTML = rows.map((e) => {
+    const ci = e.ci95 || [null, null];
+    const confBadge = e.confidence === "low"
+      ? `<span class="badge badge-low" title="n<30: 統計的に薄い">low n=${e.n}</span>`
+      : e.confidence === "mid" ? `<span class="mut">mid</span>` : `<span class="pos">high</span>`;
+    const notable = e.notable ? ` <span class="badge badge-notable" title="net |t|≥2">★</span>` : "";
+    return `<tr class="${e.confidence === "low" ? "low" : ""}">
+      <td class="l">${esc(e.subpattern)}${notable}</td>
+      <td class="l">${esc(e.disc_time_bucket)}</td>
+      <td class="l dir-${esc(e.direction)}">${e.direction === "short" ? "ショート" : "ロング"}</td>
+      <td>${e.n}</td>
+      <td class="${cls(e.t)}">${fmtNum(e.t)}</td>
+      <td class="${cls(e.ev_net_pct)}">${fmtPct(e.ev_net_pct)}</td>
+      <td>${e.win_pct == null ? "–" : e.win_pct.toFixed(0) + "%"}</td>
+      <td class="${cls(e.cumul_pct)}">${fmtPct(e.cumul_pct)}</td>
+      <td class="l ci">[${fmtPct(ci[0])}, ${fmtPct(ci[1])}]</td>
+      <td class="l">${confBadge}</td>
+    </tr>`;
+  }).join("");
+  $("#edge-count").textContent = `${rows.length} / ${STATE.edges.length} cell`;
+}
+
+function renderEvents() {
+  const q = $("#ev-search").value.trim().toLowerCase();
+  const bucket = $("#ev-bucket").value;
+  const rows = STATE.events.filter((e) =>
+    (!bucket || e.disc_time_bucket === bucket) &&
+    (!q || (e.code + " " + e.subpattern).toLowerCase().includes(q)));
+  const tb = $("#events tbody");
+  tb.innerHTML = rows.map((e) => `<tr class="${e.limit_locked ? "low" : ""}">
+      <td class="l">${esc(e.date)}</td>
+      <td class="l">${esc(e.code)}${e.limit_locked ? ' <span class="badge badge-low" title="S高/S安でロック">L</span>' : ""}</td>
+      <td class="l">${esc(e.subpattern)}</td>
+      <td class="l">${esc(e.disc_time_bucket)}</td>
+      <td class="l mut">${esc(e.disc_time ?? "–")}</td>
+      <td class="l">${esc(e.good ?? "–")}</td>
+      <td class="l">${esc(e.bad ?? "–")}</td>
+      <td class="${cls(e.gap_pct)}">${fmtPct(e.gap_pct)}</td>
+      <td class="${cls(e.next_day_open_to_close_ret_pct)}">${fmtPct(e.next_day_open_to_close_ret_pct)}</td>
+      <td class="${cls(e.next_day_full_ret_pct)}">${fmtPct(e.next_day_full_ret_pct)}</td>
+    </tr>`).join("");
+  $("#ev-count").textContent = `${rows.length} / ${STATE.events.length} 件`;
+}
+
+function sortBy(rows, key, numeric) {
+  const dir = sortBy._k === key ? -sortBy._d : 1;
+  sortBy._k = key; sortBy._d = dir;
+  rows.sort((a, b) => {
+    let x = a[key], y = b[key];
+    if (numeric) { x = x == null ? -Infinity : x; y = y == null ? -Infinity : y; return (x - y) * dir; }
+    x = x ?? ""; y = y ?? ""; return String(x).localeCompare(String(y)) * dir;
+  });
+}
+
+function wireSort(tableSel, getRows, render) {
+  document.querySelectorAll(`${tableSel} thead th[data-k]`).forEach((th) => {
+    th.addEventListener("click", () => {
+      const numeric = !th.classList.contains("l") || ["n"].includes(th.dataset.k);
+      sortBy(getRows(), th.dataset.k, numeric);
+      render();
+    });
+  });
+}
+
+async function main() {
+  try {
+    // window.__KOUAKU_DATA__ があればそれを使う (build 時インライン / オフラインプレビュー用)。
+    // 無ければ DATA_URL から fetch (raw GitHub 配信用)。
+    let data = window.__KOUAKU_DATA__;
+    if (!data) {
+      const res = await fetch(DATA_URL, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status} (${DATA_URL})`);
+      data = await res.json();
+    }
+    STATE.edges = data.edges || [];
+    STATE.events = data.events || [];
+    STATE.meta = data.meta || {};
+
+    renderMeta(STATE.meta);
+    renderEdges();
+
+    const buckets = [...new Set(STATE.events.map((e) => e.disc_time_bucket).filter(Boolean))];
+    for (const b of buckets) {
+      const o = document.createElement("option"); o.value = o.textContent = b; $("#ev-bucket").appendChild(o);
+    }
+    renderEvents();
+
+    $("#f-notable").addEventListener("change", renderEdges);
+    $("#f-hidelow").addEventListener("change", renderEdges);
+    $("#ev-search").addEventListener("input", renderEvents);
+    $("#ev-bucket").addEventListener("change", renderEvents);
+    wireSort("#edges", () => STATE.edges, renderEdges);
+    wireSort("#events", () => STATE.events, renderEvents);
+
+    $("#edge-note").textContent =
+      `EV/t/cumul はすべて往復コスト ${STATE.meta.cost_assumption_pct ?? "?"}% 控除後（net）。` +
+      `方向は cell の生 EV 符号で決定（負→寄りショート→引け買戻）。n<30 は薄く表示。`;
+  } catch (err) {
+    document.querySelector(".wrap").insertAdjacentHTML("beforeend",
+      `<p class="err">データ読み込み失敗: ${esc(err.message)}<br>` +
+      `DATA_URL を確認してください（既定 ${esc(DATA_URL)}）。</p>`);
+  }
+}
+main();
+</script>
+</body>
+</html>

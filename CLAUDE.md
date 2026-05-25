@@ -35,6 +35,10 @@ python -m scripts.query_kouaku --group-by disc_time_bucket
 python -m scripts.analyze_po_edge   # reports/po_analysis.md
 python -m scripts.backtest_po       # reports/po_backtest.md
 
+# 好悪サイト用 slim JSON 生成 + プレビュー
+python -m scripts.export_kouaku_site                 # data/kouaku_site.json
+python -m http.server                                # → http://localhost:8000/site/kouaku.html
+
 # テスト
 python -m unittest discover -s tests
 ```
