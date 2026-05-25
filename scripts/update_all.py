@@ -17,12 +17,19 @@ PO 実行順:
   3.        analyze_po_edge: レポート生成
   4.        backtest_po: バックテスト生成
 
+holdings 実行順:
+  1.        fetchers.holdings: holdings-tracker raw を取得 (--skip-fetch で省略)
+  2.        extract_holdings: 共通スキーマ events に展開 (価格 enrich 済)
+  3.        analyze_holdings_edge: レポート生成
+  4.        backtest_holdings: バックテスト生成
+
 各ステップは独立に skip 可能。途中失敗しても次回再開できる。
 
 Usage:
   python -m scripts.update_all                       # 全ソース (キャッシュ活用)
   python -m scripts.update_all --source kouaku      # kouaku のみ
   python -m scripts.update_all --source po          # PO のみ
+  python -m scripts.update_all --source holdings    # 大量保有のみ
   python -m scripts.update_all --refresh-fins       # /fins/summary を 5y 再 fetch
   python -m scripts.update_all --refresh-tdnet      # yanoshin TDnet を 5y 再 fetch
   python -m scripts.update_all --refresh-prices     # 価格を再 fetch
@@ -88,10 +95,21 @@ def _run_po(py: str, args: argparse.Namespace) -> None:
     _run([py, "-m", "scripts.backtest_po", "--cost", str(args.cost)])
 
 
+def _run_holdings(py: str, args: argparse.Namespace) -> None:
+    # holdings raw は keyless な公開 JSON のダウンロード。skip-fetch でなければ毎回取得。
+    # (取得しないとローカル extract が空 cache を踏むため、安全側で fetch する)
+    if not args.skip_fetch:
+        _run([py, "-m", "fetchers.holdings"])
+
+    _run([py, "-m", "scripts.extract_holdings"])
+    _run([py, "-m", "scripts.analyze_holdings_edge"])
+    _run([py, "-m", "scripts.backtest_holdings", "--cost", str(args.cost)])
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--source", choices=["all", "kouaku", "po"], default="all",
-                    help="どのソースを処理するか (既定 all = kouaku + po)")
+    ap.add_argument("--source", choices=["all", "kouaku", "po", "holdings"], default="all",
+                    help="どのソースを処理するか (既定 all = kouaku + po + holdings)")
     ap.add_argument("--refresh-fins", action="store_true", help="/fins/summary を 5y 再 fetch (~20 分)")
     ap.add_argument("--refresh-tdnet", action="store_true", help="yanoshin TDnet 全タイトルを 5y 再 fetch (~10 分)")
     ap.add_argument("--refresh-prices", action="store_true", help="kouaku_records 全件の価格 enrich を再実行")
@@ -110,10 +128,15 @@ def main() -> None:
         print("\n### PO パイプライン ###")
         _run_po(py, args)
 
+    if args.source in ("all", "holdings"):
+        print("\n### holdings パイプライン ###")
+        _run_holdings(py, args)
+
     print("\n=== update_all done ===")
-    print(f"  kouaku data: {REPO_ROOT / 'data' / 'kouaku_records.json'}")
-    print(f"  po data:     {REPO_ROOT / 'data' / 'po_records.json'}")
-    print(f"  reports:     {REPO_ROOT / 'reports'}")
+    print(f"  kouaku data:   {REPO_ROOT / 'data' / 'kouaku_records.json'}")
+    print(f"  po data:       {REPO_ROOT / 'data' / 'po_records.json'}")
+    print(f"  holdings data: {REPO_ROOT / 'data' / 'holdings_records.json'}")
+    print(f"  reports:       {REPO_ROOT / 'reports'}")
 
 
 if __name__ == "__main__":
