@@ -234,6 +234,130 @@ def section_invariants() -> None:
 
 
 # ============================================================
+# I. PO Data invariants
+# ============================================================
+
+_PO_VALID_EVENT_TYPES = {"po_announce", "po_decide", "po_deliver"}
+_PO_VALID_STAGES = {"announce", "decide", "deliver"}
+_PO_VALID_TYPES = {"普通", "リート"}
+_PO_STAGE_OF_EVENT = {
+    "po_announce": "announce",
+    "po_decide": "decide",
+    "po_deliver": "deliver",
+}
+# 各ステージで現れて良い attrs key の許容集合
+_PO_ATTR_KEYS_BY_STAGE: dict[str, set[str]] = {
+    "announce": {
+        "prev_close", "next_open", "gap_pct",
+        "next_day_905_ret", "next_day_910_ret", "next_day_915_ret",
+        "next_day_930_ret", "next_day_1000_ret", "next_day_morning_ret",
+        "next_day_high", "next_day_open_to_high_ret", "_raw_keys",
+    },
+    "decide": {
+        "ref_open", "dec_open", "dec_close", "ret_open", "ret_close", "_raw_keys",
+    },
+    "deliver": {
+        "prev_close", "next_open", "next_close", "gap_pct",
+        "next_day_open_to_close_ret", "issue_price", "discount_rate", "_raw_keys",
+    },
+}
+
+
+def section_po_invariants() -> None:
+    """po_records.json の id 一意 / event_type / stage / code / attrs 整合を検査。"""
+    print("\n=== I. PO Data invariants ===")
+    path = REPO_ROOT / "data" / "po_records.json"
+    if not path.exists():
+        # PO データは未生成でも kouaku は走るので critical ではない (warn のみ)
+        print(f"  (skip: {path} 未生成。`python -m scripts.extract_po` で生成)")
+        return
+    data = json.loads(path.read_text())
+    records = data.get("records", [])
+
+    # 1. id 一意性
+    ids = [r.get("id") for r in records]
+    seen: dict[str, int] = defaultdict(int)
+    for x in ids:
+        seen[x] += 1
+    dup_ids = sorted(k for k, n in seen.items() if n > 1)
+    if dup_ids:
+        add("I-po-dup-id", f"重複 id: {dup_ids[:5]}")
+
+    # 2. event_type が許容集合
+    bad_evt = {r.get("event_type") for r in records} - _PO_VALID_EVENT_TYPES
+    if bad_evt:
+        add("I-po-bad-event-type", f"未知 event_type: {bad_evt}")
+
+    # 3. stage が許容集合
+    bad_stage = {r.get("stage") for r in records} - _PO_VALID_STAGES
+    if bad_stage:
+        add("I-po-bad-stage", f"未知 stage: {bad_stage}")
+
+    # 4. event_type と stage が整合
+    for r in records:
+        et = r.get("event_type")
+        st = r.get("stage")
+        if et in _PO_STAGE_OF_EVENT and _PO_STAGE_OF_EVENT[et] != st:
+            add("I-po-evt-stage", f"{r.get('id')} event_type={et} stage={st}")
+
+    # 5. po_type が許容集合
+    bad_pt = {r.get("po_type") for r in records} - _PO_VALID_TYPES
+    if bad_pt:
+        add("I-po-bad-type", f"未知 po_type: {bad_pt}")
+
+    # 6. ISO date
+    for r in records:
+        ed = r.get("event_date") or ""
+        try:
+            date.fromisoformat(ed)
+        except ValueError:
+            add("I-po-bad-date", f"{r.get('id')} event_date={ed}")
+
+    # 7. code が 4-5 文字
+    for r in records:
+        c = r.get("code") or ""
+        if not (4 <= len(c) <= 5):
+            add("I-po-bad-code", f"{r.get('id')} code={c}")
+
+    # 8. attrs キーがステージ別許容集合に収まる
+    unknown_attr_keys: dict[str, int] = defaultdict(int)
+    for r in records:
+        stage = r.get("stage")
+        allowed = _PO_ATTR_KEYS_BY_STAGE.get(stage, set())
+        for k in (r.get("attrs") or {}):
+            if k not in allowed:
+                unknown_attr_keys[f"{stage}.{k}"] += 1
+    if unknown_attr_keys:
+        add("I-po-unknown-attrs", f"許容外 attrs key: {dict(list(unknown_attr_keys.items())[:5])}")
+
+    # 9. 同一 ref_id のイベント数が最大 3 (各 stage 最大 1)
+    by_ref: dict[str, list[str]] = defaultdict(list)
+    for r in records:
+        by_ref[r.get("ref_id") or ""].append(r.get("stage") or "")
+    for rid, stages in by_ref.items():
+        if not rid:
+            continue
+        if len(stages) > 3:
+            add("I-po-ref-overflow", f"ref_id={rid} に {len(stages)} events (最大 3)")
+        if len(stages) != len(set(stages)):
+            add("I-po-ref-dup-stage", f"ref_id={rid} stage 重複: {stages}")
+
+    # 10. stage_counts / type_counts のヘッダーが現データと一致
+    declared_stage = data.get("stage_counts", {})
+    actual_stage: dict[str, int] = defaultdict(int)
+    for r in records:
+        actual_stage[r.get("stage", "?")] += 1
+    if dict(declared_stage) != dict(actual_stage):
+        add("I-po-count-mismatch", f"stage_counts declared={dict(declared_stage)} actual={dict(actual_stage)}")
+
+    # 11. schema_version 宣言
+    if "schema_version" not in data:
+        add("I-po-schema-version", "po_records.json に schema_version 未宣言")
+
+    print(f"  PO records validated: {len(records)}")
+
+
+# ============================================================
 # B. Behavior: 全 CLI が --help で死なないか
 # ============================================================
 
@@ -250,6 +374,9 @@ def section_behavior() -> None:
         "scripts.data_health",
         "scripts.update_all",
         "scripts.noon_disclosure_experiment",
+        "scripts.extract_po",
+        "scripts.analyze_po_edge",
+        "scripts.backtest_po",
     ]
     for s in scripts:
         proc = subprocess.run(
@@ -742,6 +869,7 @@ def main() -> None:
     section_anti_patterns()
     section_xref()
     section_invariants()
+    section_po_invariants()
     section_json_roundtrip()
     section_csv_schema()
     section_behavior()

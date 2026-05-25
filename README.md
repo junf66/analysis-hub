@@ -32,8 +32,8 @@ python -m scripts.query_kouaku --subpattern kouhou_genshu --disc-time-bucket 場
 fetchers/        ソース別の raw データ取得 + cache
 normalizers/     ソース別の共通スキーマ変換
 analyzers/       timeline / po_edges 等の解析
-scripts/         kouaku_mixed パイプライン (fetch / extract / enrich / analyze / backtest / query)
-data/            git 管理する正規化済みデータ (kouaku_records.json 等)
+scripts/         kouaku_mixed + PO パイプライン (fetch / extract / enrich / analyze / backtest / query)
+data/            git 管理する正規化済みデータ (kouaku_records.json / po_records.json 等)
 cache/           再生成可能な生データ (gitignore)
 reports/         生成物 (gitignore)
 docs/            仕様書
