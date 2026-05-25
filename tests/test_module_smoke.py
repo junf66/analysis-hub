@@ -64,6 +64,15 @@ class TestImportable(unittest.TestCase):
     def test_backtest_po(self) -> None:
         self._check("scripts.backtest_po")
 
+    def test_extract_holdings(self) -> None:
+        self._check("scripts.extract_holdings")
+
+    def test_analyze_holdings_edge(self) -> None:
+        self._check("scripts.analyze_holdings_edge")
+
+    def test_backtest_holdings(self) -> None:
+        self._check("scripts.backtest_holdings")
+
 
 class TestHelpExitsCleanly(unittest.TestCase):
     """全 CLI が --help で exit 0 (argparse の format-string バグ等を検出)。"""
@@ -113,6 +122,15 @@ class TestHelpExitsCleanly(unittest.TestCase):
 
     def test_backtest_po(self) -> None:
         self._run_help("scripts.backtest_po")
+
+    def test_extract_holdings(self) -> None:
+        self._run_help("scripts.extract_holdings")
+
+    def test_analyze_holdings_edge(self) -> None:
+        self._run_help("scripts.analyze_holdings_edge")
+
+    def test_backtest_holdings(self) -> None:
+        self._run_help("scripts.backtest_holdings")
 
 
 if __name__ == "__main__":

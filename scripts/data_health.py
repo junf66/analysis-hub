@@ -23,6 +23,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 RECORDS_PATH = REPO_ROOT / "data" / "kouaku_records.json"
 PO_RECORDS_PATH = REPO_ROOT / "data" / "po_records.json"
 PO_RAW_PATH = REPO_ROOT / "cache" / "po" / "po_records.json"
+HOLDINGS_RECORDS_PATH = REPO_ROOT / "data" / "holdings_records.json"
+HOLDINGS_RAW_PATH = REPO_ROOT / "cache" / "holdings" / "holdings.json"
 FINS_PATH = REPO_ROOT / "cache" / "disclosures" / "fins_summary.json"
 BUYBACK_PATH = REPO_ROOT / "cache" / "disclosures" / "share_buyback_tdnet.json"
 TDNET_PATH = REPO_ROOT / "cache" / "disclosures" / "tdnet_all.json"
@@ -205,6 +207,34 @@ def check_po(lines: list[str]) -> dict[str, int]:
     return {"critical": 0, "total": len(recs), "with_price": with_price}
 
 
+def check_holdings(lines: list[str]) -> dict[str, int]:
+    """data/holdings_records.json (共通スキーマ展開済) を確認。"""
+    lines.append("## data/holdings_records.json (大量保有 共通スキーマ)")
+    lines.append("")
+    if not HOLDINGS_RECORDS_PATH.exists():
+        lines.append("- ❌ **missing** — `python -m fetchers.holdings` → `python -m scripts.extract_holdings` を実行")
+        lines.append("")
+        return {"critical": 1}
+    data = json.loads(HOLDINGS_RECORDS_PATH.read_text())
+    recs = data.get("records", [])
+    suspect = sum(1 for r in recs if r.get("low_ratio_suspect"))
+    with_price = sum(
+        1 for r in recs if (r.get("attrs") or {}).get("next_day_open_to_close_ret") is not None
+    )
+    dates = sorted({r["event_date"] for r in recs if r.get("event_date")})
+    lines.append(f"- 件数: **{len(recs)}**  ({_size_mb(HOLDINGS_RECORDS_PATH):.2f} MB)")
+    if dates:
+        lines.append(f"- event_date 範囲: {dates[0]} 〜 {dates[-1]}")
+    lines.append(f"- purpose 分布: {data.get('purpose_counts', {})}")
+    lines.append(f"- holder 分布: {data.get('holder_counts', {})}")
+    lines.append(f"- 価格 coverage (寄り→引け): {with_price}/{len(recs)} ({with_price*100//max(len(recs),1)}%)")
+    lines.append(f"- EV 評価除外フラグ: low_ratio_suspect={suspect}")
+    lines.append(f"- 原本件数 (raw): {data.get('count_raw', '?')}")
+    lines.append(f"- raw last_updated: {data.get('raw_last_updated', '?')}")
+    lines.append("")
+    return {"critical": 0, "total": len(recs), "with_price": with_price}
+
+
 def check_bars(lines: list[str]) -> dict[str, int]:
     """noon_experiment daily_bars キャッシュのサイズ・銘柄数を lines に追記。"""
     lines.append("## cache/noon_experiment/daily_bars_by_code.json (全銘柄 5y 日足)")
@@ -235,6 +265,7 @@ def main() -> None:
     summary = {}
     summary["records"] = check_records(lines)
     summary["po"] = check_po(lines)
+    summary["holdings"] = check_holdings(lines)
     summary["fins"] = check_fins(lines)
     summary["tdnet"] = check_tdnet(lines)
     summary["buyback"] = check_buyback(lines)
