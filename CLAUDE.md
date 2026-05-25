@@ -44,6 +44,9 @@ python -m scripts.backtest_po       # reports/po_backtest.md
 python -m scripts.analyze_holdings_edge   # reports/holdings_analysis.md
 python -m scripts.backtest_holdings       # reports/holdings_backtest.md
 
+# エッジ検証 (過剰最適化ガード: 日付クラスタ頑健t + FDR多重検定補正 + walk-forward OOS)
+python -m scripts.validate_edges          # reports/edge_validation.md (3ソース横断)
+
 # 好悪サイト用 slim JSON 生成 + プレビュー
 python -m scripts.export_kouaku_site                 # data/kouaku_site.json
 python -m http.server                                # → http://localhost:8000/site/kouaku.html
@@ -53,6 +56,15 @@ python -m unittest discover -s tests
 ```
 
 ## キーとなる発見済みエッジ
+
+**過剰最適化ガード (`scripts.validate_edges`) を通過する真に頑健なエッジ** (日付クラスタ頑健 t
+＋ Benjamini-Hochberg FDR ＋ walk-forward OOS、cost 0.20% net):
+- kouaku: `zouhai_kahou_nx × 大引け後` short (t_clust+4.70 / p≈0 / OOS test +1.23% / n239)
+- PO:     `decide × リート × 貸借` short (t_clust+3.31 / p=0.0009 / OOS test +0.88% / n131)
+- holdings: **通過セルなし** (最善でも p=0.055、データ期間が短い)
+
+backtest_* の単純 |t| では有意に見えるセル (kouhou_seikyu×大引け後 t+2.24 等) も、
+多重検定・クラスタ補正後は p>0.05 に落ちる。**実運用判断は edge_validation.md を基準にする**こと。
 
 ### kouaku
 source of truth は `scripts/backtest_kouaku.py` の net 損益 (往復コスト 0.20%)。
@@ -111,6 +123,8 @@ source of truth は `reports/holdings_backtest.md`。
 - PO の attrs キー変更 = `extract_po._attrs_*` + `analyze_po_edge._METRIC_FIELDS_BY_STAGE` + `audit_all._PO_ATTR_KEYS_BY_STAGE` + `query_po._METRIC_CHOICES`
 - holdings の field 追加 = `extract_holdings._PRICE_MAP / _DIM_KEYS` + `analyze_holdings_edge._METRIC_FIELDS` + `query_holdings._METRIC_CHOICES` + `audit_all._HOLDINGS_ATTR_KEYS`
 - ad-hoc 探索 CLI は 3 ソース共通: `query_kouaku` / `query_po` / `query_holdings` (集計・表示は `_query_report` を共有)
+- 約定可能性 (流動性) フィルタ: `query_holdings --min-turnover/--min-mktcap`、`query_po --min-mktcap`。
+  非独立補正は `--collapse-daily`。エッジの最終判断は `validate_edges` (FDR+OOS) を基準に。
 
 ## 開発ブランチ規約
 

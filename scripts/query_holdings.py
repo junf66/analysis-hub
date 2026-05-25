@@ -88,6 +88,13 @@ def _filter(records: list[dict[str, Any]], args: argparse.Namespace) -> list[dic
             continue
         if args.ratio_max is not None and (ratio is None or ratio > args.ratio_max):
             continue
+        # 流動性フィルタ (約定可能性): 売買代金・時価総額の下限
+        tov = r.get("turnover_oku")
+        if args.min_turnover is not None and (tov is None or tov < args.min_turnover):
+            continue
+        mcap = r.get("market_cap_oku")
+        if args.min_mktcap is not None and (mcap is None or mcap < args.min_mktcap):
+            continue
         gap = (r.get("attrs") or {}).get("gap_pct")
         if args.gap_min is not None and (gap is None or gap < args.gap_min):
             continue
@@ -111,6 +118,8 @@ def main() -> None:
     ap.add_argument("--ratio-max", type=float, help="保有割合%% 上限 (含む)")
     ap.add_argument("--gap-min", type=float, help="GAP%% 下限 (含む)")
     ap.add_argument("--gap-max", type=float, help="GAP%% 上限 (含む)")
+    ap.add_argument("--min-turnover", type=float, help="売買代金(億)の下限 — 約定可能性フィルタ")
+    ap.add_argument("--min-mktcap", type=float, help="時価総額(億)の下限 — 約定可能性フィルタ")
     ap.add_argument("--include-suspect", action="store_true",
                     help="low_ratio_suspect も含める (既定は除外)")
     ap.add_argument("--metric", choices=_METRIC_CHOICES, default="next_day_open_to_close_ret",
