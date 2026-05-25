@@ -73,6 +73,12 @@ class TestImportable(unittest.TestCase):
     def test_backtest_holdings(self) -> None:
         self._check("scripts.backtest_holdings")
 
+    def test_query_po(self) -> None:
+        self._check("scripts.query_po")
+
+    def test_query_holdings(self) -> None:
+        self._check("scripts.query_holdings")
+
 
 class TestHelpExitsCleanly(unittest.TestCase):
     """全 CLI が --help で exit 0 (argparse の format-string バグ等を検出)。"""
@@ -131,6 +137,12 @@ class TestHelpExitsCleanly(unittest.TestCase):
 
     def test_backtest_holdings(self) -> None:
         self._run_help("scripts.backtest_holdings")
+
+    def test_query_po(self) -> None:
+        self._run_help("scripts.query_po")
+
+    def test_query_holdings(self) -> None:
+        self._run_help("scripts.query_holdings")
 
 
 if __name__ == "__main__":

@@ -25,12 +25,16 @@ python -m scripts.update_all --source kouaku       # kouaku のみ
 python -m scripts.update_all --source po           # PO のみ
 python -m scripts.update_all --source holdings     # 大量保有のみ
 
-# ad-hoc EV 計算 (主な探索インターフェイス)
+# ad-hoc EV 計算 (主な探索インターフェイス) — 3 ソースとも同じ操作感
 python -m scripts.query_kouaku --subpattern <X> --disc-time-bucket <Y> --bootstrap
+python -m scripts.query_po --stage decide --po-type リート --metric ret_close --bootstrap
+python -m scripts.query_holdings --holder 外資ファンド --group-by purpose --bootstrap
 
 # 全 cell 横並び比較
 python -m scripts.query_kouaku --group-by subpattern
 python -m scripts.query_kouaku --group-by disc_time_bucket
+python -m scripts.query_po --group-by lending_type --stage decide --metric ret_close
+python -m scripts.query_holdings --group-by purpose
 
 # PO エッジ確認
 python -m scripts.analyze_po_edge   # reports/po_analysis.md
@@ -100,8 +104,9 @@ source of truth は `reports/holdings_backtest.md`。
 - 共通スキーマ準拠の dict を中継するスタイル
 - 新サブパターン追加 = `extract_mixed_disclosures._SUBPATTERN_RULES` + (必要なら) `data/kouaku_classification.csv`
 - 新メトリクス追加 = `enrich_price_kouaku._INTRADAY_TARGETS` + `analyze_kouaku_edge._METRIC_FIELDS` + `query_kouaku._METRIC_CHOICES`
-- PO の attrs キー変更 = `extract_po._attrs_*` + `analyze_po_edge._METRIC_FIELDS_BY_STAGE` + `audit_all._PO_ATTR_KEYS_BY_STAGE`
-- holdings の field 追加 = `extract_holdings._PRICE_MAP / _DIM_KEYS` + `analyze_holdings_edge._METRIC_FIELDS`
+- PO の attrs キー変更 = `extract_po._attrs_*` + `analyze_po_edge._METRIC_FIELDS_BY_STAGE` + `audit_all._PO_ATTR_KEYS_BY_STAGE` + `query_po._METRIC_CHOICES`
+- holdings の field 追加 = `extract_holdings._PRICE_MAP / _DIM_KEYS` + `analyze_holdings_edge._METRIC_FIELDS` + `query_holdings._METRIC_CHOICES`
+- ad-hoc 探索 CLI は 3 ソース共通: `query_kouaku` / `query_po` / `query_holdings` (集計・表示は `_query_report` を共有)
 
 ## 開発ブランチ規約
 
