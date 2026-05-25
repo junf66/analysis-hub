@@ -229,7 +229,8 @@ def check_holdings(lines: list[str]) -> dict[str, int]:
     lines.append(f"- holder 分布: {data.get('holder_counts', {})}")
     lines.append(f"- 価格 coverage (寄り→引け): {with_price}/{len(recs)} ({with_price*100//max(len(recs),1)}%)")
     lines.append(f"- EV 評価除外フラグ: low_ratio_suspect={suspect}")
-    lines.append(f"- 原本件数 (raw): {data.get('count_raw', '?')}")
+    lines.append(f"- 原本件数 (raw): {data.get('count_raw', '?')}  "
+                 f"(取り込み除外 {data.get('count_dropped', 0)}: {data.get('dropped_reasons', {})})")
     lines.append(f"- raw last_updated: {data.get('raw_last_updated', '?')}")
     lines.append("")
     return {"critical": 0, "total": len(recs), "with_price": with_price}

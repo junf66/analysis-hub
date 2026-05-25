@@ -263,6 +263,20 @@ _PO_ATTR_KEYS_BY_STAGE: dict[str, set[str]] = {
 }
 
 
+# ---- holdings invariants 用許容集合 (extract_holdings と一致させること) ----
+_HOLDINGS_VALID_EVENT_TYPES = {
+    "holdings_filing", "holdings_change", "holdings_correction",
+    "holdings_filing_correction", "holdings_change_correction",
+}
+_HOLDINGS_ATTR_KEYS = {
+    "prev_close", "next_open", "next_close", "next_high", "next_low",
+    "gap_pct", "next_day_open_to_close_ret", "next_day_open_to_high_ret",
+    "next_day_open_to_low_ret", "next_day_905_ret", "next_day_910_ret",
+    "next_day_915_ret", "next_day_930_ret", "next_day_1000_ret",
+    "next_day_morning_ret", "next_day_high_to_close_ret", "d5_ret", "d10_ret",
+}
+
+
 def section_po_invariants() -> None:
     """po_records.json の id 一意 / event_type / stage / code / attrs 整合を検査。"""
     print("\n=== I. PO Data invariants ===")
@@ -355,6 +369,71 @@ def section_po_invariants() -> None:
         add("I-po-schema-version", "po_records.json に schema_version 未宣言")
 
     print(f"  PO records validated: {len(records)}")
+
+
+def section_holdings_invariants() -> None:
+    """holdings_records.json の id 一意 / event_type / code / attrs / ヘッダ整合を検査。"""
+    print("\n=== I. Holdings Data invariants ===")
+    path = REPO_ROOT / "data" / "holdings_records.json"
+    if not path.exists():
+        print(f"  (skip: {path} 未生成。`python -m scripts.extract_holdings` で生成)")
+        return
+    data = json.loads(path.read_text())
+    records = data.get("records", [])
+
+    # 1. id 一意性
+    seen: dict[str, int] = defaultdict(int)
+    for r in records:
+        seen[r.get("id")] += 1
+    dup_ids = sorted(k for k, n in seen.items() if n > 1)
+    if dup_ids:
+        add("I-hold-dup-id", f"重複 id: {dup_ids[:5]}")
+
+    # 2. event_type が許容集合
+    bad_evt = {r.get("event_type") for r in records} - _HOLDINGS_VALID_EVENT_TYPES
+    if bad_evt:
+        add("I-hold-bad-event-type", f"未知 event_type: {bad_evt}")
+
+    # 3. ISO date
+    for r in records:
+        ed = r.get("event_date") or ""
+        try:
+            date.fromisoformat(ed)
+        except ValueError:
+            add("I-hold-bad-date", f"{r.get('id')} event_date={ed}")
+
+    # 4. code が 4-5 文字
+    for r in records:
+        c = r.get("code") or ""
+        if not (4 <= len(c) <= 5):
+            add("I-hold-bad-code", f"{r.get('id')} code={c}")
+
+    # 5. attrs キーが許容集合に収まる
+    unknown_attr_keys: dict[str, int] = defaultdict(int)
+    for r in records:
+        for k in (r.get("attrs") or {}):
+            if k not in _HOLDINGS_ATTR_KEYS:
+                unknown_attr_keys[k] += 1
+    if unknown_attr_keys:
+        add("I-hold-unknown-attrs", f"許容外 attrs key: {dict(list(unknown_attr_keys.items())[:5])}")
+
+    # 6. count ヘッダーが現データと一致
+    if data.get("count") != len(records):
+        add("I-hold-count-mismatch", f"count declared={data.get('count')} actual={len(records)}")
+
+    # 7. event_type_counts ヘッダーが現データと一致
+    declared = data.get("event_type_counts", {})
+    actual: dict[str, int] = defaultdict(int)
+    for r in records:
+        actual[r.get("event_type", "?")] += 1
+    if dict(declared) != dict(actual):
+        add("I-hold-evt-count-mismatch", f"event_type_counts declared={dict(declared)} actual={dict(actual)}")
+
+    # 8. schema_version 宣言
+    if "schema_version" not in data:
+        add("I-hold-schema-version", "holdings_records.json に schema_version 未宣言")
+
+    print(f"  Holdings records validated: {len(records)}")
 
 
 # ============================================================
@@ -870,6 +949,7 @@ def main() -> None:
     section_xref()
     section_invariants()
     section_po_invariants()
+    section_holdings_invariants()
     section_json_roundtrip()
     section_csv_schema()
     section_behavior()

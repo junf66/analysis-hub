@@ -71,6 +71,26 @@ class TestExtract(unittest.TestCase):
         bad = _raw(rid="C", code="", event_date="2026-01-05")
         self.assertEqual(list(extract_holdings.expand_record(bad)), [])
 
+    def test_drop_reason_classifies(self) -> None:
+        self.assertIsNone(extract_holdings.drop_reason(_raw(rid="A", code="7203", event_date="2026-01-05")))
+        self.assertEqual(extract_holdings.drop_reason(_raw(rid="A", code="", event_date="2026-01-05")), "no_code")
+        self.assertEqual(
+            extract_holdings.drop_reason(_raw(rid="A", code="7203", event_date="2026-01-05", event_type="weird")),
+            "bad_event_type:weird",
+        )
+
+    def test_build_payload_reports_drops(self) -> None:
+        raws = [
+            _raw(rid="ok", code="7203", event_date="2026-01-05"),
+            _raw(rid="nocode", code="", event_date="2026-01-05"),
+            _raw(rid="bad", code="7203", event_date="2026-01-05", event_type="weird"),
+        ]
+        payload = extract_holdings.build_payload({"records": raws})
+        self.assertEqual(payload["count"], 1)
+        self.assertEqual(payload["count_dropped"], 2)
+        self.assertEqual(payload["dropped_reasons"].get("no_code"), 1)
+        self.assertEqual(payload["dropped_reasons"].get("bad_event_type:weird"), 1)
+
     def test_expand_all_and_build_payload(self) -> None:
         raws = [
             _raw(rid=f"R{i}", code="7203", event_date=f"2026-01-0{i+1}")

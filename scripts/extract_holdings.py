@@ -115,16 +115,33 @@ def _attrs(raw: dict[str, Any]) -> dict[str, Any]:
     return a
 
 
+def drop_reason(raw: dict[str, Any]) -> str | None:
+    """raw を共通スキーマ化できない理由を返す (展開可能なら None)。
+
+    無言ドロップを避けるため、除外理由を分類可能にする。
+    """
+    if not _code4(raw.get("code")):
+        return "no_code"  # 銘柄コード未解決 (非上場/特定不能) → 株価不能で分析対象外
+    if not raw.get("event_date"):
+        return "no_event_date"
+    et = raw.get("event_type")
+    if not et:
+        return "no_event_type"
+    if not raw.get("id"):
+        return "no_id"
+    if et not in _VALID_EVENT_TYPES:
+        return f"bad_event_type:{et}"
+    return None
+
+
 def expand_record(raw: dict[str, Any]) -> Iterator[dict[str, Any]]:
     """1 holdings 生レコード → 共通スキーマ event 1 件 (不適格は yield しない)。"""
+    if drop_reason(raw) is not None:
+        return
     code = _code4(raw.get("code"))
     event_date = raw.get("event_date")
     event_type = raw.get("event_type")
     ref_id = raw.get("id")
-    if not code or not event_date or not event_type or not ref_id:
-        return
-    if event_type not in _VALID_EVENT_TYPES:
-        return
 
     event: dict[str, Any] = {
         "id": f"holdings:{ref_id}",
@@ -166,6 +183,7 @@ def build_payload(raw: dict[str, Any]) -> dict[str, Any]:
     """holdings 生 payload → 共通スキーマ payload (メタ + 分布カウント + events)。"""
     records = raw.get("records", [])
     events = expand_all(records)
+    dropped = Counter(reason for r in records if (reason := drop_reason(r)) is not None)
     return {
         "schema_version": SCHEMA_VERSION,
         "source": SOURCE,
@@ -173,6 +191,8 @@ def build_payload(raw: dict[str, Any]) -> dict[str, Any]:
         "raw_last_updated": raw.get("last_updated"),
         "count_raw": len(records),
         "count": len(events),
+        "count_dropped": sum(dropped.values()),
+        "dropped_reasons": dict(dropped),
         "event_type_counts": dict(Counter(e["event_type"] for e in events)),
         "purpose_counts": dict(Counter(e.get("purpose_category_jp") for e in events)),
         "holder_counts": dict(Counter(e.get("holder_category_jp") for e in events)),
@@ -192,7 +212,10 @@ def main() -> None:
     from scripts._atomic import atomic_write_json
 
     atomic_write_json(args.out, payload)
-    print(f"extracted {payload['count_raw']} holdings → {payload['count']} events")
+    print(f"extracted {payload['count_raw']} holdings → {payload['count']} events "
+          f"(dropped {payload['count_dropped']})")
+    if payload["dropped_reasons"]:
+        print(f"  dropped_reasons: {payload['dropped_reasons']}")
     print(f"  purpose_counts: {payload['purpose_counts']}")
     print(f"  holder_counts:  {payload['holder_counts']}")
     print(f"  saved → {args.out}")
