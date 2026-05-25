@@ -131,6 +131,17 @@ class TestExtractExpandsToThreeEvents(unittest.TestCase):
         )
         self.assertEqual(list(extract_po.expand_record(raw)), [])
 
+    def test_drop_reason_classifies(self) -> None:
+        ok = _raw_po(pid="p1", code="7203", po_type="普通",
+                     announce_date="2024-08-01", decision_date=None, delivery_date=None)
+        self.assertIsNone(extract_po.drop_reason(ok))
+        no_code = _raw_po(pid="p2", code="", po_type="普通",
+                          announce_date="2024-08-01", decision_date=None, delivery_date=None)
+        self.assertEqual(extract_po.drop_reason(no_code), "no_code")
+        no_date = _raw_po(pid="p3", code="7203", po_type="普通",
+                          announce_date=None, decision_date=None, delivery_date=None)
+        self.assertEqual(extract_po.drop_reason(no_date), "no_stage_date")
+
 
 class TestAttrsMapping(unittest.TestCase):
     """ステージ別 attrs が kouaku 命名規則と一致すること。"""

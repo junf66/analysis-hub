@@ -206,6 +206,21 @@ def expand_all(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return out
 
 
+def drop_reason(raw: dict[str, Any]) -> str | None:
+    """raw PO が 0 event になる理由を返す (1 件以上展開できるなら None)。
+
+    無言ドロップを避けるための分類。no_stage_date は全ステージ日付欠損
+    (= announce/decision/delivery すべて未確定) のため展開できないケース。
+    """
+    if _code4(raw.get("code")) is None:
+        return "no_code"
+    if not raw.get("id"):
+        return "no_id"
+    if not any(raw.get(date_field) for _, _, date_field in _STAGES):
+        return "no_stage_date"
+    return None
+
+
 def _load_raw(path: Path) -> dict[str, Any]:
     if not path.exists():
         raise FileNotFoundError(
@@ -224,11 +239,13 @@ def main() -> None:
     ap.add_argument(
         "--out", type=Path, default=OUT_PATH, help="共通スキーマ出力先"
     )
+    ap.add_argument("--force", action="store_true", help="既存より激減しても上書き (安全ガード無効化)")
     args = ap.parse_args()
 
     raw = _load_raw(args.raw)
     records = raw.get("records", [])
     events = expand_all(records)
+    dropped = Counter(reason for r in records if (reason := drop_reason(r)) is not None)
 
     payload = {
         "schema_version": SCHEMA_VERSION,
@@ -237,15 +254,19 @@ def main() -> None:
         "raw_last_updated": raw.get("last_updated"),
         "count_raw": len(records),
         "count": len(events),
+        "count_dropped": sum(dropped.values()),
+        "dropped_reasons": dict(dropped),
         "stage_counts": dict(Counter(e["stage"] for e in events)),
         "type_counts": dict(Counter(e["po_type"] for e in events)),
         "records": events,
     }
 
-    from scripts._atomic import atomic_write_json
+    from scripts._atomic import atomic_write_records
 
-    atomic_write_json(args.out, payload)
-    print(f"extracted {len(records)} PO → {len(events)} events")
+    atomic_write_records(args.out, payload, force=args.force)
+    print(f"extracted {len(records)} PO → {len(events)} events (dropped {payload['count_dropped']})")
+    if payload["dropped_reasons"]:
+        print(f"  dropped_reasons: {payload['dropped_reasons']}")
     print(f"  stage_counts: {payload['stage_counts']}")
     print(f"  type_counts:  {payload['type_counts']}")
     print(f"  saved → {args.out}")

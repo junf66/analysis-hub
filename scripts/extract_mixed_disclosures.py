@@ -32,6 +32,7 @@ import argparse
 import json
 from collections import defaultdict
 from dataclasses import asdict
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -477,6 +478,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", type=Path, default=OUT_PATH, help="出力先 kouaku_records.json のパス")
     ap.add_argument("--reset-attrs", action="store_true", help="既存 attrs (価格 enrich) を引き継がず空で出力")
+    ap.add_argument("--force", action="store_true", help="既存より激減しても上書き (空 cache 事故の安全ガードを無効化)")
     args = ap.parse_args()
 
     buyback = _load_buyback()
@@ -501,13 +503,14 @@ def main() -> None:
         if carried:
             print(f"carried over enrich attrs from {carried} records")
 
-    from scripts._atomic import atomic_write_json
-    atomic_write_json(args.out, {
+    from scripts._atomic import atomic_write_records
+    atomic_write_records(args.out, {
         "schema_version": 1,
         "event_type": "kouaku_mixed",
+        "last_updated": datetime.now(timezone.utc).isoformat(),
         "subpattern_counts": dict(sorted(sub_count.items())),  # alphabetical for stable diff
         "records": records,
-    })
+    }, force=args.force)
     print(f"saved → {args.out}")
 
 

@@ -25,12 +25,16 @@ python -m scripts.update_all --source kouaku       # kouaku のみ
 python -m scripts.update_all --source po           # PO のみ
 python -m scripts.update_all --source holdings     # 大量保有のみ
 
-# ad-hoc EV 計算 (主な探索インターフェイス)
+# ad-hoc EV 計算 (主な探索インターフェイス) — 3 ソースとも同じ操作感
 python -m scripts.query_kouaku --subpattern <X> --disc-time-bucket <Y> --bootstrap
+python -m scripts.query_po --stage decide --po-type リート --metric ret_close --bootstrap
+python -m scripts.query_holdings --holder 外資ファンド --group-by purpose --bootstrap
 
 # 全 cell 横並び比較
 python -m scripts.query_kouaku --group-by subpattern
 python -m scripts.query_kouaku --group-by disc_time_bucket
+python -m scripts.query_po --group-by lending_type --stage decide --metric ret_close
+python -m scripts.query_holdings --group-by purpose
 
 # PO エッジ確認
 python -m scripts.analyze_po_edge   # reports/po_analysis.md
@@ -83,8 +87,12 @@ source of truth は `reports/holdings_backtest.md`。
 - |t|≥2 かつ n≥50 の頑健なセルは**未検出**。上位は n<15 の小サンプル
   (資産運用×事業会社 short t+2.32/n11、業務提携×PEファンド short t+2.03/n5 等)。
 - 高 n セル (純投資×事業会社 n223、取引関係×国内ファンド n238) は net ほぼゼロ。
-- 要・期間拡大 + 別軸 (gap_label / holding_ratio / filer_freq) 探索。価格タイミングは
-  holdings-tracker 側定義に依存 (提出日起点) なので約定可能性は要確認。
+- 要・期間拡大 + 別軸 (gap_label / holding_ratio / filer_freq) 探索。
+- 価格タイミング: **提出日の翌営業日の寄り→引け** (J-Quants 実データ照合で確定済)。
+  prev_close=提出日終値。提出日に開示を見て翌営業日寄りでエントリー可能＝**約定可能**。
+- 非独立サンプル注意: 同一銘柄・同日に複数提出者の報告あり (holdings 167件 / PO 58件)。
+  翌日リターンが同値で n/t を水増しするため、有意性判断は `query_* --collapse-daily`
+  (同一 code+date を1観測に集約) で独立補正して確認すること。data_health に独立性行あり。
 
 ## 既知制約
 
@@ -100,8 +108,9 @@ source of truth は `reports/holdings_backtest.md`。
 - 共通スキーマ準拠の dict を中継するスタイル
 - 新サブパターン追加 = `extract_mixed_disclosures._SUBPATTERN_RULES` + (必要なら) `data/kouaku_classification.csv`
 - 新メトリクス追加 = `enrich_price_kouaku._INTRADAY_TARGETS` + `analyze_kouaku_edge._METRIC_FIELDS` + `query_kouaku._METRIC_CHOICES`
-- PO の attrs キー変更 = `extract_po._attrs_*` + `analyze_po_edge._METRIC_FIELDS_BY_STAGE` + `audit_all._PO_ATTR_KEYS_BY_STAGE`
-- holdings の field 追加 = `extract_holdings._PRICE_MAP / _DIM_KEYS` + `analyze_holdings_edge._METRIC_FIELDS`
+- PO の attrs キー変更 = `extract_po._attrs_*` + `analyze_po_edge._METRIC_FIELDS_BY_STAGE` + `audit_all._PO_ATTR_KEYS_BY_STAGE` + `query_po._METRIC_CHOICES`
+- holdings の field 追加 = `extract_holdings._PRICE_MAP / _DIM_KEYS` + `analyze_holdings_edge._METRIC_FIELDS` + `query_holdings._METRIC_CHOICES` + `audit_all._HOLDINGS_ATTR_KEYS`
+- ad-hoc 探索 CLI は 3 ソース共通: `query_kouaku` / `query_po` / `query_holdings` (集計・表示は `_query_report` を共有)
 
 ## 開発ブランチ規約
 
