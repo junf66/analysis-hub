@@ -9,6 +9,7 @@ kouaku 実行順:
   3.        enrich_price_kouaku: 価格・分足 enrich (--refresh-prices で再取得)
   4.        analyze_kouaku_edge: レポート生成
   5.        backtest_kouaku: バックテスト生成
+  6.        export_kouaku_site: サイト表示用 slim JSON を書き出し
 
 PO 実行順:
   1. (任意) fetchers.po: po-tracker から raw JSON を取得 (--refresh-po-raw)
@@ -73,6 +74,8 @@ def _run_kouaku(py: str, args: argparse.Namespace) -> None:
 
     _run([py, "-m", "scripts.analyze_kouaku_edge"])
     _run([py, "-m", "scripts.backtest_kouaku", "--cost", str(args.cost)])
+    # サイト表示用 slim JSON (data/kouaku_site.json) を書き出し
+    _run([py, "-m", "scripts.export_kouaku_site", "--cost", str(args.cost)])
 
 
 def _run_po(py: str, args: argparse.Namespace) -> None:
