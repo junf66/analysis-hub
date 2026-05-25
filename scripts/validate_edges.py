@@ -10,6 +10,10 @@ backtest_* は全 cell の net 損益を出すが、(1) 多数のセルを試す
 
 「FDR 有意 かつ OOS 頑健」なセルだけが信頼できるエッジ候補。
 
+探索スキャン (標準区分) に加え、過去に「エッジ」と名付けた PO 既知3エッジを
+当時の特殊な仕掛け (9:10 利確 / 受渡日ギャップ条件) のまま再評価する監査
+セクションも出す (po_named_observations)。
+
 出力: reports/edge_validation.md
 """
 from __future__ import annotations
@@ -22,7 +26,7 @@ from typing import Any, Iterator
 from analyzers.stats import evaluate_cells
 from scripts._buckets import disc_bucket as _disc_bucket
 from scripts.analyze_holdings_edge import is_eligible_for_ev as _hold_eligible
-from scripts.analyze_po_edge import _is_eligible_for_ev as _po_eligible
+from scripts.analyze_po_edge import GD_THRESHOLD_PCT, _is_eligible_for_ev as _po_eligible
 from scripts.backtest_po import _STAGE_METRIC
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -64,6 +68,35 @@ def po_observations(records: list[dict[str, Any]]) -> Iterator[dict[str, Any]]:
             yield o
 
 
+def po_named_observations(records: list[dict[str, Any]]) -> Iterator[dict[str, Any]]:
+    """既知3エッジを「当時の定義 (特殊な仕掛け含む)」のまま検証する監査用。
+
+    探索スキャン (po_observations) は標準区分 (stage×po_type×lending) のみで、
+    ①9:10利確 ②受渡日 GD のギャップ条件 を再現しない。ここでは当時の仕掛けを
+    そのまま 3 セルとして評価し、過剰最適化ガード後も生き残るかをフェアに判定する。
+    3 セル独立の FDR (= 事前登録 3 仮説の補正) になる。
+    """
+    for r in records:
+        if not _po_eligible(r):
+            continue
+        stage, po_type = r.get("stage"), r.get("po_type")
+        a = r.get("attrs") or {}
+        if stage == "announce" and po_type == "普通":
+            o = _obs("① 発表翌日 普通 (翌寄り→09:10 long)", a.get("next_day_910_ret"), r)
+        elif stage == "deliver" and po_type == "普通":
+            gap = a.get("gap_pct")
+            if gap is None or float(gap) > GD_THRESHOLD_PCT:
+                continue  # GD 条件 (gap<=-0.5%) を満たすもののみ
+            o = _obs(f"② 受渡日GD 普通 (gap≤{GD_THRESHOLD_PCT}% 寄→引 long)",
+                     a.get("next_day_open_to_close_ret"), r)
+        elif stage == "decide" and po_type == "リート":
+            o = _obs("③ 決定 リート (翌寄り→決定引 short)", a.get("ret_close"), r)
+        else:
+            continue
+        if o:
+            yield o
+
+
 def holdings_observations(records: list[dict[str, Any]]) -> Iterator[dict[str, Any]]:
     """大量保有: (purpose × holder) cell、寄り→引け、low_ratio_suspect 除外。"""
     for r in records:
@@ -78,6 +111,7 @@ def holdings_observations(records: list[dict[str, Any]]) -> Iterator[dict[str, A
 _SOURCES = {
     "kouaku": (KOUAKU_PATH, kouaku_observations),
     "po": (PO_PATH, po_observations),
+    "po (既知3エッジ監査・当時定義)": (PO_PATH, po_named_observations),
     "holdings": (HOLDINGS_PATH, holdings_observations),
 }
 

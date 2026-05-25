@@ -84,6 +84,14 @@ source of truth は `scripts/backtest_kouaku.py` の net 損益 (往復コスト
 - 発表翌日 (普通 announce, 9:10 売り long): EV +0.44% / t +3.07 / n 121
 - 受渡日 GD (普通 deliver, gap<=-0.5%, 寄→引 long): EV +0.38% / t +2.40 / n 226
 - リート ショート (REIT decide, next_open→決定日引け short): EV +1.08% / t +4.82 / n 177
+  - = PO発表の翌営業日寄りでショート → 発行価格決定日の引けで買戻し (数日またぎ)。
+
+**既知3エッジ監査** (`validate_edges` の専用セクション、当時の特殊な仕掛けのまま再評価、
+cost 0.20% net + 日付クラスタ頑健 t + FDR + walk-forward OOS):
+- ③ リート short のみ通過 (t_clust+3.80 / p=0.0001 / OOS test +0.84% / n177)。主力エッジ健在。
+- ① 発表翌日 9:10 long は cost+クラスタ後 t_clust+1.63 / p=0.10 で**脱落** (OOS+0.12%)。
+- ② 受渡日GD long も t_clust+1.07 / p=0.28 で**脱落** (OOS+0.48%、符号は正だが noise 内)。
+- → 当時の raw |t| (3.07 / 2.40) は cost 前・クラスタ未補正。実運用は③のみ信頼。
 
 新発見 (Phase D, cost 0.20% net):
 - decide × REIT × 貸借 short: t +3.43 / EV +0.93% / n 131

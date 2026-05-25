@@ -34,6 +34,26 @@ class TestObservationAdapters(unittest.TestCase):
         self.assertEqual(len(obs), 1)
         self.assertEqual(obs[0]["ret"], -1.5)
 
+    def test_po_named_gd_gap_filter_and_cells(self) -> None:
+        recs = [
+            # ① announce 普通 → next_day_910_ret
+            {"stage": "announce", "po_type": "普通", "code": "1", "event_date": "2026-01-01",
+             "status": "complete", "attrs": {"next_day_910_ret": 0.5}},
+            # ② deliver 普通 GD: gap<=-0.5 は採用、gap>-0.5 は除外
+            {"stage": "deliver", "po_type": "普通", "code": "2", "event_date": "2026-01-02",
+             "status": "complete", "attrs": {"gap_pct": -0.8, "next_day_open_to_close_ret": 0.3}},
+            {"stage": "deliver", "po_type": "普通", "code": "3", "event_date": "2026-01-03",
+             "status": "complete", "attrs": {"gap_pct": 0.2, "next_day_open_to_close_ret": 9.9}},
+            # ③ decide リート → ret_close
+            {"stage": "decide", "po_type": "リート", "code": "4", "event_date": "2026-01-04",
+             "status": "complete", "attrs": {"ret_close": -1.2}},
+        ]
+        obs = list(validate_edges.po_named_observations(recs))
+        cells = {o["cell"].split(" ", 1)[0]: o["ret"] for o in obs}
+        self.assertEqual(set(cells), {"①", "②", "③"})  # gap>-0.5 の受渡は除外
+        self.assertEqual(cells["②"], 0.3)
+        self.assertEqual(cells["③"], -1.2)
+
     def test_holdings_excludes_suspect(self) -> None:
         recs = [
             {"purpose_category_jp": "純投資", "holder_category_jp": "外資ファンド",
@@ -52,9 +72,10 @@ class TestBuildReport(unittest.TestCase):
         md = validate_edges.build_report(cost_pct=0.2, alpha=0.05, split_frac=0.7, min_n=30)
         self.assertIn("エッジ検証", md)
         self.assertIn("FDR", md)
-        # 3 ソースの見出しが出る
+        # 3 ソースの見出し + 既知3エッジ監査セクションが出る
         for name in ("kouaku", "po", "holdings"):
             self.assertIn(f"## {name}", md)
+        self.assertIn("既知3エッジ監査", md)
 
 
 if __name__ == "__main__":
