@@ -220,6 +220,10 @@ def check_po(lines: list[str]) -> dict[str, int]:
     lines.append(f"- stage 分布: {dict(by_stage)}")
     lines.append(f"- po_type 分布: {dict(by_type)}")
     lines.append(f"- 価格 enrich coverage: {with_price}/{len(recs)} ({with_price*100//max(len(recs),1)}%)")
+    keyc = Counter((r.get("code"), r.get("event_date")) for r in recs)
+    non_indep = sum(n for n in keyc.values() if n > 1)
+    lines.append(f"- 独立性: ユニーク(code,date) {len(keyc)} / 全 {len(recs)} "
+                 f"(同日複数 {non_indep} 件 → query --collapse-daily で補正可)")
     lines.append(f"- EV 評価除外フラグ: legacy={legacy}, concurrent_earnings={concurrent}, split_within_po_window={split}")
     lines.append(f"- 原本 PO 件数 (raw): {data.get('count_raw', '?')}  "
                  f"(取り込み除外 {data.get('count_dropped', 0)}: {data.get('dropped_reasons', {})})")
@@ -249,6 +253,10 @@ def check_holdings(lines: list[str]) -> dict[str, int]:
     lines.append(f"- purpose 分布: {data.get('purpose_counts', {})}")
     lines.append(f"- holder 分布: {data.get('holder_counts', {})}")
     lines.append(f"- 価格 coverage (寄り→引け): {with_price}/{len(recs)} ({with_price*100//max(len(recs),1)}%)")
+    keyc = Counter((r.get("code"), r.get("event_date")) for r in recs)
+    non_indep = sum(n for n in keyc.values() if n > 1)
+    lines.append(f"- 独立性: ユニーク(code,date) {len(keyc)} / 全 {len(recs)} "
+                 f"(同日複数提出 {non_indep} 件は非独立 → query --collapse-daily で補正可)")
     lines.append(f"- EV 評価除外フラグ: low_ratio_suspect={suspect}")
     lines.append(f"- 原本件数 (raw): {data.get('count_raw', '?')}  "
                  f"(取り込み除外 {data.get('count_dropped', 0)}: {data.get('dropped_reasons', {})})")

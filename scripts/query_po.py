@@ -116,26 +116,30 @@ def main() -> None:
     ap.add_argument("--histogram-bins", type=int, default=20, help="histogram の bin 数")
     ap.add_argument("--plot-cumul", action="store_true", help="event_date 順の累積 PnL")
     ap.add_argument("--list-records", action="store_true", help="該当レコード一覧")
+    ap.add_argument("--collapse-daily", action="store_true",
+                    help="同一 code+date を1観測に集約 (非独立サンプルの n/t 水増しを補正)")
     args = ap.parse_args()
 
     payload = json.loads(args.path.read_text())
     filtered = _filter(payload.get("records", []), args)
 
     if args.group_by:
-        group_table(filtered, args.metric, _GROUP_KEYS[args.group_by], group_by=args.group_by)
+        group_table(filtered, args.metric, _GROUP_KEYS[args.group_by],
+                    group_by=args.group_by, collapse=args.collapse_daily)
         return
 
     label = " ".join(
         f"{k}={v}" for k, v in vars(args).items()
         if v and k not in ("path", "metric", "group_by", "bootstrap", "bootstrap_iter",
                            "histogram", "histogram_bins", "plot_cumul", "list_records",
-                           "include_ineligible")
+                           "include_ineligible", "collapse_daily")
     )
     summarize(
         filtered, args.metric, filter_label=label,
         bootstrap=args.bootstrap, bootstrap_iter=args.bootstrap_iter,
         histogram=args.histogram, histogram_bins=args.histogram_bins,
         plot_cumul=args.plot_cumul, dims=_DIMS, list_records=args.list_records,
+        collapse=args.collapse_daily,
     )
 
 

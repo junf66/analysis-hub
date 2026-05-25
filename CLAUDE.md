@@ -90,6 +90,9 @@ source of truth は `reports/holdings_backtest.md`。
 - 要・期間拡大 + 別軸 (gap_label / holding_ratio / filer_freq) 探索。
 - 価格タイミング: **提出日の翌営業日の寄り→引け** (J-Quants 実データ照合で確定済)。
   prev_close=提出日終値。提出日に開示を見て翌営業日寄りでエントリー可能＝**約定可能**。
+- 非独立サンプル注意: 同一銘柄・同日に複数提出者の報告あり (holdings 167件 / PO 58件)。
+  翌日リターンが同値で n/t を水増しするため、有意性判断は `query_* --collapse-daily`
+  (同一 code+date を1観測に集約) で独立補正して確認すること。data_health に独立性行あり。
 
 ## 既知制約
 
