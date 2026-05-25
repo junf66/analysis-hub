@@ -32,8 +32,27 @@ BARS_PATH = REPO_ROOT / "cache" / "noon_experiment" / "daily_bars_by_code.json"
 HEALTH_MD = REPO_ROOT / "reports" / "data_health.md"
 
 
+STALE_DAYS = 10  # last_updated がこれより古ければ STALE 警告
+
+
 def _size_mb(p: Path) -> float:
     return p.stat().st_size / 1024 / 1024 if p.exists() else 0.0
+
+
+def _freshness(lines: list[str], last_updated: str | None, *, label: str = "最終更新") -> int:
+    """last_updated (ISO) の鮮度を 1 行追記し、STALE_DAYS 超なら 1 を返す (警告カウント用)。"""
+    if not last_updated:
+        lines.append(f"- {label}: 不明 (タイムスタンプなし)")
+        return 0
+    try:
+        d = date.fromisoformat(str(last_updated)[:10])
+    except ValueError:
+        lines.append(f"- {label}: 解析不可 ({last_updated})")
+        return 0
+    age = (date.today() - d).days
+    flag = "  ← STALE (要再取得)" if age > STALE_DAYS else ""
+    lines.append(f"- {label}: {d.isoformat()} ({age} 日前){flag}")
+    return 1 if age > STALE_DAYS else 0
 
 
 def check_records(lines: list[str]) -> dict[str, int]:
@@ -53,6 +72,7 @@ def check_records(lines: list[str]) -> dict[str, int]:
     lines.append("")
     lines.append(f"- 件数: **{len(recs)}**  ({_size_mb(RECORDS_PATH):.2f} MB)")
     lines.append(f"- event_date 範囲: {dates[0]} 〜 {dates[-1]}" if dates else "- (空)")
+    stale = _freshness(lines, data.get("last_updated"))
     lines.append(f"- 価格 enrich coverage: **{enriched}/{len(recs)}** ({enriched*100//max(len(recs),1)}%)")
     lines.append(f"- 分足 coverage: {minuted}/{len(recs)} ({minuted*100//max(len(recs),1)}%)  ※ J-Quants 分足は 2024-05-21 以降のみ")
     lines.append(f"- limit-lock (S 高/S 安全日ロック): {locked}")
@@ -66,7 +86,7 @@ def check_records(lines: list[str]) -> dict[str, int]:
         lines.append(f"| {k} | {sub[k]} |")
     lines.append("")
     critical = 1 if enriched < len(recs) * 0.8 else 0  # 80% 未満を critical 扱い
-    return {"critical": critical, "total": len(recs), "enriched": enriched, "minuted": minuted}
+    return {"critical": critical, "total": len(recs), "enriched": enriched, "minuted": minuted, "stale": stale}
 
 
 def check_fins(lines: list[str]) -> dict[str, int]:
@@ -201,10 +221,11 @@ def check_po(lines: list[str]) -> dict[str, int]:
     lines.append(f"- po_type 分布: {dict(by_type)}")
     lines.append(f"- 価格 enrich coverage: {with_price}/{len(recs)} ({with_price*100//max(len(recs),1)}%)")
     lines.append(f"- EV 評価除外フラグ: legacy={legacy}, concurrent_earnings={concurrent}, split_within_po_window={split}")
-    lines.append(f"- 原本 PO 件数 (raw): {data.get('count_raw', '?')}")
-    lines.append(f"- raw last_updated: {data.get('raw_last_updated', '?')}")
+    lines.append(f"- 原本 PO 件数 (raw): {data.get('count_raw', '?')}  "
+                 f"(取り込み除外 {data.get('count_dropped', 0)}: {data.get('dropped_reasons', {})})")
+    stale = _freshness(lines, data.get("last_updated") or data.get("raw_last_updated"))
     lines.append("")
-    return {"critical": 0, "total": len(recs), "with_price": with_price}
+    return {"critical": 0, "total": len(recs), "with_price": with_price, "stale": stale}
 
 
 def check_holdings(lines: list[str]) -> dict[str, int]:
@@ -231,9 +252,9 @@ def check_holdings(lines: list[str]) -> dict[str, int]:
     lines.append(f"- EV 評価除外フラグ: low_ratio_suspect={suspect}")
     lines.append(f"- 原本件数 (raw): {data.get('count_raw', '?')}  "
                  f"(取り込み除外 {data.get('count_dropped', 0)}: {data.get('dropped_reasons', {})})")
-    lines.append(f"- raw last_updated: {data.get('raw_last_updated', '?')}")
+    stale = _freshness(lines, data.get("last_updated") or data.get("raw_last_updated"))
     lines.append("")
-    return {"critical": 0, "total": len(recs), "with_price": with_price}
+    return {"critical": 0, "total": len(recs), "with_price": with_price, "stale": stale}
 
 
 def check_bars(lines: list[str]) -> dict[str, int]:
@@ -273,9 +294,10 @@ def main() -> None:
     summary["bars"] = check_bars(lines)
 
     critical = sum(s.get("critical", 0) for s in summary.values())
+    stale = sum(s.get("stale", 0) for s in summary.values())
     lines.append("---")
     lines.append("")
-    lines.append(f"**critical issues: {critical}**")
+    lines.append(f"**critical issues: {critical}**  /  STALE sources (>{STALE_DAYS}日): {stale}")
 
     md = "\n".join(lines)
     args.out.parent.mkdir(parents=True, exist_ok=True)

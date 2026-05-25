@@ -87,8 +87,9 @@ source of truth は `reports/holdings_backtest.md`。
 - |t|≥2 かつ n≥50 の頑健なセルは**未検出**。上位は n<15 の小サンプル
   (資産運用×事業会社 short t+2.32/n11、業務提携×PEファンド short t+2.03/n5 等)。
 - 高 n セル (純投資×事業会社 n223、取引関係×国内ファンド n238) は net ほぼゼロ。
-- 要・期間拡大 + 別軸 (gap_label / holding_ratio / filer_freq) 探索。価格タイミングは
-  holdings-tracker 側定義に依存 (提出日起点) なので約定可能性は要確認。
+- 要・期間拡大 + 別軸 (gap_label / holding_ratio / filer_freq) 探索。
+- 価格タイミング: **提出日の翌営業日の寄り→引け** (J-Quants 実データ照合で確定済)。
+  prev_close=提出日終値。提出日に開示を見て翌営業日寄りでエントリー可能＝**約定可能**。
 
 ## 既知制約
 

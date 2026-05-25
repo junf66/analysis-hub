@@ -204,14 +204,15 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--raw", type=Path, default=RAW_PATH, help="holdings 生 JSON のパス")
     ap.add_argument("--out", type=Path, default=OUT_PATH, help="共通スキーマ出力先")
+    ap.add_argument("--force", action="store_true", help="既存より激減しても上書き (安全ガード無効化)")
     args = ap.parse_args()
 
     raw = _load_raw(args.raw)
     payload = build_payload(raw)
 
-    from scripts._atomic import atomic_write_json
+    from scripts._atomic import atomic_write_records
 
-    atomic_write_json(args.out, payload)
+    atomic_write_records(args.out, payload, force=args.force)
     print(f"extracted {payload['count_raw']} holdings → {payload['count']} events "
           f"(dropped {payload['count_dropped']})")
     if payload["dropped_reasons"]:

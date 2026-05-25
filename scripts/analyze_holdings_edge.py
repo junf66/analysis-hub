@@ -8,7 +8,7 @@ partition 軸:
   purpose_category_jp (保有目的) × holder_category_jp (保有者区分)
   + 単軸 (purpose / holder / gap_label) ブレークダウン
 
-価格タイミング: holdings-tracker 側定義に従う (提出日を起点とした寄り→引け等)。
+価格タイミング: 提出日の翌営業日の寄り→引け (J-Quants 照合で確定)。約定可能。
 EV 評価から除外: low_ratio_suspect (保有割合の信頼性が低いレコード)。
 
 出力:
@@ -107,7 +107,7 @@ def build_report(payload: dict[str, Any]) -> str:
     lines.append(f"  purpose_counts: {payload.get('purpose_counts', {})}")
     lines.append(f"  holder_counts:  {payload.get('holder_counts', {})}")
     lines.append("")
-    lines.append("価格タイミングは holdings-tracker 側定義 (提出日起点の寄り→引け等)。")
+    lines.append("価格タイミング: 提出日の翌営業日の寄り→引け (J-Quants 照合で確定、約定可能)。")
     lines.append("")
 
     lines.append("## 全体")

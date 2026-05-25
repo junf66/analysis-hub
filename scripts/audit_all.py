@@ -436,6 +436,40 @@ def section_holdings_invariants() -> None:
     print(f"  Holdings records validated: {len(records)}")
 
 
+_CANONICAL_FIELDS = {"id", "code", "event_date", "event_type", "source", "attrs"}
+_SOURCE_RECORD_PATHS = {
+    "kouaku": "data/kouaku_records.json",
+    "po": "data/po_records.json",
+    "holdings": "data/holdings_records.json",
+}
+
+
+def section_cross_source() -> None:
+    """3 ソース共通スキーマの整合: 必須フィールド存在 + ソース横断の id 衝突を検査。"""
+    print("\n=== I. Cross-source schema consistency ===")
+    all_ids: dict[str, str] = {}  # id -> source
+    total = 0
+    for name, rel in _SOURCE_RECORD_PATHS.items():
+        path = REPO_ROOT / rel
+        if not path.exists():
+            continue
+        recs = json.loads(path.read_text()).get("records", [])
+        total += len(recs)
+        missing: dict[str, int] = defaultdict(int)
+        for r in recs:
+            for f in _CANONICAL_FIELDS:
+                if f not in r:
+                    missing[f] += 1
+            rid = r.get("id")
+            if rid is not None:
+                if rid in all_ids and all_ids[rid] != name:
+                    add("I-xsrc-id-collision", f"id={rid} が {all_ids[rid]} と {name} で衝突")
+                all_ids[rid] = name
+        if missing:
+            add("I-xsrc-missing-field", f"{name}: 必須フィールド欠損 {dict(missing)}")
+    print(f"  cross-source records checked: {total}, unique ids: {len(all_ids)}")
+
+
 # ============================================================
 # B. Behavior: 全 CLI が --help で死なないか
 # ============================================================
@@ -950,6 +984,7 @@ def main() -> None:
     section_invariants()
     section_po_invariants()
     section_holdings_invariants()
+    section_cross_source()
     section_json_roundtrip()
     section_csv_schema()
     section_behavior()
