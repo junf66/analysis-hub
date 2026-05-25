@@ -66,6 +66,23 @@ class TestEvaluateCells(unittest.TestCase):
         self.assertIn("fdr_significant", r)
         self.assertIn("robust_oos", r)
 
+    def test_direction_specific_cost(self) -> None:
+        # short セルには short_cost、long セルには long_cost が適用される
+        short = self._obs("S", [-1.0] * 6, code="1")
+        long_ = [{"cell": "L", "ret": 1.0, "date": f"2026-03-{i+1:02d}", "code": "2"} for i in range(6)]
+        res = {r["cell"]: r for r in stats.evaluate_cells(short + long_, long_cost=0.20, short_cost=0.15, min_n=5)}
+        self.assertEqual(res["S"]["direction"], "short")
+        self.assertEqual(res["L"]["direction"], "long")
+        self.assertAlmostEqual(res["S"]["cost"], 0.15, places=6)
+        self.assertAlmostEqual(res["L"]["cost"], 0.20, places=6)
+        self.assertAlmostEqual(res["S"]["ev_net"], 1.0 - 0.15, places=6)  # -(-1)=+1 引く short_cost
+        self.assertAlmostEqual(res["L"]["ev_net"], 1.0 - 0.20, places=6)
+
+    def test_cost_pct_fallback(self) -> None:
+        # long_cost/short_cost 未指定なら cost_pct が両方向に使われる (後方互換)
+        res = stats.evaluate_cells(self._obs("X", [-1.0] * 6), cost_pct=0.3, min_n=5)[0]
+        self.assertAlmostEqual(res["cost"], 0.3, places=6)
+
     def test_min_n_filter(self) -> None:
         res = stats.evaluate_cells(self._obs("X", [1.0, 2.0, 3.0]), min_n=5)
         self.assertEqual(res, [])

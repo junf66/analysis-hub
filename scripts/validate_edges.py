@@ -129,13 +129,13 @@ def _section(name: str, results: list[dict[str, Any]], *, min_n: int) -> list[st
     lines.append(f"検証セル数 {len(results)} / FDR 有意 {sum(r['fdr_significant'] for r in results)} "
                  f"/ **FDR有意 かつ OOS頑健 {len(survivors)}**")
     lines.append("")
-    lines.append("| cell | dir | n | EV(net) | t | t_clust | p | FDR | OOS(test EV) | 信頼 |")
-    lines.append("|---|---|---|---|---|---|---|---|---|---|")
+    lines.append("| cell | dir | cost | n | EV(net) | t | t_clust | p | FDR | OOS(test EV) | 信頼 |")
+    lines.append("|---|---|---|---|---|---|---|---|---|---|---|")
     for r in results:
         cell = " × ".join(str(x) for x in r["cell"]) if isinstance(r["cell"], tuple) else str(r["cell"])
         trust = "✅" if (r["fdr_significant"] and r.get("robust_oos")) else ""
         lines.append(
-            f"| {cell} | {r['direction']} | {r['n']} | {_fmt(r['ev_net'])} | "
+            f"| {cell} | {r['direction']} | {r.get('cost', 0):.2f}% | {r['n']} | {_fmt(r['ev_net'])} | "
             f"{r['t']:+.2f} | {r['t_clustered']:+.2f} | {r['p']:.4f} | "
             f"{'✓' if r['fdr_significant'] else ''} | {_fmt(r.get('test_ev_net'))} | {trust} |"
         )
@@ -143,11 +143,15 @@ def _section(name: str, results: list[dict[str, Any]], *, min_n: int) -> list[st
     return lines
 
 
-def build_report(*, cost_pct: float, alpha: float, split_frac: float, min_n: int) -> str:
+def build_report(*, long_cost: float, short_cost: float, alpha: float,
+                 split_frac: float, min_n: int) -> str:
     """3 ソースを evaluate_cells で検証し、FDR + OOS 付きの md レポート文字列を返す。"""
     lines = ["# エッジ検証 (過剰最適化ガード付き)", ""]
-    lines.append(f"往復コスト {cost_pct:.2f}% / FDR α={alpha} / walk-forward 分割={split_frac:.0%} / min_n={min_n}")
+    lines.append(f"往復コスト 方向別 (long {long_cost:.2f}% / short {short_cost:.2f}%) "
+                 f"/ FDR α={alpha} / walk-forward 分割={split_frac:.0%} / min_n={min_n}")
     lines.append("")
+    lines.append("コスト前提: ショート=楽天 手数料0・逆日歩無視で寄りの滑りのみ、"
+                 "ロング=日興手数料込み安全側。")
     lines.append("t_clust=日付クラスタ頑健 t、p は t_clust 由来。FDR=Benjamini-Hochberg 生存。")
     lines.append("OOS=方向を train で決め test 区間で測った net EV。**信頼✅=FDR有意かつOOS頑健**。")
     lines.append("")
@@ -156,7 +160,7 @@ def build_report(*, cost_pct: float, alpha: float, split_frac: float, min_n: int
             lines += [f"## {name}", "", f"(skip: {path.name} 未生成)", ""]
             continue
         records = json.loads(path.read_text()).get("records", [])
-        results = evaluate_cells(list(adapter(records)), cost_pct=cost_pct,
+        results = evaluate_cells(list(adapter(records)), long_cost=long_cost, short_cost=short_cost,
                                  alpha=alpha, split_frac=split_frac, min_n=min_n)
         lines += _section(name, results, min_n=min_n)
     return "\n".join(lines)
@@ -165,13 +169,17 @@ def build_report(*, cost_pct: float, alpha: float, split_frac: float, min_n: int
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", type=Path, default=REPORT_PATH, help="出力 md ファイル")
-    ap.add_argument("--cost", type=float, default=0.20, help="往復コスト %% (既定 0.20)")
+    ap.add_argument("--long-cost", type=float, default=0.20,
+                    help="ロング往復コスト %% (既定 0.20、日興手数料込み安全側)")
+    ap.add_argument("--short-cost", type=float, default=0.15,
+                    help="ショート往復コスト %% (既定 0.15、楽天 手数料0・逆日歩無視 滑りのみ)")
     ap.add_argument("--alpha", type=float, default=0.05, help="FDR の α (既定 0.05)")
     ap.add_argument("--split", type=float, default=0.7, help="walk-forward の train 割合 (既定 0.7)")
     ap.add_argument("--min-n", type=int, default=30, help="検証する最小セル n (既定 30)")
     args = ap.parse_args()
 
-    report = build_report(cost_pct=args.cost, alpha=args.alpha, split_frac=args.split, min_n=args.min_n)
+    report = build_report(long_cost=args.long_cost, short_cost=args.short_cost,
+                          alpha=args.alpha, split_frac=args.split, min_n=args.min_n)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(report)
     print(f"wrote {args.out}")

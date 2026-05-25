@@ -86,6 +86,8 @@ def evaluate_cells(
     observations: Sequence[dict[str, Any]],
     *,
     cost_pct: float = 0.20,
+    long_cost: float | None = None,
+    short_cost: float | None = None,
     alpha: float = 0.05,
     split_frac: float = 0.7,
     min_n: int = 5,
@@ -99,7 +101,15 @@ def evaluate_cells(
       - walk-forward: 日付順に split_frac で train/test 分割。方向は train で決め
         (lookahead 回避)、test の net EV を OOS 成績として返す。
     全セルの p に BH-FDR を適用し fdr_significant を付与。
+
+    long_cost / short_cost: 方向別の往復コスト%。None なら cost_pct を使う。
+    実約定環境で方向によりコストが違う場合に指定する (例: ショート=楽天 手数料0
+    逆日歩無視で滑りのみ 0.15%、ロング=日興手数料込み安全側 0.20%)。
     """
+    lc = cost_pct if long_cost is None else long_cost
+    sc = cost_pct if short_cost is None else short_cost
+    cost_of = lambda d: sc if d == "short" else lc  # noqa: E731
+
     cells: dict[Any, list[dict[str, Any]]] = defaultdict(list)
     for o in observations:
         if o.get("ret") is not None:
@@ -111,7 +121,7 @@ def evaluate_cells(
             continue
         rets = [float(o["ret"]) for o in obs]
         direction = _direction(rets)
-        nets = [_net(float(o["ret"]), direction, cost_pct) for o in obs]
+        nets = [_net(float(o["ret"]), direction, cost_of(direction)) for o in obs]
         n = len(nets)
         mean = statistics.fmean(nets)
         sd = statistics.stdev(nets) if n > 1 else 0.0
@@ -131,14 +141,16 @@ def evaluate_cells(
         robust = None
         if train and test:
             tr_dir = _direction([float(o["ret"]) for o in train])
-            train_ev = statistics.fmean([_net(float(o["ret"]), tr_dir, cost_pct) for o in train])
-            test_ev = statistics.fmean([_net(float(o["ret"]), tr_dir, cost_pct) for o in test])
+            tr_cost = cost_of(tr_dir)
+            train_ev = statistics.fmean([_net(float(o["ret"]), tr_dir, tr_cost) for o in train])
+            test_ev = statistics.fmean([_net(float(o["ret"]), tr_dir, tr_cost) for o in test])
             robust = test_ev > 0  # OOS でも net プラスなら頑健
 
         results.append({
             "cell": cell,
             "n": n,
             "direction": direction,
+            "cost": cost_of(direction),
             "ev_net": mean,
             "t": t,
             "t_clustered": t_clu,

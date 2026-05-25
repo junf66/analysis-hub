@@ -69,7 +69,8 @@ class TestObservationAdapters(unittest.TestCase):
 
 class TestBuildReport(unittest.TestCase):
     def test_runs_on_committed_data(self) -> None:
-        md = validate_edges.build_report(cost_pct=0.2, alpha=0.05, split_frac=0.7, min_n=30)
+        md = validate_edges.build_report(long_cost=0.20, short_cost=0.15,
+                                         alpha=0.05, split_frac=0.7, min_n=30)
         self.assertIn("エッジ検証", md)
         self.assertIn("FDR", md)
         # 3 ソースの見出し + 既知3エッジ監査セクションが出る
