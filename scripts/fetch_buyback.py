@@ -13,11 +13,11 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 from typing import Any
 
 from scripts import _jquants
+from scripts._atomic import atomic_write_json
 from scripts.enrich_price_kouaku import enrich_record
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -63,6 +63,7 @@ def _extract_size(raw: dict[str, Any]) -> dict[str, Any]:
 
 
 def buyback_to_record(raw: dict[str, Any]) -> dict[str, Any] | None:
+    """raw 自社株買い行を共通スキーマ record に変換 (code を4桁化、規模フィールド抽出)。"""
     code = raw.get("Code") or raw.get("code")
     date = next((raw[k] for k in _DATE_FIELD_CANDIDATES if raw.get(k)), None)
     if not code or not date:
@@ -117,6 +118,7 @@ def attach_earnings(rec: dict[str, Any]) -> dict[str, Any]:
 
 
 def build(events: list[dict[str, Any]], *, sleep_sec: float = 0.2) -> list[dict[str, Any]]:
+    """events 各件に price (gap/分足) + 減益% を付与した records を返す。"""
     import time
     out = []
     for i, rec in enumerate(events, 1):
@@ -138,7 +140,7 @@ def main() -> None:
     ap.add_argument("--since", default="2021-01-01", help="自社株買い取得 開始日")
     ap.add_argument("--until", default="2026-12-31", help="自社株買い取得 終了日")
     ap.add_argument("--events", help="検証用: CODE:DATE をカンマ区切り (Pro契約前のenrichテスト)")
-    ap.add_argument("--out", type=Path, default=OUT_PATH)
+    ap.add_argument("--out", type=Path, default=OUT_PATH, help="出力 JSON パス (既定 data/buyback_records.json)")
     args = ap.parse_args()
 
     if args.events:
@@ -155,8 +157,7 @@ def main() -> None:
 
     records = build(events)
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps({"records": records, "count": len(records)},
-                                    ensure_ascii=False, indent=1))
+    atomic_write_json(args.out, {"records": records, "count": len(records)}, indent=1)
     print(f"wrote {args.out} ({len(records)} records)")
 
 
