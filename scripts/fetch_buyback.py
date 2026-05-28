@@ -17,6 +17,7 @@ disc_no を保持し、後段で PDF パース or 手動付与する想定。
 from __future__ import annotations
 
 import argparse
+import json
 from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
@@ -123,21 +124,52 @@ def attach_earnings(rec: dict[str, Any]) -> dict[str, Any]:
     return rec
 
 
-def build(events: list[dict[str, Any]], *, sleep_sec: float = 0.2) -> list[dict[str, Any]]:
-    """events 各件に price (gap/分足) + 減益% を付与した records を返す。"""
+def _is_enriched(rec: dict[str, Any]) -> bool:
+    a = rec.get("attrs") or {}
+    return a.get("next_open") is not None or a.get("price_error") is not None
+
+
+def _load_done(out_path: Path | None) -> dict[tuple, dict[str, Any]]:
+    """既存 out_path から enrich 済 record を (code,event_date) -> record で返す (resume用)。"""
+    if not out_path or not Path(out_path).exists():
+        return {}
+    try:
+        recs = json.loads(Path(out_path).read_text()).get("records", [])
+    except (json.JSONDecodeError, OSError):
+        return {}
+    return {(r.get("code"), r.get("event_date")): r for r in recs if _is_enriched(r)}
+
+
+def build(events: list[dict[str, Any]], *, out_path: Path | None = None,
+          sleep_sec: float = 0.2, checkpoint_every: int = 100) -> list[dict[str, Any]]:
+    """events 各件に price (gap/分足) + 減益% を付与した records を返す。
+
+    out_path 指定時: checkpoint_every 件ごとに途中結果を保存 (クラッシュ耐性) し、
+    既に enrich 済の (code,event_date) は再利用してスキップ (resume)。
+    """
     import time
-    out = []
+    done = _load_done(out_path)
+    if done:
+        print(f"[resume] enrich 済 {len(done)} 件をスキップ")
+    out: list[dict[str, Any]] = []
+    new_done = 0
     for i, rec in enumerate(events, 1):
+        cached = done.get((rec.get("code"), rec.get("event_date")))
+        if cached is not None:
+            out.append(cached)
+            continue
         try:
             enrich_record(rec)
             attach_earnings(rec)
         except _jquants.JQuantsError as e:
             rec["attrs"]["price_error"] = str(e)
         out.append(rec)
+        new_done += 1
         if sleep_sec:
             time.sleep(sleep_sec)
-        if i % 50 == 0:
-            print(f"  ...{i}/{len(events)} enriched")
+        if out_path and new_done % checkpoint_every == 0:
+            atomic_write_json(out_path, {"records": out, "count": len(out), "partial": True}, indent=1)
+            print(f"  ...{i}/{len(events)} enriched (checkpoint, new={new_done})")
     return out
 
 
@@ -159,8 +191,8 @@ def main() -> None:
         events = [r for r in (buyback_to_record(x) for x in raw) if r]
         print(f"[buyback] レコード化 {len(events)}件")
 
-    records = build(events)
     args.out.parent.mkdir(parents=True, exist_ok=True)
+    records = build(events, out_path=args.out)
     atomic_write_json(args.out, {"records": records, "count": len(records)}, indent=1)
     print(f"wrote {args.out} ({len(records)} records)")
 
