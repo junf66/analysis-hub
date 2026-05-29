@@ -2,6 +2,9 @@
 cache/
 reports/
 
+# 自社株買いフェッチの中間キャッシュ (イベント一覧。再生成可能・最終データは buyback_records.json)
+data/buyback_records_events.json
+
 # Python
 __pycache__/
 *.py[cod]
