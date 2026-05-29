@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import signal
 from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
@@ -30,6 +31,14 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 OUT_PATH = REPO_ROOT / "data" / "buyback_records.json"
 
 BUYBACK_DISC_ITEM = "11105"  # TDnet カテゴリコード: 自己株式の取得
+
+
+class _EventTimeout(Exception):
+    pass
+
+
+def _on_alarm(signum: int, frame: Any) -> None:
+    raise _EventTimeout("event enrich timeout")
 
 
 def _f(v: Any) -> float | None:
@@ -50,8 +59,19 @@ def is_buyback_decision(row: dict[str, Any]) -> bool:
             and "状況" not in title and "終了" not in title)
 
 
-def fetch_buyback_events(date_from: str, date_to: str) -> list[dict[str, Any]]:
-    """TDnet `/td/list` を日次走査し自社株買い決定開示を抽出 (要 TDnet アドオン)。"""
+def fetch_buyback_events(date_from: str, date_to: str, *,
+                         cache_path: Path | None = None) -> list[dict[str, Any]]:
+    """TDnet `/td/list` を日次走査し自社株買い決定開示を抽出 (要 TDnet アドオン)。
+
+    cache_path 指定時: 既存キャッシュがあればスキャンせずロード (resume時の再走査回避)。
+    """
+    if cache_path and Path(cache_path).exists():
+        try:
+            raw = json.loads(Path(cache_path).read_text())
+            print(f"[buyback] events cache ロード {len(raw)}件 ({cache_path.name})")
+            return raw
+        except (json.JSONDecodeError, OSError):
+            pass
     d0, d1 = date.fromisoformat(date_from), date.fromisoformat(date_to)
     out: list[dict[str, Any]] = []
     schema_printed = False
@@ -69,6 +89,8 @@ def fetch_buyback_events(date_from: str, date_to: str) -> list[dict[str, Any]]:
                 out.append(r)
         d += timedelta(days=1)
     print(f"[buyback] 自社株買い決定 {len(out)}件 ({date_from}〜{date_to})")
+    if cache_path:
+        atomic_write_json(cache_path, out, indent=0)
     return out
 
 
@@ -141,13 +163,19 @@ def _load_done(out_path: Path | None) -> dict[tuple, dict[str, Any]]:
 
 
 def build(events: list[dict[str, Any]], *, out_path: Path | None = None,
-          sleep_sec: float = 0.2, checkpoint_every: int = 100) -> list[dict[str, Any]]:
+          sleep_sec: float = 0.2, checkpoint_every: int = 100,
+          event_timeout: int = 120) -> list[dict[str, Any]]:
     """events 各件に price (gap/分足) + 減益% を付与した records を返す。
 
     out_path 指定時: checkpoint_every 件ごとに途中結果を保存 (クラッシュ耐性) し、
     既に enrich 済の (code,event_date) は再利用してスキップ (resume)。
+    event_timeout: 1件の enrich がこの秒数を超えたら打ち切り price_error 化して継続
+    (API呼び出しのハングで全体が固まるのを防ぐ; SIGALRM、Unixのみ)。
     """
     import time
+    has_alarm = hasattr(signal, "SIGALRM")
+    if has_alarm:
+        signal.signal(signal.SIGALRM, _on_alarm)
     done = _load_done(out_path)
     if done:
         print(f"[resume] enrich 済 {len(done)} 件をスキップ")
@@ -159,10 +187,15 @@ def build(events: list[dict[str, Any]], *, out_path: Path | None = None,
             out.append(cached)
             continue
         try:
+            if has_alarm:
+                signal.alarm(event_timeout)
             enrich_record(rec)
             attach_earnings(rec)
-        except _jquants.JQuantsError as e:
-            rec["attrs"]["price_error"] = str(e)
+        except (_jquants.JQuantsError, _EventTimeout) as e:
+            rec["attrs"]["price_error"] = str(e) or "timeout"
+        finally:
+            if has_alarm:
+                signal.alarm(0)
         out.append(rec)
         new_done += 1
         if sleep_sec:
@@ -187,7 +220,8 @@ def main() -> None:
                   for c, _, d in (tok.partition(":") for tok in args.events.split(","))]
         print(f"[manual] {len(events)} 件で price+減益 enrich をテスト")
     else:
-        raw = fetch_buyback_events(args.since, args.until)
+        cache = args.out.with_name(args.out.stem + "_events.json")
+        raw = fetch_buyback_events(args.since, args.until, cache_path=cache)
         events = [r for r in (buyback_to_record(x) for x in raw) if r]
         print(f"[buyback] レコード化 {len(events)}件")
 
