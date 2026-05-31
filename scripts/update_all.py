@@ -132,6 +132,10 @@ def main() -> None:
         print("\n### holdings パイプライン ###")
         _run_holdings(py, args)
 
+    # 全ソース横断のエッジ検証 (FDR + walk-forward)。欠損ソースは自動 skip。
+    print("\n### エッジ検証 (過剰最適化ガード) ###")
+    _run([py, "-m", "scripts.validate_edges", "--cost", str(args.cost)], allow_fail=True)
+
     print("\n=== update_all done ===")
     print(f"  kouaku data:   {REPO_ROOT / 'data' / 'kouaku_records.json'}")
     print(f"  po data:       {REPO_ROOT / 'data' / 'po_records.json'}")

@@ -44,6 +44,10 @@ python -m scripts.backtest_po       # reports/po_backtest.md
 python -m scripts.analyze_holdings_edge   # reports/holdings_analysis.md
 python -m scripts.backtest_holdings       # reports/holdings_backtest.md
 
+# エッジ検証 (過剰最適化ガード: 日付クラスタ頑健t + FDR多重検定補正 + walk-forward OOS)
+# 方向別コスト (short 0.15%=楽天滑りのみ / long 0.20%=日興込み)、既知3エッジ監査セクション付き
+python -m scripts.validate_edges          # reports/edge_validation.md (3ソース横断)
+
 # 好悪サイト用 slim JSON 生成 + プレビュー
 python -m scripts.export_kouaku_site                 # data/kouaku_site.json
 python -m http.server                                # → http://localhost:8000/site/kouaku.html
@@ -53,6 +57,18 @@ python -m unittest discover -s tests
 ```
 
 ## キーとなる発見済みエッジ
+
+**過剰最適化ガード (`scripts.validate_edges`) を通過する真に頑健なエッジ** (日付クラスタ頑健 t
+＋ Benjamini-Hochberg FDR ＋ walk-forward OOS、**方向別コスト net: short 0.15% / long 0.20%**):
+- kouaku: `zouhai_kahou_nx × 大引け後` short (t_clust+4.98 / p≈0 / OOS test +1.28% / n239)
+- PO:     `decide × リート × 貸借` short (t_clust+3.49 / p=0.0005 / OOS test +0.93% / n131)
+- holdings: **通過セルなし** (最善でも p>0.05、データ期間が短い)
+
+コスト前提 (実約定環境に合わせ方向別): **ショート=楽天 手数料0・逆日歩無視で寄りの滑りのみ
+0.15%、ロング=日興手数料込み安全側 0.20%**。`validate_edges --short-cost/--long-cost` で変更可。
+
+backtest_* の単純 |t| では有意に見えるセル (kouhou_seikyu×大引け後 t+2.24 等) も、
+多重検定・クラスタ補正後は p>0.05 に落ちる。**実運用判断は edge_validation.md を基準にする**こと。
 
 ### kouaku
 source of truth は `scripts/backtest_kouaku.py` の net 損益 (往復コスト 0.20%)。
@@ -72,6 +88,15 @@ source of truth は `scripts/backtest_kouaku.py` の net 損益 (往復コスト
 - 発表翌日 (普通 announce, 9:10 売り long): EV +0.44% / t +3.07 / n 121
 - 受渡日 GD (普通 deliver, gap<=-0.5%, 寄→引 long): EV +0.38% / t +2.40 / n 226
 - リート ショート (REIT decide, next_open→決定日引け short): EV +1.08% / t +4.82 / n 177
+  - = PO発表の翌営業日寄りでショート → 発行価格決定日の引けで買戻し (数日またぎ)。
+
+**既知3エッジ監査** (`validate_edges` の専用セクション、当時の特殊な仕掛けのまま再評価、
+方向別コスト net + 日付クラスタ頑健 t + FDR + walk-forward OOS):
+- ③ リート short のみ通過 (t_clust+4.02 / p=0.0001 / OOS test +0.89% / n177)。主力エッジ健在。
+- ① 発表翌日 9:10 long は cost+クラスタ後 t_clust+1.63 / p=0.10 で**脱落** (OOS+0.12%)。
+- ② 受渡日GD long も t_clust+1.07 / p=0.28 で**脱落** (OOS+0.48%、符号は正だが noise 内)。
+- → 当時の raw |t| (3.07 / 2.40) は cost 前・クラスタ未補正。実運用は③のみ信頼。
+  ③は short(0.15%) なので方向別コスト化で raw 寄りに強化、①②は long(0.20%) で据え置き。
 
 新発見 (Phase D, cost 0.20% net):
 - decide × REIT × 貸借 short: t +3.43 / EV +0.93% / n 131
@@ -111,6 +136,8 @@ source of truth は `reports/holdings_backtest.md`。
 - PO の attrs キー変更 = `extract_po._attrs_*` + `analyze_po_edge._METRIC_FIELDS_BY_STAGE` + `audit_all._PO_ATTR_KEYS_BY_STAGE` + `query_po._METRIC_CHOICES`
 - holdings の field 追加 = `extract_holdings._PRICE_MAP / _DIM_KEYS` + `analyze_holdings_edge._METRIC_FIELDS` + `query_holdings._METRIC_CHOICES` + `audit_all._HOLDINGS_ATTR_KEYS`
 - ad-hoc 探索 CLI は 3 ソース共通: `query_kouaku` / `query_po` / `query_holdings` (集計・表示は `_query_report` を共有)
+- 約定可能性 (流動性) フィルタ: `query_holdings --min-turnover/--min-mktcap`、`query_po --min-mktcap`。
+  非独立補正は `--collapse-daily`。エッジの最終判断は `validate_edges` (FDR+OOS) を基準に。
 
 ## 開発ブランチ規約
 

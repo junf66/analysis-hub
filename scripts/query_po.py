@@ -89,6 +89,9 @@ def _filter(records: list[dict[str, Any]], args: argparse.Namespace) -> list[dic
             continue
         if args.gap_max is not None and (gap is None or gap > args.gap_max):
             continue
+        mcap = r.get("market_cap")
+        if args.min_mktcap is not None and (mcap is None or mcap < args.min_mktcap):
+            continue
         out.append(r)
     return out
 
@@ -105,6 +108,7 @@ def main() -> None:
     ap.add_argument("--until", help="ISO date YYYY-MM-DD (含む)")
     ap.add_argument("--gap-min", type=float, help="GAP%% 下限 (含む)")
     ap.add_argument("--gap-max", type=float, help="GAP%% 上限 (含む)")
+    ap.add_argument("--min-mktcap", type=float, help="時価総額の下限 — 約定可能性フィルタ")
     ap.add_argument("--include-ineligible", action="store_true",
                     help="legacy/決算同時/分割窓/status 不適格も含める (既定は除外)")
     ap.add_argument("--metric", choices=_METRIC_CHOICES, default="next_day_910_ret",
