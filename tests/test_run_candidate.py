@@ -29,5 +29,17 @@ class TestBadMaterialFilter(unittest.TestCase):
         self.assertEqual(codes, {("1", "2026-01-05"), ("9", "2026-01-07")})
 
 
+class TestLoadEnrichedByTag(unittest.TestCase):
+    def test_filters_by_tag(self) -> None:
+        # 実データが在ればフィルタが返す件数が good_kessan_up タグ数と一致
+        import json
+        if not rc.ENRICHED_PATH.exists():
+            self.skipTest("enriched_events.json なし")
+        recs = rc.load_enriched_by_tag({"good_kessan_up"})
+        all_recs = json.loads(rc.ENRICHED_PATH.read_text())["records"]
+        expected = sum(1 for r in all_recs if "good_kessan_up" in (r.get("tags") or []))
+        self.assertEqual(len(recs), expected)
+
+
 if __name__ == "__main__":
     unittest.main()

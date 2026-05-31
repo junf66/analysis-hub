@@ -17,6 +17,7 @@ from scripts.edge_candidates.candidates import by_id
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 BUYBACK_PATH = REPO_ROOT / "data" / "buyback_records.json"
 INDEX_PATH = REPO_ROOT / "data" / "edge_candidates" / "tdnet_index.json"
+ENRICHED_PATH = REPO_ROOT / "data" / "edge_candidates" / "enriched_events.json"
 REPORT_DIR = REPO_ROOT / "reports" / "edge_candidates_detail"
 
 
@@ -62,7 +63,47 @@ def run_jisha_single() -> dict[str, Any]:
     return {"cid": cfg["cid"], "name": cfg["name"], "verdict": verdict, "reason": reason}
 
 
-_RUNNERS = {"#2": run_jisha_single}
+def load_enriched_by_tag(tags_any: set[str]) -> list[dict[str, Any]]:
+    """enriched_events.json から tags にいずれか該当する record を返す (#1/#3/#5用)。"""
+    if not ENRICHED_PATH.exists():
+        return []
+    recs = json.loads(ENRICHED_PATH.read_text())["records"]
+    return [r for r in recs if any(t in tags_any for t in (r.get("tags") or []))]
+
+
+def _run_index_candidate(cid: str, tags_any: set[str], exclude_bad: bool) -> dict[str, Any]:
+    """索引イベント (enriched) から候補レコードを作り検証→レポート出力→サマリ行を返す。"""
+    cfg = by_id(cid)
+    recs = load_enriched_by_tag(tags_any)
+    if exclude_bad:
+        index = json.loads(INDEX_PATH.read_text())["records"]
+        recs = filter_no_bad_material(recs, bad_material_keys(index))
+    results = lib.validate_candidate(recs, exits=cfg["exits"])
+    verdict, reason, _ = lib.judge(results, caveat_beta=cfg["caveat_beta"])
+    reason = f"(n={len(recs)}) {reason}"
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    lib.write_candidate_report(cfg["cid"], cfg["name"], results, verdict, reason,
+                               out_dir=REPORT_DIR, caveats=cfg.get("dedup", ""))
+    return {"cid": cfg["cid"], "name": cfg["name"], "verdict": verdict, "reason": reason}
+
+
+def run_kessan_up() -> dict[str, Any]:
+    """#1 上方修正発表翌日ロング を検証 (索引から good_kessan_up を抽出)。"""
+    return _run_index_candidate("#1", {"good_kessan_up"}, exclude_bad=False)
+
+
+def run_zouhai_single() -> dict[str, Any]:
+    """#3 増配単独(悪材料なし)ロング を検証 (good_zouhai + 同日悪材料/減益除外)。"""
+    return _run_index_candidate("#3", {"good_zouhai"}, exclude_bad=True)
+
+
+def run_teikei_juchu() -> dict[str, Any]:
+    """#5 業務提携・大型受注ロング を検証 (good_teikei または good_juchu)。"""
+    return _run_index_candidate("#5", {"good_teikei", "good_juchu"}, exclude_bad=False)
+
+
+_RUNNERS = {"#1": run_kessan_up, "#2": run_jisha_single,
+            "#3": run_zouhai_single, "#5": run_teikei_juchu}
 
 
 def main() -> None:
