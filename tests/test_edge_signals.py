@@ -45,6 +45,29 @@ class TestReturnsFromBars(unittest.TestCase):
         self.assertIn("price_error", ec.returns_from_bars(bars, "2025-01-01", [1]))
 
 
+class TestEnrichByCode(unittest.TestCase):
+    def test_groups_and_enriches_with_one_fetch_per_code(self) -> None:
+        calls = []
+
+        def fake_get_list(ep, **kw):
+            calls.append(kw["code"])
+            return _bars([("2025-01-01", 90, 95), ("2025-01-02", 100, 101),
+                          ("2025-01-03", 102, 110), ("2025-01-06", 111, 130)])
+
+        events = [{"code": "1000", "event_date": "2025-01-01"},
+                  {"code": "1000", "event_date": "2025-01-01"}]  # 同一銘柄2件
+        orig = ec._jquants.get_list
+        ec._jquants.get_list = fake_get_list
+        try:
+            n = ec.enrich_events_by_code(events, [1])
+        finally:
+            ec._jquants.get_list = orig
+        self.assertEqual(n, 2)
+        self.assertEqual(len(calls), 1)             # 銘柄ごと1 fetch
+        self.assertEqual(calls[0], "10000")         # 4桁→5桁補正
+        self.assertAlmostEqual(events[0]["attrs"]["d1_ret"], 10.0)
+
+
 class TestMarginSignals(unittest.TestCase):
     def _rec(self, code, date, lv):
         return {"Code": code, "Date": date, "LongVol": lv}

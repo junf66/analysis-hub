@@ -20,7 +20,7 @@ from typing import Any
 
 from scripts._atomic import atomic_write_json
 from scripts.edge_candidates.candidates import by_id
-from scripts.edge_candidates.enrich_common import compute_event_returns
+from scripts.edge_candidates.enrich_common import enrich_events_by_code
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 PANEL_PATH = REPO_ROOT / "data" / "edge_candidates" / "short_sale_report.json"
@@ -70,13 +70,15 @@ def main() -> None:
     events = compute_short_signals(panel, threshold=args.threshold)
     if args.limit:
         events = events[-args.limit:]
-    print(f"[short_signal] threshold {args.threshold:+.0f}% → {len(events)}件 enrich開始")
-    for i, rec in enumerate(events, 1):
-        compute_event_returns(rec, DAYS, skip_bars=0)
-        if i % 100 == 0:
-            atomic_write_json(args.out, {"records": events, "count": len(events),
-                                         "partial": True}, indent=0)
-            print(f"  ...{i}/{len(events)}")
+    ncodes = len({e["code"] for e in events})
+    print(f"[short_signal] threshold {args.threshold:+.0f}% → {len(events)}件 / {ncodes}銘柄 enrich開始")
+
+    def _ckpt() -> None:
+        atomic_write_json(args.out, {"records": events, "count": len(events),
+                                     "partial": True}, indent=0)
+        print(f"  ...checkpoint ({len(events)}件)")
+
+    enrich_events_by_code(events, DAYS, skip_bars=0, on_checkpoint=_ckpt)
     atomic_write_json(args.out, {"records": events, "count": len(events)}, indent=0)
     print(f"wrote {args.out}")
 
