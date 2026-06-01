@@ -1,7 +1,8 @@
-"""split_multiday の event_date>=2024-05-21 (513件) について J-Quants 分足を
-取得し、+1日の 9:30 / 11:30 価格を attrs に追加する。
+"""split_multiday の event_date>=2024-06-01 について J-Quants 分足を
+取得し、+1日の 9:30 / 11:30 / 引け 価格を attrs に追加する。
 
-J-Quants 分足 add-on は 2024-05-21 以降のみ。それ以前は分足なしのため
+J-Quants 分足 add-on の契約範囲は 2024-06-01 以降 (実 API 照合で確定。
+2024-05-21〜05-31 は契約対象外で HTTP 400)。それ以前は分足なしのため
 intraday 戦略の検証不能。
 
 ロジック:
@@ -24,7 +25,7 @@ from scripts._atomic import atomic_write_json
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 SPLIT_PATH = REPO_ROOT / "data" / "edge_candidates" / "split_multiday.json"
-MINUTE_AVAILABLE_FROM = "2024-05-21"
+MINUTE_AVAILABLE_FROM = "2024-06-01"
 DAYS = [3, 5, 10]
 
 
@@ -66,8 +67,13 @@ def enrich_intraday(records: list[dict[str, Any]], *, out_path: Path = SPLIT_PAT
             continue
         px_930 = b930["O"]
         px_1130 = b1130["C"]
+        # 引け値 = 最終バーの Close。大引け時刻は 15:00→15:30 (2024-11 TSE延長) で
+        # 変動するため時刻決め打ちせず最終バーを採る。
+        px_close = bars[-1].get("C") if bars else None
         a["px_930"] = px_930
         a["px_1130"] = px_1130
+        if px_close:
+            a["px_close"] = px_close
         entry_open = a.get("entry_open")
         if entry_open:
             for n in DAYS:
@@ -77,6 +83,8 @@ def enrich_intraday(records: list[dict[str, Any]], *, out_path: Path = SPLIT_PAT
                 close_n = entry_open * (1 + dn / 100.0)
                 a[f"t930_d{n}_ret"] = (close_n / px_930 - 1) * 100.0
                 a[f"t1130_d{n}_ret"] = (close_n / px_1130 - 1) * 100.0
+                if px_close:
+                    a[f"tclose_d{n}_ret"] = (close_n / px_close - 1) * 100.0
         processed += 1
         if processed % checkpoint_every == 0:
             atomic_write_json(out_path, {"records": records, "count": len(records),
