@@ -5,6 +5,9 @@ reports/
 # 自社株買いフェッチの中間キャッシュ (イベント一覧。再生成可能・最終データは buyback_records.json)
 data/buyback_records_events.json
 
+# atomic_write の一時ファイル (実行中に一瞬残る。rename 後に消える)
+**/.*.tmp
+
 # Python
 __pycache__/
 *.py[cod]
