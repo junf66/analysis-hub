@@ -109,6 +109,7 @@ def analyze(records: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def build_report(res: dict[str, Any]) -> str:
+    """analyze() の結果からエントリー時刻比較レポート (Markdown) を組み立てる。"""
     raw, alpha, fdr = res["raw"], res["alpha"], res["fdr"]
     days = res["avail_days"]
     lines = [
