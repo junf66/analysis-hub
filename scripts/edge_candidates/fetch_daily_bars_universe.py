@@ -21,9 +21,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 UNIV_PATH = REPO_ROOT / "data" / "edge_candidates" / "listed_universe.json"
 OUT_PATH = REPO_ROOT / "data" / "edge_candidates" / "daily_bars_universe.json"
 
-KEEP_FIELDS = ("Date", "Open", "High", "Low", "Close",
-               "AdjustmentOpen", "AdjustmentHigh", "AdjustmentLow", "AdjustmentClose",
-               "Volume", "AdjustmentVolume")
+KEEP_FIELDS = ("Date", "O", "H", "L", "C", "AdjO", "AdjH", "AdjL", "AdjC",
+               "Vo", "AdjVo", "AdjFactor")
 
 
 def _load_checkpoint(out_path: Path) -> tuple[dict[str, list[dict[str, Any]]], set[str]]:

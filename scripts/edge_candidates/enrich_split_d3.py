@@ -50,21 +50,21 @@ def add_short_days(records: list[dict[str, Any]], days: list[int] = ADD_DAYS,
         except _jquants.JQuantsError as e:
             a["price_error"] = str(e)
             continue
-        bars = sorted([b for b in bars if b.get("Date") and b.get("Close") is not None],
+        bars = sorted([b for b in bars if b.get("Date") and b.get("C") is not None],
                       key=lambda b: b["Date"])
         after = [b for b in bars if b["Date"] > ev.isoformat()]
         if not after:
             a["price_error"] = "no next-day bar"
             continue
         entry = after[0]
-        o = entry.get("AdjustmentOpen") or entry.get("Open")
+        o = entry.get("AdjO") or entry.get("O")
         if not o:
             a["price_error"] = "no entry open"
             continue
         for n in days:
             if n < len(after):
                 target = after[n]
-                c = target.get("AdjustmentClose") or target.get("Close")
+                c = target.get("AdjC") or target.get("C")
                 if c:
                     a[f"d{n}_ret"] = (c / o - 1) * 100.0
         processed += 1
