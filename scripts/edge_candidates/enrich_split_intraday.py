@@ -1,17 +1,20 @@
 """split_multiday の event_date>=2024-06-01 について J-Quants 分足を
-取得し、+1日の 9:30 / 11:30 / 引け 価格を attrs に追加する。
+取得し、+1日 (entry_date) の 始値/9:30/11:30/引け の **生値** を attrs に追加する。
 
 J-Quants 分足 add-on の契約範囲は 2024-06-01 以降 (実 API 照合で確定。
 2024-05-21〜05-31 は契約対象外で HTTP 400)。それ以前は分足なしのため
 intraday 戦略の検証不能。
 
-ロジック:
-  - 各 event の entry_date (=event_date+1 営業日) について /equities/bars/minute
-  - 09:30 バーの Open を px_930
-  - 11:30 バーの Close を px_1130 (前場引け)
-  - 既存の d{N}_ret から close_{+N} を逆算し、新リターンを計算:
-      t930_d{N}_ret = (close_{+N} / px_930 - 1) * 100
-      t1130_d{N}_ret = (close_{+N} / px_1130 - 1) * 100
+重要: 分足は分割調整なしの**生値**。entry_open(AdjO) や d{N}_ret(調整値ベース)
+と直接混ぜると分割係数の分だけ壊れるため、ここでは生値のみ保存し、派生
+リターンの計算は analyze_split_intraday 側で生値ベースに統一して行う
+(エントリー→+N の窓内に権利落ちは入らないため raw 窓リターン = 調整リターン)。
+
+保存する生値:
+  - px_open  : 前場最初のバー(=09:00 寄り)の Open   ← 生値ベースの基準
+  - px_930   : 09:30 以降の前場最初のバーの Open
+  - px_1130  : 11:30 以前の最後の約定バーの Close (前場引け)
+  - px_close : 最大 Time バーの Close (大引け、15:00→15:30 変動に対応)
 """
 from __future__ import annotations
 
@@ -30,6 +33,14 @@ DAYS = [3, 5, 10]
 
 
 MORNING_CLOSE = "11:30"  # 前場引け時刻
+
+
+def _px_open(bars: list[dict[str, Any]]) -> float | None:
+    """前場最初(=最小Time)のバーの Open = 生値ベースの寄り。"""
+    morning = [b for b in bars if str(b.get("Time", "")) <= MORNING_CLOSE and b.get("O")]
+    if not morning:
+        return None
+    return min(morning, key=lambda b: str(b.get("Time", "")))["O"]
 
 
 def _px_930(bars: list[dict[str, Any]]) -> float | None:
@@ -52,12 +63,12 @@ def _px_1130(bars: list[dict[str, Any]]) -> float | None:
 def enrich_intraday(records: list[dict[str, Any]], *, out_path: Path = SPLIT_PATH,
                     checkpoint_every: int = 50) -> dict[str, int]:
     """対象 event の attrs に px_930 / px_1130 / t930_d{N}_ret / t1130_d{N}_ret を追加。"""
-    # px_930 未取得を対象 (過去に intraday_error だったものもバー選択改善で再試行)。
+    # px_open 未取得を対象 (生値基準の追加・バー選択改善のため px_930 済も再処理)。
     todo = [r for r in records
             if r.get("event_date", "") >= MINUTE_AVAILABLE_FROM
             and not (r.get("attrs") or {}).get("price_error")
             and (r.get("attrs") or {}).get("entry_date")
-            and (r.get("attrs") or {}).get("px_930") is None]
+            and (r.get("attrs") or {}).get("px_open") is None]
     print(f"[intraday] 対象 {len(todo)}件")
     processed = 0
     for r in todo:
@@ -71,32 +82,25 @@ def enrich_intraday(records: list[dict[str, Any]], *, out_path: Path = SPLIT_PAT
             a["intraday_error"] = str(e)
             processed += 1
             continue
+        px_open = _px_open(bars)
         px_930 = _px_930(bars)
         px_1130 = _px_1130(bars)
-        if not px_930 or not px_1130:
-            a["intraday_error"] = "missing 9:30 or 11:30 bar"
+        # 引け値 = 最も遅い時刻のバーの Close。
+        with_c = [b for b in bars if b.get("C")]
+        px_close = max(with_c, key=lambda b: str(b.get("Time", "")))["C"] if with_c else None
+        if not px_open or not px_930 or not px_1130 or not px_close:
+            a["intraday_error"] = "missing intraday bar"
             processed += 1
             continue
         a.pop("intraday_error", None)  # 再試行で成功したらエラーを消す
-        # 引け値 = 最も遅い時刻のバーの Close。大引け時刻は 15:00→15:30 (2024-11 TSE
-        # 延長) で変動するため時刻決め打ちせず最大 Time バーを採る。
-        with_c = [b for b in bars if b.get("C")]
-        px_close = max(with_c, key=lambda b: str(b.get("Time", "")))["C"] if with_c else None
+        a["px_open"] = px_open
         a["px_930"] = px_930
         a["px_1130"] = px_1130
-        if px_close:
-            a["px_close"] = px_close
-        entry_open = a.get("entry_open")
-        if entry_open:
-            for n in DAYS:
-                dn = a.get(f"d{n}_ret")
-                if dn is None:
-                    continue
-                close_n = entry_open * (1 + dn / 100.0)
-                a[f"t930_d{n}_ret"] = (close_n / px_930 - 1) * 100.0
-                a[f"t1130_d{n}_ret"] = (close_n / px_1130 - 1) * 100.0
-                if px_close:
-                    a[f"tclose_d{n}_ret"] = (close_n / px_close - 1) * 100.0
+        a["px_close"] = px_close
+        # 旧バージョンが書いた壊れた派生値が残っていれば除去 (analyze 側で生値再計算)。
+        for n in DAYS:
+            for tag in ("t930", "t1130", "tclose"):
+                a.pop(f"{tag}_d{n}_ret", None)
         processed += 1
         if processed % checkpoint_every == 0:
             atomic_write_json(out_path, {"records": records, "count": len(records),

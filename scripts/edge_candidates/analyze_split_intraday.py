@@ -36,23 +36,24 @@ OUT_PATH = REPO_ROOT / "reports" / "edge_candidates_detail" / "split_intraday.md
 
 LONG_COST = 0.20
 DAYS = [3, 5, 10]
-# (ラベル, 価格 attr キー or "open")
-ENTRIES = [("寄り", "open"), ("9:30", "px_930"), ("11:30", "px_1130"), ("引け", "px_close")]
+# (ラベル, 価格 attr キー)。全て分足の生値。基準=px_open。
+ENTRIES = [("寄り", "px_open"), ("9:30", "px_930"), ("11:30", "px_1130"), ("引け", "px_close")]
 
 
 def _entry_ret(a: dict[str, Any], price_key: str, n: int) -> float | None:
-    """エントリー時刻 price_key, 保有 n 日の生リターン% (entry→+N引け)。"""
+    """エントリー時刻 price_key, 保有 n 日の生リターン% (entry→+N引け)。
+
+    全て生値ベース: +N引けの生値 = px_open*(1+d{n}/100) (d{n} は調整値ベースだが
+    エントリー→+N の窓内に権利落ちが無いため raw 窓リターンと一致)。これを各
+    エントリー時刻の生値 px で割る。寄り(px_open)入りなら結果は d{n} に一致。
+    """
     dn = a.get(f"d{n}_ret")
-    eo = a.get("entry_open")
-    if dn is None or not eo:
-        return None
-    if price_key == "open":
-        return dn  # entry_open→+N引け = d{n}_ret そのもの
+    po = a.get("px_open")
     px = a.get(price_key)
-    if not px:
+    if dn is None or not po or not px:
         return None
-    close_n = eo * (1 + dn / 100.0)
-    return (close_n / px - 1) * 100.0
+    close_n_raw = po * (1 + dn / 100.0)
+    return (close_n_raw / px - 1) * 100.0
 
 
 def _stats(obs: list[tuple[str, float]], cost: float) -> dict[str, Any]:
@@ -72,8 +73,8 @@ def _stats(obs: list[tuple[str, float]], cost: float) -> dict[str, Any]:
 def analyze(records: list[dict[str, Any]]) -> dict[str, Any]:
     """intraday サブセットでエントリー時刻×保有日数の raw/α 集計を返す。"""
     topix = load_topix()
-    sub = [r for r in records if (r.get("attrs") or {}).get("px_930") is not None
-           and (r.get("attrs") or {}).get("entry_open")]
+    sub = [r for r in records if (r.get("attrs") or {}).get("px_open")
+           and (r.get("attrs") or {}).get("px_930")]
     avail_days = [n for n in DAYS
                   if any((r["attrs"]).get(f"d{n}_ret") is not None for r in sub)]
 
