@@ -102,8 +102,26 @@ def run_teikei_juchu() -> dict[str, Any]:
     return _run_index_candidate("#5", {"good_teikei", "good_juchu"}, exclude_bad=False)
 
 
+def run_stock_split() -> dict[str, Any]:
+    """#4 株式分割発表ロング を検証 (split_multiday の +5/+10日リターン)。
+
+    enrich_multiday で価格付与済みの events を読み、cfg["exits"] (+5/+10日) で検証。
+    caveat_beta=True なので通過しても「保留・要TOPIX再検証」。
+    """
+    cfg = by_id("#4")
+    SPLIT_PATH = REPO_ROOT / "data" / "edge_candidates" / "split_multiday.json"
+    recs = json.loads(SPLIT_PATH.read_text())["records"]
+    results = lib.validate_candidate(recs, exits=cfg["exits"])
+    verdict, reason, _ = lib.judge(results, caveat_beta=cfg["caveat_beta"])
+    reason = f"(n={len(recs)}) {reason}"
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    lib.write_candidate_report(cfg["cid"], cfg["name"], results, verdict, reason,
+                               out_dir=REPORT_DIR, caveats=cfg.get("dedup", ""))
+    return {"cid": cfg["cid"], "name": cfg["name"], "verdict": verdict, "reason": reason}
+
+
 _RUNNERS = {"#1": run_kessan_up, "#2": run_jisha_single,
-            "#3": run_zouhai_single, "#5": run_teikei_juchu}
+            "#3": run_zouhai_single, "#4": run_stock_split, "#5": run_teikei_juchu}
 
 
 def main() -> None:
