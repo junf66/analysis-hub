@@ -120,8 +120,34 @@ def run_stock_split() -> dict[str, Any]:
     return {"cid": cfg["cid"], "name": cfg["name"], "verdict": verdict, "reason": reason}
 
 
+def run_stock_split_alpha() -> dict[str, Any]:
+    """#4 株式分割発表ロング を TOPIX 超過収益 (β=1) で再検証。
+
+    split_multiday の各 event に topix_adjust で alpha_d{N}_ret を付与し、
+    生リターンの代わりに α で同じ統計枠 (clustered_t + FDR + walk-forward OOS) を回す。
+    生 #4 が「数日保有=ベータ汚染」で保留だった件への直接的回答。
+    """
+    from scripts.edge_candidates import topix_adjust
+    cfg = by_id("#4")
+    SPLIT_PATH = REPO_ROOT / "data" / "edge_candidates" / "split_multiday.json"
+    recs = json.loads(SPLIT_PATH.read_text())["records"]
+    days = [5, 10]
+    stats = topix_adjust.enrich_with_alpha(recs, days)
+    alpha_exits = [(f"alpha_d{n}_ret", f"+{n}日α") for n in days]
+    results = lib.validate_candidate(recs, exits=alpha_exits)
+    # α 再検証は caveat_beta を解除して判定
+    verdict, reason, _ = lib.judge(results, caveat_beta=False)
+    reason = f"(α補正 n={len(recs)} / α付与{stats['alpha_added']}) " + reason
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    lib.write_candidate_report(cfg["cid"] + "α", cfg["name"] + " (TOPIX超過α)",
+                               results, verdict, reason, out_dir=REPORT_DIR,
+                               caveats="β=1 近似。日足universe完了後にβ推定で再々検証可。")
+    return {"cid": cfg["cid"] + "α", "name": cfg["name"] + " α", "verdict": verdict, "reason": reason}
+
+
 _RUNNERS = {"#1": run_kessan_up, "#2": run_jisha_single,
-            "#3": run_zouhai_single, "#4": run_stock_split, "#5": run_teikei_juchu}
+            "#3": run_zouhai_single, "#4": run_stock_split,
+            "#4α": run_stock_split_alpha, "#5": run_teikei_juchu}
 
 
 def main() -> None:
