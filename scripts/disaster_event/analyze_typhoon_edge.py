@@ -171,6 +171,7 @@ def case_study_block(obs: list[dict[str, Any]], events: list[dict[str, Any]]) ->
 
 
 def build_report(obs: list[dict[str, Any]], events: list[dict[str, Any]]) -> str:
+    """観測リストとイベントから簡易検証レポート (Markdown) を組み立てて返す。"""
     today = date.today().isoformat()
     n_events = len({o["intl"] for o in obs})
     lines = [
@@ -189,7 +190,6 @@ def build_report(obs: list[dict[str, Any]], events: list[dict[str, Any]]) -> str
         "| 戦略 | 方向 | n | net EV | 勝率 | t_clust | p | 判定 |",
         "|---|---|---|---|---|---|---|---|",
     ]
-    data_path = DATA_PATH  # noqa
     results = []
     for play in PLAYS:
         r = eval_play(obs, play)
