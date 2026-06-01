@@ -26,13 +26,28 @@ class TestWilderRSI(unittest.TestCase):
         self.assertTrue(all(x is None for x in r))
 
 
+class TestAdjFieldNames(unittest.TestCase):
+    """/equities/bars/daily の短名 (AdjC/C) に _adj が対応すること。"""
+
+    def test_prefers_adjusted(self) -> None:
+        self.assertEqual(rmr._adj({"AdjC": 110.0, "C": 100.0}, "Close"), 110.0)
+        self.assertEqual(rmr._adj({"AdjO": 11.0, "O": 10.0}, "Open"), 11.0)
+
+    def test_falls_back_to_raw(self) -> None:
+        self.assertEqual(rmr._adj({"C": 100.0}, "Close"), 100.0)
+
+    def test_long_names_not_used(self) -> None:
+        # 旧バグの長名は実データに無い → None
+        self.assertIsNone(rmr._adj({"Close": 100.0}, "Close"))
+
+
 class TestSimulate(unittest.TestCase):
     def _bars(self, closes: list[float]) -> list[dict]:
-        # Open=前日Close、当日 Close 指定で簡易作成
+        # 実データの短名 (O/C) で作成。Open=前日Close、当日 Close 指定で簡易作成
         bars = []
         for i, c in enumerate(closes):
             o = closes[i - 1] if i else c
-            bars.append({"Date": f"2025-01-{i+1:02d}", "Open": o, "Close": c})
+            bars.append({"Date": f"2025-01-{i+1:02d}", "O": o, "C": c})
         return bars
 
     def test_no_signal_no_trades(self) -> None:
@@ -46,7 +61,7 @@ class TestSimulate(unittest.TestCase):
 
     def test_skips_codes_with_missing_close(self) -> None:
         bars = self._bars([100.0] * 30)
-        bars[10]["Close"] = None
+        bars[10]["C"] = None
         self.assertEqual(rmr.simulate_code(bars, 30.0, 70.0), [])
 
     def test_generates_trade_on_down_then_up(self) -> None:

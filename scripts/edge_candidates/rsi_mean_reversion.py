@@ -61,7 +61,14 @@ def wilder_rsi(closes: list[float], period: int = RSI_PERIOD) -> list[float | No
 
 
 def _adj(bar: dict[str, Any], key: str) -> float | None:
-    return bar.get(f"Adjustment{key}") or bar.get(key)
+    """調整後優先で価格を返す。/equities/bars/daily の短名 (AdjC/C, AdjO/O) に対応。"""
+    short = {"Close": ("AdjC", "C"), "Open": ("AdjO", "O"),
+             "High": ("AdjH", "H"), "Low": ("AdjL", "L")}.get(key, (key,))
+    for k in short:
+        v = bar.get(k)
+        if v is not None:
+            return v
+    return None
 
 
 def simulate_code(bars: list[dict[str, Any]], entry: float, exit_: float,
