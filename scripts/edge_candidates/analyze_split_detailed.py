@@ -197,6 +197,7 @@ def tepco_analog(records: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def write_report(records: list[dict[str, Any]], *, out_path: Path = OUT_PATH) -> Path:
+    """細分化検証の全結果 (ベース/軸別/組合せ/弱セグ/8035型/寄り方戦術) を Markdown 出力。"""
     import datetime
     cells = build_cells(records)
     base = base_stats(records)
