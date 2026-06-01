@@ -125,6 +125,23 @@ source of truth は `reports/holdings_backtest.md`。
   翌日リターンが同値で n/t を水増しするため、有意性判断は `query_* --collapse-daily`
   (同一 code+date を1観測に集約) で独立補正して確認すること。data_health に独立性行あり。
 
+## 災害イベント駆動 (台風) — scripts/disaster_event/
+
+JMA RSMC東京ベストトラック (bst_all.zip) を起点に、台風イベント周辺の
+テーマ16銘柄リターンを検証する独立パイプライン (network: `www.jma.go.jp` allowlist 要)。
+
+```bash
+python -m scripts.disaster_event.fetch_typhoon_data      # bst取得→best_track.json
+python -m scripts.disaster_event.identify_typhoons       # 日本接近・大型台風49件→typhoon_records.json
+python -m scripts.disaster_event.enrich_typhoon_prices   # 16銘柄日足→typhoon_price_data.json
+python -m scripts.disaster_event.analyze_typhoon_edge    # reports/typhoon_event_simple.md
+```
+
+所見 (簡易版、FDR/OOS 未適用): 5戦略いずれも簡易基準
+(EV>0.5%&勝率>55%&n≥20&t_clust>+1.5、台風単位クラスタ補正) を通過せず＝**エッジなし**。
+直撃日ロングは有意マイナス。強度を絞っても復興需要ロングは強まらない (有名事例は非代表)。
+詳細: `reports/typhoon_event_simple.md` / `reports/edge_candidates_summary.md`。
+
 ## 既知制約
 
 - J-Quants Light 契約のため Pro 専用 (自社株買い TDnet) は未取得
