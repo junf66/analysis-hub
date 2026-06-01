@@ -31,3 +31,5 @@ venv/
 # 大型・再生成可能 (universe 日足はコミットしない。RSI レポートのみ永続化)
 data/edge_candidates/daily_bars_universe.json
 data/edge_candidates/rsi_trades.json
+data/edge_candidates/margin_interest.json
+data/edge_candidates/short_sale_report.json

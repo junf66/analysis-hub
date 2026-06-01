@@ -145,9 +145,49 @@ def run_stock_split_alpha() -> dict[str, Any]:
     return {"cid": cfg["cid"] + "α", "name": cfg["name"] + " α", "verdict": verdict, "reason": reason}
 
 
+def _run_multiday_alpha(cid: str, signals_filename: str, days: list[int]) -> dict[str, Any]:
+    """シグナル系候補 (#7/#8) を TOPIX 超過α (β=1) で検証し詳細レポートを書く共通ルーチン。
+
+    *_signals.json (compute_event_returns で entry_open/d{n}_ret 付与済) を読み、
+    alpha_d{n}_ret を付与 → α で clustered_t + FDR + walk-forward OOS を回す。
+    数日保有=ベータ汚染への回答として α 基準で判定 (caveat_beta=False)。
+    """
+    from scripts.edge_candidates import topix_adjust
+    cfg = by_id(cid)
+    path = REPO_ROOT / "data" / "edge_candidates" / signals_filename
+    if not path.exists():
+        return {"cid": cid, "name": cfg["name"], "verdict": "却下",
+                "reason": f"signals 未生成 ({signals_filename})"}
+    recs = json.loads(path.read_text())["records"]
+    stats = topix_adjust.enrich_with_alpha(recs, days)
+    alpha_exits = [(f"alpha_d{n}_ret", f"+{n}日α") for n in days]
+    results = lib.validate_candidate(recs, exits=alpha_exits)
+    verdict, reason, _ = lib.judge(results, caveat_beta=False)
+    # 参考: 生リターン (β込み) も併記
+    raw = lib.validate_candidate(recs, exits=[(f"d{n}_ret", f"+{n}日raw") for n in days])
+    raw_note = ", ".join(f"+{r['exit']}={r['net_ev']:+.2f}%" for r in raw) if raw else "—"
+    reason = f"(α補正 n={len(recs)} / α付与{stats['alpha_added']}) " + reason
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    lib.write_candidate_report(cid, cfg["name"] + " (TOPIX超過α)", results, verdict, reason,
+                               out_dir=REPORT_DIR,
+                               caveats=f"β=1 近似。生raw net: {raw_note}。{cfg.get('dedup', '')}")
+    return {"cid": cid, "name": cfg["name"], "verdict": verdict, "reason": reason}
+
+
+def run_margin_squeeze() -> dict[str, Any]:
+    """#7 信用買残激減(売り尽くし)ロング を TOPIX 超過αで検証。"""
+    return _run_multiday_alpha("#7", "margin_signals.json", [1, 3, 5])
+
+
+def run_short_squeeze() -> dict[str, Any]:
+    """#8 空売り残急増(踏み上げ)ロング を TOPIX 超過αで検証。"""
+    return _run_multiday_alpha("#8", "short_signals.json", [1, 3, 5])
+
+
 _RUNNERS = {"#1": run_kessan_up, "#2": run_jisha_single,
             "#3": run_zouhai_single, "#4": run_stock_split,
-            "#4α": run_stock_split_alpha, "#5": run_teikei_juchu}
+            "#4α": run_stock_split_alpha, "#5": run_teikei_juchu,
+            "#7": run_margin_squeeze, "#8": run_short_squeeze}
 
 
 def main() -> None:
