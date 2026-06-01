@@ -29,22 +29,34 @@ MINUTE_AVAILABLE_FROM = "2024-06-01"
 DAYS = [3, 5, 10]
 
 
-def _find_bar(bars: list[dict[str, Any]], time: str) -> dict[str, Any] | None:
-    """Time フィールドが time と一致する最初のバーを返す。なければ None。"""
-    for b in bars:
-        if str(b.get("Time", "")) == time:
-            return b
+MORNING_CLOSE = "11:30"  # 前場引け時刻
+
+
+def _px_930(bars: list[dict[str, Any]]) -> float | None:
+    """09:30 時点の Open。約定の薄い銘柄向けに「09:30以降の前場最初のバー」を採る。"""
+    morning = [b for b in bars if str(b.get("Time", "")) <= MORNING_CLOSE]
+    for b in sorted(morning, key=lambda b: str(b.get("Time", ""))):
+        if str(b.get("Time", "")) >= "09:30" and b.get("O"):
+            return b["O"]
     return None
+
+
+def _px_1130(bars: list[dict[str, Any]]) -> float | None:
+    """前場引け = 11:30 以前の最後の約定バーの Close (11:30 ちょうどが無くても可)。"""
+    morning = [b for b in bars if str(b.get("Time", "")) <= MORNING_CLOSE and b.get("C")]
+    if not morning:
+        return None
+    return max(morning, key=lambda b: str(b.get("Time", "")))["C"]
 
 
 def enrich_intraday(records: list[dict[str, Any]], *, out_path: Path = SPLIT_PATH,
                     checkpoint_every: int = 50) -> dict[str, int]:
     """対象 event の attrs に px_930 / px_1130 / t930_d{N}_ret / t1130_d{N}_ret を追加。"""
+    # px_930 未取得を対象 (過去に intraday_error だったものもバー選択改善で再試行)。
     todo = [r for r in records
             if r.get("event_date", "") >= MINUTE_AVAILABLE_FROM
             and not (r.get("attrs") or {}).get("price_error")
             and (r.get("attrs") or {}).get("entry_date")
-            and not (r.get("attrs") or {}).get("intraday_error")
             and (r.get("attrs") or {}).get("px_930") is None]
     print(f"[intraday] 対象 {len(todo)}件")
     processed = 0
@@ -59,17 +71,17 @@ def enrich_intraday(records: list[dict[str, Any]], *, out_path: Path = SPLIT_PAT
             a["intraday_error"] = str(e)
             processed += 1
             continue
-        b930 = _find_bar(bars, "09:30")
-        b1130 = _find_bar(bars, "11:30")
-        if not b930 or not b1130 or not b930.get("O") or not b1130.get("C"):
+        px_930 = _px_930(bars)
+        px_1130 = _px_1130(bars)
+        if not px_930 or not px_1130:
             a["intraday_error"] = "missing 9:30 or 11:30 bar"
             processed += 1
             continue
-        px_930 = b930["O"]
-        px_1130 = b1130["C"]
-        # 引け値 = 最終バーの Close。大引け時刻は 15:00→15:30 (2024-11 TSE延長) で
-        # 変動するため時刻決め打ちせず最終バーを採る。
-        px_close = bars[-1].get("C") if bars else None
+        a.pop("intraday_error", None)  # 再試行で成功したらエラーを消す
+        # 引け値 = 最も遅い時刻のバーの Close。大引け時刻は 15:00→15:30 (2024-11 TSE
+        # 延長) で変動するため時刻決め打ちせず最大 Time バーを採る。
+        with_c = [b for b in bars if b.get("C")]
+        px_close = max(with_c, key=lambda b: str(b.get("Time", "")))["C"] if with_c else None
         a["px_930"] = px_930
         a["px_1130"] = px_1130
         if px_close:
