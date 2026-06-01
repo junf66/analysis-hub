@@ -62,6 +62,12 @@ python -m unittest discover -s tests
 ＋ Benjamini-Hochberg FDR ＋ walk-forward OOS、**方向別コスト net: short 0.15% / long 0.20%**):
 - kouaku: `zouhai_kahou_nx × 大引け後` short (t_clust+4.98 / p≈0 / OOS test +1.28% / n239)
 - PO:     `decide × リート × 貸借` short (t_clust+3.49 / p=0.0005 / OOS test +0.93% / n131)
+- **edge_candidates #4 株式分割 翌寄→+10日引 long** (TOPIX β=1 α 控除後、`reports/edge_candidates_detail/#4α.md`):
+  - α net+1.64% / t_clust+2.64 / OOS+1.68% / n939 (FDR★)
+  - +5日: α+1.16%/t+2.55、**+3日: α+0.76%/t+2.19** (短期版も通過)
+  - +1日: α+0.14%/t+0.66 = エッジなし。**+3日が最短の通過点**
+  - 引け入りは寄り入りより 0.5% 弱（寄→引で 0.5% 上昇）
+  - 留保: β=1 近似。daily_bars_universe完了後に β 実推定で再々検証予定
 - holdings: **通過セルなし** (最善でも p>0.05、データ期間が短い)
 
 コスト前提 (実約定環境に合わせ方向別): **ショート=楽天 手数料0・逆日歩無視で寄りの滑りのみ
