@@ -22,6 +22,7 @@ from typing import Any
 
 from analyzers.stats import benjamini_hochberg, clustered_se, t_to_p
 from scripts._atomic import atomic_write_text
+from scripts.edge_candidates.topix_adjust import load_topix, topix_return_between
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 BARS_PATH = REPO_ROOT / "data" / "edge_candidates" / "daily_bars_universe.json"
@@ -131,21 +132,31 @@ def simulate_code(bars: list[dict[str, Any]], entry: float, exit_: float,
     return trades
 
 
-def aggregate_pattern(trades: list[dict[str, Any]], *, cost: float, split: float = 0.7) -> dict[str, Any]:
-    """trades 全体の net EV / t_clust / 勝率 / OOS を算出。クラスタは entry_date。"""
+def aggregate_pattern(trades: list[dict[str, Any]], *, cost: float, split: float = 0.7,
+                      metric: str = "ret") -> dict[str, Any]:
+    """trades 全体の net EV / t_clust / 勝率 / OOS を算出。クラスタは entry_date。
+
+    metric="ret" は生リターン、metric="ret_alpha" は TOPIX(β=1)超過で集計する。
+    数日〜数週保有では生リターンは相場ドリフト(β)を含むため、エッジ判定は
+    ret_alpha (市場超過) を基準にすること。
+    """
     n = len(trades)
     if n == 0:
         return {"n": 0}
-    nets = [t["ret"] - cost for t in trades]
+    usable = [t for t in trades if t.get(metric) is not None]
+    if not usable:
+        return {"n": 0}
+    n = len(usable)
+    nets = [t[metric] - cost for t in usable]
     mean = statistics.fmean(nets)
-    dates = [t["entry_date"] for t in trades]
+    dates = [t["entry_date"] for t in usable]
     cse = clustered_se(nets, dates)
     tval = mean / cse if cse else 0.0
     win = sum(1 for v in nets if v > 0) * 100.0 / n
     so = sorted(zip(dates, nets), key=lambda x: x[0])
     test = so[int(n * split):]
     oos = statistics.fmean([v for _, v in test]) if test else None
-    hold_med = statistics.median(t["hold_days"] for t in trades)
+    hold_med = statistics.median(t["hold_days"] for t in usable)
     return {"n": n, "net_ev": mean, "t_clust": tval,
             "sd": statistics.pstdev(nets) if n > 1 else 0.0,
             "win": win, "p": t_to_p(tval), "oos": oos, "hold_med": hold_med}
@@ -156,6 +167,7 @@ def run_grid(bars_map: dict[str, list[dict[str, Any]]], *,
              exits: tuple[float, ...] = EXIT_THRESHOLDS,
              cost: float = LONG_COST) -> list[dict[str, Any]]:
     """entry × exit グリッドでシミュレートし、パターン別集計を返す。"""
+    topix = load_topix()
     results: list[dict[str, Any]] = []
     trades_by_pat: dict[tuple[float, float], list[dict[str, Any]]] = defaultdict(list)
     for code, bars in bars_map.items():
@@ -165,10 +177,15 @@ def run_grid(bars_map: dict[str, list[dict[str, Any]]], *,
                     continue
                 for t in simulate_code(bars, e, x):
                     t["code"] = code
+                    tr = topix_return_between(topix, t["entry_date"], t["exit_date"])
+                    t["topix_ret"] = tr
+                    t["ret_alpha"] = (t["ret"] - tr) if tr is not None else None
                     trades_by_pat[(e, x)].append(t)
     for (e, x), trs in trades_by_pat.items():
-        agg = aggregate_pattern(trs, cost=cost)
+        agg = aggregate_pattern(trs, cost=cost, metric="ret_alpha")   # 市場超過で判定
+        raw = aggregate_pattern(trs, cost=cost, metric="ret")        # 参考: 生リターン
         agg["entry"], agg["exit"] = e, x
+        agg["raw_ev"] = raw.get("net_ev")
         results.append(agg)
     if results:
         for r, f in zip(results, benjamini_hochberg([r["p"] for r in results if r["n"]], 0.05)):
@@ -185,30 +202,42 @@ def write_report(results: list[dict[str, Any]], *, out_path: Path = OUT_REPORT) 
              f"- ロング往復コスト: {LONG_COST:.2f}%",
              f"- 最大保有日数: {MAX_HOLD}営業日",
              f"- エントリ: RSI[t-1]>閾値 かつ RSI[t]≤閾値 で翌日寄り買い",
-             f"- エグジット: RSI≥閾値で翌日寄り売り、または最大保有切れ", "",
-             "## パターン別結果 (t_clust 降順)", "",
-             "| entry | exit | n | net EV | t_clust | 勝率 | 中央保有 | p | FDR | OOS |",
-             "|---|---|---|---|---|---|---|---|---|---|"]
+             f"- エグジット: RSI≥閾値で翌日寄り売り、または最大保有切れ",
+             "- **net EV は TOPIX(β=1)超過 α**。中央保有が数週間に及ぶため生リターンは"
+             "相場ドリフト(β)を多分に含む。raw EV を併記し、判定は α を基準にする。", "",
+             "## パターン別結果 (t_clust 降順、net EV=α)", "",
+             "| entry | exit | n | α net EV | raw EV | t_clust(α) | 勝率(α) | 中央保有 | p | FDR | OOS(α) |",
+             "|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in results:
         if not r.get("n"):
             continue
         mark = "★" if r.get("fdr_significant") else ""
         oos = r["oos"] if r["oos"] is not None else 0.0
+        raw = r.get("raw_ev")
+        raw_s = f"{raw:+.2f}%" if raw is not None else "—"
         lines.append(f"| {r['entry']:.0f} | {r['exit']:.0f} | {r['n']} | "
-                     f"{r['net_ev']:+.2f}% | {r['t_clust']:+.2f} | {r['win']:.0f}% | "
+                     f"{r['net_ev']:+.2f}% | {raw_s} | {r['t_clust']:+.2f} | {r['win']:.0f}% | "
                      f"{r['hold_med']:.0f}d | {r['p']:.3f} | {mark} | {oos:+.2f}% |")
     lines.append("")
-    lines.append("## 判定")
+    lines.append("## 判定 (α 基準)")
     pas = [r for r in results if r.get("n", 0) >= MIN_N and r["net_ev"] > PASS_EV
            and r["t_clust"] > PASS_T and r.get("fdr_significant")
            and r["oos"] is not None and r["oos"] > 0]
     if pas:
-        lines.append("以下が通過 (実弾投入可水準):")
+        lines.append("以下が α 基準で通過 (実弾投入可水準):")
         for r in pas:
             lines.append(f"- entry≤{r['entry']:.0f}/exit≥{r['exit']:.0f}: "
-                         f"net{r['net_ev']:+.2f}%/t{r['t_clust']:+.2f}/n{r['n']}/OOS{r['oos']:+.2f}%")
+                         f"α net{r['net_ev']:+.2f}%/t{r['t_clust']:+.2f}/n{r['n']}/OOS{r['oos']:+.2f}%"
+                         f" (raw {r.get('raw_ev', 0.0):+.2f}%)")
     else:
-        lines.append("通過パターンなし。")
+        lines.append("α 基準で通過パターンなし。")
+    lines.append("")
+    lines.append("## 留保")
+    lines.append(f"- universe: scoped 800銘柄 (margin codes 均等サンプリング、/listed/info 403回避)。"
+                 "全市場ではない点に注意。")
+    lines.append("- 期間 2024-01〜2026-05 (直近のみ)。分足契約と違い日足は長期可だが、"
+                 "本検証は scoped・直近のため絶対水準は参考値。")
+    lines.append("- β=1 近似。raw EV と α net EV の差が相場ドリフトの寄与。")
     atomic_write_text(out_path, "\n".join(lines))
     return out_path
 

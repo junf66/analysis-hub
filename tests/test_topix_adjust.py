@@ -38,6 +38,16 @@ class TestTopixReturn(unittest.TestCase):
         t = _topix([("2025-01-01", 100.0, 101.0)])
         self.assertIsNone(ta.topix_return(t, "2025-01-01", 5))
 
+    def test_between_open_to_open(self) -> None:
+        t = _topix([("2025-01-06", 100.0, 101.0), ("2025-01-07", 110.0, 111.0),
+                    ("2025-01-08", 120.0, 121.0)])
+        # 1/6 Open 100 → 1/8 Open 120 = +20%
+        self.assertAlmostEqual(ta.topix_return_between(t, "2025-01-06", "2025-01-08"), 20.0)
+
+    def test_between_out_of_order_returns_none(self) -> None:
+        t = _topix([("2025-01-06", 100.0, 101.0), ("2025-01-07", 110.0, 111.0)])
+        self.assertIsNone(ta.topix_return_between(t, "2025-01-07", "2025-01-06"))
+
 
 class TestEnrich(unittest.TestCase):
     def test_adds_alpha(self) -> None:

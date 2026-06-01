@@ -60,6 +60,23 @@ def topix_return(topix: list[dict[str, Any]], entry_date: str, n_days: int) -> f
     return (c / o - 1.0) * 100.0
 
 
+def topix_return_between(topix: list[dict[str, Any]], d_from: str, d_to: str) -> float | None:
+    """d_from の Open から d_to の Open までの TOPIX リターン % (open→open)。
+
+    可変保有 (RSI 等、エントリ日→エグジット日が trade ごとに違う) のベンチマーク用。
+    両日とも休場なら直近翌取引日に丸める。範囲外/欠損は None。
+    """
+    i = _find_idx(topix, d_from)
+    j = _find_idx(topix, d_to)
+    if i is None or j is None or j < i:
+        return None
+    o = topix[i].get("O")
+    c = topix[j].get("O")
+    if not o or not c:
+        return None
+    return (c / o - 1.0) * 100.0
+
+
 def enrich_with_alpha(records: list[dict[str, Any]], days: list[int],
                       topix_path: Path = TOPIX_PATH) -> dict[str, int]:
     """records の attrs に alpha_d{N}_ret を追加。戦績ステータス dict を返す。"""
