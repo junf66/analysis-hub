@@ -33,3 +33,5 @@ data/edge_candidates/daily_bars_universe.json
 data/edge_candidates/rsi_trades.json
 data/edge_candidates/margin_interest.json
 data/edge_candidates/short_sale_report.json
+data/edge_candidates/margin_signals.json
+data/edge_candidates/short_signals.json
