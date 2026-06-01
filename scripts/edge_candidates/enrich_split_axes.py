@@ -160,7 +160,7 @@ def enrich(events: list[dict[str, Any]], sameday: dict[tuple[str, str], set[str]
         if bars:
             a.update(returns_from_bars(bars, ed, DAYS, skip_bars=0))
             a.update(axis_fields_from_bars(bars, ed))
-        a["isstype"] = isstype_as_of(isstype_idx, code, ed)
+        a["isstype"] = isstype_as_of(isstype_idx, code5, ed)   # margin Code は5桁
         a["combo"] = combo_label(sameday.get((code, ed), set()))
         a["is_reit"] = is_reit_code(code)
         if i % checkpoint_every == 0:

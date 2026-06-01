@@ -128,7 +128,9 @@ def build_cells(records: list[dict[str, Any]]) -> dict[str, dict[str, dict[int, 
                 if s is None:
                     continue
                 out[ax][bucket][n] = s
-                flat.append(s)
+                s["fdr_significant"] = False
+                if s["n"] >= MIN_N:        # FDR 検定族は n≥30 セルのみ (微小nノイズで検定力を薄めない)
+                    flat.append(s)
     if flat:
         for s, f in zip(flat, benjamini_hochberg([s["p"] for s in flat], 0.05)):
             s["fdr_significant"] = f
@@ -264,17 +266,84 @@ def write_report(records: list[dict[str, Any]], *, out_path: Path = OUT_PATH) ->
             L.append(f"| {tier} | {len(vals)} | {ev:+.2f}% | {win:.0f}% |")
         else:
             L.append(f"| {tier} | {len(recs)} | (該当0) | — |")
-    L += ["", f"全条件該当サンプル {len(ta['selected'])}件。8035 自身がデータ期間に含まれるかは"
-          "code=8035 で確認 (後述ログ)。後発エントリー妥当性は「翌寄り基準のαが正かつ寄→引で減衰」"
-          "という #4 既知特性 (寄り>引け 0.5%) から、寄り後の後発エントリーは優位性が削られる点に留意。", ""]
+    L += ["", f"全条件該当サンプル {len(ta['selected'])}件 (= 東エレ型は極めて稀)。", ""]
+    own = [r for r in records if r["code"] in ("8035", "80350")]
+    L += ["**8035 自身のイベント** (データ期間内):", "",
+          "| 発表日 | 分割比率 | 同時開示 | gap% | 翌寄り価格 | +3日α | +5日α | +10日α |",
+          "|---|---|---|---|---|---|---|---|"]
+    for r in sorted(own, key=lambda x: x["event_date"]):
+        a = r["attrs"]
+        def g(k):
+            v = a.get(k)
+            return f"{v:+.2f}%" if isinstance(v, (int, float)) and "ret" in k else \
+                   (f"{v:+.2f}%" if k == "gap_pct" and v is not None else
+                    (f"{v:,.0f}" if k == "entry_price" and v is not None else
+                     (f"1:{v:g}" if k == "split_ratio" and v is not None else (a.get(k) or "—"))))
+        L.append(f"| {r['event_date']} | {g('split_ratio')} | {a.get('combo')} | {g('gap_pct')} | "
+                 f"{g('entry_price')} | {g('alpha_d3_ret')} | {g('alpha_d5_ret')} | {g('alpha_d10_ret')} |")
+    L += ["", "重要: **分割+自社株買い同時 (軸E) は n18 で +10日α -2.69% (除外判定)** であり、"
+          "「東エレ型 = 自社株買い同時が最強」という事前仮説はデータで否定された。8035 個別事例は"
+          "有名だが非代表。後発エントリーは #4 既知特性 (寄り>引け 0.5%減衰) からも優位性が削られる。", ""]
 
     # 6. 寄り方別戦術
+    gap_order = ["GU(>+1%)", "浅GU(+0.3〜+1%)", "フラット(±0.3%)", "浅GD(-1〜-0.3%)",
+                 "中GD(-3〜-1%)", "深GD(<-3%)"]
     L += ["## 6. 寄り方別の戦術 (軸J / リートエッジ②との対比)", "",
-          "リートPO(エッジ②)は寄り方非依存で頑健だった。④分割の寄り方依存性は軸Jテーブル参照。",
-          "- GD寄りでαが強い → 翌朝の気配確認が重要 (過剰反応の戻り取り)。",
-          "- GU寄りでαが消失/負 → 既に織り込み済み。サイズ縮小 or スルー。",
-          "- 各バケットで符号が揃い t が同程度 → 寄り方非依存で機械的エントリー可。",
-          "（具体的判定は上記 軸J の数値と FDR★ 有無で行う）", ""]
+          "リートPO(エッジ②)は寄り方非依存で頑健だったが、**④分割は寄り方依存**だった。",
+          "+10日α を寄り方順に並べると:", ""]
+    for b in gap_order:
+        s = cells["J"].get(b, {}).get(10)
+        if s:
+            L.append(f"- {b}: α{s['net_ev']:+.2f}% / t{s['t_clust']:+.2f} / 勝率{s['win']:.0f}% / n{s['n']}")
+    L += ["", "→ 事前仮説『GD=過剰反応の戻りで本命 / GU=織込済で消失』は **データで逆**。"
+          "**GU(>+1%)が唯一の強気ゾーン** (α+2.59%/t+2.90)、浅GU・GD系は負〜ゼロ。"
+          "分割は『発表で買われ翌寄りも上ギャップ→さらに継続』する**順張り(モメンタム)型**で、"
+          "リート②の平均回帰的・寄り方非依存とは性質が異なる。",
+          "運用: **GUスタートは継続保有可・むしろ本命。浅GU/GDスタートは見送り**。"
+          "翌朝の気配がGUなら入る、フラット〜GDなら原則スルー、が機械ルール。", ""]
+
+    # 7. 結論・運用フィルタ (n≥30 セルから機械抽出)
+    adds, drops = [], []
+    for ax, (title, _) in AXES.items():
+        for bucket, cs in cells[ax].items():
+            s10 = cs.get(10)
+            if not s10 or s10["n"] < MIN_N:
+                continue
+            best = max((cs[n] for n in HORIZONS if n in cs), key=lambda x: x["t_clust"])
+            if best["net_ev"] > 0.5 and best["t_clust"] > 2.0 and (best["oos"] or 0) > 0:
+                adds.append((best["t_clust"], f"{title}={bucket}",
+                             f"net{best['net_ev']:+.2f}%/t{best['t_clust']:+.2f}/n{best['n']}"
+                             f"{'★' if best.get('fdr_significant') else ''}"))
+            if s10["net_ev"] <= 0 or s10["win"] < 45 or s10["t_clust"] < -1:
+                drops.append((s10["t_clust"], f"{title}={bucket}",
+                              f"+10日 net{s10['net_ev']:+.2f}%/t{s10['t_clust']:+.2f}/勝率{s10['win']:.0f}%/n{s10['n']}"))
+    L += ["## 7. 結論・運用フィルタ", "",
+          "ベースは再現 (+10日α+1.7%/t+2.7)。**通過は単独軸でも FDR を1つも生存せず** (検定族を"
+          "n≥30に限定してもベース自体が t≈2.7 で多重補正に耐えない)。以下は FDR 前の素の優劣で、"
+          "**実弾はベース#4を主とし、下記は重み付けフィルタとして解釈**する。", "",
+          "**強いセグメント (加点フィルタ, best horizon EV>0.5 & t>2 & OOS>0):**"]
+    for _, seg, st in sorted(adds, reverse=True):
+        L.append(f"- {seg}: {st}")
+    L += ["", "**弱い/除外セグメント (+10日 EV≤0 or 勝率<45% or t<-1):**"]
+    for _, seg, st in sorted(drops):
+        L.append(f"- {seg}: {st}")
+    L += ["", "### 主要な発見 (事前仮説との対比)",
+          "- **軸A 信用区分が最大の分岐**: 信用銘柄 (+10日α+3.99%/t+2.64) ≫ 貸借銘柄 (+0.22%/t+0.61)。"
+          "エッジは実質的に『信用銘柄(非貸借)』に集中。貸借銘柄はほぼゼロ。",
+          "- **軸J は GU 寄りが最強** (+10日α+2.59%/t+2.90)。仮説『GD=過剰反応の戻りで本命/GU=織込済で消失』"
+          "は**逆**で、分割は順張り(GU継続)型。浅GU・GD・深GDは負〜ゼロ。",
+          "- **軸E『自社株買い同時(東エレ型)』は否定**: n18で+10日α-2.69%(除外)。最強は『単独』(+2.42%/t+2.87)。"
+          "『配当予想修正同時』(n319)は負〜ゼロで主な希薄化要因。",
+          "- **軸H 高単価(≥1万円)は劣後** (除外)。低・中単価が優位。東エレ型(高単価×自社株買い×GU)の"
+          "高単価要素も逆風。",
+          "- リートPO(エッジ②)は寄り方非依存だったが、**④は寄り方依存(GU>その他)** で性質が異なる。", "",
+          "### 推奨フィルタルール (ベース#4への重ね掛け)",
+          "1. **信用銘柄 × 単独発表** を優先 (信用×単独 n200 +10日α+4.64%/t+2.58)。",
+          "2. **配当予想修正・自社株買い 同時開示は除外**または減量。",
+          "3. **高単価(≥1万円)は減量**。低〜中単価を主軸。",
+          "4. 寄り方: **GU(>+1%)はそのまま継続、浅GU/深GDは見送り** (順張り性)。",
+          "5. 最強の重ね合わせ例: **信用 × GU寄り** (n274 +10日α+5.41%/t+2.82)。ただし FDR非生存="
+          "過剰最適化に注意し、ベース運用にバイアスを足す程度に留める。", ""]
 
     atomic_write_text(out_path, "\n".join(L))
     return out_path
