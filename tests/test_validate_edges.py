@@ -6,6 +6,26 @@ import unittest
 from scripts import validate_edges
 
 
+class TestNewEdges(unittest.TestCase):
+    def test_primary_mag_bad_first(self) -> None:
+        r = {"bad_factors": [{"metric": {"NP_YoY_pct": -15.0}}],
+             "good_factors": [{"metric": {"Div_revision_pct": 5.0}}]}
+        self.assertEqual(validate_edges._primary_mag(r), -15.0)
+
+    def test_primary_mag_none(self) -> None:
+        self.assertIsNone(validate_edges._primary_mag({"bad_factors": [], "good_factors": []}))
+
+    def test_new_edges_yields_valid_obs(self) -> None:
+        # 実データ(kouaku_records 等)から事前登録セルを抽出。obs スキーマと既知セル名を確認。
+        obs = list(validate_edges.new_edges_observations([]))
+        self.assertTrue(obs)
+        for o in obs:
+            self.assertIn("cell", o)
+            self.assertIsInstance(o["ret"], float)
+        cells = {o["cell"] for o in obs}
+        self.assertTrue(any("zouhai_kahou_nx" in c for c in cells))
+
+
 class TestObservationAdapters(unittest.TestCase):
     def test_kouaku_excludes_limit_lock(self) -> None:
         recs = [
