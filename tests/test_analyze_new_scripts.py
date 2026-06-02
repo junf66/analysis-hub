@@ -4,6 +4,9 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+REPO_ROOT = Path(__file__).resolve().parent.parent
+SPLIT_DATA_PATH = REPO_ROOT / "data" / "edge_candidates" / "split_multiday_enriched.json"
+
 from scripts.analyze_split_gu_filter import load_data as split_load_data
 from scripts.analyze_split_gu_filter import build_report as split_build_report
 from scripts.analyze_po_edge1_opportunity import load_po_records, load_equities_master
@@ -16,6 +19,7 @@ from scripts.analyze_split_size_definition import build_report as size_build_rep
 class TestAnalyzeNewScripts(unittest.TestCase):
     """Smoke tests to verify new analysis scripts run without error."""
 
+    @unittest.skipIf(not SPLIT_DATA_PATH.exists(), "split_multiday_enriched.json not available (regenerable cache)")
     def test_split_gu_filter_loads_and_reports(self) -> None:
         """Test that split GU filter script loads data and builds report."""
         records = split_load_data()
@@ -43,6 +47,7 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertIn("FDR", report)
         self.assertIn("+1.34%", report)
 
+    @unittest.skipIf(not SPLIT_DATA_PATH.exists(), "split_multiday_enriched.json not available (regenerable cache)")
     def test_split_size_definition_loads_and_reports(self) -> None:
         """Test that split size definition script loads and builds report."""
         records = size_load_data()
