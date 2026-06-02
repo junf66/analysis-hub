@@ -162,3 +162,15 @@
   t+3.0/勝58%/n307 **FDR★**。「減益なのに増配=取り繕い」が翌日以降売られる。確定エッジ
   zouhai_genshu(重い減益short)の軽い減益への拡張で、従来の分類死角に隠れていた。
 - 自社株買い×軽い減益はlong/shortとも|t|<1.4で中立(買戻し下支え)。
+
+## 公式DiscItems再構築 検証結果 (Stage2-full)
+
+/td/bulk(DiscItems)+/fins/summary(連続財務)で kouaku の**実績ベース**(genshu/kouhou/zouhai/
+genhai/jisha/split)を再構築し既存と(code,date)照合。
+- **純・実績ベースのサブパターンは 69% 再現**(既存2108件中1459一致、公式版は4792件とむしろ多め検出)。
+  差の主因は定義差(配当=実績YoY vs yanoshin予想修正、自社株買いの取得源、新形式コード)で誤りでない。
+- **forecast系(kouhou_nx/kahou_nx 等, kouaku の多数派・確定エッジ zouhai_kahou_nx 含む)は
+  来期予想NPが /fins/summary に無く /fins/details 403のため公式再構築不可**。既存(yanoshin,
+  日時160/160一致・捕捉99.6%で検証済)を継続。
+→ 結論: 公式化できる実績ベースは概ね再現し、forecast系は契約制約で据え置き。全面公式化は
+  /fins/details(BS/PL/CF・予想)契約が前提。
