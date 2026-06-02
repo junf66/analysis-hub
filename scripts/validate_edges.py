@@ -108,10 +108,73 @@ def holdings_observations(records: list[dict[str, Any]]) -> Iterator[dict[str, A
             yield o
 
 
+_MASTER_PATH = REPO_ROOT / "data" / "edge_candidates" / "equities_master.json"
+_PO_ENR_PATH = REPO_ROOT / "data" / "edge_candidates" / "po_enriched.json"
+_MILD_PATH = REPO_ROOT / "data" / "edge_candidates" / "mild_good.json"
+
+
+def _primary_mag(r: dict[str, Any]) -> float | None:
+    for fac in (r.get("bad_factors") or []) + (r.get("good_factors") or []):
+        for k, v in (fac.get("metric") or {}).items():
+            if isinstance(v, (int, float)) and "pct" in k.lower():
+                return float(v)
+    return None
+
+
+def new_edges_observations(_ignored: list[dict[str, Any]]) -> Iterator[dict[str, Any]]:
+    """このセッションで発見した新エッジ4件を事前登録 named cell で検証する (公式データ拡張)。
+
+    複数データ源 (kouaku 程度別 / PO 規模別 / mild_good 軽い減益×増配) を跨ぐため、
+    渡された records は無視し各ファイルを直接読む。4 仮説独立の FDR + walk-forward OOS。
+    """
+    # ① kouaku 程度別 (大引け後)
+    for r in json.loads(KOUAKU_PATH.read_text()).get("records", []):
+        a = r.get("attrs") or {}
+        if a.get("limit_locked") or _disc_bucket(r) != "大引け後":
+            continue
+        sp, mag, ret = r.get("subpattern"), _primary_mag(r), a.get("next_day_open_to_close_ret")
+        if mag is None or ret is None:
+            continue
+        if sp == "kouhou_nx_genshu" and mag <= -10:
+            o = _obs("kouhou_nx_genshu×大引け後×深減益(NP≤-10%) short", ret, r)
+            if o:
+                yield o
+        elif sp == "zouhai_kahou_nx" and -30 <= mag <= -17:
+            o = _obs("zouhai_kahou_nx×大引け後×中magnitude(-30〜-17%) short", ret, r)
+            if o:
+                yield o
+    # ② PO 中型(Mid400) × 翌日GD × 引け (master 規模 + po_enriched 引けリターン)
+    if _MASTER_PATH.exists() and _PO_ENR_PATH.exists():
+        scale = {m["Code"]: m.get("scale_band")
+                 for m in json.loads(_MASTER_PATH.read_text()).get("records", [])}
+        enr = json.loads(_PO_ENR_PATH.read_text()).get("by_id", {})
+        for r in json.loads(PO_PATH.read_text()).get("records", []):
+            if r.get("stage") != "announce" or r.get("po_type") != "普通":
+                continue
+            a = r.get("attrs") or {}
+            code5 = r["code"] + "0" if len(r["code"]) == 4 else r["code"]
+            gap = a.get("gap_pct")
+            oc = (enr.get(r["id"]) or {}).get("next_day_open_to_close_ret")
+            if scale.get(code5) == "中型" and gap is not None and gap <= -0.5 and oc is not None:
+                o = _obs("PO中型×翌日GD×引け long", oc, r)
+                if o:
+                    yield o
+    # ③ 増配 × 軽い減益(3%未満) × +3日α (mild_good)
+    if _MILD_PATH.exists():
+        for r in json.loads(_MILD_PATH.read_text()).get("records", []):
+            a = r.get("attrs") or {}
+            y = a.get("np_yoy")
+            if y is not None and -3 <= y < 0 and "zouhai" in a.get("goods", []):
+                o = _obs("増配×軽い減益(3%未満)×+3日α short", a.get("alpha_d3_ret"), r)
+                if o:
+                    yield o
+
+
 _SOURCES = {
     "kouaku": (KOUAKU_PATH, kouaku_observations),
     "po": (PO_PATH, po_observations),
     "po (既知3エッジ監査・当時定義)": (PO_PATH, po_named_observations),
+    "新エッジ (事前登録・公式データ拡張)": (KOUAKU_PATH, new_edges_observations),
     "holdings": (HOLDINGS_PATH, holdings_observations),
 }
 
