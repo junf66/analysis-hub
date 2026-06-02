@@ -39,6 +39,7 @@ def _mag(facs: list[dict] | None) -> float | None:
 
 
 def band(x: float | None) -> str | None:
+    """|程度%| を <3/3-5/5-10/≥10% のバンドに分類 (None は対象外)。"""
     if x is None:
         return None
     if x < 3:
