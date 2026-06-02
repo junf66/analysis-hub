@@ -107,13 +107,14 @@ def _filter(records: list[dict[str, Any]], args: argparse.Namespace) -> list[dic
             continue
         if args.gap_max is not None and (gap is None or gap > args.gap_max):
             continue
-        if args.mag_min is not None or args.mag_max is not None:
+        mag_min, mag_max = getattr(args, "mag_min", None), getattr(args, "mag_max", None)
+        if mag_min is not None or mag_max is not None:
             mag = _primary_mag(r)   # 材料の程度% (減益/修正/配当幅、bad優先)
             if mag is None:
                 continue
-            if args.mag_min is not None and mag < args.mag_min:
+            if mag_min is not None and mag < mag_min:
                 continue
-            if args.mag_max is not None and mag > args.mag_max:
+            if mag_max is not None and mag > mag_max:
                 continue
         if exclude_inst or only_inst:
             inst = _instrument_type(r)
