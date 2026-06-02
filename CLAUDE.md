@@ -165,3 +165,46 @@ python -m scripts.disaster_event.analyze_typhoon_edge    # reports/typhoon_event
 ## 開発ブランチ規約
 
 ユーザー指示に従う。1 機能 1 PR、squash merge デフォルト。
+
+
+## 公式 J-Quants データ基盤 (TDnet/財務/銘柄属性アドオン — 2026-06 稼働確認)
+
+yanoshin(第三者TDnetミラー)に加え、契約アドオンで以下の**公式エンドポイント**が使える
+(キーは環境変数 JQUANTS_API_KEY、base=https://api.jquants.com/v2):
+
+- `/td/list` (code or date) / `/td/bulk` (5年一括CSV.gz, 759k件): 適時開示インデックス。
+  権威フィールド **DiscDate/DiscTime/DiscItems(公開項目コード)**。yanoshin と日時 160/160 一致・
+  主要材料捕捉率 99.6〜100%(=過去分析は yanoshin 起因で非破損)。disc_no 先頭8桁は採番日で公表日とは別。
+- `/fins/summary` (code): 当期利益NP/営業OP/経常OdP/売上Sales/EPS・配当(Div1Q〜DivFY)。**連続YoY**が取れる。
+  (`/fins/details` BS/PL/CF と `/fins/dividend` は契約外403)
+- `/equities/master` (date): 全4,449銘柄の **業種(S17/S33)・規模区分(ScaleCat→大型/中型/小型)・
+  信用区分(Mrgn)・市場(Mkt)**。1コール。`scripts/edge_candidates/fetch_equities_master.py` で取得
+  (data/edge_candidates/equities_master.json, 永続化)。
+  ※以前「業種/時価総額は listed/info 403で不可」としたが /equities/master で取得可能(訂正)。
+
+### 「程度による分析の死角」(重要な構造課題)
+kouaku 分類器は閾値でタグ化するため中立帯が**丸ごと未分析**:
+決算NP YoY ±10% / 業績修正±3% / 配当修正±3%。この帯の材料(軽い増減益・軽微修正)は
+好悪ペアにならず kouaku から脱落していた。**/fins/summary の連続YoYで magnitude 軸を復活**させ
+正面検証するのが死角埋めの方針。
+
+### 公式基盤の新パイプライン/スクリプト
+- `fetch_equities_master` — 銘柄属性マスタ(横断結合の土台)。
+- `extract_buyback_earnings` / `enrich_buyback_returns` / `analyze_buyback_earnings` —
+  自社株買い×同日決算を連続NP YoYで検証(キッコーマン型)。中間データは .gitignore。
+- `enrich_po_close_scale` / `analyze_po_scale_timing` — PO に翌日引け(15:30)EV付与+規模/信用結合、
+  規模×時刻 FDR/OOS。
+
+### このセッションの新findings
+- **PO発表翌日ロングは中型(Mid400≈300億-1兆)に偏在しFDR生存**: 中型×翌日GD×引け
+  net+1.14%/t_clust+3.32/OOS+1.52% ★。大型(Core30/Large70=1兆級)は9:30以降-0.8〜-1.3%で逆、
+  小型は負。広義のPO翌日ロング脱落は規模で中型に絞ると通過=規模が鍵。`reports/po_scale_timing.md`。
+- **#4分割は小型に偏在**(B規模軸: 小型+10日α+2.13%/t+2.65 ≫ 中大型は負)。`reports/edge4_split_detailed.md`。
+- **キッコーマン型(軽い減益+自社株買いロング)はエッジなし**(全帯フラット、FDR生存ゼロ)。
+  キッコーマン2026の引け+7.24%は帯平均+0.11%に対する外れ値(n=1)。`reports/buyback_earnings.md`。
+
+### 残ロードマップ (公式DiscItems全面移行 — 多セッション規模)
+1. kouaku を公式DiscItems分類+連続magnitudeで全面再構築(死角ゼロ・確定エッジ再検証)。
+   ※Stage2核心(確定エッジ zouhai_kahou_nx の程度別再検証)は完了し健在を確認済。
+2. 他の死角(業績修正±3%帯・配当±3%帯)を同手法で順次被覆。
+3. 全エッジ横断の統一FDR/OOS再検証(方向別コスト+クラスタt+FDR+walk-forward OOS)。
