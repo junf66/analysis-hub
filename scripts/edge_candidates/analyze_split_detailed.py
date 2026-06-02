@@ -81,6 +81,8 @@ def _price_bucket(p: float | None) -> str | None:
 # 軸名 → (見出し, attrs→バケットラベル or None)
 AXES: dict[str, tuple[str, Callable[[dict[str, Any]], str | None]]] = {
     "A": ("信用区分", lambda a: a.get("isstype") or "不明"),
+    "B": ("規模", lambda a: a.get("scale_band")),          # /equities/master ScaleCat
+    "C": ("業種", lambda a: a.get("s17")),                 # /equities/master S17
     "D": ("分割比率", lambda a: _ratio_bucket(a.get("split_ratio"))),
     "E": ("単独/複合", lambda a: a.get("combo")),
     "F": ("REIT", lambda a: "REIT" if a.get("is_reit") else "普通株"),
@@ -206,8 +208,8 @@ def write_report(records: list[dict[str, Any]], *, out_path: Path = OUT_PATH) ->
     L: list[str] = [f"# #4 株式分割発表→翌寄ロング 細分化検証 ({datetime.date.today()})", "",
                     f"対象 n={len(records)} / TOPIX(β=1)超過α / ロング往復0.20%控除 / "
                     "全セル横断 BH-FDR 補正。", "",
-                    "> B時価総額・C業種・I PER/PBRは listed/info・fins/statements が契約外(403)のため対象外。"
-                    " F REITは証券コード帯による近似。", ""]
+                    "> B規模(ScaleCat)・C業種(S17)は /equities/master から付与。"
+                    " 厳密な時価総額(発行株数)とI PER/PBRは対象外。F REITは証券コード帯による近似。", ""]
 
     # 1. ベース整合性
     L += ["## 1. ベース成績 (細分化なし)", "",
