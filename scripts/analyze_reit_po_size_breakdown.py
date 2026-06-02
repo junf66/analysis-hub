@@ -11,8 +11,7 @@ from __future__ import annotations
 import json
 import statistics
 from pathlib import Path
-from typing import Any, Callable
-from analyzers.stats import evaluate_cells
+from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PO_PATH = REPO_ROOT / "data" / "po_records.json"

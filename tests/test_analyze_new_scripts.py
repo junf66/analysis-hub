@@ -14,6 +14,9 @@ from scripts.analyze_po_edge1_opportunity import build_report as po_build_report
 from scripts.analyze_kouaku_magnitude_robustness import build_report as mag_build_report
 from scripts.analyze_split_size_definition import load_data as size_load_data
 from scripts.analyze_split_size_definition import build_report as size_build_report
+from scripts.analyze_reit_po_size_breakdown import load_po_records as reit_load_po
+from scripts.analyze_reit_po_size_breakdown import filter_eligible_reit_po, reit_observations_by_size
+from scripts.analyze_reit_po_size_breakdown import build_report as reit_build_report
 
 
 class TestAnalyzeNewScripts(unittest.TestCase):
@@ -59,6 +62,20 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertIn("小型", report)
         self.assertIn("中型", report)
         self.assertIn("+2.13%", report)
+
+    def test_reit_po_size_breakdown_loads_and_reports(self) -> None:
+        """Test that REIT PO size breakdown script loads and builds report."""
+        records = reit_load_po()
+        self.assertIsInstance(records, list)
+        eligible = filter_eligible_reit_po(records)
+        self.assertIsInstance(eligible, list)
+        self.assertGreater(len(eligible), 0)
+        obs_by_size = reit_observations_by_size(eligible)
+        self.assertIsInstance(obs_by_size, dict)
+        report = reit_build_report(records)
+        self.assertIn("決定", report)
+        self.assertIn("中型", report)
+        self.assertIn("+1.78%", report)
 
 
 if __name__ == "__main__":
