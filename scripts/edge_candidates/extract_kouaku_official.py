@@ -36,6 +36,7 @@ KESSAN_ITEMS = {"11301", "11304", "11307", "11101"}
 
 
 def fetch_td_bulk() -> list[dict[str, str]]:
+    """/td/bulk の権威適時開示インデックス(過去5年・全件)を行 dict のリストで返す。"""
     key = os.environ["JQUANTS_API_KEY"]
     meta = json.load(urllib.request.urlopen(
         urllib.request.Request(f"{_jquants.BASE_URL}/td/bulk", headers={"x-api-key": key}), timeout=60))
