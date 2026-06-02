@@ -43,6 +43,7 @@ def _stat_block(rets: list[float]) -> dict[str, float]:
 
 
 def load_data() -> list[dict[str, Any]]:
+    """Load split_multiday_enriched records."""
     data = json.loads(DATA_PATH.read_text())
     return data.get("records", [])
 

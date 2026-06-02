@@ -30,13 +30,16 @@ def _get_scale(code: str, master: dict[str, dict]) -> str | None:
 
 
 def load_equities_master() -> dict[str, dict]:
+    """Load equities_master.json if exists, else return empty dict."""
     if not MASTER_PATH.exists():
         return {}
     return json.loads(MASTER_PATH.read_text())
 
 
 def load_po_records() -> list[dict[str, Any]]:
-    return json.loads(PO_PATH.read_text())
+    """Load all PO records from po_records.json."""
+    data = json.loads(PO_PATH.read_text())
+    return data.get("records", []) if isinstance(data, dict) else data
 
 
 def build_report(records: list[dict[str, Any]], master: dict[str, dict]) -> str:
