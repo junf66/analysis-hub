@@ -19,9 +19,10 @@ from scripts.analyze_split_size_definition import build_report as size_build_rep
 class TestAnalyzeNewScripts(unittest.TestCase):
     """Smoke tests to verify new analysis scripts run without error."""
 
-    @unittest.skipIf(not SPLIT_DATA_PATH.exists(), "split_multiday_enriched.json not available (regenerable cache)")
     def test_split_gu_filter_loads_and_reports(self) -> None:
         """Test that split GU filter script loads data and builds report."""
+        if not SPLIT_DATA_PATH.exists():
+            self.skipTest("split_multiday_enriched.json not available (regenerable cache)")
         records = split_load_data()
         self.assertIsInstance(records, list)
         report = split_build_report(records)
@@ -47,9 +48,10 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertIn("FDR", report)
         self.assertIn("+1.34%", report)
 
-    @unittest.skipIf(not SPLIT_DATA_PATH.exists(), "split_multiday_enriched.json not available (regenerable cache)")
     def test_split_size_definition_loads_and_reports(self) -> None:
         """Test that split size definition script loads and builds report."""
+        if not SPLIT_DATA_PATH.exists():
+            self.skipTest("split_multiday_enriched.json not available (regenerable cache)")
         records = size_load_data()
         self.assertIsInstance(records, list)
         self.assertGreater(len(records), 0)
