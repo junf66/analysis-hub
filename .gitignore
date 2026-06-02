@@ -36,3 +36,5 @@ data/edge_candidates/short_sale_report.json
 data/edge_candidates/margin_signals.json
 data/edge_candidates/short_signals.json
 data/edge_candidates/split_multiday_enriched.json
+data/edge_candidates/td_buyback_decisions.json
+data/edge_candidates/buyback_earnings.json
