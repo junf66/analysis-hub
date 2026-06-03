@@ -40,6 +40,10 @@ from scripts.scan_po_candidates import build_observations, scan, signal_ret
 from scripts.scan_po_candidates import load_records as scan_load_records
 from scripts.scan_po_candidates import load_enriched as scan_load_enriched
 from scripts.scan_po_candidates import build_report as scan_build_report
+from scripts.scan_kouaku_candidates import build_observations as k_build_obs
+from scripts.scan_kouaku_candidates import scan as k_scan, mag_bucket
+from scripts.scan_kouaku_candidates import load_kouaku, load_master as k_load_master
+from scripts.scan_kouaku_candidates import build_report as k_build_report
 from scripts.analyze_delivery_long_filters import base_records, rank_filters
 from scripts.analyze_delivery_long_filters import load_records as flt_load_records
 from scripts.analyze_delivery_long_filters import build_report as flt_build_report
@@ -303,6 +307,22 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         recent = len(build_observations(records, enriched, since="2024-06-03"))
         self.assertLessEqual(recent, full)
         self.assertGreater(full, 0)
+
+    def test_kouaku_mag_bucket_and_scan(self) -> None:
+        """mag_bucket bands by primary pct metric; scan/report run on real cache."""
+        rec = {"bad_factors": [{"metric": {"NP_YoY_pct": -20.0}}], "good_factors": []}
+        self.assertEqual(mag_bucket(rec), "程度:中(-30〜-10%)")
+        self.assertIsNone(mag_bucket({"bad_factors": [], "good_factors": []}))
+        records = load_kouaku()
+        master = k_load_master()
+        obs = k_build_obs(records[:200], master, max_combo=2)
+        self.assertTrue(any(len(o["cell"]) == 2 for o in obs))
+        cands = k_scan(records, master)
+        self.assertIsInstance(cands, list)
+        for c in cands:
+            self.assertGreater(c["ev_net"], 0)
+        report = k_build_report(records, master)
+        self.assertIn("候補", report)
 
     def test_scan_runs_and_reports_on_cache(self) -> None:
         """scan returns candidate dicts and build_report renders from real cache."""
