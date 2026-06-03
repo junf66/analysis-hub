@@ -2,6 +2,12 @@
 cache/
 reports/
 
+# 自社株買いフェッチの中間キャッシュ (イベント一覧。再生成可能・最終データは buyback_records.json)
+data/buyback_records_events.json
+
+# atomic_write の一時ファイル (実行中に一瞬残る。rename 後に消える)
+**/.*.tmp
+
 # Python
 __pycache__/
 *.py[cod]
@@ -21,3 +27,23 @@ venv/
 .idea/
 .vscode/
 *.swp
+
+# 大型・再生成可能 (universe 日足はコミットしない。RSI レポートのみ永続化)
+data/edge_candidates/daily_bars_universe.json
+data/edge_candidates/daily_bars_po.json
+data/edge_candidates/rsi_trades.json
+data/edge_candidates/margin_interest.json
+data/edge_candidates/short_sale_report.json
+data/edge_candidates/margin_signals.json
+data/edge_candidates/short_signals.json
+data/edge_candidates/split_multiday_enriched.json
+data/edge_candidates/td_buyback_decisions.json
+data/edge_candidates/buyback_earnings.json
+data/edge_candidates/buyback_standalone_enriched.json
+data/edge_candidates/zouhai_genshu_d3.json
+data/edge_candidates/po_enriched.json
+data/edge_candidates/fins_summary.json
+data/edge_candidates/mild_good.json
+data/edge_candidates/kouaku_official.json
+data/edge_candidates/reit_daily.json
+data/edge_candidates/po_gd_minute.json

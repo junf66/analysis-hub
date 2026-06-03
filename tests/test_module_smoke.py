@@ -79,6 +79,9 @@ class TestImportable(unittest.TestCase):
     def test_query_holdings(self) -> None:
         self._check("scripts.query_holdings")
 
+    def test_validate_edges(self) -> None:
+        self._check("scripts.validate_edges")
+
 
 class TestHelpExitsCleanly(unittest.TestCase):
     """全 CLI が --help で exit 0 (argparse の format-string バグ等を検出)。"""
@@ -143,6 +146,9 @@ class TestHelpExitsCleanly(unittest.TestCase):
 
     def test_query_holdings(self) -> None:
         self._run_help("scripts.query_holdings")
+
+    def test_validate_edges(self) -> None:
+        self._run_help("scripts.validate_edges")
 
 
 if __name__ == "__main__":

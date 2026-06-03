@@ -10,6 +10,7 @@
   python -m scripts.query_kouaku --code 7203,4502                  # 銘柄
   python -m scripts.query_kouaku --metric next_day_910_ret         # 別指標
   python -m scripts.query_kouaku --gap-min -5 --gap-max 0          # GAP 範囲
+  python -m scripts.query_kouaku --subpattern jisha_genshu --mag-max -50  # 程度(深い減益)で切る
   python -m scripts.query_kouaku --subpattern kouhou_genshu --disc-time-bucket 場中 \\
       --json                                                       # JSON 出力
 
@@ -59,6 +60,15 @@ def _instrument_type(rec: dict[str, Any]) -> str:
     return "Consolidated_JP"
 
 
+def _primary_mag(r: dict[str, Any]) -> float | None:
+    """材料の程度% を返す (bad→good の順で最初の %メトリクス: 減益/修正/配当幅等)。"""
+    for fac in (r.get("bad_factors") or []) + (r.get("good_factors") or []):
+        for k, v in (fac.get("metric") or {}).items():
+            if isinstance(v, (int, float)) and "pct" in k.lower():
+                return float(v)
+    return None
+
+
 def _filter(records: list[dict[str, Any]], args: argparse.Namespace) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     codes: set[str] | None = None
@@ -97,6 +107,15 @@ def _filter(records: list[dict[str, Any]], args: argparse.Namespace) -> list[dic
             continue
         if args.gap_max is not None and (gap is None or gap > args.gap_max):
             continue
+        mag_min, mag_max = getattr(args, "mag_min", None), getattr(args, "mag_max", None)
+        if mag_min is not None or mag_max is not None:
+            mag = _primary_mag(r)   # 材料の程度% (減益/修正/配当幅、bad優先)
+            if mag is None:
+                continue
+            if mag_min is not None and mag < mag_min:
+                continue
+            if mag_max is not None and mag > mag_max:
+                continue
         if exclude_inst or only_inst:
             inst = _instrument_type(r)
             if exclude_inst and inst in exclude_inst:
@@ -323,6 +342,8 @@ def main() -> None:
     ap.add_argument("--code", help="カンマ区切り 4 桁コード")
     ap.add_argument("--gap-min", type=float, help="GAP%% 下限 (含む)")
     ap.add_argument("--gap-max", type=float, help="GAP%% 上限 (含む)")
+    ap.add_argument("--mag-min", type=float, help="材料の程度%% 下限 (含む。減益/修正/配当幅, bad優先)")
+    ap.add_argument("--mag-max", type=float, help="材料の程度%% 上限 (含む)")
     ap.add_argument("--exclude-locked", action="store_true", default=True, help="limit-lock 除外 (既定 ON)")
     ap.add_argument("--include-locked", action="store_true", help="limit-lock を含める (--exclude-locked を上書き)")
     ap.add_argument("--exclude-instrument", help="銘柄性質除外 (e.g. REIT,Foreign / 候補: REIT,IFRS,NonConsol,Foreign,Consolidated_JP)")

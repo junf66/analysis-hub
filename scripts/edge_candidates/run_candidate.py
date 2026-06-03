@@ -1,0 +1,205 @@
+"""エッジ候補の検証ランナー。候補設定に従いレコードを用意→検証→Markdownレポート。
+
+現状サポート: #2 自社株買い単独 (buyback_reuse)。既存 buyback_records.json(価格付与済) を
+TDnet索引の「同日悪材料」と減益で絞り、悪材料完全なしの自社株買いを検証する。
+#1/#3/#4/#5/#7/#8/#9 は価格 enrich 等の追加取得後に対応 (順次拡張)。
+"""
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+from typing import Any
+
+from scripts.edge_candidates import lib
+from scripts.edge_candidates.candidates import by_id
+
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+BUYBACK_PATH = REPO_ROOT / "data" / "buyback_records.json"
+INDEX_PATH = REPO_ROOT / "data" / "edge_candidates" / "tdnet_index.json"
+ENRICHED_PATH = REPO_ROOT / "data" / "edge_candidates" / "enriched_events.json"
+REPORT_DIR = REPO_ROOT / "reports" / "edge_candidates_detail"
+
+
+def bad_material_keys(index_records: list[dict[str, Any]]) -> set[tuple[str, str]]:
+    """TDnet索引から、悪材料(bad_*タグ)を含む (code, event_date) の集合を返す。"""
+    out: set[tuple[str, str]] = set()
+    for r in index_records:
+        if any(str(t).startswith("bad_") for t in (r.get("tags") or [])):
+            out.add((r.get("code"), r.get("event_date")))
+    return out
+
+
+def filter_no_bad_material(buyback: list[dict[str, Any]],
+                           bad_keys: set[tuple[str, str]]) -> list[dict[str, Any]]:
+    """自社株買いから「同日悪材料あり」「減益見通し(forecast_decline<0)」を除外する。
+
+    増配・上方修正等の追加好材料はあってもよい (除外しない)。
+    """
+    out = []
+    for r in buyback:
+        if (r.get("code"), r.get("event_date")) in bad_keys:
+            continue
+        fdp = (r.get("attrs") or {}).get("forecast_decline_pct")
+        if fdp is not None and fdp < 0:  # 減益見通し併発 = #2対象外(④/kouaku領域)
+            continue
+        out.append(r)
+    return out
+
+
+def run_jisha_single() -> dict[str, Any]:
+    """#2 自社株買い単独(悪材料なし)を検証し、詳細レポートを書いてサマリ行を返す。"""
+    cfg = by_id("#2")
+    buyback = json.loads(BUYBACK_PATH.read_text())["records"]
+    index = json.loads(INDEX_PATH.read_text())["records"]
+    bad = bad_material_keys(index)
+    recs = filter_no_bad_material(buyback, bad)
+    results = lib.validate_candidate(recs, exits=cfg["exits"])
+    verdict, reason, _ = lib.judge(results, caveat_beta=cfg["caveat_beta"])
+    reason = f"(母集団 {len(recs)}/{len(buyback)}件) " + reason
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    lib.write_candidate_report(cfg["cid"], cfg["name"], results, verdict, reason,
+                               out_dir=REPORT_DIR, caveats=cfg["dedup"])
+    return {"cid": cfg["cid"], "name": cfg["name"], "verdict": verdict, "reason": reason}
+
+
+def load_enriched_by_tag(tags_any: set[str]) -> list[dict[str, Any]]:
+    """enriched_events.json から tags にいずれか該当する record を返す (#1/#3/#5用)。"""
+    if not ENRICHED_PATH.exists():
+        return []
+    recs = json.loads(ENRICHED_PATH.read_text())["records"]
+    return [r for r in recs if any(t in tags_any for t in (r.get("tags") or []))]
+
+
+def _run_index_candidate(cid: str, tags_any: set[str], exclude_bad: bool) -> dict[str, Any]:
+    """索引イベント (enriched) から候補レコードを作り検証→レポート出力→サマリ行を返す。"""
+    cfg = by_id(cid)
+    recs = load_enriched_by_tag(tags_any)
+    if exclude_bad:
+        index = json.loads(INDEX_PATH.read_text())["records"]
+        recs = filter_no_bad_material(recs, bad_material_keys(index))
+    results = lib.validate_candidate(recs, exits=cfg["exits"])
+    verdict, reason, _ = lib.judge(results, caveat_beta=cfg["caveat_beta"])
+    reason = f"(n={len(recs)}) {reason}"
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    lib.write_candidate_report(cfg["cid"], cfg["name"], results, verdict, reason,
+                               out_dir=REPORT_DIR, caveats=cfg.get("dedup", ""))
+    return {"cid": cfg["cid"], "name": cfg["name"], "verdict": verdict, "reason": reason}
+
+
+def run_kessan_up() -> dict[str, Any]:
+    """#1 上方修正発表翌日ロング を検証 (索引から good_kessan_up を抽出)。"""
+    return _run_index_candidate("#1", {"good_kessan_up"}, exclude_bad=False)
+
+
+def run_zouhai_single() -> dict[str, Any]:
+    """#3 増配単独(悪材料なし)ロング を検証 (good_zouhai + 同日悪材料/減益除外)。"""
+    return _run_index_candidate("#3", {"good_zouhai"}, exclude_bad=True)
+
+
+def run_teikei_juchu() -> dict[str, Any]:
+    """#5 業務提携・大型受注ロング を検証 (good_teikei または good_juchu)。"""
+    return _run_index_candidate("#5", {"good_teikei", "good_juchu"}, exclude_bad=False)
+
+
+def run_stock_split() -> dict[str, Any]:
+    """#4 株式分割発表ロング を検証 (split_multiday の +5/+10日リターン)。
+
+    enrich_multiday で価格付与済みの events を読み、cfg["exits"] (+5/+10日) で検証。
+    caveat_beta=True なので通過しても「保留・要TOPIX再検証」。
+    """
+    cfg = by_id("#4")
+    SPLIT_PATH = REPO_ROOT / "data" / "edge_candidates" / "split_multiday.json"
+    recs = json.loads(SPLIT_PATH.read_text())["records"]
+    results = lib.validate_candidate(recs, exits=cfg["exits"])
+    verdict, reason, _ = lib.judge(results, caveat_beta=cfg["caveat_beta"])
+    reason = f"(n={len(recs)}) {reason}"
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    lib.write_candidate_report(cfg["cid"], cfg["name"], results, verdict, reason,
+                               out_dir=REPORT_DIR, caveats=cfg.get("dedup", ""))
+    return {"cid": cfg["cid"], "name": cfg["name"], "verdict": verdict, "reason": reason}
+
+
+def run_stock_split_alpha() -> dict[str, Any]:
+    """#4 株式分割発表ロング を TOPIX 超過収益 (β=1) で再検証。
+
+    split_multiday の各 event に topix_adjust で alpha_d{N}_ret を付与し、
+    生リターンの代わりに α で同じ統計枠 (clustered_t + FDR + walk-forward OOS) を回す。
+    生 #4 が「数日保有=ベータ汚染」で保留だった件への直接的回答。
+    """
+    from scripts.edge_candidates import topix_adjust
+    cfg = by_id("#4")
+    SPLIT_PATH = REPO_ROOT / "data" / "edge_candidates" / "split_multiday.json"
+    recs = json.loads(SPLIT_PATH.read_text())["records"]
+    days = [5, 10]
+    stats = topix_adjust.enrich_with_alpha(recs, days)
+    alpha_exits = [(f"alpha_d{n}_ret", f"+{n}日α") for n in days]
+    results = lib.validate_candidate(recs, exits=alpha_exits)
+    # α 再検証は caveat_beta を解除して判定
+    verdict, reason, _ = lib.judge(results, caveat_beta=False)
+    reason = f"(α補正 n={len(recs)} / α付与{stats['alpha_added']}) " + reason
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    lib.write_candidate_report(cfg["cid"] + "α", cfg["name"] + " (TOPIX超過α)",
+                               results, verdict, reason, out_dir=REPORT_DIR,
+                               caveats="β=1 近似。日足universe完了後にβ推定で再々検証可。")
+    return {"cid": cfg["cid"] + "α", "name": cfg["name"] + " α", "verdict": verdict, "reason": reason}
+
+
+def _run_multiday_alpha(cid: str, signals_filename: str, days: list[int]) -> dict[str, Any]:
+    """シグナル系候補 (#7/#8) を TOPIX 超過α (β=1) で検証し詳細レポートを書く共通ルーチン。
+
+    *_signals.json (compute_event_returns で entry_open/d{n}_ret 付与済) を読み、
+    alpha_d{n}_ret を付与 → α で clustered_t + FDR + walk-forward OOS を回す。
+    数日保有=ベータ汚染への回答として α 基準で判定 (caveat_beta=False)。
+    """
+    from scripts.edge_candidates import topix_adjust
+    cfg = by_id(cid)
+    path = REPO_ROOT / "data" / "edge_candidates" / signals_filename
+    if not path.exists():
+        return {"cid": cid, "name": cfg["name"], "verdict": "却下",
+                "reason": f"signals 未生成 ({signals_filename})"}
+    recs = json.loads(path.read_text())["records"]
+    stats = topix_adjust.enrich_with_alpha(recs, days)
+    alpha_exits = [(f"alpha_d{n}_ret", f"+{n}日α") for n in days]
+    results = lib.validate_candidate(recs, exits=alpha_exits)
+    verdict, reason, _ = lib.judge(results, caveat_beta=False)
+    # 参考: 生リターン (β込み) も併記
+    raw = lib.validate_candidate(recs, exits=[(f"d{n}_ret", f"+{n}日raw") for n in days])
+    raw_note = ", ".join(f"+{r['exit']}={r['net_ev']:+.2f}%" for r in raw) if raw else "—"
+    reason = f"(α補正 n={len(recs)} / α付与{stats['alpha_added']}) " + reason
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    lib.write_candidate_report(cid, cfg["name"] + " (TOPIX超過α)", results, verdict, reason,
+                               out_dir=REPORT_DIR,
+                               caveats=f"β=1 近似。生raw net: {raw_note}。{cfg.get('dedup', '')}")
+    return {"cid": cid, "name": cfg["name"], "verdict": verdict, "reason": reason}
+
+
+def run_margin_squeeze() -> dict[str, Any]:
+    """#7 信用買残激減(売り尽くし)ロング を TOPIX 超過αで検証。"""
+    return _run_multiday_alpha("#7", "margin_signals.json", [1, 3, 5])
+
+
+def run_short_squeeze() -> dict[str, Any]:
+    """#8 空売り残急増(踏み上げ)ロング を TOPIX 超過αで検証。"""
+    return _run_multiday_alpha("#8", "short_signals.json", [1, 3, 5])
+
+
+_RUNNERS = {"#1": run_kessan_up, "#2": run_jisha_single,
+            "#3": run_zouhai_single, "#4": run_stock_split,
+            "#4α": run_stock_split_alpha, "#5": run_teikei_juchu,
+            "#7": run_margin_squeeze, "#8": run_short_squeeze}
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--candidate", default="#2", help="検証する候補ID (現状 #2 のみ対応)")
+    args = ap.parse_args()
+    runner = _RUNNERS.get(args.candidate)
+    if runner is None:
+        raise SystemExit(f"未対応の候補: {args.candidate} (対応済: {sorted(_RUNNERS)})")
+    row = runner()
+    print(f"{row['cid']} {row['name']}: {row['verdict']} — {row['reason']}")
+
+
+if __name__ == "__main__":
+    main()
