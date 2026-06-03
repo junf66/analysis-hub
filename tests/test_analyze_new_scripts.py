@@ -56,6 +56,7 @@ from scripts.analyze_delivery_long_filters import load_records as flt_load_recor
 from scripts.analyze_delivery_long_filters import build_report as flt_build_report
 from scripts.analyze_delivery_long_filters import build_observations as flt_build_obs
 from scripts.edge_candidates.enrich_buyback_pdf import parse_buyback_text
+from scripts.edge_candidates.extract_mild_cases import build_events as mild_cases_build
 
 
 class TestAnalyzeNewScripts(unittest.TestCase):
@@ -426,6 +427,7 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertIn("中型", report)
         self.assertEqual(brk_stat([])["n"], 0)
 
+<<<<<<< HEAD
     def test_buyback_pdf_parse_text(self) -> None:
         """parse_buyback_text extracts 規模%/株数/金額 from PDF本文 (依存なし・CI安全)。"""
         text = ("当社は…発行済株式総数（自己株式を除く）に対する割合 3.08％ … "
@@ -436,6 +438,32 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertEqual(got["buyback_max_amount"], 2000000000.0)
         # 規模%が無いテキストは None
         self.assertIsNone(parse_buyback_text("規模に関する記載なし")["buyback_ratio_pct"])
+=======
+    def test_mild_cases_build_events(self) -> None:
+        """mild_bad=軽い増益×減配, mild_genhai=微減配×好材料 を正しく拾う。"""
+        fins = {"12340": [
+            {"DiscDate": "2024-05-10", "CurPerType": "FY", "CurPerEn": "2024-03-31",
+             "NP": 105, "DivFY": 90, "DiscTime": "15:00"},  # NP+5%(軽増益), DivFY-10%(減配)
+            {"DiscDate": "2023-05-10", "CurPerType": "FY", "CurPerEn": "2023-03-31",
+             "NP": 100, "DivFY": 100},
+        ]}
+        bad = mild_cases_build(fins, {}, "mild_bad")
+        self.assertEqual(len(bad), 1)
+        self.assertEqual(bad[0]["attrs"]["bads"], ["genhai"])
+        self.assertAlmostEqual(bad[0]["attrs"]["np_yoy"], 5.0, places=3)
+        # mild_genhai: 微減配×自社株買い(td). DivFY -10% は減配で対象外、別データで微減配を作る
+        fins2 = {"12340": [
+            {"DiscDate": "2024-05-10", "CurPerType": "FY", "CurPerEn": "2024-03-31",
+             "NP": 100, "DivFY": 98, "DiscTime": "15:00"},  # DivFY-2%(微減配)
+            {"DiscDate": "2023-05-10", "CurPerType": "FY", "CurPerEn": "2023-03-31",
+             "NP": 100, "DivFY": 100},
+        ]}
+        genhai = mild_cases_build(fins2, {("12340", "2024-05-10"): {"11105"}}, "mild_genhai")
+        self.assertEqual(len(genhai), 1)
+        self.assertEqual(genhai[0]["attrs"]["goods"], ["jisha"])
+        # 好材料が無ければ mild_genhai は採用しない
+        self.assertEqual(len(mild_cases_build(fins2, {}, "mild_genhai")), 0)
+>>>>>>> origin/main
 
 
 if __name__ == "__main__":
