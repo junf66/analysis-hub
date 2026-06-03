@@ -194,6 +194,20 @@ def new_edges_observations(_ignored: list[dict[str, Any]]) -> Iterator[dict[str,
         o = _obs("中型(500-1000億)×普通 decide short", (r.get("attrs") or {}).get("ret_close"), r)
         if o:
             yield o
+    # ⑥ 好悪×医薬品×信用 LONG: kouaku 翌寄→翌引け long (基線demeanでFDR★生存の逆張り)
+    #   kouaku全体はショート優位だが医薬品(信用銘柄)だけ翌日ロングで効く。基線超過αで顕在化。
+    if _MASTER_PATH.exists():
+        m_attr = {m["Code"]: m for m in json.loads(_MASTER_PATH.read_text()).get("records", [])}
+        for r in json.loads(KOUAKU_PATH.read_text()).get("records", []):
+            a = r.get("attrs") or {}
+            if a.get("limit_locked"):
+                continue
+            code5 = r["code"] + "0" if len(r["code"]) == 4 else r["code"]
+            mm = m_attr.get(code5) or {}
+            if mm.get("S17Nm") == "医薬品" and mm.get("MrgnNm") == "信用":
+                o = _obs("好悪×医薬品×信用 翌寄→引 long", a.get("next_day_open_to_close_ret"), r)
+                if o:
+                    yield o
 
 
 _SOURCES = {

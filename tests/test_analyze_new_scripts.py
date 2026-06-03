@@ -44,6 +44,7 @@ from scripts.scan_kouaku_candidates import build_observations as k_build_obs
 from scripts.scan_kouaku_candidates import scan as k_scan, mag_bucket
 from scripts.scan_kouaku_candidates import load_kouaku, load_master as k_load_master
 from scripts.scan_kouaku_candidates import build_report as k_build_report
+from scripts.scan_kouaku_candidates import day_means as k_day_means
 from scripts.analyze_delivery_long_filters import base_records, rank_filters
 from scripts.analyze_delivery_long_filters import load_records as flt_load_records
 from scripts.analyze_delivery_long_filters import build_report as flt_build_report
@@ -323,6 +324,12 @@ class TestAnalyzeNewScripts(unittest.TestCase):
             self.assertGreater(c["ev_net"], 0)
         report = k_build_report(records, master)
         self.assertIn("候補", report)
+        # day_means: 同日の平均リターン
+        dm = k_day_means([
+            {"event_date": "2024-01-10", "attrs": {"next_day_open_to_close_ret": 1.0}},
+            {"event_date": "2024-01-10", "attrs": {"next_day_open_to_close_ret": 3.0}},
+        ])
+        self.assertAlmostEqual(dm["2024-01-10"], 2.0, places=6)
 
     def test_scan_runs_and_reports_on_cache(self) -> None:
         """scan returns candidate dicts and build_report renders from real cache."""
