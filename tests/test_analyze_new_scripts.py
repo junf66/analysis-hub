@@ -33,6 +33,9 @@ from scripts.analyze_po_long_size_brackets import load_records as brk_load_recor
 from scripts.analyze_po_long_size_brackets import load_enriched, load_master_records
 from scripts.analyze_po_long_size_brackets import collect_size_by_exit, best_exit
 from scripts.analyze_po_long_size_brackets import collect_yen_floor_by_exit
+from scripts.analyze_po_delivery_long import collect_delivery_long, metrics as dl_metrics
+from scripts.analyze_po_delivery_long import oos_split_date, load_records as dl_load_records
+from scripts.analyze_po_delivery_long import build_report as dl_build_report
 
 
 class TestAnalyzeNewScripts(unittest.TestCase):
@@ -230,6 +233,38 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         # 全GUGD: big と gu (small は時価総額未満)
         allg = collect_yen_floor_by_exit(records, enriched, 10000.0, gd_only=False)
         self.assertEqual(len(allg["9:05"]), 2)
+
+    def test_delivery_long_filters_and_metrics(self) -> None:
+        """collect_delivery_long applies stage/size/gap filters; metrics computes t_clust."""
+        records = [
+            # 採用: deliver/普通/規模120/時価800/希薄5/gap-1.0 (GD)
+            {"stage": "deliver", "po_type": "普通", "po_scale": 120.0, "market_cap": 800.0,
+             "dilution": 5.0, "event_date": "2024-01-10",
+             "attrs": {"gap_pct": -1.0, "next_day_open_to_close_ret": 1.0}},
+            # 除外: 時価総額500以下
+            {"stage": "deliver", "po_type": "普通", "po_scale": 120.0, "market_cap": 400.0,
+             "dilution": 5.0, "event_date": "2024-01-11",
+             "attrs": {"gap_pct": -1.0, "next_day_open_to_close_ret": 9.0}},
+            # 除外: gap が範囲外 (GU, gap_hi=0.5 未満でない)
+            {"stage": "deliver", "po_type": "普通", "po_scale": 120.0, "market_cap": 800.0,
+             "dilution": 5.0, "event_date": "2024-01-12",
+             "attrs": {"gap_pct": 2.0, "next_day_open_to_close_ret": 9.0}},
+        ]
+        rets, by_date = collect_delivery_long(records, -99.0, 0.5)
+        self.assertEqual(len(rets), 1)
+        self.assertAlmostEqual(rets[0], 1.0 - 0.20, places=6)
+        m = dl_metrics(rets, by_date)
+        self.assertEqual(m["n"], 1)
+        self.assertEqual(dl_metrics([], {})["n"], 0)
+
+    def test_delivery_long_oos_split_and_report(self) -> None:
+        """oos_split_date needs ≥4 dates; build_report runs on real cache."""
+        self.assertIsNone(oos_split_date({"d1": [1.0]}))
+        self.assertEqual(oos_split_date({f"2024-01-0{i}": [1.0] for i in range(1, 6)}, 0.6),
+                         "2024-01-04")
+        report = dl_build_report(dl_load_records())
+        self.assertIn("受渡日", report)
+        self.assertIn("GD+フラット", report)
 
     def test_best_exit_picks_max_ev_above_min_n(self) -> None:
         """best_exit returns the highest-EV exit meeting the n floor, else None."""
