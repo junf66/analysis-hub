@@ -26,6 +26,11 @@ from scripts.analyze_short_edges_size import build_report as short_size_build_re
 from scripts.analyze_po_edge1a_minute import load_po_records as e1a_load_po
 from scripts.analyze_po_edge1a_minute import load_scale_map, load_minute, entry_and_exits, collect
 from scripts.analyze_po_edge1a_minute import build_report as e1a_build_report
+from scripts.analyze_po_long_size_brackets import bracket_label, collect_po_long
+from scripts.analyze_po_long_size_brackets import scale_band_mc_ranges, stat as brk_stat
+from scripts.analyze_po_long_size_brackets import build_report as brk_build_report
+from scripts.analyze_po_long_size_brackets import load_records as brk_load_records
+from scripts.analyze_po_long_size_brackets import load_enriched, load_master_records
 
 
 class TestAnalyzeNewScripts(unittest.TestCase):
@@ -174,6 +179,45 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         ]}
         by_time = collect(records, scale, minute)
         self.assertEqual(by_time["09:05"][0], (101.0 / 100.0 - 1.0) * 100.0 - 0.20)
+
+    def test_size_bracket_label_boundaries(self) -> None:
+        """bracket_label assigns market cap (億円) to the right band."""
+        self.assertEqual(bracket_label(100), "<300億")
+        self.assertEqual(bracket_label(300), "300-500億")
+        self.assertEqual(bracket_label(4178), "3,000億-1兆")
+        self.assertEqual(bracket_label(50000), "≥1兆")
+
+    def test_size_bracket_collect_routes_by_mc_and_band(self) -> None:
+        """collect_po_long routes a GD announce record into mc bracket and scale band."""
+        records = [{"id": "x1", "stage": "announce", "po_type": "普通",
+                    "code": "13010", "market_cap": 4178.0, "attrs": {"gap_pct": -1.0}}]
+        enriched = {"x1": {"next_day_open_to_close_ret": 1.34, "scale_band": "中型"}}
+        by_mc, by_band = collect_po_long(records, enriched)
+        self.assertAlmostEqual(by_mc["3,000億-1兆"][0], 1.34 - 0.20, places=6)
+        self.assertAlmostEqual(by_band["中型"][0], 1.34 - 0.20, places=6)
+        # gap が浅い(>-0.5%)レコードは除外
+        records[0]["attrs"]["gap_pct"] = 0.1
+        by_mc2, _ = collect_po_long(records, enriched)
+        self.assertEqual(sum(len(v) for v in by_mc2.values()), 0)
+
+    def test_size_bracket_loaders(self) -> None:
+        """load_records/load_enriched/load_master_records return expected containers."""
+        self.assertIsInstance(brk_load_records(), list)
+        self.assertIsInstance(load_enriched(), dict)
+        self.assertIsInstance(load_master_records(), list)
+
+    def test_size_bracket_report_and_ranges(self) -> None:
+        """build_report runs on synthetic data and ranges reflect overlap."""
+        records = [{"id": "x1", "stage": "announce", "po_type": "普通",
+                    "code": "13010", "market_cap": 4178.0, "attrs": {"gap_pct": -1.0}}]
+        enriched = {"x1": {"next_day_open_to_close_ret": 1.34, "scale_band": "中型"}}
+        master = [{"Code": "13010", "scale_band": "中型"}]
+        rng = scale_band_mc_ranges(records, master)
+        self.assertEqual(rng["中型"]["median"], 4178.0)
+        report = brk_build_report(records, enriched, master)
+        self.assertIn("TOPIX", report)
+        self.assertIn("中型", report)
+        self.assertEqual(brk_stat([])["n"], 0)
 
 
 if __name__ == "__main__":
