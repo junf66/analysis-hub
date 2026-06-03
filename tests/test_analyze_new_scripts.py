@@ -32,6 +32,7 @@ from scripts.analyze_po_long_size_brackets import build_report as brk_build_repo
 from scripts.analyze_po_long_size_brackets import load_records as brk_load_records
 from scripts.analyze_po_long_size_brackets import load_enriched, load_master_records
 from scripts.analyze_po_long_size_brackets import collect_size_by_exit, best_exit
+from scripts.analyze_po_long_size_brackets import collect_yen_floor_by_exit
 
 
 class TestAnalyzeNewScripts(unittest.TestCase):
@@ -210,6 +211,25 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertAlmostEqual(by_se["中型"]["9:30"][0], 0.5 - 0.20, places=6)
         self.assertAlmostEqual(by_se["中型"]["引け"][0], 1.2 - 0.20, places=6)
         self.assertEqual(by_se["小型"]["引け"], [])
+
+    def test_collect_yen_floor_filters_by_mc_and_gd(self) -> None:
+        """collect_yen_floor_by_exit keeps only mc≥floor, and respects gd_only."""
+        records = [
+            {"id": "big", "stage": "announce", "po_type": "普通", "market_cap": 15000.0,
+             "attrs": {"gap_pct": -1.0, "next_day_905_ret": 0.6}},
+            {"id": "small", "stage": "announce", "po_type": "普通", "market_cap": 500.0,
+             "attrs": {"gap_pct": -1.0, "next_day_905_ret": 5.0}},
+            {"id": "gu", "stage": "announce", "po_type": "普通", "market_cap": 15000.0,
+             "attrs": {"gap_pct": 1.0, "next_day_905_ret": 0.2}},
+        ]
+        enriched = {}
+        # GD限定: big のみ (small は時価総額未満, gu は GD でない)
+        gd = collect_yen_floor_by_exit(records, enriched, 10000.0, gd_only=True)
+        self.assertEqual(len(gd["9:05"]), 1)
+        self.assertAlmostEqual(gd["9:05"][0], 0.6 - 0.20, places=6)
+        # 全GUGD: big と gu (small は時価総額未満)
+        allg = collect_yen_floor_by_exit(records, enriched, 10000.0, gd_only=False)
+        self.assertEqual(len(allg["9:05"]), 2)
 
     def test_best_exit_picks_max_ev_above_min_n(self) -> None:
         """best_exit returns the highest-EV exit meeting the n floor, else None."""

@@ -149,6 +149,33 @@ def collect_size_by_exit(records: list[dict[str, Any]],
     return out
 
 
+def collect_yen_floor_by_exit(records: list[dict[str, Any]],
+                              enriched: dict[str, dict[str, Any]],
+                              mc_floor: float, gd_only: bool
+                              ) -> dict[str, list[float]]:
+    """時価総額≥mc_floor(億円) の announce 普通株の long net を 出口時刻別に集める。
+
+    ①A の午前ロング(大型=円カット)を再現する用途。gd_only=True で翌日GD限定。
+    """
+    out: dict[str, list[float]] = {label: [] for label, _ in EXIT_FIELDS}
+    for r in records:
+        if r.get("stage") != "announce" or r.get("po_type") != "普通":
+            continue
+        mc = r.get("market_cap")
+        if not mc or float(mc) < mc_floor:
+            continue
+        a = r.get("attrs") or {}
+        gap = a.get("gap_pct")
+        if gd_only and (gap is None or float(gap) > GD_THRESHOLD):
+            continue
+        e = enriched.get(r.get("id", "")) or {}
+        for label, field in EXIT_FIELDS:
+            val = e.get(field) if field == "next_day_open_to_close_ret" else a.get(field)
+            if val is not None:
+                out[label].append(float(val) - COST_PCT)
+    return out
+
+
 def best_exit(by_exit: dict[str, list[float]], min_n: int) -> tuple[str, dict[str, float]] | None:
     """n≥min_n を満たす出口の中で最大 EV の (出口, stat) を返す。無ければ None。"""
     cands = [(label, stat(rets)) for label, rets in by_exit.items() if len(rets) >= min_n]
@@ -292,6 +319,30 @@ def build_report(records: list[dict[str, Any]],
     L.append("  帯が大きく重なる。例えば「5,000億」の銘柄は小型・中型・大型のどれにもあり得る。")
     L.append("- ∴ CLAUDE.md/正本の旧表現『中型≈300億-1兆』は**ラフな近似で実体とズレる**（中型中央値は約4,200億）。")
     L.append("  正確には『中型=TOPIX Mid400』であって円レンジでは定義できない。")
+    L.append("")
+
+    L.append("## ⑤ ①A保留の公平な再評価: 大型(円カット≥1兆)の午前ロング")
+    L.append("")
+    L.append("PO Tracker で『時価総額1兆以上』を見ると 9:05〜9:10 が平均プラスに見える件の検証。")
+    L.append("時価総額≥10,000億(=1兆) の announce 普通株 / 翌寄り買い / long往復0.20% net。")
+    L.append("**raw平均はコスト控除前の生値**（トラッカー表示と対応）、net はコスト控除後。")
+    L.append("")
+    for tag, gd_only in [("全GUGD (=トラッカー画面)", False), ("GD限定(gap≤-0.5)", True)]:
+        L.append(f"### ≥1兆 × {tag}")
+        L.append("")
+        L.append("| 出口 | n | net EV | raw平均 | t(net) | 勝率 |")
+        L.append("|---|---|---|---|---|---|")
+        by_exit = collect_yen_floor_by_exit(records, enriched, 10000.0, gd_only)
+        for label, _ in EXIT_FIELDS:
+            net_rets = by_exit[label]
+            s = stat(net_rets)
+            raw = s["ev"] + COST_PCT if s["n"] else 0.0
+            L.append(f"| {label} | {s['n']} | {s['ev']:+.2f}% | {raw:+.2f}% | {s['t']:+.2f} | {s['win']:.0f}% |")
+        L.append("")
+    L.append("**読み**: 大型の翌寄り→9:05/9:10ロングは **raw平均プラス（方向性は本物）**。")
+    L.append("ただし (1) n が5〜9と小さい、(2) t<2（raw≈1.7 でも net でも）、(3) コスト控除で9:15以降はほぼ消える、")
+    L.append("(4) プラス窓が9:05〜9:10の最序盤限定、で**確定エッジの基準に届かない**。")
+    L.append("→ ①A は『否定はできないが確証も立たない』= **保留（ウォッチ枠）**。n が貯まるまで監視。")
     return "\n".join(L)
 
 
