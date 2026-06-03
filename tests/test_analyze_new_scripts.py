@@ -40,6 +40,10 @@ from scripts.scan_po_candidates import build_observations, scan, signal_ret
 from scripts.scan_po_candidates import load_records as scan_load_records
 from scripts.scan_po_candidates import load_enriched as scan_load_enriched
 from scripts.scan_po_candidates import build_report as scan_build_report
+from scripts.analyze_delivery_long_filters import base_records, rank_filters
+from scripts.analyze_delivery_long_filters import load_records as flt_load_records
+from scripts.analyze_delivery_long_filters import build_report as flt_build_report
+from scripts.analyze_delivery_long_filters import build_observations as flt_build_obs
 
 
 class TestAnalyzeNewScripts(unittest.TestCase):
@@ -301,6 +305,33 @@ class TestAnalyzeNewScripts(unittest.TestCase):
             self.assertGreaterEqual(c["t_clustered"], 1.5)
         report = scan_build_report(records, enriched)
         self.assertIn("候補", report)
+
+    def test_delivery_filters_base_and_observations(self) -> None:
+        """base_records keeps only GD+フラット deliver 普通; observations emit combos."""
+        records = [
+            {"stage": "deliver", "po_type": "普通", "event_date": "2024-01-10", "code": "1",
+             "po_scale": 400.0, "dilution": 5.0,
+             "attrs": {"gap_pct": -1.0, "next_day_open_to_close_ret": 1.0}},
+            {"stage": "deliver", "po_type": "普通", "event_date": "2024-01-11", "code": "2",
+             "attrs": {"gap_pct": 2.0, "next_day_open_to_close_ret": 1.0}},  # GU除外
+        ]
+        base = base_records(records)
+        self.assertEqual(len(base), 1)
+        obs = flt_build_obs(base, max_combo=2)
+        cells = {o["cell"] for o in obs}
+        self.assertIn(("土台(無フィルタ)",), cells)
+        self.assertIn(("PO規模≥300億",), cells)
+        self.assertTrue(any(len(c) == 2 for c in cells))
+
+    def test_delivery_filters_rank_and_report(self) -> None:
+        """rank_filters returns dicts sorted by net EV; build_report runs on cache."""
+        records = flt_load_records()
+        ranked = rank_filters(base_records(records))
+        self.assertIsInstance(ranked, list)
+        if len(ranked) >= 2:
+            self.assertGreaterEqual(ranked[0]["ev_net"], ranked[-1]["ev_net"])
+        report = flt_build_report(records)
+        self.assertIn("加点フィルタ", report)
 
     def test_best_exit_picks_max_ev_above_min_n(self) -> None:
         """best_exit returns the highest-EV exit meeting the n floor, else None."""
