@@ -23,6 +23,9 @@ from scripts.analyze_buyback_standalone import build_report as buyback_build_rep
 from scripts.analyze_short_edges_size import load_master, load_kouaku, load_genshu_d3
 from scripts.analyze_short_edges_size import load_fins_by_code, np_yoy_asof
 from scripts.analyze_short_edges_size import build_report as short_size_build_report
+from scripts.analyze_po_edge1a_minute import load_po_records as e1a_load_po
+from scripts.analyze_po_edge1a_minute import load_scale_map, load_minute, entry_and_exits, collect
+from scripts.analyze_po_edge1a_minute import build_report as e1a_build_report
 
 
 class TestAnalyzeNewScripts(unittest.TestCase):
@@ -142,6 +145,35 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertIn("zouhai_kahou_nx", report)
         self.assertIn("zouhai_genshu", report)
         self.assertIn("大引け後", report)
+
+    def test_e1a_entry_and_exits_computes_long_returns(self) -> None:
+        """entry_and_exits returns long % from next-day open to each exit time."""
+        bars = [
+            {"Date": "2024-06-03", "Time": "09:00", "O": 100.0, "C": 100.0},
+            {"Date": "2024-06-03", "Time": "09:05", "O": 101.0, "C": 101.0},
+            {"Date": "2024-06-03", "Time": "09:30", "O": 102.0, "C": 102.0},
+        ]
+        res = entry_and_exits(bars, "2024-06-02", ["09:05", "09:30"])
+        self.assertAlmostEqual(res["09:05"], 1.0, places=3)
+        self.assertAlmostEqual(res["09:30"], 2.0, places=3)
+        self.assertIsNone(entry_and_exits(bars, "2024-06-10", ["09:05"]))
+
+    def test_e1a_loads_and_reports(self) -> None:
+        """①A reverify loaders return types and build_report runs."""
+        self.assertIsInstance(e1a_load_po(), list)
+        self.assertIsInstance(load_scale_map(), dict)
+        self.assertIsInstance(load_minute(), dict)
+        report = e1a_build_report([], {}, {"99999": []})
+        self.assertIn("①A", report)
+        records = [{"stage": "announce", "po_type": "普通", "code": "13010",
+                    "dilution": 5.0, "attrs": {"gap_pct": -1.0}}]
+        scale = {"13010": "大型"}
+        minute = {"13010": [
+            {"Date": "2024-06-03", "Time": "09:00", "O": 100.0, "C": 100.0},
+            {"Date": "2024-06-03", "Time": "09:05", "O": 101.0, "C": 101.0},
+        ]}
+        by_time = collect(records, scale, minute)
+        self.assertEqual(by_time["09:05"][0], (101.0 / 100.0 - 1.0) * 100.0 - 0.20)
 
 
 if __name__ == "__main__":
