@@ -1,0 +1,8650 @@
+{
+"records": [
+{
+"code": "3836",
+"event_date": "2016-12-20",
+"source": "official",
+"attrs": {
+"np_yoy": 0.454545454545463,
+"div_yoy": -27.27272727272727,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00"
+}
+},
+{
+"code": "3836",
+"event_date": "2017-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 0.454545454545463,
+"div_yoy": -27.27272727272727,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "2923",
+"event_date": "2017-06-12",
+"source": "official",
+"attrs": {
+"np_yoy": 5.793450881612094,
+"div_yoy": -41.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00"
+}
+},
+{
+"code": "8920",
+"event_date": "2017-06-16",
+"source": "official",
+"attrs": {
+"np_yoy": 1.0735373054213682,
+"div_yoy": -33.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00"
+}
+},
+{
+"code": "4716",
+"event_date": "2017-06-26",
+"source": "official",
+"attrs": {
+"np_yoy": 8.317445185891327,
+"div_yoy": -78.28571428571429,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "4716",
+"event_date": "2017-06-26",
+"source": "official",
+"attrs": {
+"np_yoy": 8.317445185891327,
+"div_yoy": -78.28571428571429,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "6159",
+"event_date": "2017-06-30",
+"source": "official",
+"attrs": {
+"np_yoy": 6.224627875507438,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "15:10"
+}
+},
+{
+"code": "3321",
+"event_date": "2017-07-07",
+"source": "official",
+"attrs": {
+"np_yoy": 4.59518599562363,
+"div_yoy": -7.692307692307687,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "6159",
+"event_date": "2017-07-07",
+"source": "official",
+"attrs": {
+"np_yoy": 6.224627875507438,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "15:10"
+}
+},
+{
+"code": "1376",
+"event_date": "2017-07-11",
+"source": "official",
+"attrs": {
+"np_yoy": 1.6382252559727029,
+"div_yoy": -6.25,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "3673",
+"event_date": "2017-08-04",
+"source": "official",
+"attrs": {
+"np_yoy": 2.9850746268656803,
+"div_yoy": -12.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "3836",
+"event_date": "2017-08-04",
+"source": "official",
+"attrs": {
+"np_yoy": 0.454545454545463,
+"div_yoy": -27.27272727272727,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "9769",
+"event_date": "2017-08-10",
+"source": "official",
+"attrs": {
+"np_yoy": 2.763561924257929,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "9508",
+"event_date": "2017-09-12",
+"source": "official",
+"attrs": {
+"np_yoy": 9.318783903115936,
+"div_yoy": -33.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30"
+}
+},
+{
+"code": "9503",
+"event_date": "2017-09-20",
+"source": "official",
+"attrs": {
+"np_yoy": 7.877746130734642,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00"
+}
+},
+{
+"code": "3538",
+"event_date": "2017-10-02",
+"source": "official",
+"attrs": {
+"np_yoy": 9.690444145356668,
+"div_yoy": -56.84210526315789,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "8086",
+"event_date": "2017-10-02",
+"source": "official",
+"attrs": {
+"np_yoy": 4.257006874669478,
+"div_yoy": -48.837209302325576,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "6159",
+"event_date": "2017-10-06",
+"source": "official",
+"attrs": {
+"np_yoy": 6.224627875507438,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "15:10"
+}
+},
+{
+"code": "6159",
+"event_date": "2017-10-10",
+"source": "official",
+"attrs": {
+"np_yoy": 6.224627875507438,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "15:10"
+}
+},
+{
+"code": "6159",
+"event_date": "2017-10-11",
+"source": "official",
+"attrs": {
+"np_yoy": 6.224627875507438,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "12:30"
+}
+},
+{
+"code": "3921",
+"event_date": "2017-10-23",
+"source": "official",
+"attrs": {
+"np_yoy": 9.459459459459453,
+"div_yoy": -35.29411764705882,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30"
+}
+},
+{
+"code": "6490",
+"event_date": "2017-11-02",
+"source": "official",
+"attrs": {
+"np_yoy": 6.803995006242203,
+"div_yoy": -5.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "7821",
+"event_date": "2017-11-02",
+"source": "official",
+"attrs": {
+"np_yoy": 8.185301288749569,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "7192",
+"event_date": "2017-11-13",
+"source": "official",
+"attrs": {
+"np_yoy": 4.856115107913661,
+"div_yoy": -60.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "7780",
+"event_date": "2017-11-13",
+"source": "official",
+"attrs": {
+"np_yoy": 4.48289421942587,
+"div_yoy": -34.210526315789465,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00"
+}
+},
+{
+"code": "8912",
+"event_date": "2017-11-13",
+"source": "official",
+"attrs": {
+"np_yoy": 5.098039215686279,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "10:05"
+}
+},
+{
+"code": "6322",
+"event_date": "2017-12-01",
+"source": "official",
+"attrs": {
+"np_yoy": 7.571428571428562,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00"
+}
+},
+{
+"code": "3030",
+"event_date": "2017-12-15",
+"source": "official",
+"attrs": {
+"np_yoy": 0.20161290322580072,
+"div_yoy": -62.857142857142854,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30"
+}
+},
+{
+"code": "2809",
+"event_date": "2018-01-11",
+"source": "official",
+"attrs": {
+"np_yoy": 5.8854501842859674,
+"div_yoy": -5.128205128205132,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "8771",
+"event_date": "2018-01-30",
+"source": "official",
+"attrs": {
+"np_yoy": 9.962546816479412,
+"div_yoy": -43.75,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30"
+}
+},
+{
+"code": "2782",
+"event_date": "2018-01-31",
+"source": "official",
+"attrs": {
+"np_yoy": 7.433779549985764,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "6490",
+"event_date": "2018-02-07",
+"source": "official",
+"attrs": {
+"np_yoy": 6.803995006242203,
+"div_yoy": -5.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "15:20"
+}
+},
+{
+"code": "1975",
+"event_date": "2018-02-08",
+"source": "official",
+"attrs": {
+"np_yoy": 2.678571428571419,
+"div_yoy": -8.108108108108103,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "3673",
+"event_date": "2018-02-08",
+"source": "official",
+"attrs": {
+"np_yoy": 2.9850746268656803,
+"div_yoy": -12.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "9830",
+"event_date": "2018-02-08",
+"source": "official",
+"attrs": {
+"np_yoy": 2.1077988557663296,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00"
+}
+},
+{
+"code": "7192",
+"event_date": "2018-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 4.856115107913661,
+"div_yoy": -60.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "7192",
+"event_date": "2018-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 4.856115107913661,
+"div_yoy": -60.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "3673",
+"event_date": "2018-02-14",
+"source": "official",
+"attrs": {
+"np_yoy": 2.9850746268656803,
+"div_yoy": -12.0,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00"
+}
+},
+{
+"code": "5957",
+"event_date": "2018-02-14",
+"source": "official",
+"attrs": {
+"np_yoy": 3.684550743374282,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30"
+}
+},
+{
+"code": "8771",
+"event_date": "2018-02-28",
+"source": "official",
+"attrs": {
+"np_yoy": 9.962546816479412,
+"div_yoy": -43.75,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30"
+}
+},
+{
+"code": "3921",
+"event_date": "2018-03-15",
+"source": "official",
+"attrs": {
+"np_yoy": 9.459459459459453,
+"div_yoy": -35.29411764705882,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "3804",
+"event_date": "2018-03-26",
+"source": "official",
+"attrs": {
+"np_yoy": 8.403361344537807,
+"div_yoy": -30.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "18:00"
+}
+},
+{
+"code": "9651",
+"event_date": "2018-03-30",
+"source": "official",
+"attrs": {
+"np_yoy": 2.614379084967311,
+"div_yoy": -69.23076923076923,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00"
+}
+},
+{
+"code": "6093",
+"event_date": "2018-04-09",
+"source": "official",
+"attrs": {
+"np_yoy": 5.986696230598665,
+"div_yoy": -76.66666666666666,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3030",
+"event_date": "2018-04-13",
+"source": "official",
+"attrs": {
+"np_yoy": 0.20161290322580072,
+"div_yoy": -62.857142857142854,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6322",
+"event_date": "2018-04-20",
+"source": "official",
+"attrs": {
+"np_yoy": 7.571428571428562,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "9729",
+"event_date": "2018-04-23",
+"source": "official",
+"attrs": {
+"np_yoy": 4.9378062570674786,
+"div_yoy": -36.53846153846154,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "1723",
+"event_date": "2018-04-25",
+"source": "official",
+"attrs": {
+"np_yoy": 1.6815034619188873,
+"div_yoy": -4.285714285714281,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "2801",
+"event_date": "2018-04-26",
+"source": "official",
+"attrs": {
+"np_yoy": 0.15119697606047477,
+"div_yoy": -5.555555555555558,
+"bads": [
+"genhai"
+],
+"disc_time": "13:20:00"
+}
+},
+{
+"code": "6490",
+"event_date": "2018-04-26",
+"source": "official",
+"attrs": {
+"np_yoy": 6.803995006242203,
+"div_yoy": -5.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6325",
+"event_date": "2018-04-27",
+"source": "official",
+"attrs": {
+"np_yoy": 4.873949579831938,
+"div_yoy": -37.5,
+"bads": [
+"genhai"
+],
+"disc_time": "14:40:00"
+}
+},
+{
+"code": "9503",
+"event_date": "2018-04-27",
+"source": "official",
+"attrs": {
+"np_yoy": 7.877746130734642,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9508",
+"event_date": "2018-04-27",
+"source": "official",
+"attrs": {
+"np_yoy": 9.318783903115936,
+"div_yoy": -33.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9619",
+"event_date": "2018-04-27",
+"source": "official",
+"attrs": {
+"np_yoy": 1.2631578947368327,
+"div_yoy": -5.263157894736848,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "2924",
+"event_date": "2018-05-01",
+"source": "official",
+"attrs": {
+"np_yoy": 4.12757973733584,
+"div_yoy": -11.111111111111116,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7980",
+"event_date": "2018-05-02",
+"source": "official",
+"attrs": {
+"np_yoy": 5.102040816326525,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "9746",
+"event_date": "2018-05-02",
+"source": "official",
+"attrs": {
+"np_yoy": 1.4330423323999364,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "1333",
+"event_date": "2018-05-07",
+"source": "official",
+"attrs": {
+"np_yoy": 4.247054253528426,
+"div_yoy": -11.111111111111116,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "2871",
+"event_date": "2018-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 1.8452349208042174,
+"div_yoy": -6.25,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3951",
+"event_date": "2018-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 0.5420054200542035,
+"div_yoy": -56.75675675675676,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6322",
+"event_date": "2018-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 7.571428571428562,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "8086",
+"event_date": "2018-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 4.257006874669478,
+"div_yoy": -48.837209302325576,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6490",
+"event_date": "2018-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 6.803995006242203,
+"div_yoy": -5.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "14:20:00"
+}
+},
+{
+"code": "8920",
+"event_date": "2018-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 1.0735373054213682,
+"div_yoy": -33.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "16:20:00"
+}
+},
+{
+"code": "2782",
+"event_date": "2018-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 7.433779549985764,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3951",
+"event_date": "2018-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 0.5420054200542035,
+"div_yoy": -56.75675675675676,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "5976",
+"event_date": "2018-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 5.9633027522935755,
+"div_yoy": -38.888888888888886,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6074",
+"event_date": "2018-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 6.158357771260992,
+"div_yoy": -37.5,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "7980",
+"event_date": "2018-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 5.102040816326525,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00:00"
+}
+},
+{
+"code": "8086",
+"event_date": "2018-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 4.257006874669478,
+"div_yoy": -48.837209302325576,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "9401",
+"event_date": "2018-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 6.482399603371336,
+"div_yoy": -11.764705882352944,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "1723",
+"event_date": "2018-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 1.6815034619188873,
+"div_yoy": -4.285714285714281,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "1975",
+"event_date": "2018-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 2.678571428571419,
+"div_yoy": -8.108108108108103,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3375",
+"event_date": "2018-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 7.619047619047614,
+"div_yoy": -14.28571428571429,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4326",
+"event_date": "2018-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 6.234761407175204,
+"div_yoy": -42.85714285714286,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4801",
+"event_date": "2018-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 7.268722466960353,
+"div_yoy": -4.651162790697672,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "5988",
+"event_date": "2018-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 1.5369236536298958,
+"div_yoy": -53.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "7416",
+"event_date": "2018-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 3.6920659858601823,
+"div_yoy": -22.499999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7988",
+"event_date": "2018-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 4.095462581025333,
+"div_yoy": -8.571428571428575,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "8772",
+"event_date": "2018-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 0.5092761004001467,
+"div_yoy": -66.66666666666667,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00:00"
+}
+},
+{
+"code": "9729",
+"event_date": "2018-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 4.9378062570674786,
+"div_yoy": -36.53846153846154,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "9769",
+"event_date": "2018-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 2.763561924257929,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9900",
+"event_date": "2018-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 1.8771331058020424,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "16:20:00"
+}
+},
+{
+"code": "9989",
+"event_date": "2018-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 6.5073781743308245,
+"div_yoy": -40.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4659",
+"event_date": "2018-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 5.270588235294116,
+"div_yoy": -31.25,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "5698",
+"event_date": "2018-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 9.375,
+"div_yoy": -43.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "5698",
+"event_date": "2018-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 9.375,
+"div_yoy": -43.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "18:00:00"
+}
+},
+{
+"code": "7192",
+"event_date": "2018-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 4.856115107913661,
+"div_yoy": -60.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7780",
+"event_date": "2018-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 4.48289421942587,
+"div_yoy": -34.210526315789465,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "8771",
+"event_date": "2018-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 9.962546816479412,
+"div_yoy": -43.75,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "2915",
+"event_date": "2018-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 0.34879665155214123,
+"div_yoy": -17.391304347826086,
+"bads": [
+"genhai"
+],
+"disc_time": "15:10:00"
+}
+},
+{
+"code": "9857",
+"event_date": "2018-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 7.320644216691075,
+"div_yoy": -8.695652173913048,
+"bads": [
+"genhai"
+],
+"disc_time": "14:40:00"
+}
+},
+{
+"code": "3486",
+"event_date": "2018-05-17",
+"source": "official",
+"attrs": {
+"np_yoy": 8.477011494252885,
+"div_yoy": -72.22222222222221,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6237",
+"event_date": "2018-05-25",
+"source": "official",
+"attrs": {
+"np_yoy": 5.050995628946087,
+"div_yoy": -65.22633744855968,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "3951",
+"event_date": "2018-05-31",
+"source": "official",
+"attrs": {
+"np_yoy": 0.5420054200542035,
+"div_yoy": -56.75675675675676,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "8945",
+"event_date": "2018-06-08",
+"source": "official",
+"attrs": {
+"np_yoy": 9.633911368015413,
+"div_yoy": -35.483870967741936,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00:00"
+}
+},
+{
+"code": "3391",
+"event_date": "2018-06-18",
+"source": "official",
+"attrs": {
+"np_yoy": 1.4938812262104584,
+"div_yoy": -11.627906976744185,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9692",
+"event_date": "2018-06-19",
+"source": "official",
+"attrs": {
+"np_yoy": 9.869431643625193,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9692",
+"event_date": "2018-06-20",
+"source": "official",
+"attrs": {
+"np_yoy": 9.869431643625193,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "1929",
+"event_date": "2018-06-22",
+"source": "official",
+"attrs": {
+"np_yoy": 1.227678571428581,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9651",
+"event_date": "2018-07-06",
+"source": "official",
+"attrs": {
+"np_yoy": 2.614379084967311,
+"div_yoy": -69.23076923076923,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "8908",
+"event_date": "2018-07-11",
+"source": "official",
+"attrs": {
+"np_yoy": 7.305034550839085,
+"div_yoy": -26.315789473684216,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3297",
+"event_date": "2018-07-12",
+"source": "official",
+"attrs": {
+"np_yoy": 3.693931398416894,
+"div_yoy": -48.88888888888889,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9475",
+"event_date": "2018-07-13",
+"source": "official",
+"attrs": {
+"np_yoy": 2.6583710407239725,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7812",
+"event_date": "2018-08-01",
+"source": "official",
+"attrs": {
+"np_yoy": 6.539509536784749,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7812",
+"event_date": "2018-08-01",
+"source": "official",
+"attrs": {
+"np_yoy": 6.539509536784749,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "18:00:00"
+}
+},
+{
+"code": "3082",
+"event_date": "2018-08-06",
+"source": "official",
+"attrs": {
+"np_yoy": 9.523809523809534,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3538",
+"event_date": "2018-08-10",
+"source": "official",
+"attrs": {
+"np_yoy": 9.690444145356668,
+"div_yoy": -56.84210526315789,
+"bads": [
+"genhai"
+],
+"disc_time": "14:30:00"
+}
+},
+{
+"code": "5698",
+"event_date": "2018-08-10",
+"source": "official",
+"attrs": {
+"np_yoy": 9.375,
+"div_yoy": -43.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "8912",
+"event_date": "2018-08-10",
+"source": "official",
+"attrs": {
+"np_yoy": 5.098039215686279,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "11:40:00"
+}
+},
+{
+"code": "8945",
+"event_date": "2018-08-10",
+"source": "official",
+"attrs": {
+"np_yoy": 9.633911368015413,
+"div_yoy": -35.483870967741936,
+"bads": [
+"genhai"
+],
+"disc_time": "17:15:00"
+}
+},
+{
+"code": "7812",
+"event_date": "2018-08-14",
+"source": "official",
+"attrs": {
+"np_yoy": 6.539509536784749,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00:00"
+}
+},
+{
+"code": "3423",
+"event_date": "2018-08-27",
+"source": "official",
+"attrs": {
+"np_yoy": 2.7941176470588136,
+"div_yoy": -44.44444444444444,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6845",
+"event_date": "2018-08-30",
+"source": "official",
+"attrs": {
+"np_yoy": 5.930687534935708,
+"div_yoy": -43.90243902439024,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3816",
+"event_date": "2018-08-31",
+"source": "official",
+"attrs": {
+"np_yoy": 5.990783410138256,
+"div_yoy": -5.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9692",
+"event_date": "2018-09-11",
+"source": "official",
+"attrs": {
+"np_yoy": 9.869431643625193,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3486",
+"event_date": "2018-09-18",
+"source": "official",
+"attrs": {
+"np_yoy": 8.477011494252885,
+"div_yoy": -72.22222222222221,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "3082",
+"event_date": "2018-10-05",
+"source": "official",
+"attrs": {
+"np_yoy": 9.523809523809534,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9746",
+"event_date": "2018-10-31",
+"source": "official",
+"attrs": {
+"np_yoy": 1.4330423323999364,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "9795",
+"event_date": "2018-10-31",
+"source": "official",
+"attrs": {
+"np_yoy": 1.5821058374249963,
+"div_yoy": -5.555555555555558,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6237",
+"event_date": "2018-11-06",
+"source": "official",
+"attrs": {
+"np_yoy": 5.050995628946087,
+"div_yoy": -65.22633744855968,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "8086",
+"event_date": "2018-11-06",
+"source": "official",
+"attrs": {
+"np_yoy": 2.5953165948093604,
+"div_yoy": -18.181818181818176,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4554",
+"event_date": "2018-11-09",
+"source": "official",
+"attrs": {
+"np_yoy": 2.150863374734935,
+"div_yoy": -43.99999999999999,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "4243",
+"event_date": "2018-11-12",
+"source": "official",
+"attrs": {
+"np_yoy": 3.082191780821919,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "16:55:00"
+}
+},
+{
+"code": "9869",
+"event_date": "2018-11-12",
+"source": "official",
+"attrs": {
+"np_yoy": 3.1208597085234713,
+"div_yoy": -3.4482758620689613,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "6178",
+"event_date": "2018-11-14",
+"source": "official",
+"attrs": {
+"np_yoy": 4.08056045833578,
+"div_yoy": -21.875,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9475",
+"event_date": "2018-12-13",
+"source": "official",
+"attrs": {
+"np_yoy": 2.6583710407239725,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "17:45:00"
+}
+},
+{
+"code": "3804",
+"event_date": "2018-12-17",
+"source": "official",
+"attrs": {
+"np_yoy": 8.403361344537807,
+"div_yoy": -30.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "7751",
+"event_date": "2019-01-30",
+"source": "official",
+"attrs": {
+"np_yoy": 4.477457703484156,
+"div_yoy": -5.882352941176472,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4768",
+"event_date": "2019-02-01",
+"source": "official",
+"attrs": {
+"np_yoy": 6.467046894803552,
+"div_yoy": -39.28571428571429,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "5367",
+"event_date": "2019-02-04",
+"source": "official",
+"attrs": {
+"np_yoy": 5.18617021276595,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "2268",
+"event_date": "2019-02-05",
+"source": "official",
+"attrs": {
+"np_yoy": 6.818181818181812,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7716",
+"event_date": "2019-02-07",
+"source": "official",
+"attrs": {
+"np_yoy": 3.364664214684643,
+"div_yoy": -60.86956521739131,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "1909",
+"event_date": "2019-02-08",
+"source": "official",
+"attrs": {
+"np_yoy": 1.0869565217391353,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "3486",
+"event_date": "2019-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 8.477011494252885,
+"div_yoy": -72.22222222222221,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6178",
+"event_date": "2019-02-14",
+"source": "official",
+"attrs": {
+"np_yoy": 4.08056045833578,
+"div_yoy": -21.875,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3763",
+"event_date": "2019-03-06",
+"source": "official",
+"attrs": {
+"np_yoy": 7.524752475247531,
+"div_yoy": -41.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "15:10:00"
+}
+},
+{
+"code": "9692",
+"event_date": "2019-03-13",
+"source": "official",
+"attrs": {
+"np_yoy": 9.869431643625193,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3992",
+"event_date": "2019-03-15",
+"source": "official",
+"attrs": {
+"np_yoy": 6.769230769230772,
+"div_yoy": -46.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9381",
+"event_date": "2019-04-10",
+"source": "official",
+"attrs": {
+"np_yoy": 6.09090909090908,
+"div_yoy": -5.263157894736848,
+"bads": [
+"genhai"
+],
+"disc_time": "12:00:00"
+}
+},
+{
+"code": "3983",
+"event_date": "2019-04-12",
+"source": "official",
+"attrs": {
+"np_yoy": 7.913669064748197,
+"div_yoy": -40.0,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "6018",
+"event_date": "2019-04-15",
+"source": "official",
+"attrs": {
+"np_yoy": 2.564102564102555,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "15:20:00"
+}
+},
+{
+"code": "1969",
+"event_date": "2019-04-18",
+"source": "official",
+"attrs": {
+"np_yoy": 6.819722128092165,
+"div_yoy": -22.857142857142854,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4674",
+"event_date": "2019-04-22",
+"source": "official",
+"attrs": {
+"np_yoy": 3.769300635785644,
+"div_yoy": -20.93023255813954,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "8772",
+"event_date": "2019-04-25",
+"source": "official",
+"attrs": {
+"np_yoy": 0.5092761004001467,
+"div_yoy": -66.66666666666667,
+"bads": [
+"genhai"
+],
+"disc_time": "16:20:00"
+}
+},
+{
+"code": "9003",
+"event_date": "2019-04-25",
+"source": "official",
+"attrs": {
+"np_yoy": 0.6254457672683289,
+"div_yoy": -9.090909090909093,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "2127",
+"event_date": "2019-04-26",
+"source": "official",
+"attrs": {
+"np_yoy": 8.850969801129382,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3635",
+"event_date": "2019-04-26",
+"source": "official",
+"attrs": {
+"np_yoy": 5.200891142352315,
+"div_yoy": -11.290322580645162,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "3635",
+"event_date": "2019-04-26",
+"source": "official",
+"attrs": {
+"np_yoy": 5.200891142352315,
+"div_yoy": -11.290322580645162,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "6538",
+"event_date": "2019-04-26",
+"source": "official",
+"attrs": {
+"np_yoy": 3.8709677419354938,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "8133",
+"event_date": "2019-04-26",
+"source": "official",
+"attrs": {
+"np_yoy": 4.843537414965993,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "5367",
+"event_date": "2019-05-07",
+"source": "official",
+"attrs": {
+"np_yoy": 5.18617021276595,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "1929",
+"event_date": "2019-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 1.227678571428581,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3763",
+"event_date": "2019-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 7.524752475247531,
+"div_yoy": -41.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "12:40:00"
+}
+},
+{
+"code": "4975",
+"event_date": "2019-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 1.1618426416632799,
+"div_yoy": -55.00000000000001,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4674",
+"event_date": "2019-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 3.769300635785644,
+"div_yoy": -20.93023255813954,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "8002",
+"event_date": "2019-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 9.292858529104087,
+"div_yoy": -8.108108108108103,
+"bads": [
+"genhai"
+],
+"disc_time": "14:30:00"
+}
+},
+{
+"code": "8086",
+"event_date": "2019-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 2.5953165948093604,
+"div_yoy": -18.181818181818176,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "8282",
+"event_date": "2019-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 4.848938606535724,
+"div_yoy": -54.54545454545454,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "1909",
+"event_date": "2019-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 1.0869565217391353,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "1969",
+"event_date": "2019-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 6.819722128092165,
+"div_yoy": -22.857142857142854,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "5388",
+"event_date": "2019-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 4.626865671641789,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "6845",
+"event_date": "2019-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 5.930687534935708,
+"div_yoy": -43.90243902439024,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7820",
+"event_date": "2019-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 5.927505330490401,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "09:35:00"
+}
+},
+{
+"code": "2349",
+"event_date": "2019-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 6.02055800293686,
+"div_yoy": -63.793103448275865,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "3024",
+"event_date": "2019-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 0.4115226337448652,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6018",
+"event_date": "2019-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 2.564102564102555,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "15:20:00"
+}
+},
+{
+"code": "6237",
+"event_date": "2019-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 5.050995628946087,
+"div_yoy": -65.22633744855968,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "1969",
+"event_date": "2019-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 6.819722128092165,
+"div_yoy": -22.857142857142854,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "3423",
+"event_date": "2019-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 2.7941176470588136,
+"div_yoy": -44.44444444444444,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4097",
+"event_date": "2019-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 7.746913580246906,
+"div_yoy": -11.111111111111116,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4218",
+"event_date": "2019-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 1.9476372924648766,
+"div_yoy": -5.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "4644",
+"event_date": "2019-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 1.4112903225806495,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6178",
+"event_date": "2019-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 4.08056045833578,
+"div_yoy": -21.875,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6538",
+"event_date": "2019-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 3.8709677419354938,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7199",
+"event_date": "2019-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 4.098994586233573,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9475",
+"event_date": "2019-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 2.6583710407239725,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "9934",
+"event_date": "2019-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 6.722309948116401,
+"div_yoy": -12.5,
+"bads": [
+"genhai"
+],
+"disc_time": "11:30:00"
+}
+},
+{
+"code": "6309",
+"event_date": "2019-05-31",
+"source": "official",
+"attrs": {
+"np_yoy": 3.701255783212165,
+"div_yoy": -4.081632653061229,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "2462",
+"event_date": "2019-07-12",
+"source": "official",
+"attrs": {
+"np_yoy": 4.112271540469981,
+"div_yoy": -26.315789473684216,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "5967",
+"event_date": "2019-07-12",
+"source": "official",
+"attrs": {
+"np_yoy": 8.798017348203224,
+"div_yoy": -14.28571428571429,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4386",
+"event_date": "2019-07-16",
+"source": "official",
+"attrs": {
+"np_yoy": 4.724409448818889,
+"div_yoy": -64.70588235294117,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3082",
+"event_date": "2019-08-05",
+"source": "official",
+"attrs": {
+"np_yoy": 9.523809523809534,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7199",
+"event_date": "2019-08-08",
+"source": "official",
+"attrs": {
+"np_yoy": 8.915304606240703,
+"div_yoy": -48.23529411764705,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4290",
+"event_date": "2019-08-20",
+"source": "official",
+"attrs": {
+"np_yoy": 0.25117739403452966,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "3539",
+"event_date": "2019-09-12",
+"source": "official",
+"attrs": {
+"np_yoy": 1.4424810674359856,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "3988",
+"event_date": "2019-09-13",
+"source": "official",
+"attrs": {
+"np_yoy": 4.761904761904767,
+"div_yoy": -7.692307692307687,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9759",
+"event_date": "2019-10-10",
+"source": "official",
+"attrs": {
+"np_yoy": 8.5439229843562,
+"div_yoy": -46.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7607",
+"event_date": "2019-10-11",
+"source": "official",
+"attrs": {
+"np_yoy": 2.452830188679256,
+"div_yoy": -9.756097560975608,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "9759",
+"event_date": "2019-10-31",
+"source": "official",
+"attrs": {
+"np_yoy": 8.5439229843562,
+"div_yoy": -46.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "7270",
+"event_date": "2019-11-06",
+"source": "official",
+"attrs": {
+"np_yoy": 3.230454902173041,
+"div_yoy": -61.111111111111114,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "2874",
+"event_date": "2019-11-08",
+"source": "official",
+"attrs": {
+"np_yoy": 1.2563565659587272,
+"div_yoy": -11.538461538461542,
+"bads": [
+"genhai"
+],
+"disc_time": "12:30:00"
+}
+},
+{
+"code": "4116",
+"event_date": "2019-11-08",
+"source": "official",
+"attrs": {
+"np_yoy": 2.605779153766763,
+"div_yoy": -17.647058823529417,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4769",
+"event_date": "2019-11-08",
+"source": "official",
+"attrs": {
+"np_yoy": 8.985507246376812,
+"div_yoy": -41.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "15:10:00"
+}
+},
+{
+"code": "9446",
+"event_date": "2019-11-11",
+"source": "official",
+"attrs": {
+"np_yoy": 4.857142857142849,
+"div_yoy": -7.4074074074074066,
+"bads": [
+"genhai"
+],
+"disc_time": "16:55:00"
+}
+},
+{
+"code": "3992",
+"event_date": "2019-11-13",
+"source": "official",
+"attrs": {
+"np_yoy": 6.769230769230772,
+"div_yoy": -46.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "2127",
+"event_date": "2019-11-14",
+"source": "official",
+"attrs": {
+"np_yoy": 8.850969801129382,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "18:00:00"
+}
+},
+{
+"code": "2874",
+"event_date": "2019-11-14",
+"source": "official",
+"attrs": {
+"np_yoy": 1.2563565659587272,
+"div_yoy": -11.538461538461542,
+"bads": [
+"genhai"
+],
+"disc_time": "12:30:00"
+}
+},
+{
+"code": "9692",
+"event_date": "2019-11-15",
+"source": "official",
+"attrs": {
+"np_yoy": 9.869431643625193,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00:00"
+}
+},
+{
+"code": "3733",
+"event_date": "2019-12-06",
+"source": "official",
+"attrs": {
+"np_yoy": 6.7562228368234,
+"div_yoy": -28.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6309",
+"event_date": "2019-12-06",
+"source": "official",
+"attrs": {
+"np_yoy": 3.701255783212165,
+"div_yoy": -4.081632653061229,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "9872",
+"event_date": "2019-12-27",
+"source": "official",
+"attrs": {
+"np_yoy": 4.595588235294112,
+"div_yoy": -4.347826086956519,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4674",
+"event_date": "2020-01-07",
+"source": "official",
+"attrs": {
+"np_yoy": 5.951859956236327,
+"div_yoy": -47.05882352941176,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "8060",
+"event_date": "2020-01-28",
+"source": "official",
+"attrs": {
+"np_yoy": 6.8376068376068355,
+"div_yoy": -14.28571428571429,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "8801",
+"event_date": "2020-01-30",
+"source": "official",
+"attrs": {
+"np_yoy": 9.077972975376646,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "16:15:00"
+}
+},
+{
+"code": "9882",
+"event_date": "2020-01-31",
+"source": "official",
+"attrs": {
+"np_yoy": 0.06822213125938781,
+"div_yoy": -27.77777777777778,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4641",
+"event_date": "2020-02-06",
+"source": "official",
+"attrs": {
+"np_yoy": 9.036370453693298,
+"div_yoy": -7.317073170731703,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "5015",
+"event_date": "2020-02-10",
+"source": "official",
+"attrs": {
+"np_yoy": 2.910855063674944,
+"div_yoy": -6.976744186046513,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4919",
+"event_date": "2020-02-12",
+"source": "official",
+"attrs": {
+"np_yoy": 0.4894327030033452,
+"div_yoy": -3.3333333333333326,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "5187",
+"event_date": "2020-02-12",
+"source": "official",
+"attrs": {
+"np_yoy": 7.886904761904767,
+"div_yoy": -4.761904761904767,
+"bads": [
+"genhai"
+],
+"disc_time": "11:30:00"
+}
+},
+{
+"code": "5997",
+"event_date": "2020-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 3.6050156739811934,
+"div_yoy": -33.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "15:10:00"
+}
+},
+{
+"code": "6459",
+"event_date": "2020-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 5.112316034082109,
+"div_yoy": -40.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3983",
+"event_date": "2020-02-14",
+"source": "official",
+"attrs": {
+"np_yoy": 7.913669064748197,
+"div_yoy": -40.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3983",
+"event_date": "2020-02-19",
+"source": "official",
+"attrs": {
+"np_yoy": 7.913669064748197,
+"div_yoy": -40.0,
+"bads": [
+"genhai"
+],
+"disc_time": "19:40:00"
+}
+},
+{
+"code": "9846",
+"event_date": "2020-04-10",
+"source": "official",
+"attrs": {
+"np_yoy": 4.487179487179493,
+"div_yoy": -66.66666666666667,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6999",
+"event_date": "2020-04-17",
+"source": "official",
+"attrs": {
+"np_yoy": 5.79567779960708,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "6999",
+"event_date": "2020-04-21",
+"source": "official",
+"attrs": {
+"np_yoy": 5.79567779960708,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4389",
+"event_date": "2020-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 3.8277511961722466,
+"div_yoy": -66.64,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9539",
+"event_date": "2020-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 0.3872019563888385,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4553",
+"event_date": "2020-04-30",
+"source": "official",
+"attrs": {
+"np_yoy": 7.628942486085344,
+"div_yoy": -63.33333333333333,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7461",
+"event_date": "2020-04-30",
+"source": "official",
+"attrs": {
+"np_yoy": 3.2509752925877766,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9143",
+"event_date": "2020-04-30",
+"source": "official",
+"attrs": {
+"np_yoy": 8.804785459565156,
+"div_yoy": -4.347826086956519,
+"bads": [
+"genhai"
+],
+"disc_time": "14:55:00"
+}
+},
+{
+"code": "9682",
+"event_date": "2020-04-30",
+"source": "official",
+"attrs": {
+"np_yoy": 7.334604664808575,
+"div_yoy": -41.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6347",
+"event_date": "2020-05-01",
+"source": "official",
+"attrs": {
+"np_yoy": 3.6764705882353033,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "10:45:00"
+}
+},
+{
+"code": "2003",
+"event_date": "2020-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 0.8042895442359255,
+"div_yoy": -10.769230769230765,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "3946",
+"event_date": "2020-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 2.195340501792109,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "14:30:00"
+}
+},
+{
+"code": "4674",
+"event_date": "2020-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 5.951859956236327,
+"div_yoy": -47.05882352941176,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "8001",
+"event_date": "2020-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 0.15963302385704203,
+"div_yoy": -7.608695652173914,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "8424",
+"event_date": "2020-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 1.9385729300478882,
+"div_yoy": -4.545454545454541,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "9759",
+"event_date": "2020-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 8.5439229843562,
+"div_yoy": -46.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9882",
+"event_date": "2020-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 0.06822213125938781,
+"div_yoy": -27.77777777777778,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "2108",
+"event_date": "2020-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 1.2084592145015005,
+"div_yoy": -37.5,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "3443",
+"event_date": "2020-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 6.366485238330855,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6347",
+"event_date": "2020-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 3.6764705882353033,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "11:00:00"
+}
+},
+{
+"code": "8801",
+"event_date": "2020-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 9.077972975376646,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9889",
+"event_date": "2020-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 9.483726150392812,
+"div_yoy": -10.71428571428571,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00:00"
+}
+},
+{
+"code": "1801",
+"event_date": "2020-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 8.453331675120591,
+"div_yoy": -7.14285714285714,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "1848",
+"event_date": "2020-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 8.922558922558931,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "5356",
+"event_date": "2020-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 3.3673469387755173,
+"div_yoy": -33.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "11:00:00"
+}
+},
+{
+"code": "4386",
+"event_date": "2020-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 4.724409448818889,
+"div_yoy": -64.70588235294117,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4553",
+"event_date": "2020-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 7.628942486085344,
+"div_yoy": -63.33333333333333,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4623",
+"event_date": "2020-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 1.744186046511631,
+"div_yoy": -45.45454545454546,
+"bads": [
+"genhai"
+],
+"disc_time": "15:20:00"
+}
+},
+{
+"code": "4828",
+"event_date": "2020-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 6.094527363184077,
+"div_yoy": -13.33333333333333,
+"bads": [
+"genhai"
+],
+"disc_time": "10:00:00"
+}
+},
+{
+"code": "5644",
+"event_date": "2020-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 4.130162703379225,
+"div_yoy": -42.85714285714286,
+"bads": [
+"genhai"
+],
+"disc_time": "14:20:00"
+}
+},
+{
+"code": "7224",
+"event_date": "2020-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 5.4602630074328085,
+"div_yoy": -22.22222222222222,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "3844",
+"event_date": "2020-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 9.241837299391253,
+"div_yoy": -62.82051282051282,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6864",
+"event_date": "2020-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 3.046218487394947,
+"div_yoy": -14.28571428571429,
+"bads": [
+"genhai"
+],
+"disc_time": "14:10:00"
+}
+},
+{
+"code": "7161",
+"event_date": "2020-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 6.319018404907983,
+"div_yoy": -40.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9432",
+"event_date": "2020-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 0.08717926514314467,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3465",
+"event_date": "2020-05-18",
+"source": "official",
+"attrs": {
+"np_yoy": 3.5538861600693528,
+"div_yoy": -19.047619047619047,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4543",
+"event_date": "2020-05-18",
+"source": "official",
+"attrs": {
+"np_yoy": 7.224109726940986,
+"div_yoy": -48.14814814814815,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7270",
+"event_date": "2020-05-18",
+"source": "official",
+"attrs": {
+"np_yoy": 3.230454902173041,
+"div_yoy": -61.111111111111114,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "7270",
+"event_date": "2020-05-18",
+"source": "official",
+"attrs": {
+"np_yoy": 3.230454902173041,
+"div_yoy": -61.111111111111114,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "8014",
+"event_date": "2020-05-19",
+"source": "official",
+"attrs": {
+"np_yoy": 8.365896980461818,
+"div_yoy": -5.882352941176472,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "3569",
+"event_date": "2020-05-21",
+"source": "official",
+"attrs": {
+"np_yoy": 3.950887430099681,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3569",
+"event_date": "2020-05-21",
+"source": "official",
+"attrs": {
+"np_yoy": 3.950887430099681,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3443",
+"event_date": "2020-05-22",
+"source": "official",
+"attrs": {
+"np_yoy": 6.366485238330855,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "8593",
+"event_date": "2020-05-22",
+"source": "official",
+"attrs": {
+"np_yoy": 2.8460957032385714,
+"div_yoy": -10.71428571428571,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "8252",
+"event_date": "2020-05-28",
+"source": "official",
+"attrs": {
+"np_yoy": 0.21703958012706526,
+"div_yoy": -15.384615384615385,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4116",
+"event_date": "2020-05-29",
+"source": "official",
+"attrs": {
+"np_yoy": 2.605779153766763,
+"div_yoy": -17.647058823529417,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7199",
+"event_date": "2020-05-29",
+"source": "official",
+"attrs": {
+"np_yoy": 8.915304606240703,
+"div_yoy": -48.23529411764705,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7199",
+"event_date": "2020-06-04",
+"source": "official",
+"attrs": {
+"np_yoy": 8.915304606240703,
+"div_yoy": -48.23529411764705,
+"bads": [
+"genhai"
+],
+"disc_time": "18:30:00"
+}
+},
+{
+"code": "7050",
+"event_date": "2020-06-11",
+"source": "official",
+"attrs": {
+"np_yoy": 0.8557457212713837,
+"div_yoy": -33.89830508474576,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4290",
+"event_date": "2020-06-12",
+"source": "official",
+"attrs": {
+"np_yoy": 0.25117739403452966,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "7532",
+"event_date": "2020-08-12",
+"source": "official",
+"attrs": {
+"np_yoy": 4.248440511470797,
+"div_yoy": -60.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7013",
+"event_date": "2020-08-31",
+"source": "official",
+"attrs": {
+"np_yoy": 2.193256322197934,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "9658",
+"event_date": "2020-09-25",
+"source": "official",
+"attrs": {
+"np_yoy": 8.899789768745613,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "7013",
+"event_date": "2020-11-10",
+"source": "official",
+"attrs": {
+"np_yoy": 2.193256322197934,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3323",
+"event_date": "2020-11-12",
+"source": "official",
+"attrs": {
+"np_yoy": 2.8301886792452935,
+"div_yoy": -33.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "18:00:00"
+}
+},
+{
+"code": "3323",
+"event_date": "2020-11-13",
+"source": "official",
+"attrs": {
+"np_yoy": 2.8301886792452935,
+"div_yoy": -33.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "18:00:00"
+}
+},
+{
+"code": "3353",
+"event_date": "2021-01-20",
+"source": "official",
+"attrs": {
+"np_yoy": 4.369538077403257,
+"div_yoy": -11.111111111111116,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4956",
+"event_date": "2021-01-29",
+"source": "official",
+"attrs": {
+"np_yoy": 7.611777535441666,
+"div_yoy": -4.347826086956519,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4420",
+"event_date": "2021-02-12",
+"source": "official",
+"attrs": {
+"np_yoy": 2.5796661608497695,
+"div_yoy": -27.27272727272727,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9539",
+"event_date": "2021-02-12",
+"source": "official",
+"attrs": {
+"np_yoy": 0.3872019563888385,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3353",
+"event_date": "2021-04-12",
+"source": "official",
+"attrs": {
+"np_yoy": 4.369538077403257,
+"div_yoy": -11.111111111111116,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "8377",
+"event_date": "2021-04-23",
+"source": "official",
+"attrs": {
+"np_yoy": 5.342682204226734,
+"div_yoy": -12.5,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3741",
+"event_date": "2021-04-26",
+"source": "official",
+"attrs": {
+"np_yoy": 5.822416302765654,
+"div_yoy": -21.91780821917808,
+"bads": [
+"genhai"
+],
+"disc_time": "15:15:00"
+}
+},
+{
+"code": "7013",
+"event_date": "2021-04-26",
+"source": "official",
+"attrs": {
+"np_yoy": 2.193256322197934,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9025",
+"event_date": "2021-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 5.290659699542788,
+"div_yoy": -38.888888888888886,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00:00"
+}
+},
+{
+"code": "4956",
+"event_date": "2021-04-30",
+"source": "official",
+"attrs": {
+"np_yoy": 7.611777535441666,
+"div_yoy": -4.347826086956519,
+"bads": [
+"genhai"
+],
+"disc_time": "11:40:00"
+}
+},
+{
+"code": "9658",
+"event_date": "2021-04-30",
+"source": "official",
+"attrs": {
+"np_yoy": 8.899789768745613,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00:00"
+}
+},
+{
+"code": "8050",
+"event_date": "2021-05-07",
+"source": "official",
+"attrs": {
+"np_yoy": 2.386564525633461,
+"div_yoy": -33.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6637",
+"event_date": "2021-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 7.714987714987709,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:15:00"
+}
+},
+{
+"code": "8050",
+"event_date": "2021-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 2.386564525633461,
+"div_yoy": -33.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "8715",
+"event_date": "2021-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 4.0000000000000036,
+"div_yoy": -75.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9025",
+"event_date": "2021-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 5.290659699542788,
+"div_yoy": -38.888888888888886,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3741",
+"event_date": "2021-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 5.822416302765654,
+"div_yoy": -21.91780821917808,
+"bads": [
+"genhai"
+],
+"disc_time": "15:15:00"
+}
+},
+{
+"code": "7013",
+"event_date": "2021-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 2.193256322197934,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7988",
+"event_date": "2021-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 0.44211560504339165,
+"div_yoy": -9.677419354838712,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "8304",
+"event_date": "2021-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 2.949328405941287,
+"div_yoy": -12.82051282051282,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "8377",
+"event_date": "2021-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 5.342682204226734,
+"div_yoy": -12.5,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6637",
+"event_date": "2021-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 7.714987714987709,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:15:00"
+}
+},
+{
+"code": "7014",
+"event_date": "2021-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 4.148641153632826,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:40:00"
+}
+},
+{
+"code": "8737",
+"event_date": "2021-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 0.917431192660545,
+"div_yoy": -13.636363636363635,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "9658",
+"event_date": "2021-06-28",
+"source": "official",
+"attrs": {
+"np_yoy": 8.899789768745613,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "12:00:00"
+}
+},
+{
+"code": "4577",
+"event_date": "2021-07-14",
+"source": "official",
+"attrs": {
+"np_yoy": 7.657200811359033,
+"div_yoy": -11.538461538461542,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3816",
+"event_date": "2021-07-21",
+"source": "official",
+"attrs": {
+"np_yoy": 4.792332268370614,
+"div_yoy": -10.526315789473683,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "1939",
+"event_date": "2021-07-30",
+"source": "official",
+"attrs": {
+"np_yoy": 3.477546549835697,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "6402",
+"event_date": "2021-08-06",
+"source": "official",
+"attrs": {
+"np_yoy": 4.748603351955305,
+"div_yoy": -12.698412698412698,
+"bads": [
+"genhai"
+],
+"disc_time": "15:40:00"
+}
+},
+{
+"code": "7508",
+"event_date": "2021-08-23",
+"source": "official",
+"attrs": {
+"np_yoy": 8.2389289392379,
+"div_yoy": -53.65853658536586,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3816",
+"event_date": "2021-08-27",
+"source": "official",
+"attrs": {
+"np_yoy": 4.792332268370614,
+"div_yoy": -10.526315789473683,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6159",
+"event_date": "2021-10-04",
+"source": "official",
+"attrs": {
+"np_yoy": 6.712962962962954,
+"div_yoy": -36.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:10:00"
+}
+},
+{
+"code": "6159",
+"event_date": "2021-10-08",
+"source": "official",
+"attrs": {
+"np_yoy": 6.712962962962954,
+"div_yoy": -36.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:10:00"
+}
+},
+{
+"code": "3475",
+"event_date": "2021-10-12",
+"source": "official",
+"attrs": {
+"np_yoy": 7.447973713033962,
+"div_yoy": -36.76470588235294,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "8898",
+"event_date": "2021-10-28",
+"source": "official",
+"attrs": {
+"np_yoy": 5.106382978723412,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "8066",
+"event_date": "2021-11-09",
+"source": "official",
+"attrs": {
+"np_yoy": 5.019677134366707,
+"div_yoy": -72.3076923076923,
+"bads": [
+"genhai"
+],
+"disc_time": "17:30:00"
+}
+},
+{
+"code": "3475",
+"event_date": "2021-12-09",
+"source": "official",
+"attrs": {
+"np_yoy": 7.447973713033962,
+"div_yoy": -36.76470588235294,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3386",
+"event_date": "2021-12-16",
+"source": "official",
+"attrs": {
+"np_yoy": 9.347181008902083,
+"div_yoy": -7.692307692307687,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3683",
+"event_date": "2021-12-22",
+"source": "official",
+"attrs": {
+"np_yoy": 0.15527950310558758,
+"div_yoy": -40.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "7963",
+"event_date": "2022-01-28",
+"source": "official",
+"attrs": {
+"np_yoy": 2.9868578255675127,
+"div_yoy": -22.22222222222222,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "8066",
+"event_date": "2022-02-09",
+"source": "official",
+"attrs": {
+"np_yoy": 5.019677134366707,
+"div_yoy": -72.3076923076923,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00:00"
+}
+},
+{
+"code": "1663",
+"event_date": "2022-02-10",
+"source": "official",
+"attrs": {
+"np_yoy": 0.07032348804500987,
+"div_yoy": -6.25,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "6402",
+"event_date": "2022-02-10",
+"source": "official",
+"attrs": {
+"np_yoy": 4.748603351955305,
+"div_yoy": -12.698412698412698,
+"bads": [
+"genhai"
+],
+"disc_time": "15:40:00"
+}
+},
+{
+"code": "7963",
+"event_date": "2022-02-10",
+"source": "official",
+"attrs": {
+"np_yoy": 2.9868578255675127,
+"div_yoy": -22.22222222222222,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3386",
+"event_date": "2022-02-14",
+"source": "official",
+"attrs": {
+"np_yoy": 9.347181008902083,
+"div_yoy": -7.692307692307687,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3683",
+"event_date": "2022-02-14",
+"source": "official",
+"attrs": {
+"np_yoy": 0.15527950310558758,
+"div_yoy": -40.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6918",
+"event_date": "2022-03-10",
+"source": "official",
+"attrs": {
+"np_yoy": 9.867452135493382,
+"div_yoy": -4.1666666666666625,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "2819",
+"event_date": "2022-03-11",
+"source": "official",
+"attrs": {
+"np_yoy": 7.901037509976061,
+"div_yoy": -12.5,
+"bads": [
+"genhai"
+],
+"disc_time": "15:15:00"
+}
+},
+{
+"code": "1939",
+"event_date": "2022-03-18",
+"source": "official",
+"attrs": {
+"np_yoy": 3.477546549835697,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3683",
+"event_date": "2022-03-25",
+"source": "official",
+"attrs": {
+"np_yoy": 0.15527950310558758,
+"div_yoy": -40.0,
+"bads": [
+"genhai"
+],
+"disc_time": "18:30:00"
+}
+},
+{
+"code": "4662",
+"event_date": "2022-03-28",
+"source": "official",
+"attrs": {
+"np_yoy": 4.0000000000000036,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9265",
+"event_date": "2022-03-31",
+"source": "official",
+"attrs": {
+"np_yoy": 2.6548672566371723,
+"div_yoy": -8.888888888888891,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "6279",
+"event_date": "2022-04-05",
+"source": "official",
+"attrs": {
+"np_yoy": 7.160493827160486,
+"div_yoy": -11.111111111111116,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "3353",
+"event_date": "2022-04-08",
+"source": "official",
+"attrs": {
+"np_yoy": 1.9138755980861344,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "8898",
+"event_date": "2022-04-26",
+"source": "official",
+"attrs": {
+"np_yoy": 5.106382978723412,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "1939",
+"event_date": "2022-04-27",
+"source": "official",
+"attrs": {
+"np_yoy": 3.477546549835697,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "8174",
+"event_date": "2022-04-27",
+"source": "official",
+"attrs": {
+"np_yoy": 6.3906966819588185,
+"div_yoy": -60.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "2127",
+"event_date": "2022-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 7.108072672785171,
+"div_yoy": -40.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4231",
+"event_date": "2022-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 8.062418725617682,
+"div_yoy": -30.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "8133",
+"event_date": "2022-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 8.431952662721898,
+"div_yoy": -10.71428571428571,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "2003",
+"event_date": "2022-05-06",
+"source": "official",
+"attrs": {
+"np_yoy": 5.033936651583715,
+"div_yoy": -27.966101694915256,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9324",
+"event_date": "2022-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 2.9380150483697687,
+"div_yoy": -10.344827586206895,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6928",
+"event_date": "2022-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 3.7609133646742787,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3768",
+"event_date": "2022-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 7.49414519906324,
+"div_yoy": -48.21428571428571,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4231",
+"event_date": "2022-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 8.062418725617682,
+"div_yoy": -30.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "5563",
+"event_date": "2022-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 2.33007209062821,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7269",
+"event_date": "2022-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 9.509564884818445,
+"div_yoy": -13.207547169811317,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "2819",
+"event_date": "2022-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 7.901037509976061,
+"div_yoy": -12.5,
+"bads": [
+"genhai"
+],
+"disc_time": "15:15:00"
+}
+},
+{
+"code": "5988",
+"event_date": "2022-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 6.61282180716809,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "7780",
+"event_date": "2022-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 8.8877688172043,
+"div_yoy": -42.85714285714286,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "4662",
+"event_date": "2022-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 4.0000000000000036,
+"div_yoy": -8.333333333333337,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "5262",
+"event_date": "2022-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 0.32879286049789513,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "6402",
+"event_date": "2022-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 4.748603351955305,
+"div_yoy": -12.698412698412698,
+"bads": [
+"genhai"
+],
+"disc_time": "15:40:00"
+}
+},
+{
+"code": "7297",
+"event_date": "2022-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 5.531453362255956,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "7508",
+"event_date": "2022-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 8.2389289392379,
+"div_yoy": -53.65853658536586,
+"bads": [
+"genhai"
+],
+"disc_time": "15:10:00"
+}
+},
+{
+"code": "6918",
+"event_date": "2022-05-16",
+"source": "official",
+"attrs": {
+"np_yoy": 9.867452135493382,
+"div_yoy": -4.1666666666666625,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "8066",
+"event_date": "2022-05-18",
+"source": "official",
+"attrs": {
+"np_yoy": 5.019677134366707,
+"div_yoy": -72.3076923076923,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "9101",
+"event_date": "2022-05-26",
+"source": "official",
+"attrs": {
+"np_yoy": 0.338715990902827,
+"div_yoy": -86.4,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3242",
+"event_date": "2022-06-16",
+"source": "official",
+"attrs": {
+"np_yoy": 2.576112412177989,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3242",
+"event_date": "2022-06-16",
+"source": "official",
+"attrs": {
+"np_yoy": 2.576112412177989,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "16:10:00"
+}
+},
+{
+"code": "4716",
+"event_date": "2022-06-24",
+"source": "official",
+"attrs": {
+"np_yoy": 4.081342145399081,
+"div_yoy": -86.03839441535777,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4716",
+"event_date": "2022-06-24",
+"source": "official",
+"attrs": {
+"np_yoy": 4.081342145399081,
+"div_yoy": -86.03839441535777,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "2462",
+"event_date": "2022-07-11",
+"source": "official",
+"attrs": {
+"np_yoy": 0.18393623543837556,
+"div_yoy": -25.71428571428571,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9265",
+"event_date": "2022-07-14",
+"source": "official",
+"attrs": {
+"np_yoy": 2.6548672566371723,
+"div_yoy": -8.888888888888891,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "3242",
+"event_date": "2022-08-04",
+"source": "official",
+"attrs": {
+"np_yoy": 2.576112412177989,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "1515",
+"event_date": "2022-08-26",
+"source": "official",
+"attrs": {
+"np_yoy": 5.399288716456518,
+"div_yoy": -44.99999999999999,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6508",
+"event_date": "2022-08-31",
+"source": "official",
+"attrs": {
+"np_yoy": 5.866627060745588,
+"div_yoy": -12.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "1844",
+"event_date": "2022-09-13",
+"source": "official",
+"attrs": {
+"np_yoy": 4.526748971193406,
+"div_yoy": -28.57142857142857,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "1844",
+"event_date": "2022-09-14",
+"source": "official",
+"attrs": {
+"np_yoy": 4.526748971193406,
+"div_yoy": -28.57142857142857,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "5988",
+"event_date": "2022-10-26",
+"source": "official",
+"attrs": {
+"np_yoy": 6.61282180716809,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "6653",
+"event_date": "2022-10-26",
+"source": "official",
+"attrs": {
+"np_yoy": 2.4621212121212155,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "1718",
+"event_date": "2022-10-31",
+"source": "official",
+"attrs": {
+"np_yoy": 0.41039671682625567,
+"div_yoy": -9.090909090909093,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9795",
+"event_date": "2022-10-31",
+"source": "official",
+"attrs": {
+"np_yoy": 3.723188992310811,
+"div_yoy": -7.9999999999999964,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7030",
+"event_date": "2022-11-11",
+"source": "official",
+"attrs": {
+"np_yoy": 9.543285616905251,
+"div_yoy": -9.523809523809524,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "2991",
+"event_date": "2022-11-14",
+"source": "official",
+"attrs": {
+"np_yoy": 3.4554973821989465,
+"div_yoy": -42.63565891472868,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9983",
+"event_date": "2022-12-15",
+"source": "official",
+"attrs": {
+"np_yoy": 8.375802586569602,
+"div_yoy": -51.470588235294116,
+"bads": [
+"genhai"
+],
+"disc_time": "18:00:00"
+}
+},
+{
+"code": "6653",
+"event_date": "2023-02-01",
+"source": "official",
+"attrs": {
+"np_yoy": 2.4621212121212155,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "1929",
+"event_date": "2023-02-03",
+"source": "official",
+"attrs": {
+"np_yoy": 5.91769300090117,
+"div_yoy": -21.875,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4356",
+"event_date": "2023-02-08",
+"source": "official",
+"attrs": {
+"np_yoy": 3.5161744022503605,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "5563",
+"event_date": "2023-02-08",
+"source": "official",
+"attrs": {
+"np_yoy": 2.33007209062821,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "1718",
+"event_date": "2023-02-14",
+"source": "official",
+"attrs": {
+"np_yoy": 0.41039671682625567,
+"div_yoy": -9.090909090909093,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "3204",
+"event_date": "2023-02-15",
+"source": "official",
+"attrs": {
+"np_yoy": 4.263565891472876,
+"div_yoy": -26.66666666666667,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6508",
+"event_date": "2023-02-27",
+"source": "official",
+"attrs": {
+"np_yoy": 5.866627060745588,
+"div_yoy": -12.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6508",
+"event_date": "2023-02-27",
+"source": "official",
+"attrs": {
+"np_yoy": 5.866627060745588,
+"div_yoy": -12.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9793",
+"event_date": "2023-04-05",
+"source": "official",
+"attrs": {
+"np_yoy": 3.462273161413565,
+"div_yoy": -6.25,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7807",
+"event_date": "2023-04-14",
+"source": "official",
+"attrs": {
+"np_yoy": 9.499999999999996,
+"div_yoy": -58.43724023275145,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "1878",
+"event_date": "2023-04-24",
+"source": "official",
+"attrs": {
+"np_yoy": 1.122448979591839,
+"div_yoy": -5.818181818181822,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6345",
+"event_date": "2023-04-25",
+"source": "official",
+"attrs": {
+"np_yoy": 5.563430191353658,
+"div_yoy": -5.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "15:40:00"
+}
+},
+{
+"code": "1803",
+"event_date": "2023-04-26",
+"source": "official",
+"attrs": {
+"np_yoy": 2.7135110236385263,
+"div_yoy": -8.695652173913048,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "9436",
+"event_date": "2023-04-27",
+"source": "official",
+"attrs": {
+"np_yoy": 1.801125703564721,
+"div_yoy": -47.67441860465116,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9799",
+"event_date": "2023-04-27",
+"source": "official",
+"attrs": {
+"np_yoy": 5.677867902665112,
+"div_yoy": -4.255319148936165,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "1878",
+"event_date": "2023-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 1.122448979591839,
+"div_yoy": -5.818181818181822,
+"bads": [
+"genhai"
+],
+"disc_time": "11:30:00"
+}
+},
+{
+"code": "6960",
+"event_date": "2023-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 6.549087321164282,
+"div_yoy": -51.21951219512195,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7442",
+"event_date": "2023-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 5.633802816901401,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "9658",
+"event_date": "2023-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 4.195011337868482,
+"div_yoy": -10.344827586206895,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "5186",
+"event_date": "2023-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 3.470302221374766,
+"div_yoy": -7.692307692307687,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9107",
+"event_date": "2023-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 8.169059686437619,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4732",
+"event_date": "2023-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 0.8841822154983969,
+"div_yoy": -8.64864864864866,
+"bads": [
+"genhai"
+],
+"disc_time": "15:40:00"
+}
+},
+{
+"code": "7570",
+"event_date": "2023-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 6.730369754881593,
+"div_yoy": -42.85714285714286,
+"bads": [
+"genhai"
+],
+"disc_time": "10:00:00"
+}
+},
+{
+"code": "9101",
+"event_date": "2023-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 0.338715990902827,
+"div_yoy": -86.4,
+"bads": [
+"genhai"
+],
+"disc_time": "12:00:00"
+}
+},
+{
+"code": "9107",
+"event_date": "2023-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 8.169059686437619,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "12:15:00"
+}
+},
+{
+"code": "1515",
+"event_date": "2023-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 5.399288716456518,
+"div_yoy": -44.99999999999999,
+"bads": [
+"genhai"
+],
+"disc_time": "13:30:00"
+}
+},
+{
+"code": "1929",
+"event_date": "2023-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 5.91769300090117,
+"div_yoy": -21.875,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "1803",
+"event_date": "2023-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 2.7135110236385263,
+"div_yoy": -8.695652173913048,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "1808",
+"event_date": "2023-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 8.875022939988986,
+"div_yoy": -11.111111111111116,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "3772",
+"event_date": "2023-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 6.262453743239393,
+"div_yoy": -43.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "8802",
+"event_date": "2023-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 6.555348615398504,
+"div_yoy": -5.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "1515",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 5.399288716456518,
+"div_yoy": -44.99999999999999,
+"bads": [
+"genhai"
+],
+"disc_time": "13:30:00"
+}
+},
+{
+"code": "4386",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 9.85401459854014,
+"div_yoy": -40.90909090909091,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4719",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 4.66284074605452,
+"div_yoy": -36.36363636363637,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "5186",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 3.470302221374766,
+"div_yoy": -7.692307692307687,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "5357",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 0.1685772083614312,
+"div_yoy": -7.4074074074074066,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "6508",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 5.866627060745588,
+"div_yoy": -12.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6804",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 6.184354255944879,
+"div_yoy": -12.727272727272732,
+"bads": [
+"genhai"
+],
+"disc_time": "15:20:00"
+}
+},
+{
+"code": "6941",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 6.513070447496672,
+"div_yoy": -14.814814814814813,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7186",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 4.227835415081382,
+"div_yoy": -5.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7442",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 5.633802816901401,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "8051",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 4.191965399650677,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "8344",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 1.0888758092995943,
+"div_yoy": -12.5,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "8381",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 6.751812219537445,
+"div_yoy": -19.047619047619047,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "4301",
+"event_date": "2023-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 8.184143222506401,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6960",
+"event_date": "2023-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 6.549087321164282,
+"div_yoy": -51.21951219512195,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9034",
+"event_date": "2023-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 4.7434656340755055,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9247",
+"event_date": "2023-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 9.595107549557147,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9663",
+"event_date": "2023-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 3.7454424925422503,
+"div_yoy": -7.692307692307687,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "9658",
+"event_date": "2023-05-18",
+"source": "official",
+"attrs": {
+"np_yoy": 4.195011337868482,
+"div_yoy": -10.344827586206895,
+"bads": [
+"genhai"
+],
+"disc_time": "18:01:00"
+}
+},
+{
+"code": "5971",
+"event_date": "2023-06-09",
+"source": "official",
+"attrs": {
+"np_yoy": 0.9242144177449063,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "15:10:00"
+}
+},
+{
+"code": "3916",
+"event_date": "2023-08-10",
+"source": "official",
+"attrs": {
+"np_yoy": 0.5559416261292638,
+"div_yoy": -28.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9039",
+"event_date": "2023-08-21",
+"source": "official",
+"attrs": {
+"np_yoy": 1.8148599269183885,
+"div_yoy": -41.53846153846153,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "2991",
+"event_date": "2023-09-08",
+"source": "official",
+"attrs": {
+"np_yoy": 3.4554973821989465,
+"div_yoy": -42.63565891472868,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9983",
+"event_date": "2023-10-12",
+"source": "official",
+"attrs": {
+"np_yoy": 8.375802586569602,
+"div_yoy": -51.470588235294116,
+"bads": [
+"genhai"
+],
+"disc_time": "15:01:00"
+}
+},
+{
+"code": "7525",
+"event_date": "2023-10-24",
+"source": "official",
+"attrs": {
+"np_yoy": 0.5790807093738692,
+"div_yoy": -16.470588235294116,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6965",
+"event_date": "2023-11-10",
+"source": "official",
+"attrs": {
+"np_yoy": 3.7050490374137324,
+"div_yoy": -5.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "3245",
+"event_date": "2023-11-14",
+"source": "official",
+"attrs": {
+"np_yoy": 2.500595379852344,
+"div_yoy": -6.818181818181824,
+"bads": [
+"genhai"
+],
+"disc_time": "15:20:00"
+}
+},
+{
+"code": "7187",
+"event_date": "2023-12-11",
+"source": "official",
+"attrs": {
+"np_yoy": 7.318536292741462,
+"div_yoy": -35.71428571428571,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9279",
+"event_date": "2023-12-15",
+"source": "official",
+"attrs": {
+"np_yoy": 3.836150845253572,
+"div_yoy": -40.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "2734",
+"event_date": "2024-01-12",
+"source": "official",
+"attrs": {
+"np_yoy": 7.338965153115096,
+"div_yoy": -13.33333333333333,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7187",
+"event_date": "2024-01-17",
+"source": "official",
+"attrs": {
+"np_yoy": 7.318536292741462,
+"div_yoy": -35.71428571428571,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "6146",
+"event_date": "2024-01-24",
+"source": "official",
+"attrs": {
+"np_yoy": 1.5852143175978162,
+"div_yoy": -63.56466876971609,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "7868",
+"event_date": "2024-01-31",
+"source": "official",
+"attrs": {
+"np_yoy": 7.273626917367637,
+"div_yoy": -51.11111111111111,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7525",
+"event_date": "2024-02-09",
+"source": "official",
+"attrs": {
+"np_yoy": 0.5790807093738692,
+"div_yoy": -16.470588235294116,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "2914",
+"event_date": "2024-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 8.93846167746366,
+"div_yoy": -11.504424778761058,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7128",
+"event_date": "2024-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 3.685720591480912,
+"div_yoy": -45.63106796116505,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "4820",
+"event_date": "2024-02-14",
+"source": "official",
+"attrs": {
+"np_yoy": 3.645007923930277,
+"div_yoy": -12.5,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "7525",
+"event_date": "2024-02-27",
+"source": "official",
+"attrs": {
+"np_yoy": 0.5790807093738692,
+"div_yoy": -16.470588235294116,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "7868",
+"event_date": "2024-03-12",
+"source": "official",
+"attrs": {
+"np_yoy": 7.273626917367637,
+"div_yoy": -51.11111111111111,
+"bads": [
+"genhai"
+],
+"disc_time": "10:30:00"
+}
+},
+{
+"code": "8704",
+"event_date": "2024-03-12",
+"source": "official",
+"attrs": {
+"np_yoy": 3.6369288156667734,
+"div_yoy": -5.882352941176472,
+"bads": [
+"genhai"
+],
+"disc_time": "15:10:00"
+}
+},
+{
+"code": "2669",
+"event_date": "2024-04-10",
+"source": "official",
+"attrs": {
+"np_yoy": 7.790697674418601,
+"div_yoy": -13.636363636363635,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "5729",
+"event_date": "2024-04-24",
+"source": "official",
+"attrs": {
+"np_yoy": 4.365904365904361,
+"div_yoy": -33.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "6146",
+"event_date": "2024-04-25",
+"source": "official",
+"attrs": {
+"np_yoy": 1.5852143175978162,
+"div_yoy": -63.56466876971609,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "8793",
+"event_date": "2024-04-26",
+"source": "official",
+"attrs": {
+"np_yoy": 9.598005609224058,
+"div_yoy": -10.95890410958904,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "8704",
+"event_date": "2024-04-30",
+"source": "official",
+"attrs": {
+"np_yoy": 3.6369288156667734,
+"div_yoy": -5.882352941176472,
+"bads": [
+"genhai"
+],
+"disc_time": "15:10:00"
+}
+},
+{
+"code": "2335",
+"event_date": "2024-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 7.886754297269971,
+"div_yoy": -25.92592592592593,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9039",
+"event_date": "2024-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 1.8148599269183885,
+"div_yoy": -41.53846153846153,
+"bads": [
+"genhai"
+],
+"disc_time": "14:20:00"
+}
+},
+{
+"code": "5947",
+"event_date": "2024-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 2.188074800735751,
+"div_yoy": -64.70588235294117,
+"bads": [
+"genhai"
+],
+"disc_time": "10:40:00"
+}
+},
+{
+"code": "6367",
+"event_date": "2024-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 0.9920311614950661,
+"div_yoy": -7.14285714285714,
+"bads": [
+"genhai"
+],
+"disc_time": "15:20:00"
+}
+},
+{
+"code": "6413",
+"event_date": "2024-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 4.476643598615926,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "6535",
+"event_date": "2024-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 0.6655574043261225,
+"div_yoy": -44.99999999999999,
+"bads": [
+"genhai"
+],
+"disc_time": "11:05:00"
+}
+},
+{
+"code": "6535",
+"event_date": "2024-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 0.6655574043261225,
+"div_yoy": -44.99999999999999,
+"bads": [
+"genhai"
+],
+"disc_time": "13:33:00"
+}
+},
+{
+"code": "9325",
+"event_date": "2024-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 5.70012391573731,
+"div_yoy": -18.75,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7187",
+"event_date": "2024-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 7.318536292741462,
+"div_yoy": -35.71428571428571,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "9432",
+"event_date": "2024-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 5.473920053811843,
+"div_yoy": -95.66666666666667,
+"bads": [
+"genhai"
+],
+"disc_time": "12:50:00"
+}
+},
+{
+"code": "9432",
+"event_date": "2024-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 5.473920053811843,
+"div_yoy": -95.66666666666667,
+"bads": [
+"genhai"
+],
+"disc_time": "12:50:00"
+}
+},
+{
+"code": "9760",
+"event_date": "2024-05-10",
+"source": "official",
+"attrs": {
+"np_yoy": 2.2699386503067576,
+"div_yoy": -33.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "18:00:00"
+}
+},
+{
+"code": "7087",
+"event_date": "2024-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 1.5243902439024293,
+"div_yoy": -28.57142857142857,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00:00"
+}
+},
+{
+"code": "8697",
+"event_date": "2024-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 0.4439183190293017,
+"div_yoy": -51.66666666666666,
+"bads": [
+"genhai"
+],
+"disc_time": "12:00:00"
+}
+},
+{
+"code": "2267",
+"event_date": "2024-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 0.7207598586125963,
+"div_yoy": -37.77777777777778,
+"bads": [
+"genhai"
+],
+"disc_time": "14:20:00"
+}
+},
+{
+"code": "5192",
+"event_date": "2024-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 0.4384104087116425,
+"div_yoy": -3.8461538461538436,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "5729",
+"event_date": "2024-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 4.365904365904361,
+"div_yoy": -33.333333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "2109",
+"event_date": "2024-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 6.750094804702322,
+"div_yoy": -22.22222222222222,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7525",
+"event_date": "2024-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 0.5790807093738692,
+"div_yoy": -16.470588235294116,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "7749",
+"event_date": "2024-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 7.157821229050287,
+"div_yoy": -35.71428571428571,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "7868",
+"event_date": "2024-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 7.273626917367637,
+"div_yoy": -51.11111111111111,
+"bads": [
+"genhai"
+],
+"disc_time": "15:55:00"
+}
+},
+{
+"code": "5192",
+"event_date": "2024-05-23",
+"source": "official",
+"attrs": {
+"np_yoy": 0.4384104087116425,
+"div_yoy": -3.8461538461538436,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "9936",
+"event_date": "2024-05-23",
+"source": "official",
+"attrs": {
+"np_yoy": 2.022500316015674,
+"div_yoy": -62.66666666666667,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "8015",
+"event_date": "2024-05-29",
+"source": "official",
+"attrs": {
+"np_yoy": 9.371718902740733,
+"div_yoy": -64.51612903225806,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "5947",
+"event_date": "2024-05-30",
+"source": "official",
+"attrs": {
+"np_yoy": 2.188074800735751,
+"div_yoy": -64.70588235294117,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9639",
+"event_date": "2024-06-07",
+"source": "official",
+"attrs": {
+"np_yoy": 4.066578399848675,
+"div_yoy": -43.75,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9039",
+"event_date": "2024-06-18",
+"source": "official",
+"attrs": {
+"np_yoy": 1.8148599269183885,
+"div_yoy": -41.53846153846153,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "2659",
+"event_date": "2024-07-05",
+"source": "official",
+"attrs": {
+"np_yoy": 7.357483852850333,
+"div_yoy": -27.27272727272727,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6044",
+"event_date": "2024-07-12",
+"source": "official",
+"attrs": {
+"np_yoy": 3.31858407079646,
+"div_yoy": -13.043478260869568,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7812",
+"event_date": "2024-08-14",
+"source": "official",
+"attrs": {
+"np_yoy": 6.933019976498245,
+"div_yoy": -13.207547169811317,
+"bads": [
+"genhai"
+],
+"disc_time": "15:01:00"
+}
+},
+{
+"code": "9932",
+"event_date": "2024-08-20",
+"source": "official",
+"attrs": {
+"np_yoy": 2.1855010660980723,
+"div_yoy": -22.857142857142854,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "8628",
+"event_date": "2024-08-27",
+"source": "official",
+"attrs": {
+"np_yoy": 7.262512768130747,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "4507",
+"event_date": "2024-08-30",
+"source": "official",
+"attrs": {
+"np_yoy": 5.187310991791638,
+"div_yoy": -61.1764705882353,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "9735",
+"event_date": "2024-09-05",
+"source": "official",
+"attrs": {
+"np_yoy": 6.040156545791597,
+"div_yoy": -47.36842105263158,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6535",
+"event_date": "2024-09-12",
+"source": "official",
+"attrs": {
+"np_yoy": 0.6655574043261225,
+"div_yoy": -44.99999999999999,
+"bads": [
+"genhai"
+],
+"disc_time": "12:00:00"
+}
+},
+{
+"code": "6037",
+"event_date": "2024-09-13",
+"source": "official",
+"attrs": {
+"np_yoy": 6.4558629776021,
+"div_yoy": -42.85714285714286,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "8697",
+"event_date": "2024-09-24",
+"source": "official",
+"attrs": {
+"np_yoy": 0.4439183190293017,
+"div_yoy": -51.66666666666666,
+"bads": [
+"genhai"
+],
+"disc_time": "12:00:00"
+}
+},
+{
+"code": "8706",
+"event_date": "2024-09-25",
+"source": "official",
+"attrs": {
+"np_yoy": 2.4187975120939953,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "11:30:00"
+}
+},
+{
+"code": "7868",
+"event_date": "2024-10-04",
+"source": "official",
+"attrs": {
+"np_yoy": 7.273626917367637,
+"div_yoy": -51.11111111111111,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00:00"
+}
+},
+{
+"code": "7417",
+"event_date": "2024-10-21",
+"source": "official",
+"attrs": {
+"np_yoy": 2.360622802611756,
+"div_yoy": -44.18604651162791,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4812",
+"event_date": "2024-10-31",
+"source": "official",
+"attrs": {
+"np_yoy": 3.096228602605189,
+"div_yoy": -3.57142857142857,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9795",
+"event_date": "2024-10-31",
+"source": "official",
+"attrs": {
+"np_yoy": 4.2827442827442885,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3288",
+"event_date": "2024-11-14",
+"source": "official",
+"attrs": {
+"np_yoy": 0.9462248777838189,
+"div_yoy": -9.782608695652172,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "2375",
+"event_date": "2024-11-27",
+"source": "official",
+"attrs": {
+"np_yoy": 0.9749303621169991,
+"div_yoy": -75.0,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "2375",
+"event_date": "2024-12-10",
+"source": "official",
+"attrs": {
+"np_yoy": 0.9749303621169991,
+"div_yoy": -75.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4627",
+"event_date": "2024-12-13",
+"source": "official",
+"attrs": {
+"np_yoy": 0.4206098843322792,
+"div_yoy": -13.33333333333333,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4812",
+"event_date": "2025-01-29",
+"source": "official",
+"attrs": {
+"np_yoy": 3.096228602605189,
+"div_yoy": -3.57142857142857,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4318",
+"event_date": "2025-01-31",
+"source": "official",
+"attrs": {
+"np_yoy": 2.2253922967189643,
+"div_yoy": -15.517241379310342,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "2659",
+"event_date": "2025-02-05",
+"source": "official",
+"attrs": {
+"np_yoy": 7.357483852850333,
+"div_yoy": -27.27272727272727,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4812",
+"event_date": "2025-02-12",
+"source": "official",
+"attrs": {
+"np_yoy": 3.096228602605189,
+"div_yoy": -3.57142857142857,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "2820",
+"event_date": "2025-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 1.7615176151761558,
+"div_yoy": -23.404255319148938,
+"bads": [
+"genhai"
+],
+"disc_time": "15:31:00"
+}
+},
+{
+"code": "2932",
+"event_date": "2025-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 7.874519846350836,
+"div_yoy": -11.111111111111116,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "3649",
+"event_date": "2025-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 9.726156751652493,
+"div_yoy": -11.111111111111116,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4221",
+"event_date": "2025-02-14",
+"source": "official",
+"attrs": {
+"np_yoy": 1.0196987253765943,
+"div_yoy": -4.545454545454541,
+"bads": [
+"genhai"
+],
+"disc_time": "12:30:00"
+}
+},
+{
+"code": "5105",
+"event_date": "2025-02-14",
+"source": "official",
+"attrs": {
+"np_yoy": 3.5103012189891203,
+"div_yoy": -12.5,
+"bads": [
+"genhai"
+],
+"disc_time": "11:00:00"
+}
+},
+{
+"code": "7039",
+"event_date": "2025-02-14",
+"source": "official",
+"attrs": {
+"np_yoy": 2.6397515527950333,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "12:00:00"
+}
+},
+{
+"code": "2932",
+"event_date": "2025-02-17",
+"source": "official",
+"attrs": {
+"np_yoy": 7.874519846350836,
+"div_yoy": -11.111111111111116,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9932",
+"event_date": "2025-02-20",
+"source": "official",
+"attrs": {
+"np_yoy": 2.1855010660980723,
+"div_yoy": -22.857142857142854,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9902",
+"event_date": "2025-02-21",
+"source": "official",
+"attrs": {
+"np_yoy": 4.664099272571676,
+"div_yoy": -30.76923076923077,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "7596",
+"event_date": "2025-02-25",
+"source": "official",
+"attrs": {
+"np_yoy": 4.922850844966931,
+"div_yoy": -7.14285714285714,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "8628",
+"event_date": "2025-03-07",
+"source": "official",
+"attrs": {
+"np_yoy": 7.262512768130747,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "7476",
+"event_date": "2025-03-11",
+"source": "official",
+"attrs": {
+"np_yoy": 9.719999999999995,
+"div_yoy": -45.16129032258065,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "8706",
+"event_date": "2025-03-13",
+"source": "official",
+"attrs": {
+"np_yoy": 2.4187975120939953,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "11:30:00"
+}
+},
+{
+"code": "1852",
+"event_date": "2025-03-14",
+"source": "official",
+"attrs": {
+"np_yoy": 0.471092077087798,
+"div_yoy": -87.19211822660098,
+"bads": [
+"genhai"
+],
+"disc_time": "17:30:00"
+}
+},
+{
+"code": "6309",
+"event_date": "2025-03-24",
+"source": "official",
+"attrs": {
+"np_yoy": 6.4988938053097245,
+"div_yoy": -56.09756097560976,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "8111",
+"event_date": "2025-03-25",
+"source": "official",
+"attrs": {
+"np_yoy": 0.6713067830814268,
+"div_yoy": -6.818181818181824,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00:00"
+}
+},
+{
+"code": "8697",
+"event_date": "2025-03-25",
+"source": "official",
+"attrs": {
+"np_yoy": 0.4439183190293017,
+"div_yoy": -51.66666666666666,
+"bads": [
+"genhai"
+],
+"disc_time": "12:00:00"
+}
+},
+{
+"code": "9110",
+"event_date": "2025-03-27",
+"source": "official",
+"attrs": {
+"np_yoy": 3.530523740687208,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "14:30:00"
+}
+},
+{
+"code": "8227",
+"event_date": "2025-03-31",
+"source": "official",
+"attrs": {
+"np_yoy": 4.493064564414739,
+"div_yoy": -30.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "2659",
+"event_date": "2025-04-07",
+"source": "official",
+"attrs": {
+"np_yoy": 7.357483852850333,
+"div_yoy": -27.27272727272727,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4792",
+"event_date": "2025-04-09",
+"source": "official",
+"attrs": {
+"np_yoy": 0.7340090877315575,
+"div_yoy": -9.302325581395355,
+"bads": [
+"genhai"
+],
+"disc_time": "15:15:00"
+}
+},
+{
+"code": "9238",
+"event_date": "2025-04-14",
+"source": "official",
+"attrs": {
+"np_yoy": 4.385964912280693,
+"div_yoy": -45.833333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "8706",
+"event_date": "2025-04-15",
+"source": "official",
+"attrs": {
+"np_yoy": 2.4187975120939953,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "11:30:00"
+}
+},
+{
+"code": "9532",
+"event_date": "2025-04-21",
+"source": "official",
+"attrs": {
+"np_yoy": 1.3076673776558412,
+"div_yoy": -5.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4318",
+"event_date": "2025-04-22",
+"source": "official",
+"attrs": {
+"np_yoy": 2.2253922967189643,
+"div_yoy": -15.517241379310342,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4507",
+"event_date": "2025-04-24",
+"source": "official",
+"attrs": {
+"np_yoy": 5.187310991791638,
+"div_yoy": -61.1764705882353,
+"bads": [
+"genhai"
+],
+"disc_time": "15:45:00"
+}
+},
+{
+"code": "8706",
+"event_date": "2025-04-25",
+"source": "official",
+"attrs": {
+"np_yoy": 2.4187975120939953,
+"div_yoy": -25.0,
+"bads": [
+"genhai"
+],
+"disc_time": "11:25:00"
+}
+},
+{
+"code": "9932",
+"event_date": "2025-04-25",
+"source": "official",
+"attrs": {
+"np_yoy": 2.1855010660980723,
+"div_yoy": -22.857142857142854,
+"bads": [
+"genhai"
+],
+"disc_time": "11:00:00"
+}
+},
+{
+"code": "2801",
+"event_date": "2025-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 9.308835775411485,
+"div_yoy": -78.57142857142857,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4318",
+"event_date": "2025-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 2.2253922967189643,
+"div_yoy": -15.517241379310342,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4661",
+"event_date": "2025-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 3.2730297359118365,
+"div_yoy": -12.5,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "6356",
+"event_date": "2025-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 0.7147498375568606,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "13:30:00"
+}
+},
+{
+"code": "6501",
+"event_date": "2025-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 4.378398904213632,
+"div_yoy": -78.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "8015",
+"event_date": "2025-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 9.371718902740733,
+"div_yoy": -64.51612903225806,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "8628",
+"event_date": "2025-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 7.262512768130747,
+"div_yoy": -9.999999999999998,
+"bads": [
+"genhai"
+],
+"disc_time": "11:30:00"
+}
+},
+{
+"code": "8697",
+"event_date": "2025-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 0.4439183190293017,
+"div_yoy": -51.66666666666666,
+"bads": [
+"genhai"
+],
+"disc_time": "12:00:00"
+}
+},
+{
+"code": "9110",
+"event_date": "2025-04-30",
+"source": "official",
+"attrs": {
+"np_yoy": 3.530523740687208,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "14:30:00"
+}
+},
+{
+"code": "9687",
+"event_date": "2025-04-30",
+"source": "official",
+"attrs": {
+"np_yoy": 9.283196239717984,
+"div_yoy": -45.13274336283186,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "2897",
+"event_date": "2025-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 1.5672881668820304,
+"div_yoy": -12.5,
+"bads": [
+"genhai"
+],
+"disc_time": "13:15:00"
+}
+},
+{
+"code": "3626",
+"event_date": "2025-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 2.3305301495713415,
+"div_yoy": -7.692307692307687,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4792",
+"event_date": "2025-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 0.7340090877315575,
+"div_yoy": -9.302325581395355,
+"bads": [
+"genhai"
+],
+"disc_time": "12:30:00"
+}
+},
+{
+"code": "4901",
+"event_date": "2025-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 7.162774271176842,
+"div_yoy": -56.25,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "7596",
+"event_date": "2025-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 4.922850844966931,
+"div_yoy": -7.14285714285714,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9434",
+"event_date": "2025-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 7.577380928039523,
+"div_yoy": -90.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9532",
+"event_date": "2025-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 1.3076673776558412,
+"div_yoy": -5.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "9902",
+"event_date": "2025-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 4.664099272571676,
+"div_yoy": -30.76923076923077,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "1882",
+"event_date": "2025-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 8.805694700764576,
+"div_yoy": -57.14285714285714,
+"bads": [
+"genhai"
+],
+"disc_time": "14:30:00"
+}
+},
+{
+"code": "4403",
+"event_date": "2025-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 7.3756987349220315,
+"div_yoy": -58.62068965517242,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "9037",
+"event_date": "2025-05-09",
+"source": "official",
+"attrs": {
+"np_yoy": 7.537627934978919,
+"div_yoy": -71.15384615384616,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "4507",
+"event_date": "2025-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 5.187310991791638,
+"div_yoy": -61.1764705882353,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "7417",
+"event_date": "2025-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 2.360622802611756,
+"div_yoy": -44.18604651162791,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "9735",
+"event_date": "2025-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 6.040156545791597,
+"div_yoy": -47.36842105263158,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "1879",
+"event_date": "2025-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 4.313853166205428,
+"div_yoy": -21.052631578947366,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "2185",
+"event_date": "2025-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 3.4167468719922933,
+"div_yoy": -36.36363636363637,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "2331",
+"event_date": "2025-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 1.783702591062708,
+"div_yoy": -10.666666666666668,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "2585",
+"event_date": "2025-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 7.5118858954041245,
+"div_yoy": -67.56756756756756,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "4743",
+"event_date": "2025-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 5.198555956678708,
+"div_yoy": -37.5,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6317",
+"event_date": "2025-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 0.646203554119551,
+"div_yoy": -37.5,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6356",
+"event_date": "2025-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 0.7147498375568606,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "7245",
+"event_date": "2025-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 5.877773452705326,
+"div_yoy": -15.384615384615385,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "9639",
+"event_date": "2025-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 4.066578399848675,
+"div_yoy": -43.75,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "1852",
+"event_date": "2025-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 0.471092077087798,
+"div_yoy": -87.19211822660098,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "1852",
+"event_date": "2025-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 0.471092077087798,
+"div_yoy": -87.19211822660098,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4543",
+"event_date": "2025-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 9.968601349953943,
+"div_yoy": -40.90909090909091,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6369",
+"event_date": "2025-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 2.3635340461451992,
+"div_yoy": -18.777292576419214,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "6419",
+"event_date": "2025-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 1.5259172976121116,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "6493",
+"event_date": "2025-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 4.825291181364388,
+"div_yoy": -14.28571428571429,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "6869",
+"event_date": "2025-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 8.118616410483703,
+"div_yoy": -59.523809523809526,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "7476",
+"event_date": "2025-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 9.719999999999995,
+"div_yoy": -45.16129032258065,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "8111",
+"event_date": "2025-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 0.6713067830814268,
+"div_yoy": -6.818181818181824,
+"bads": [
+"genhai"
+],
+"disc_time": "10:00:00"
+}
+},
+{
+"code": "9336",
+"event_date": "2025-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 5.687587373997505,
+"div_yoy": -40.476190476190474,
+"bads": [
+"genhai"
+],
+"disc_time": "11:30:00"
+}
+},
+{
+"code": "3388",
+"event_date": "2025-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 0.37098103874690924,
+"div_yoy": -21.052631578947366,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4097",
+"event_date": "2025-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 6.240284254941142,
+"div_yoy": -9.090909090909093,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4492",
+"event_date": "2025-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 1.6908212560386549,
+"div_yoy": -31.034482758620683,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "7868",
+"event_date": "2025-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 2.905904059040587,
+"div_yoy": -3.4848484848484795,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9936",
+"event_date": "2025-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 2.022500316015674,
+"div_yoy": -62.66666666666667,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9994",
+"event_date": "2025-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 0.7464749792645886,
+"div_yoy": -3.57142857142857,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "2216",
+"event_date": "2025-05-23",
+"source": "official",
+"attrs": {
+"np_yoy": 3.619631901840492,
+"div_yoy": -70.6896551724138,
+"bads": [
+"genhai"
+],
+"disc_time": "17:00:00"
+}
+},
+{
+"code": "9644",
+"event_date": "2025-05-26",
+"source": "official",
+"attrs": {
+"np_yoy": 8.267716535433077,
+"div_yoy": -46.42857142857143,
+"bads": [
+"genhai"
+],
+"disc_time": "13:05:00"
+}
+},
+{
+"code": "6309",
+"event_date": "2025-06-06",
+"source": "official",
+"attrs": {
+"np_yoy": 6.4988938053097245,
+"div_yoy": -56.09756097560976,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "6309",
+"event_date": "2025-06-06",
+"source": "official",
+"attrs": {
+"np_yoy": 6.4988938053097245,
+"div_yoy": -56.09756097560976,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "4486",
+"event_date": "2025-06-13",
+"source": "official",
+"attrs": {
+"np_yoy": 6.770833333333326,
+"div_yoy": -45.833333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "2796",
+"event_date": "2025-06-25",
+"source": "official",
+"attrs": {
+"np_yoy": 4.55840455840455,
+"div_yoy": -30.000000000000004,
+"bads": [
+"genhai"
+],
+"disc_time": "17:10:00"
+}
+},
+{
+"code": "4716",
+"event_date": "2025-06-27",
+"source": "official",
+"attrs": {
+"np_yoy": 9.211733179864389,
+"div_yoy": -71.8100890207715,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4716",
+"event_date": "2025-06-27",
+"source": "official",
+"attrs": {
+"np_yoy": 9.211733179864389,
+"div_yoy": -71.8100890207715,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "2153",
+"event_date": "2025-07-14",
+"source": "official",
+"attrs": {
+"np_yoy": 5.639841688654346,
+"div_yoy": -23.636363636363633,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9843",
+"event_date": "2025-07-15",
+"source": "official",
+"attrs": {
+"np_yoy": 8.145761151358034,
+"div_yoy": -79.73684210526316,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4498",
+"event_date": "2025-07-29",
+"source": "official",
+"attrs": {
+"np_yoy": 2.063983488132104,
+"div_yoy": -47.82608695652174,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "2938",
+"event_date": "2025-08-08",
+"source": "official",
+"attrs": {
+"np_yoy": 2.6422764227642226,
+"div_yoy": -44.11764705882353,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6340",
+"event_date": "2025-08-13",
+"source": "official",
+"attrs": {
+"np_yoy": 2.7706778448011393,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "2820",
+"event_date": "2025-08-14",
+"source": "official",
+"attrs": {
+"np_yoy": 1.7615176151761558,
+"div_yoy": -23.404255319148938,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "8011",
+"event_date": "2025-08-28",
+"source": "official",
+"attrs": {
+"np_yoy": 2.645370601447472,
+"div_yoy": -45.736434108527135,
+"bads": [
+"genhai"
+],
+"disc_time": "12:00:00"
+}
+},
+{
+"code": "7596",
+"event_date": "2025-08-29",
+"source": "official",
+"attrs": {
+"np_yoy": 4.922850844966931,
+"div_yoy": -7.14285714285714,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "5252",
+"event_date": "2025-09-10",
+"source": "official",
+"attrs": {
+"np_yoy": 4.878048780487809,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "5252",
+"event_date": "2025-10-01",
+"source": "official",
+"attrs": {
+"np_yoy": 4.878048780487809,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4820",
+"event_date": "2025-10-27",
+"source": "official",
+"attrs": {
+"np_yoy": 1.1134020618556617,
+"div_yoy": -15.384615384615385,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "9067",
+"event_date": "2025-11-06",
+"source": "official",
+"attrs": {
+"np_yoy": 5.824372759856633,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "2185",
+"event_date": "2025-11-11",
+"source": "official",
+"attrs": {
+"np_yoy": 3.4167468719922933,
+"div_yoy": -36.36363636363637,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9067",
+"event_date": "2025-11-13",
+"source": "official",
+"attrs": {
+"np_yoy": 5.824372759856633,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "6309",
+"event_date": "2025-12-11",
+"source": "official",
+"attrs": {
+"np_yoy": 6.4988938053097245,
+"div_yoy": -56.09756097560976,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "5535",
+"event_date": "2025-12-15",
+"source": "official",
+"attrs": {
+"np_yoy": 3.1654676258992875,
+"div_yoy": -31.25,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "3299",
+"event_date": "2026-01-28",
+"source": "official",
+"attrs": {
+"np_yoy": 9.415050936575753,
+"div_yoy": -33.65384615384615,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "1878",
+"event_date": "2026-01-30",
+"source": "official",
+"attrs": {
+"np_yoy": 5.5104519593428325,
+"div_yoy": -80.79625292740047,
+"bads": [
+"genhai"
+],
+"disc_time": "11:30:00"
+}
+},
+{
+"code": "6670",
+"event_date": "2026-02-05",
+"source": "official",
+"attrs": {
+"np_yoy": 4.326786222601764,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "22:30:00"
+}
+},
+{
+"code": "7832",
+"event_date": "2026-02-05",
+"source": "official",
+"attrs": {
+"np_yoy": 8.777967687798238,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "11:35:00"
+}
+},
+{
+"code": "9343",
+"event_date": "2026-02-10",
+"source": "official",
+"attrs": {
+"np_yoy": 1.0727056019070424,
+"div_yoy": -75.0,
+"bads": [
+"genhai"
+],
+"disc_time": "12:00:00"
+}
+},
+{
+"code": "2216",
+"event_date": "2026-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 3.619631901840492,
+"div_yoy": -70.6896551724138,
+"bads": [
+"genhai"
+],
+"disc_time": "13:30:00"
+}
+},
+{
+"code": "3299",
+"event_date": "2026-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 9.415050936575753,
+"div_yoy": -33.65384615384615,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "4486",
+"event_date": "2026-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 6.770833333333326,
+"div_yoy": -45.833333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4820",
+"event_date": "2026-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 1.1134020618556617,
+"div_yoy": -15.384615384615385,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "5965",
+"event_date": "2026-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 3.398058252427183,
+"div_yoy": -19.999999999999996,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "6361",
+"event_date": "2026-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 7.327628464587321,
+"div_yoy": -3.125,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9145",
+"event_date": "2026-02-13",
+"source": "official",
+"attrs": {
+"np_yoy": 2.0378457059679667,
+"div_yoy": -80.68181818181819,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "8011",
+"event_date": "2026-02-27",
+"source": "official",
+"attrs": {
+"np_yoy": 2.645370601447472,
+"div_yoy": -45.736434108527135,
+"bads": [
+"genhai"
+],
+"disc_time": "11:00:00"
+}
+},
+{
+"code": "7164",
+"event_date": "2026-03-16",
+"source": "official",
+"attrs": {
+"np_yoy": 1.3618373897597236,
+"div_yoy": -64.62264150943396,
+"bads": [
+"genhai"
+],
+"disc_time": "17:10:00"
+}
+},
+{
+"code": "9644",
+"event_date": "2026-03-16",
+"source": "official",
+"attrs": {
+"np_yoy": 8.267716535433077,
+"div_yoy": -46.42857142857143,
+"bads": [
+"genhai"
+],
+"disc_time": "11:00:00"
+}
+},
+{
+"code": "6463",
+"event_date": "2026-03-27",
+"source": "official",
+"attrs": {
+"np_yoy": 5.955334987593042,
+"div_yoy": -38.0,
+"bads": [
+"genhai"
+],
+"disc_time": "13:45:00"
+}
+},
+{
+"code": "4432",
+"event_date": "2026-04-09",
+"source": "official",
+"attrs": {
+"np_yoy": 9.630629111148581,
+"div_yoy": -16.129032258064512,
+"bads": [
+"genhai"
+],
+"disc_time": "12:00:00"
+}
+},
+{
+"code": "8194",
+"event_date": "2026-04-09",
+"source": "official",
+"attrs": {
+"np_yoy": 4.869623356362829,
+"div_yoy": -44.99999999999999,
+"bads": [
+"genhai"
+],
+"disc_time": "11:30:00"
+}
+},
+{
+"code": "8011",
+"event_date": "2026-04-14",
+"source": "official",
+"attrs": {
+"np_yoy": 2.645370601447472,
+"div_yoy": -45.736434108527135,
+"bads": [
+"genhai"
+],
+"disc_time": "11:00:00"
+}
+},
+{
+"code": "6248",
+"event_date": "2026-04-17",
+"source": "official",
+"attrs": {
+"np_yoy": 5.956112852664575,
+"div_yoy": -27.27272727272727,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6345",
+"event_date": "2026-04-24",
+"source": "official",
+"attrs": {
+"np_yoy": 5.115251026207757,
+"div_yoy": -14.28571428571429,
+"bads": [
+"genhai"
+],
+"disc_time": "15:40:00"
+}
+},
+{
+"code": "6349",
+"event_date": "2026-04-24",
+"source": "official",
+"attrs": {
+"np_yoy": 1.697019867549665,
+"div_yoy": -27.083333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "8604",
+"event_date": "2026-04-24",
+"source": "official",
+"attrs": {
+"np_yoy": 6.278467787377906,
+"div_yoy": -29.411764705882348,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4498",
+"event_date": "2026-04-27",
+"source": "official",
+"attrs": {
+"np_yoy": 2.063983488132104,
+"div_yoy": -47.82608695652174,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "8014",
+"event_date": "2026-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 3.02796363012523,
+"div_yoy": -7.4074074074074066,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "8076",
+"event_date": "2026-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 5.888273779567177,
+"div_yoy": -3.703703703703709,
+"bads": [
+"genhai"
+],
+"disc_time": "14:20:00"
+}
+},
+{
+"code": "9023",
+"event_date": "2026-04-28",
+"source": "official",
+"attrs": {
+"np_yoy": 9.79943439755897,
+"div_yoy": -47.5,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "1878",
+"event_date": "2026-04-30",
+"source": "official",
+"attrs": {
+"np_yoy": 5.5104519593428325,
+"div_yoy": -80.79625292740047,
+"bads": [
+"genhai"
+],
+"disc_time": "11:30:00"
+}
+},
+{
+"code": "3092",
+"event_date": "2026-04-30",
+"source": "official",
+"attrs": {
+"np_yoy": 5.689586733118679,
+"div_yoy": -62.96296296296296,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "8898",
+"event_date": "2026-04-30",
+"source": "official",
+"attrs": {
+"np_yoy": 6.234413965087282,
+"div_yoy": -6.666666666666665,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "8001",
+"event_date": "2026-05-01",
+"source": "official",
+"attrs": {
+"np_yoy": 2.275714540511742,
+"div_yoy": -78.0,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "9682",
+"event_date": "2026-05-01",
+"source": "official",
+"attrs": {
+"np_yoy": 9.487541137752697,
+"div_yoy": -71.42857142857143,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6638",
+"event_date": "2026-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 9.50292397660819,
+"div_yoy": -14.28571428571429,
+"bads": [
+"genhai"
+],
+"disc_time": "11:30:00"
+}
+},
+{
+"code": "7164",
+"event_date": "2026-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 1.3618373897597236,
+"div_yoy": -64.62264150943396,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9436",
+"event_date": "2026-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 6.571520722464119,
+"div_yoy": -45.3125,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9706",
+"event_date": "2026-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 6.075718966144894,
+"div_yoy": -9.090909090909093,
+"bads": [
+"genhai"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "9882",
+"event_date": "2026-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 6.287744227353453,
+"div_yoy": -49.23076923076923,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9902",
+"event_date": "2026-05-08",
+"source": "official",
+"attrs": {
+"np_yoy": 4.538021259198688,
+"div_yoy": -22.22222222222222,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "2201",
+"event_date": "2026-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 0.31055900621117516,
+"div_yoy": -45.833333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "5535",
+"event_date": "2026-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 3.1654676258992875,
+"div_yoy": -31.25,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "5902",
+"event_date": "2026-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 0.49049662783569037,
+"div_yoy": -8.571428571428575,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "6248",
+"event_date": "2026-05-11",
+"source": "official",
+"attrs": {
+"np_yoy": 5.956112852664575,
+"div_yoy": -27.27272727272727,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "1866",
+"event_date": "2026-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 3.2238982549541495,
+"div_yoy": -72.72727272727273,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "250A",
+"event_date": "2026-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 1.644479248238051,
+"div_yoy": -18.75,
+"bads": [
+"genhai"
+],
+"disc_time": "15:40:00"
+}
+},
+{
+"code": "4718",
+"event_date": "2026-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 6.372968349016261,
+"div_yoy": -12.5,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9433",
+"event_date": "2026-05-12",
+"source": "official",
+"attrs": {
+"np_yoy": 7.8875096122157595,
+"div_yoy": -46.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "15:45:00"
+}
+},
+{
+"code": "4183",
+"event_date": "2026-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 6.624899199801493,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "4980",
+"event_date": "2026-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 0.9806395789018207,
+"div_yoy": -9.375,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6590",
+"event_date": "2026-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 8.18164213787762,
+"div_yoy": -78.41726618705036,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6638",
+"event_date": "2026-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 9.50292397660819,
+"div_yoy": -14.28571428571429,
+"bads": [
+"genhai"
+],
+"disc_time": "11:30:00"
+}
+},
+{
+"code": "7832",
+"event_date": "2026-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 8.777967687798238,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "11:30:00"
+}
+},
+{
+"code": "8081",
+"event_date": "2026-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 0.60882800608828,
+"div_yoy": -7.692307692307687,
+"bads": [
+"genhai"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "8818",
+"event_date": "2026-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 6.540565177757518,
+"div_yoy": -6.976744186046513,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "9025",
+"event_date": "2026-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 1.5516014234875364,
+"div_yoy": -9.836065573770492,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9067",
+"event_date": "2026-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 5.824372759856633,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "13:30:00"
+}
+},
+{
+"code": "9644",
+"event_date": "2026-05-13",
+"source": "official",
+"attrs": {
+"np_yoy": 8.267716535433077,
+"div_yoy": -46.42857142857143,
+"bads": [
+"genhai"
+],
+"disc_time": "13:00:00"
+}
+},
+{
+"code": "3096",
+"event_date": "2026-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 9.056244041944716,
+"div_yoy": -16.666666666666664,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "5981",
+"event_date": "2026-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 7.206652294425631,
+"div_yoy": -29.6875,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "5989",
+"event_date": "2026-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 2.2930648769574846,
+"div_yoy": -13.513513513513509,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "6237",
+"event_date": "2026-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 8.213965980304394,
+"div_yoy": -6.666666666666665,
+"bads": [
+"genhai"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "6349",
+"event_date": "2026-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 1.697019867549665,
+"div_yoy": -27.083333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "6670",
+"event_date": "2026-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 4.326786222601764,
+"div_yoy": -100.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:40:00"
+}
+},
+{
+"code": "6850",
+"event_date": "2026-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 2.5615268709191286,
+"div_yoy": -45.45454545454546,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "7367",
+"event_date": "2026-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 5.253623188405787,
+"div_yoy": -11.111111111111116,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9843",
+"event_date": "2026-05-14",
+"source": "official",
+"attrs": {
+"np_yoy": 8.145761151358034,
+"div_yoy": -79.73684210526316,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4113",
+"event_date": "2026-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 3.7212449255751068,
+"div_yoy": -18.181818181818176,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "4681",
+"event_date": "2026-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 3.838323650628128,
+"div_yoy": -51.42857142857142,
+"bads": [
+"genhai"
+],
+"disc_time": "16:40:00"
+}
+},
+{
+"code": "5252",
+"event_date": "2026-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 4.878048780487809,
+"div_yoy": -50.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "6463",
+"event_date": "2026-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 5.955334987593042,
+"div_yoy": -38.0,
+"bads": [
+"genhai"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "8750",
+"event_date": "2026-05-15",
+"source": "official",
+"attrs": {
+"np_yoy": 1.6256491307292897,
+"div_yoy": -59.86842105263157,
+"bads": [
+"genhai"
+],
+"disc_time": "14:30:00"
+}
+},
+{
+"code": "1878",
+"event_date": "2026-05-26",
+"source": "official",
+"attrs": {
+"np_yoy": 5.5104519593428325,
+"div_yoy": -80.79625292740047,
+"bads": [
+"genhai"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "9238",
+"event_date": "2026-05-29",
+"source": "official",
+"attrs": {
+"np_yoy": 4.385964912280693,
+"div_yoy": -45.833333333333336,
+"bads": [
+"genhai"
+],
+"disc_time": "18:00:00"
+}
+}
+],
+"count": 665
+}
