@@ -84,6 +84,12 @@ def _run_kouaku(py: str, args: argparse.Namespace) -> None:
     # サイト表示用 slim JSON (data/kouaku_site.json) を書き出し
     _run([py, "-m", "scripts.export_kouaku_site", "--cost", str(args.cost)])
 
+    # 好悪同日材料ページ用 mild_* 補完 (軽い○○×反対材料)。fins/td_bulk 由来。
+    # ⚠️ mild_good は alpha_d3_ret(確定エッジ⑤が依存)を持つため update_all では再生成しない
+    #    (extract_mild_good は最小スキーマで上書きし alpha を失うため手動運用のまま)。新3ケースのみ。
+    if not args.skip_fetch:
+        _run([py, "-m", "scripts.edge_candidates.extract_mild_cases"], allow_fail=True)
+
 
 def _run_po(py: str, args: argparse.Namespace) -> None:
     if args.refresh_po_raw and not args.skip_fetch:
