@@ -81,32 +81,58 @@ AXES: dict[str, Callable[[dict[str, Any], dict[str, Any]], str | None]] = {
 }
 
 
-def build_observations(records: list[dict[str, Any]], master: dict[str, dict[str, Any]],
-                       max_combo: int = 2) -> list[dict[str, Any]]:
-    """(軸の組合せ) を cell とする観測リストを作る。limit_locked 除外。"""
-    obs: list[dict[str, Any]] = []
+def _eligible(r: dict[str, Any]) -> float | None:
+    """limit_locked でなく翌寄→翌引けがあるレコードの ret(%)。無ければ None。"""
+    a = r.get("attrs") or {}
+    if a.get("limit_locked"):
+        return None
+    ret = a.get("next_day_open_to_close_ret")
+    return float(ret) if ret is not None else None
+
+
+def day_means(records: list[dict[str, Any]]) -> dict[str, float]:
+    """日付ごとの『好悪ユニバース平均リターン』。クロスセクション demean 用。"""
+    import statistics
+    by_date: dict[str, list[float]] = {}
     for r in records:
-        a = r.get("attrs") or {}
-        if a.get("limit_locked"):
-            continue
-        ret = a.get("next_day_open_to_close_ret")
+        ret = _eligible(r)
         if ret is None:
             continue
-        m = master.get(_to5(r.get("code", ""))) or {}
+        by_date.setdefault(r.get("event_date") or "", []).append(ret)
+    return {d: statistics.fmean(v) for d, v in by_date.items() if v}
+
+
+def build_observations(records: list[dict[str, Any]], master: dict[str, dict[str, Any]],
+                       max_combo: int = 2, demean: bool = False) -> list[dict[str, Any]]:
+    """(軸の組合せ) を cell とする観測リストを作る。limit_locked 除外。
+
+    demean=True で各観測から『その日の好悪ユニバース平均』を引く(日次クロスセクション中立化)。
+    = 相場/基線ドリフトを除いた cell 固有のαで評価でき、相関スライスの水増しを排除する。
+    """
+    dm = day_means(records) if demean else {}
+    obs: list[dict[str, Any]] = []
+    for r in records:
+        ret = _eligible(r)
+        if ret is None:
+            continue
         date = r.get("event_date")
+        if demean:
+            ret = ret - dm.get(date or "", 0.0)
+        m = master.get(_to5(r.get("code", ""))) or {}
         code = r.get("code")
         active = [fn(r, m) for fn in AXES.values()]
         active = [lab for lab in active if lab is not None]
-        obs.append({"cell": ("全体",), "ret": float(ret), "date": date, "code": code})
+        obs.append({"cell": ("全体",), "ret": ret, "date": date, "code": code})
         for k in range(1, max_combo + 1):
             for combo in itertools.combinations(active, k):
-                obs.append({"cell": combo, "ret": float(ret), "date": date, "code": code})
+                obs.append({"cell": combo, "ret": ret, "date": date, "code": code})
     return obs
 
 
-def scan(records: list[dict[str, Any]], master: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
-    """全セルを評価し候補(ev_net>0 かつ t_clustered≥下限)を返す。"""
-    obs = build_observations(records, master)
+def scan(records: list[dict[str, Any]], master: dict[str, dict[str, Any]],
+         demean: bool = False) -> list[dict[str, Any]]:
+    """全セルを評価し候補(ev_net>0 かつ t_clustered≥下限)を返す。demean=基線超過評価。"""
+    obs = build_observations(records, master, demean=demean)
     results = evaluate_cells(obs, long_cost=LONG_COST, short_cost=SHORT_COST, min_n=MIN_N)
     cands = [r for r in results if r["ev_net"] > 0 and r["t_clustered"] >= TC_CANDIDATE]
     cands.sort(key=lambda r: r["t_clustered"], reverse=True)
@@ -123,15 +149,25 @@ def build_report(records: list[dict[str, Any]], master: dict[str, dict[str, Any]
              f"セル最小n={MIN_N} / クラスタt / walk-forward OOS / 全セルBH-FDR。")
     L.append(f"**候補条件**: net EV>0 かつ t_clustered≥{TC_CANDIDATE}。")
     L.append("")
-    cands = scan(records, master)
-    if not cands:
-        L.append("_(候補なし)_")
-        return "\n".join(L)
-    top = cands[:40]
-    n_fdr = sum(1 for r in cands if r.get("fdr_significant"))
-    L.append(f"## 候補一覧（{len(cands)}件中 上位{len(top)} / t_clust 降順、FDR★ {n_fdr}件）")
+    import statistics
+    base = statistics.fmean([_eligible(r) for r in records if _eligible(r) is not None])
+    L.append(f"⚠️ **基線注意**: 好悪材料の翌寄→引けは平均{base:+.2f}%（=何でもショートで+{-base:.2f}%出る下方ドリフト）。")
+    L.append("生スキャンの FDR★ の多くはこの基線を大集合に当てた相関スライス。下表は**日次クロスセクションで")
+    L.append("demean（その日の好悪平均を控除）した『基線超過α』での評価**＝相場/基線を中立化した真の候補。")
     L.append("")
-    L.append("| 条件（軸の掛け合わせ） | 方向 | n | net EV | t_clust | OOS test | FDR★ |")
+
+    raw = scan(records, master, demean=False)
+    dem = scan(records, master, demean=True)
+    raw_fdr = sum(1 for r in raw if r.get("fdr_significant"))
+    dem_fdr = sum(1 for r in dem if r.get("fdr_significant"))
+    L.append(f"- 生スキャン: 候補{len(raw)}件 / FDR★{raw_fdr}件（基線込み・水増しあり）")
+    L.append(f"- **基線超過(demean)スキャン: 候補{len(dem)}件 / FDR★{dem_fdr}件**（これが実体）")
+    L.append("")
+
+    top = dem[:30]
+    L.append(f"## 基線超過α 候補（demean後・上位{len(top)} / t_clust降順）")
+    L.append("")
+    L.append("| 条件（軸の掛け合わせ） | 方向 | n | 超過α net | t_clust | OOS test | FDR★ |")
     L.append("|---|---|---|---|---|---|---|")
     for r in top:
         cell_disp = " & ".join(r["cell"])
@@ -143,9 +179,9 @@ def build_report(records: list[dict[str, Any]], master: dict[str, dict[str, Any]
     L.append("")
     L.append("## 読み方")
     L.append("")
-    L.append(f"- **FDR★ ({n_fdr}件)**: 全セル横断の多重検定補正を生存＝確定級。既知④⑤の自動再発見を含む。")
-    L.append("- FDR★無しは『芽』（n待ち・要追検証）。型×開示時刻×程度の3軸重ねは過剰最適化注意。")
-    L.append("- 確定採用は edge_playbook.md の正本へ。本スキャンは候補出しの一次フィルタ。")
+    L.append("- **超過α net**: その日の好悪平均を引いた後の net。基線(何でもショート)を超える固有の効き。")
+    L.append("- demean で生き残る＝『相場/基線で説明できない本物の候補』。生スキャンで★でも demean で消えるものは基線の水増し。")
+    L.append("- 確定採用は validate_edges 事前登録(独立FDR+OOS)で。本スキャンは候補出しの一次フィルタ。")
     return "\n".join(L)
 
 
