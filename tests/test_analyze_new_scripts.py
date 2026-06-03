@@ -45,6 +45,12 @@ from scripts.scan_kouaku_candidates import scan as k_scan, mag_bucket
 from scripts.scan_kouaku_candidates import load_kouaku, load_master as k_load_master
 from scripts.scan_kouaku_candidates import build_report as k_build_report
 from scripts.scan_kouaku_candidates import day_means as k_day_means
+from scripts.edge_candidates.analyze_pharma_long import collect as pharma_collect
+from scripts.edge_candidates.analyze_pharma_long import stat as pharma_stat
+from scripts.edge_candidates.analyze_pharma_long import day_means as pharma_day_means
+from scripts.edge_candidates.analyze_pharma_long import load_kouaku as pharma_load_kouaku
+from scripts.edge_candidates.analyze_pharma_long import load_master as pharma_load_master
+from scripts.edge_candidates.analyze_pharma_long import build_report as pharma_build_report
 from scripts.analyze_delivery_long_filters import base_records, rank_filters
 from scripts.analyze_delivery_long_filters import load_records as flt_load_records
 from scripts.analyze_delivery_long_filters import build_report as flt_build_report
@@ -308,6 +314,28 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         recent = len(build_observations(records, enriched, since="2024-06-03"))
         self.assertLessEqual(recent, full)
         self.assertGreater(full, 0)
+
+    def test_pharma_long_filter_and_report(self) -> None:
+        """医薬品×信用のみ collect が拾い、貸借は除外。build_report は cache で走る。"""
+        records = [
+            {"code": "4500", "event_date": "2024-01-10", "subpattern": "kouhou_x",
+             "attrs": {"next_day_open_to_close_ret": 2.0}},  # 信用・医薬品 → 採用
+            {"code": "4600", "event_date": "2024-01-10", "subpattern": "kouhou_x",
+             "attrs": {"next_day_open_to_close_ret": 5.0}},  # 貸借 → 除外
+        ]
+        master = {
+            "45000": {"Code": "45000", "S17Nm": "医薬品", "MrgnNm": "信用", "scale_band": "小型"},
+            "46000": {"Code": "46000", "S17Nm": "医薬品", "MrgnNm": "貸借", "scale_band": "小型"},
+        }
+        dm = pharma_day_means(records)
+        shinyo = pharma_collect(records, master, dm, lambda r, m: m.get("MrgnNm") == "信用")
+        taishaku = pharma_collect(records, master, dm, lambda r, m: m.get("MrgnNm") == "貸借")
+        self.assertEqual(len(shinyo), 1)
+        self.assertEqual(len(taishaku), 1)
+        self.assertEqual(pharma_stat([])["n"], 0)
+        report = pharma_build_report(pharma_load_kouaku(), pharma_load_master())
+        self.assertIn("医薬品", report)
+        self.assertIn("信用", report)
 
     def test_kouaku_mag_bucket_and_scan(self) -> None:
         """mag_bucket bands by primary pct metric; scan/report run on real cache."""
