@@ -39,6 +39,7 @@ data/edge_candidates/split_multiday_enriched.json
 data/edge_candidates/td_buyback_decisions.json
 data/edge_candidates/buyback_earnings.json
 data/edge_candidates/buyback_standalone_enriched.json
+data/edge_candidates/zouhai_genshu_d3.json
 data/edge_candidates/po_enriched.json
 data/edge_candidates/fins_summary.json
 data/edge_candidates/mild_good.json

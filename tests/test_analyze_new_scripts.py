@@ -20,6 +20,8 @@ from scripts.analyze_reit_po_size_breakdown import filter_eligible_reit_po, reit
 from scripts.analyze_reit_po_size_breakdown import build_report as reit_build_report
 from scripts.analyze_buyback_standalone import load_data as buyback_load_data
 from scripts.analyze_buyback_standalone import build_report as buyback_build_report
+from scripts.analyze_short_edges_size import load_master, load_kouaku, load_genshu_d3
+from scripts.analyze_short_edges_size import build_report as short_size_build_report
 
 
 class TestAnalyzeNewScripts(unittest.TestCase):
@@ -101,6 +103,33 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         report = buyback_build_report(synthetic)
         self.assertIn("単独", report)
         self.assertIn("所見", report)
+
+    def test_short_edges_size_loads_master(self) -> None:
+        """load_master/load_kouaku return expected container types."""
+        master = load_master()
+        self.assertIsInstance(master, dict)
+        self.assertGreater(len(master), 0)
+        kouaku = load_kouaku()
+        self.assertIsInstance(kouaku, list)
+        self.assertIsInstance(load_genshu_d3(), list)
+
+    def test_short_edges_size_report_with_synthetic_data(self) -> None:
+        """build_report works on synthetic ④⑤ records (no cache dependency)."""
+        kouaku = [
+            {"code": "13010", "subpattern": "zouhai_kahou_nx",
+             "good_factors": [{"disc_time": "16:00"}], "bad_factors": [],
+             "attrs": {"next_day_open_to_close_ret": 1.0}}
+            for _ in range(15)
+        ]
+        genshu = [
+            {"code": "13010", "attrs": {"scale_band": "小型", "d3_ret": 0.8}}
+            for _ in range(15)
+        ]
+        master = {"13010": {"Code": "13010", "scale_band": "小型"}}
+        report = short_size_build_report(kouaku, genshu, master)
+        self.assertIn("zouhai_kahou_nx", report)
+        self.assertIn("zouhai_genshu", report)
+        self.assertIn("大引け後", report)
 
 
 if __name__ == "__main__":
