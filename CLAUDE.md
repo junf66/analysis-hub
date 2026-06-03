@@ -182,6 +182,9 @@ python -m scripts.disaster_event.analyze_typhoon_edge    # reports/typhoon_event
 
 ## 公式 J-Quants データ基盤 (TDnet/財務/銘柄属性アドオン — 2026-06 稼働確認)
 
+> **エンドポイント完全リファレンスは [docs/jquants_endpoints.md](docs/jquants_endpoints.md)**
+> （使える/403の一覧・テキストフィールド・取得スクリプト・前提条件）。
+
 yanoshin(第三者TDnetミラー)に加え、契約アドオンで以下の**公式エンドポイント**が使える
 (キーは環境変数 JQUANTS_API_KEY、base=https://api.jquants.com/v2):
 
