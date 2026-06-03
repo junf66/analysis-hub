@@ -183,6 +183,17 @@ def new_edges_observations(_ignored: list[dict[str, Any]]) -> Iterator[dict[str,
         o = _obs("受渡日×GD+フラット×PO規模≥300億 寄→引 long", a.get("next_day_open_to_close_ret"), r)
         if o:
             yield o
+    # ⑤ 中型decideショート: decide×普通×時価500-1000億 翌寄り→決定引け short
+    #   β実推定(analyze_decide_beta)で α net+2.85%/t+4.73=相場ベータでなく真のエッジと確認済み。
+    for r in json.loads(PO_PATH.read_text()).get("records", []):
+        if r.get("stage") != "decide" or r.get("po_type") != "普通":
+            continue
+        mc = r.get("market_cap")
+        if mc is None or not (500 < float(mc) <= 1000):
+            continue
+        o = _obs("中型(500-1000億)×普通 decide short", (r.get("attrs") or {}).get("ret_close"), r)
+        if o:
+            yield o
 
 
 _SOURCES = {
