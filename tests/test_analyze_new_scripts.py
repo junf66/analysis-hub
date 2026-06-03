@@ -36,6 +36,10 @@ from scripts.analyze_po_long_size_brackets import collect_yen_floor_by_exit
 from scripts.analyze_po_delivery_long import collect_delivery_long, metrics as dl_metrics
 from scripts.analyze_po_delivery_long import oos_split_date, load_records as dl_load_records
 from scripts.analyze_po_delivery_long import build_report as dl_build_report
+from scripts.scan_po_candidates import build_observations, scan, signal_ret
+from scripts.scan_po_candidates import load_records as scan_load_records
+from scripts.scan_po_candidates import load_enriched as scan_load_enriched
+from scripts.scan_po_candidates import build_report as scan_build_report
 
 
 class TestAnalyzeNewScripts(unittest.TestCase):
@@ -265,6 +269,38 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         report = dl_build_report(dl_load_records())
         self.assertIn("受渡日", report)
         self.assertIn("GD+フラット", report)
+
+    def test_scan_signal_ret_reads_attrs_and_enriched(self) -> None:
+        """signal_ret pulls from attrs or enriched per signal src."""
+        r = {"attrs": {"ret_close": 1.5}}
+        self.assertEqual(signal_ret(r, {}, {"src": "attrs", "field": "ret_close"}), 1.5)
+        self.assertEqual(signal_ret(r, {"next_day_open_to_close_ret": 2.0},
+                                    {"src": "enriched", "field": "next_day_open_to_close_ret"}), 2.0)
+        self.assertIsNone(signal_ret({"attrs": {}}, {}, {"src": "attrs", "field": "x"}))
+
+    def test_scan_build_observations_emits_single_and_pairwise(self) -> None:
+        """build_observations emits 全体 + 1軸 + 2軸 cells for a matching record."""
+        records = [{"stage": "decide", "po_type": "リート", "lending_type": "貸借",
+                    "event_date": "2024-01-10", "code": "12345",
+                    "market_cap": 700.0, "attrs": {"ret_close": -1.0}}]
+        obs = build_observations(records, {}, max_combo=2)
+        combos = {o["cell"][1] for o in obs}
+        self.assertIn(("全体",), combos)
+        self.assertIn(("種別:リート",), combos)  # 単一軸
+        # 2軸の掛け合わせが少なくとも1つ存在
+        self.assertTrue(any(len(c) == 2 for c in combos))
+
+    def test_scan_runs_and_reports_on_cache(self) -> None:
+        """scan returns candidate dicts and build_report renders from real cache."""
+        records = scan_load_records()
+        enriched = scan_load_enriched()
+        cands = scan(records, enriched)
+        self.assertIsInstance(cands, list)
+        for c in cands:
+            self.assertGreater(c["ev_net"], 0)
+            self.assertGreaterEqual(c["t_clustered"], 1.5)
+        report = scan_build_report(records, enriched)
+        self.assertIn("候補", report)
 
     def test_best_exit_picks_max_ev_above_min_n(self) -> None:
         """best_exit returns the highest-EV exit meeting the n floor, else None."""
