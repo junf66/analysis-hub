@@ -427,7 +427,6 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertIn("中型", report)
         self.assertEqual(brk_stat([])["n"], 0)
 
-<<<<<<< HEAD
     def test_buyback_pdf_parse_text(self) -> None:
         """parse_buyback_text extracts 規模%/株数/金額 from PDF本文 (依存なし・CI安全)。"""
         text = ("当社は…発行済株式総数（自己株式を除く）に対する割合 3.08％ … "
@@ -438,7 +437,7 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertEqual(got["buyback_max_amount"], 2000000000.0)
         # 規模%が無いテキストは None
         self.assertIsNone(parse_buyback_text("規模に関する記載なし")["buyback_ratio_pct"])
-=======
+
     def test_mild_cases_build_events(self) -> None:
         """mild_bad=軽い増益×減配, mild_genhai=微減配×好材料 を正しく拾う。"""
         fins = {"12340": [
@@ -463,7 +462,6 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertEqual(genhai[0]["attrs"]["goods"], ["jisha"])
         # 好材料が無ければ mild_genhai は採用しない
         self.assertEqual(len(mild_cases_build(fins2, {}, "mild_genhai")), 0)
->>>>>>> origin/main
 
 
 if __name__ == "__main__":
