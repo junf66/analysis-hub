@@ -31,6 +31,7 @@ from scripts.analyze_po_long_size_brackets import scale_band_mc_ranges, stat as 
 from scripts.analyze_po_long_size_brackets import build_report as brk_build_report
 from scripts.analyze_po_long_size_brackets import load_records as brk_load_records
 from scripts.analyze_po_long_size_brackets import load_enriched, load_master_records
+from scripts.analyze_po_long_size_brackets import collect_size_by_exit, best_exit
 
 
 class TestAnalyzeNewScripts(unittest.TestCase):
@@ -199,6 +200,24 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         records[0]["attrs"]["gap_pct"] = 0.1
         by_mc2, _ = collect_po_long(records, enriched)
         self.assertEqual(sum(len(v) for v in by_mc2.values()), 0)
+
+    def test_collect_size_by_exit_routes_intraday_and_close(self) -> None:
+        """collect_size_by_exit reads intraday ret from attrs and 引け from enriched."""
+        records = [{"id": "x1", "stage": "announce", "po_type": "普通", "code": "13010",
+                    "attrs": {"gap_pct": -1.0, "next_day_930_ret": 0.5}}]
+        enriched = {"x1": {"next_day_open_to_close_ret": 1.2, "scale_band": "中型"}}
+        by_se = collect_size_by_exit(records, enriched)
+        self.assertAlmostEqual(by_se["中型"]["9:30"][0], 0.5 - 0.20, places=6)
+        self.assertAlmostEqual(by_se["中型"]["引け"][0], 1.2 - 0.20, places=6)
+        self.assertEqual(by_se["小型"]["引け"], [])
+
+    def test_best_exit_picks_max_ev_above_min_n(self) -> None:
+        """best_exit returns the highest-EV exit meeting the n floor, else None."""
+        by_exit = {"9:30": [0.1, 0.1, 0.1], "引け": [1.0, 1.0, 1.0]}
+        label, s = best_exit(by_exit, min_n=3)
+        self.assertEqual(label, "引け")
+        self.assertEqual(s["n"], 3)
+        self.assertIsNone(best_exit(by_exit, min_n=10))
 
     def test_size_bracket_loaders(self) -> None:
         """load_records/load_enriched/load_master_records return expected containers."""

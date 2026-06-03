@@ -37,6 +37,18 @@ MC_BRACKETS: list[tuple[float, float, str]] = [
 ]
 SCALE_BANDS = ["小型", "中型", "大型"]
 
+# 出口時刻 → リターンフィールド。9:05〜11:30は分足由来(2024-05以降, n小)、引けは日足で全期間。
+# 時刻別は po_records.attrs、引けは po_enriched にある。
+EXIT_FIELDS: list[tuple[str, str]] = [
+    ("9:05", "next_day_905_ret"),
+    ("9:10", "next_day_910_ret"),
+    ("9:15", "next_day_915_ret"),
+    ("9:30", "next_day_930_ret"),
+    ("10:00", "next_day_1000_ret"),
+    ("11:30", "next_day_morning_ret"),
+    ("引け", "next_day_open_to_close_ret"),
+]
+
 
 def load_records() -> list[dict[str, Any]]:
     """po_records を返す。"""
@@ -107,6 +119,44 @@ def collect_po_long(records: list[dict[str, Any]],
     return by_mc, by_band
 
 
+def collect_size_by_exit(records: list[dict[str, Any]],
+                         enriched: dict[str, dict[str, Any]]
+                         ) -> dict[str, dict[str, list[float]]]:
+    """GD announce 普通株の long net を 規模band × 出口時刻 で集める。
+
+    時刻別 ret は attrs、引けは enriched から取り、各々往復0.20%控除。
+    """
+    out: dict[str, dict[str, list[float]]] = {
+        b: {label: [] for label, _ in EXIT_FIELDS} for b in SCALE_BANDS
+    }
+    for r in records:
+        if r.get("stage") != "announce" or r.get("po_type") != "普通":
+            continue
+        a = r.get("attrs") or {}
+        gap = a.get("gap_pct")
+        if gap is None or float(gap) > GD_THRESHOLD:
+            continue
+        e = enriched.get(r.get("id", ""))
+        if not e:
+            continue
+        band = e.get("scale_band")
+        if band not in out:
+            continue
+        for label, field in EXIT_FIELDS:
+            val = e.get(field) if field == "next_day_open_to_close_ret" else a.get(field)
+            if val is not None:
+                out[band][label].append(float(val) - COST_PCT)
+    return out
+
+
+def best_exit(by_exit: dict[str, list[float]], min_n: int) -> tuple[str, dict[str, float]] | None:
+    """n≥min_n を満たす出口の中で最大 EV の (出口, stat) を返す。無ければ None。"""
+    cands = [(label, stat(rets)) for label, rets in by_exit.items() if len(rets) >= min_n]
+    if not cands:
+        return None
+    return max(cands, key=lambda x: x[1]["ev"])
+
+
 def scale_band_mc_ranges(records: list[dict[str, Any]],
                          master: list[dict[str, Any]]) -> dict[str, dict[str, float]]:
     """PO universe での scale_band 別 時価総額(億円) 分位。閾値の重複を示す。"""
@@ -155,22 +205,62 @@ def build_report(records: list[dict[str, Any]],
     L.append("- よって「閾値=○○億円」と問われたら答えは**『円閾値では切れない。TOPIX区分で切る』**。")
     L.append("")
 
-    L.append("## ① TOPIX規模区分 別 EV（採用エッジの母体）")
+    L.append("## ① TOPIX規模区分 別 EV（出口=翌引け 一律。採用エッジ①Bの母体）")
     L.append("")
-    L.append("| 規模区分(TOPIX) | n | long net EV | t | 勝率 | 判定 |")
+    L.append("⚠️ この表は全規模に**一律「翌引け」出口**を当てている。中型(①B)の正しい出口は引けなので妥当だが、")
+    L.append("大型は引けが不利な出口（大型は午前で手仕舞う型）。規模ごとの最適出口は次節③を参照。")
+    L.append("")
+    L.append("| 規模区分(TOPIX) | n | long net EV(引け) | t | 勝率 | 判定 |")
     L.append("|---|---|---|---|---|---|")
     _, by_band = collect_po_long(records, enriched)
     band_verdict = {
         "小型": "負（PO翌日ロングは効かない）",
-        "中型": "✅ **①B 本体**（FDR✅/OOS+1.52%）",
-        "大型": "母数極小・効かない（①A保留の根拠）",
+        "中型": "✅ **①B 本体**（引け FDR✅/OOS+1.52%）",
+        "大型": "引けは不利な出口。最適出口でも母数極小（①A保留）",
     }
     for b in SCALE_BANDS:
         s = stat(by_band[b])
         L.append(f"| {b} | {s['n']} | {s['ev']:+.2f}% | {s['t']:+.2f} | {s['win']:.0f}% | {band_verdict[b]} |")
     L.append("")
 
-    L.append("## ② 時価総額(億円) 別 EV（同じ母集団を円で刻み直す）")
+    L.append("## ② 規模 × 出口時刻（GD限定）と 規模別の最適出口")
+    L.append("")
+    L.append("「サイズで最適出口が違う」ことの検証。GD(寄り≤-0.5%)限定・long往復0.20% net。")
+    L.append("9:05〜11:30は分足由来(2024-05以降, n小)、引けは日足で全期間。")
+    L.append("")
+    by_se = collect_size_by_exit(records, enriched)
+    L.append("| 規模＼出口 | " + " | ".join(label for label, _ in EXIT_FIELDS) + " |")
+    L.append("|" + "---|" * (len(EXIT_FIELDS) + 1))
+    for b in SCALE_BANDS:
+        cells = []
+        for label, _ in EXIT_FIELDS:
+            s = stat(by_se[b][label])
+            cells.append(f"{s['ev']:+.2f}%(n{s['n']})" if s["n"] else "—")
+        L.append(f"| {b} | " + " | ".join(cells) + " |")
+    L.append("")
+    L.append("**規模別の最適出口**（n≥10 の出口の中で最大EV。大型は n が小さいため n≥3 で参考表示）:")
+    L.append("")
+    L.append("| 規模 | 最適出口 | EV | t | n | 勝率 | コメント |")
+    L.append("|---|---|---|---|---|---|---|")
+    opt_comment = {
+        "大型": "9:30以降は逆行。午前で手仕舞う型だが分足母数極小で確証なし（①A保留）",
+        "中型": "午前から強く引けまで持続。**引けがFDR★通過**＝①B本体",
+        "小型": "どの出口も負〜フラット。エッジなし",
+    }
+    for b in SCALE_BANDS:
+        be = best_exit(by_se[b], min_n=10) or best_exit(by_se[b], min_n=3)
+        if be is None:
+            L.append(f"| {b} | — | — | — | — | — | {opt_comment[b]} |")
+            continue
+        label, s = be
+        L.append(f"| {b} | {label} | {s['ev']:+.2f}% | {s['t']:+.2f} | {s['n']} | "
+                 f"{s['win']:.0f}% | {opt_comment[b]} |")
+    L.append("")
+    L.append("→ **最適出口で評価しても、頑健に立つのは中型(引け)だけ**。大型は最良の午前出口でも n4〜6 で")
+    L.append("  確証が立たず、引けでは逆行。小型はどの出口も負。詳細マトリクス: `reports/po_scale_timing.md`。")
+    L.append("")
+
+    L.append("## ③ 時価総額(億円) 別 EV（出口=翌引け 一律。同じ母集団を円で刻み直す）")
     L.append("")
     L.append("| 時価総額帯 | n | long net EV | t | 勝率 |")
     L.append("|---|---|---|---|---|")
@@ -187,7 +277,7 @@ def build_report(records: list[dict[str, Any]],
     L.append("  = エッジは『規模の円閾値』ではなく『TOPIX中型というメンバーシップ』が担っている。")
     L.append("")
 
-    L.append("## ③ なぜ円で切れないか: TOPIX区分の円レンジ重複（PO universe 実測）")
+    L.append("## ④ なぜ円で切れないか: TOPIX区分の円レンジ重複（PO universe 実測）")
     L.append("")
     L.append("| 区分 | n | min | 25% | 中央値 | 75% | max | (単位: 億円) |")
     L.append("|---|---|---|---|---|---|---|---|")
