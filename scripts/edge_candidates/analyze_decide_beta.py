@@ -27,7 +27,9 @@ from analyzers.stats import evaluate_cells
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 PO_PATH = REPO_ROOT / "data" / "po_records.json"
 TOPIX_PATH = REPO_ROOT / "data" / "edge_candidates" / "topix_daily.json"
-BARS_PATH = REPO_ROOT / "data" / "edge_candidates" / "daily_bars_universe.json"
+# PO銘柄を2017-フルレンジで集めた専用バー(あれば優先)、無ければ universe(2024-)。
+BARS_PATH = REPO_ROOT / "data" / "edge_candidates" / "daily_bars_po.json"
+BARS_FALLBACK = REPO_ROOT / "data" / "edge_candidates" / "daily_bars_universe.json"
 REPORT_PATH = REPO_ROOT / "reports" / "decide_short_beta.md"
 
 SHORT_COST = 0.15
@@ -47,8 +49,9 @@ def load_topix() -> tuple[dict[str, dict[str, float]], list[str]]:
 
 
 def load_bars() -> dict[str, list[dict[str, Any]]]:
-    """code5 → 日次バー(昇順, AdjO/AdjC)。"""
-    data = json.loads(BARS_PATH.read_text())
+    """code5 → 日次バー(昇順, AdjO/AdjC)。daily_bars_po(2017-)優先、無ければ universe(2024-)。"""
+    path = BARS_PATH if BARS_PATH.exists() else BARS_FALLBACK
+    data = json.loads(path.read_text())
     bars = data.get("bars", data)
     return {c: sorted(v, key=lambda b: b["Date"]) for c, v in bars.items()}
 
