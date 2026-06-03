@@ -122,10 +122,10 @@ def _primary_mag(r: dict[str, Any]) -> float | None:
 
 
 def new_edges_observations(_ignored: list[dict[str, Any]]) -> Iterator[dict[str, Any]]:
-    """このセッションで発見した新エッジ4件を事前登録 named cell で検証する (公式データ拡張)。
+    """発見済み新エッジを事前登録 named cell で検証する (公式データ拡張)。
 
-    複数データ源 (kouaku 程度別 / PO 規模別 / mild_good 軽い減益×増配) を跨ぐため、
-    渡された records は無視し各ファイルを直接読む。4 仮説独立の FDR + walk-forward OOS。
+    複数データ源 (kouaku 程度別 / PO 規模別 / mild_good 軽い減益×増配 / 受渡日ロング) を跨ぐため、
+    渡された records は無視し各ファイルを直接読む。事前登録仮説独立の FDR + walk-forward OOS。
     """
     # ① kouaku 程度別 (大引け後)
     for r in json.loads(KOUAKU_PATH.read_text()).get("records", []):
@@ -168,6 +168,21 @@ def new_edges_observations(_ignored: list[dict[str, Any]]) -> Iterator[dict[str,
                 o = _obs("増配×軽い減益(3%未満)×+3日α short", a.get("alpha_d3_ret"), r)
                 if o:
                     yield o
+    # ④ 受渡日ロング (PO規模主軸): deliver×普通×GD+フラット(gap<0.5%)×PO規模≥300億 寄→引 long
+    #   絶対調達額が大きいほど受渡し前後の機械的売り圧の反動を取れる (規模割合では効かない)。
+    for r in json.loads(PO_PATH.read_text()).get("records", []):
+        if r.get("stage") != "deliver" or r.get("po_type") != "普通":
+            continue
+        a = r.get("attrs") or {}
+        gap = a.get("gap_pct")
+        sc = r.get("po_scale")
+        if gap is None or float(gap) >= 0.5:   # GU除外 (= GD+フラット)
+            continue
+        if not sc or float(sc) < 300:          # PO規模(絶対額) ≥300億
+            continue
+        o = _obs("受渡日×GD+フラット×PO規模≥300億 寄→引 long", a.get("next_day_open_to_close_ret"), r)
+        if o:
+            yield o
 
 
 _SOURCES = {

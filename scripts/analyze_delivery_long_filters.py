@@ -32,10 +32,36 @@ FILTERS: dict[str, Callable[[dict[str, Any]], bool]] = {
     "PO規模≥300億": lambda r: bool(r.get("po_scale")) and float(r["po_scale"]) >= 300,
     "希薄化≤10%": lambda r: r.get("dilution") is not None and float(r["dilution"]) <= 10,
     "希薄化≤5%": lambda r: r.get("dilution") is not None and float(r["dilution"]) <= 5,
+    "規模割合≤8%": lambda r: r.get("po_pct") is not None and float(r["po_pct"]) <= 8,
+    "規模割合≥15%": lambda r: r.get("po_pct") is not None and float(r["po_pct"]) >= 15,
     "信用:貸借": lambda r: r.get("lending_type") == "貸借",
     "gap:GD単独": lambda r: float((r.get("attrs") or {}).get("gap_pct", 0)) <= -0.5,
     "gap:フラット単独": lambda r: -0.5 < float((r.get("attrs") or {}).get("gap_pct", 0)) < 0.5,
 }
+
+
+def _amount_bucket(r: dict[str, Any]) -> str | None:
+    """PO規模(絶対額・億円)のバケット。"""
+    sc = r.get("po_scale")
+    if not sc:
+        return None
+    for lo, hi, lab in [(0, 100, "金額<100億"), (100, 300, "金額100-300億"),
+                        (300, 1000, "金額300-1000億"), (1000, float("inf"), "金額≥1000億")]:
+        if lo <= float(sc) < hi:
+            return lab
+    return None
+
+
+def _pct_bucket(r: dict[str, Any]) -> str | None:
+    """規模割合(po_pct=PO規模/時価総額%)のバケット。"""
+    pp = r.get("po_pct")
+    if pp is None:
+        return None
+    for lo, hi, lab in [(-1, 5, "割合<5%"), (5, 10, "割合5-10%"),
+                        (10, 15, "割合10-15%"), (15, float("inf"), "割合≥15%")]:
+        if lo <= float(pp) < hi:
+            return lab
+    return None
 
 
 def load_records() -> list[dict[str, Any]]:
@@ -82,6 +108,20 @@ def rank_filters(base: list[dict[str, Any]]) -> list[dict[str, Any]]:
     results = evaluate_cells(obs, long_cost=LONG_COST, short_cost=LONG_COST, min_n=MIN_N)
     results.sort(key=lambda r: r["ev_net"], reverse=True)
     return results
+
+
+def breakdown(base: list[dict[str, Any]],
+              bucket_fn: Callable[[dict[str, Any]], str | None]) -> list[dict[str, Any]]:
+    """土台を bucket_fn で分割し、各バケットを evaluate_cells で評価して返す。"""
+    obs: list[dict[str, Any]] = []
+    for r in base:
+        label = bucket_fn(r)
+        if label is None:
+            continue
+        a = r.get("attrs") or {}
+        obs.append({"cell": label, "ret": float(a["next_day_open_to_close_ret"]),
+                    "date": r.get("event_date"), "code": r.get("code")})
+    return evaluate_cells(obs, long_cost=LONG_COST, short_cost=LONG_COST, min_n=MIN_N)
 
 
 def build_report(records: list[dict[str, Any]]) -> str:
@@ -131,6 +171,39 @@ def build_report(records: list[dict[str, Any]]) -> str:
     L.append("- gap:フラット単独は net マイナス。**GD が本体**で、フラットは規模フィルタと重ねて初めてプラス。")
     L.append("- 推奨運用: **PO規模≥300億 を主軸に、希薄化≤10% を重ねる**（時価総額は副次的）。")
     L.append("- ⚠️ 2枚重ねは n が痩せるほど過剰最適化リスク。FDR★かつ OOS プラスを優先。")
+    L.append("")
+
+    # PO規模(絶対額) vs 規模割合(対時価総額) の head-to-head
+    L.append("## PO規模(絶対額) vs 規模割合(対時価総額) ── どちらが効くか")
+    L.append("")
+    L.append("規模割合 po_pct = PO規模÷時価総額%。希薄化との相関は低い(≈0.23)＝別軸。")
+    L.append("")
+    L.append("### A. PO規模(絶対額・億円) 別")
+    L.append("")
+    L.append("| 帯 | n | net EV | t_clust | OOS test |")
+    L.append("|---|---|---|---|---|")
+    for r in sorted(breakdown(base, _amount_bucket), key=lambda x: x["cell"]):
+        oos = r.get("test_ev_net")
+        L.append(f"| {r['cell']} | {r['n']} | {r['ev_net']:+.2f}% | {r['t_clustered']:+.2f} | "
+                 f"{oos:+.2f}% |" if oos is not None else
+                 f"| {r['cell']} | {r['n']} | {r['ev_net']:+.2f}% | {r['t_clustered']:+.2f} | — |")
+    L.append("")
+    L.append("### B. 規模割合(対時価総額%) 別")
+    L.append("")
+    L.append("| 帯 | n | net EV | t_clust | OOS test |")
+    L.append("|---|---|---|---|---|")
+    for r in sorted(breakdown(base, _pct_bucket), key=lambda x: x["cell"]):
+        oos = r.get("test_ev_net")
+        L.append(f"| {r['cell']} | {r['n']} | {r['ev_net']:+.2f}% | {r['t_clustered']:+.2f} | "
+                 f"{oos:+.2f}% |" if oos is not None else
+                 f"| {r['cell']} | {r['n']} | {r['ev_net']:+.2f}% | {r['t_clustered']:+.2f} | — |")
+    L.append("")
+    L.append("**結論**: ")
+    L.append("- **A(絶対額)は単調** ── <100億は負(-0.18%)、300-1000億で+0.97%/t2.53/OOS+0.96%。大きいほど強い。")
+    L.append("- **B(規模割合)は非単調で全帯 t<2** ── 予測力なし。")
+    L.append("→ **効くのは『PO規模の絶対額(調達額)』であって『規模割合(対時価総額)』ではない**。")
+    L.append("  機序: 大型の調達ほど受渡し前後の機械的な売り圧（ブロック消化）が大きく、その反動(戻り)を取る。")
+    L.append("  小型調達は株価を動かすほどの玉が出ず効かない。割合は時価総額で割る分この絶対フローを消してしまう。")
     return "\n".join(L)
 
 
