@@ -21,6 +21,7 @@ from scripts.analyze_reit_po_size_breakdown import build_report as reit_build_re
 from scripts.analyze_buyback_standalone import load_data as buyback_load_data
 from scripts.analyze_buyback_standalone import build_report as buyback_build_report
 from scripts.analyze_short_edges_size import load_master, load_kouaku, load_genshu_d3
+from scripts.analyze_short_edges_size import load_fins_by_code, np_yoy_asof
 from scripts.analyze_short_edges_size import build_report as short_size_build_report
 
 
@@ -112,6 +113,17 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         kouaku = load_kouaku()
         self.assertIsInstance(kouaku, list)
         self.assertIsInstance(load_genshu_d3(), list)
+        self.assertIsInstance(load_fins_by_code(), dict)
+
+    def test_np_yoy_asof_computes_year_over_year(self) -> None:
+        """np_yoy_asof returns same-quarter prior-year NP percent change."""
+        fins = {"13010": [
+            {"DiscDate": "2024-05-10", "CurPerType": "FY", "CurPerEn": "2024-03-31", "NP": "90"},
+            {"DiscDate": "2023-05-10", "CurPerType": "FY", "CurPerEn": "2023-03-31", "NP": "100"},
+        ]}
+        yoy = np_yoy_asof(fins, "13010", "2024-06-01")
+        self.assertAlmostEqual(yoy, -10.0, places=3)
+        self.assertIsNone(np_yoy_asof(fins, "99999", "2024-06-01"))
 
     def test_short_edges_size_report_with_synthetic_data(self) -> None:
         """build_report works on synthetic ④⑤ records (no cache dependency)."""

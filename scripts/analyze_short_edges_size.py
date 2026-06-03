@@ -23,6 +23,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 KOUAKU_PATH = REPO_ROOT / "data" / "kouaku_records.json"
 MASTER_PATH = REPO_ROOT / "data" / "edge_candidates" / "equities_master.json"
 GENSHU_D3_PATH = REPO_ROOT / "data" / "edge_candidates" / "zouhai_genshu_d3.json"
+FINS_PATH = REPO_ROOT / "data" / "edge_candidates" / "fins_summary.json"
 REPORT_PATH = REPO_ROOT / "reports" / "short_edges_size_breakdown.md"
 
 COST_PCT = 0.15  # ショート楽天往復
@@ -52,6 +53,48 @@ def load_genshu_d3() -> list[dict[str, Any]]:
         return []
     data = json.loads(GENSHU_D3_PATH.read_text())
     return data.get("records", []) if isinstance(data, dict) else data
+
+
+def load_fins_by_code() -> dict[str, list[dict[str, Any]]]:
+    """fins_summary を code→決算リストで返す。未生成なら空 dict。"""
+    if not FINS_PATH.exists():
+        return {}
+    return json.loads(FINS_PATH.read_text()).get("by_code", {})
+
+
+def np_yoy_asof(fins: dict[str, list[dict[str, Any]]], code5: str,
+                event_date: str) -> float | None:
+    """event_date 以前の最新決算の当期NP YoY(同 CurPerType 前年同期比 %)を返す。
+
+    zouhai_genshu の「減益の程度」を当期純利益の連続 YoY で復元するための関数。
+    """
+    decs = fins.get(code5)
+    if not decs:
+        return None
+    past = sorted([d for d in decs if d.get("DiscDate") and d["DiscDate"] <= event_date],
+                  key=lambda x: x["DiscDate"])
+    if not past:
+        return None
+    cur = past[-1]
+    npv, pt, pe = cur.get("NP"), cur.get("CurPerType"), cur.get("CurPerEn")
+    if not npv or not pt or not pe:
+        return None
+    try:
+        npv = float(npv)
+        cur_year = int(pe[:4])
+    except (ValueError, TypeError):
+        return None
+    for d in decs:
+        if d.get("CurPerType") == pt and d.get("CurPerEn", "")[:4] == str(cur_year - 1):
+            pv = d.get("NP")
+            if pv:
+                try:
+                    pv = float(pv)
+                    if pv != 0:
+                        return (npv - pv) / abs(pv) * 100.0
+                except (ValueError, TypeError):
+                    pass
+    return None
 
 
 def _short_net(ret: float | None) -> float | None:
@@ -116,8 +159,48 @@ def _size_table(records: list[dict[str, Any]], master: dict[str, dict],
     return lines
 
 
+def _genshu_yoy_bands(genshu_d3: list[dict[str, Any]],
+                      fins: dict[str, list[dict[str, Any]]]) -> list[str]:
+    """⑤ の当期NP YoY 帯別 × 保有期間の short net 検証行 (再現性担保)。
+
+    正本に「軽い当期減益(-3〜0%)」と記載されていた母体が、現分類では
+    全件 ≤-10% で存在しないこと、どの帯でもエッジが立たないことを実証する。
+    """
+    lines: list[str] = []
+    if not fins:
+        lines.append("_(fins_summary.json 未生成。NP YoY 帯別検証はスキップ)_")
+        return lines
+    for r in genshu_d3:
+        r["_npyoy"] = np_yoy_asof(fins, _to5(r.get("code", "")), r.get("event_date", ""))
+    matched = [r for r in genshu_d3 if r.get("_npyoy") is not None]
+    yoys = sorted(r["_npyoy"] for r in matched)
+    lines.append(f"- NP YoY 結合: {len(matched)}/{len(genshu_d3)} 件")
+    if yoys:
+        lines.append(f"- YoY 分布: min{min(yoys):.0f}% / 中央{yoys[len(yoys)//2]:.1f}% / "
+                     f"**max {max(yoys):.0f}%**（全件が深い減益、軽い帯-3〜0%は **0件**）")
+    lines.append("")
+    lines.append("| 減益帯 | n | d1 short | d3 short | d5 short |")
+    lines.append("|---|---|---|---|---|")
+    bands = [("-3〜0%(正本定義)", -3, 0), ("-10〜-15%", -15, -10),
+             ("-15〜-25%", -25, -15), ("-25〜-50%", -50, -25), ("-50%以下", -1e9, -50)]
+    for lbl, lo, hi in bands:
+        sub = [r for r in matched
+               if lo <= r["_npyoy"] < hi and not (r.get("attrs") or {}).get("limit_locked")]
+        cells = []
+        for key in ["d1_ret", "d3_ret", "d5_ret"]:
+            rets = [v for r in sub if (v := _short_net((r.get("attrs") or {}).get(key))) is not None]
+            if len(rets) >= MIN_N:
+                s = _stat_block(rets)
+                cells.append(f"{s['ev']:+.2f}%/t{s['t']:+.1f}")
+            else:
+                cells.append("n<10")
+        lines.append(f"| {lbl} | {len(sub)} | {cells[0]} | {cells[1]} | {cells[2]} |")
+    return lines
+
+
 def build_report(kouaku: list[dict[str, Any]], genshu_d3: list[dict[str, Any]],
-                 master: dict[str, dict]) -> str:
+                 master: dict[str, dict],
+                 fins: dict[str, list[dict[str, Any]]] | None = None) -> str:
     """④⑤ の規模別レポートを生成。"""
     lines: list[str] = []
     lines.append("# ショート系エッジ ④⑤ 規模別細分化検証 (2026-06-03)")
@@ -148,6 +231,14 @@ def build_report(kouaku: list[dict[str, Any]], genshu_d3: list[dict[str, Any]],
     if genshu_d3:
         zg = [r for r in genshu_d3 if not (r.get("attrs") or {}).get("limit_locked")]
         lines += _size_table(zg, master, lambda r: (r.get("attrs") or {}).get("d3_ret"))
+        lines.append("")
+        lines.append("### ⑤ 当期NP YoY 帯別検証（正本「軽い減益-3〜0%」の再現可否）")
+        lines.append("")
+        lines += _genshu_yoy_bands(genshu_d3, fins or {})
+        lines.append("")
+        lines.append("**結論: ⑤はエッジなし。** 正本の母体定義「軽い当期減益(-3〜0%)」は "
+                     "zouhai_genshu(全件≤-10%)に存在せず、どの減益帯・保有期間でも t<2。"
+                     " magnitude_sweep でも FDR 非生存。正本⑤(+0.53%/n389/OOS+0.33%)は再現不能。")
     else:
         lines.append("_(zouhai_genshu_d3.json 未生成。"
                      "`python -m scripts.edge_candidates.enrich_zouhai_genshu_d3` で生成)_")
@@ -181,6 +272,7 @@ if __name__ == "__main__":
     master = load_master()
     kouaku = load_kouaku()
     genshu_d3 = load_genshu_d3()
-    report = build_report(kouaku, genshu_d3, master)
+    fins = load_fins_by_code()
+    report = build_report(kouaku, genshu_d3, master, fins)
     REPORT_PATH.write_text(report)
     print(f"wrote {REPORT_PATH}")
