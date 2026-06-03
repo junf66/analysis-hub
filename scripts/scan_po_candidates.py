@@ -112,10 +112,11 @@ def signal_ret(record: dict[str, Any], enriched_entry: dict[str, Any],
 
 def build_observations(records: list[dict[str, Any]],
                        enriched: dict[str, dict[str, Any]],
-                       max_combo: int = 2) -> list[dict[str, Any]]:
+                       max_combo: int = 2, since: str | None = None) -> list[dict[str, Any]]:
     """(シグナル × 軸の組合せ) を cell とする観測リストを作る。
 
     max_combo=2 で単一軸に加え2軸の掛け合わせ(=トラッカーで複数フィルタを併用)も総当たり。
+    since (ISO date) を渡すと event_date≥since のレコードのみに絞る (期間限定スキャン)。
     cell = (シグナル名, (条件ラベル, ...))。
     """
     obs: list[dict[str, Any]] = []
@@ -124,6 +125,8 @@ def build_observations(records: list[dict[str, Any]],
         e = enriched.get(r.get("id", "")) or {}
         date = r.get("event_date")
         code = r.get("code")
+        if since and (not date or date < since):
+            continue
         for sig in SIGNALS:
             if stage != sig["stage"]:
                 continue
@@ -144,9 +147,9 @@ def build_observations(records: list[dict[str, Any]],
 
 
 def scan(records: list[dict[str, Any]],
-         enriched: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+         enriched: dict[str, dict[str, Any]], since: str | None = None) -> list[dict[str, Any]]:
     """全セルを evaluate_cells で評価し、候補(ev_net>0 かつ t_clustered≥下限)を返す。"""
-    obs = build_observations(records, enriched)
+    obs = build_observations(records, enriched, since=since)
     results = evaluate_cells(obs, long_cost=LONG_COST, short_cost=SHORT_COST, min_n=MIN_N)
     cands = [r for r in results if r["ev_net"] > 0 and r["t_clustered"] >= TC_CANDIDATE]
     cands.sort(key=lambda r: r["t_clustered"], reverse=True)
@@ -194,8 +197,21 @@ def build_report(records: list[dict[str, Any]],
     return "\n".join(L)
 
 
-if __name__ == "__main__":
+def main(argv: list[str] | None = None) -> None:
+    """CLI: --since YYYY-MM-DD で期間限定スキャン (健全性チェック用)。"""
+    import argparse
+    ap = argparse.ArgumentParser(description="PO候補スキャン (全次元総当たり)")
+    ap.add_argument("--since", default=None, help="event_date≥SINCE のみ (例: 2024-06-03)")
+    args = ap.parse_args(argv)
     records = load_records()
     enriched = load_enriched()
-    REPORT_PATH.write_text(build_report(records, enriched))
-    print(f"wrote {REPORT_PATH}")
+    cands = scan(records, enriched, since=args.since)
+    scope = f"直近(≥{args.since})" if args.since else "全期間"
+    print(f"[{scope}] 候補 {len(cands)}件 / FDR★ {sum(1 for c in cands if c['fdr_significant'])}件")
+    if args.since is None:
+        REPORT_PATH.write_text(build_report(records, enriched))
+        print(f"wrote {REPORT_PATH}")
+
+
+if __name__ == "__main__":
+    main()

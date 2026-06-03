@@ -294,6 +294,16 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         # 2軸の掛け合わせが少なくとも1つ存在
         self.assertTrue(any(len(c) == 2 for c in combos))
 
+    def test_scan_since_filter_reduces_sample(self) -> None:
+        """scan(since=...) restricts to recent events (fewer or equal candidates' base)."""
+        records = scan_load_records()
+        enriched = scan_load_enriched()
+        from scripts.scan_po_candidates import build_observations
+        full = len(build_observations(records, enriched))
+        recent = len(build_observations(records, enriched, since="2024-06-03"))
+        self.assertLessEqual(recent, full)
+        self.assertGreater(full, 0)
+
     def test_scan_runs_and_reports_on_cache(self) -> None:
         """scan returns candidate dicts and build_report renders from real cache."""
         records = scan_load_records()
