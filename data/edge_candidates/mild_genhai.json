@@ -1,0 +1,136 @@
+{
+"records": [
+{
+"code": "4641",
+"event_date": "2022-02-09",
+"source": "official",
+"attrs": {
+"div_yoy": -2.500000000000002,
+"np_yoy": 1.2430487405953539,
+"goods": [
+"jisha"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "1951",
+"event_date": "2023-02-10",
+"source": "official",
+"attrs": {
+"div_yoy": -1.9230769230769273,
+"np_yoy": -19.927249153641146,
+"goods": [
+"jisha"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "1925",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"div_yoy": -1.4084507042253502,
+"np_yoy": 36.90072445754466,
+"goods": [
+"jisha"
+],
+"disc_time": "14:00:00"
+}
+},
+{
+"code": "1951",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"div_yoy": -1.9230769230769273,
+"np_yoy": -19.927249153641146,
+"goods": [
+"jisha"
+],
+"disc_time": "16:00:00"
+}
+},
+{
+"code": "2331",
+"event_date": "2023-05-12",
+"source": "official",
+"attrs": {
+"div_yoy": -2.2727272727272707,
+"np_yoy": -17.311144869493166,
+"goods": [
+"split"
+],
+"disc_time": "15:00:00"
+}
+},
+{
+"code": "3092",
+"event_date": "2025-04-30",
+"source": "official",
+"attrs": {
+"div_yoy": -1.8181818181818188,
+"np_yoy": 2.2665253377235572,
+"goods": [
+"jisha"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "4671",
+"event_date": "2026-05-12",
+"source": "official",
+"attrs": {
+"div_yoy": -0.7936507936507908,
+"np_yoy": 5.000000000000004,
+"goods": [
+"jisha"
+],
+"disc_time": "16:30:00"
+}
+},
+{
+"code": "9303",
+"event_date": "2026-05-12",
+"source": "official",
+"attrs": {
+"div_yoy": -1.904761904761909,
+"np_yoy": -11.946174931472708,
+"goods": [
+"jisha"
+],
+"disc_time": "13:20:00"
+}
+},
+{
+"code": "9065",
+"event_date": "2026-05-14",
+"source": "official",
+"attrs": {
+"div_yoy": -1.538461538461533,
+"np_yoy": 2.4652811656421747,
+"goods": [
+"jisha",
+"split"
+],
+"disc_time": "15:30:00"
+}
+},
+{
+"code": "8630",
+"event_date": "2026-05-20",
+"source": "official",
+"attrs": {
+"div_yoy": -1.3157894736842146,
+"np_yoy": 163.26686738068207,
+"goods": [
+"jisha"
+],
+"disc_time": "16:30:00"
+}
+}
+],
+"count": 10
+}
