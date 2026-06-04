@@ -17,8 +17,17 @@
 
 ## 1. 🔴 今すぐやる残タスク: EDINET 自社株買い規模%の過去分取得
 
+### ⚠️ 2026-06-04 判明: キーの「サービス取り違え」が401の真因（PR #17/#18 の診断は誤り）
+- 401 の原因は「キーが無効/非正規形式」ではなく、**キーがサードパーティ `edinetdb.jp`(EDINET DB) 用**だったこと。
+  `edb_` プレフィックスは edinetdb.jp のキー形式の一部（正規）。本スクリプトが叩く**公式 EDINET API v2
+  (`api.edinet-fsa.go.jp`) とは別サービス**なので弾かれて401になっていた（PR #17/#18 の「非正規/無効キー」は誤診断 → **両PRは close 推奨**）。
+- edinetdb.jp は使わない方針（ユーザー選択）。理由: ①本env未allowlist(`host_not_allowed`) ②無料枠100req/日では8年分バックフィル非現実的 ③構造DB型(/v1/companies等)で170報告書の項目を持つか不明。
+- **公式 EDINET API v2 キーを無料発行**して `EDINET_API_KEY` に設定する（32桁hex / `edb_` なし / 認証は `Subscription-Key`）:
+  発行ページ → https://api.edinet-fsa.go.jp/api/auth/index.aspx?mode=1 （多要素認証サインイン→連絡先登録でキー表示）。
+  ※スクリプトは公式キー前提に修正済み（`edb_` キーは早期に分かりやすく SystemExit）。
+
 - スクリプト: `scripts/edge_candidates/fetch_buyback_edinet.py`（main 反映済み）。
-- 前提: 環境変数 `EDINET_API_KEY`（無料登録キー）。**環境変数はコンテナ起動時に読み込まれる**ので、キー追加後は新セッションで有効。ネットワーク `api.edinet-fsa.go.jp` は許可済み。
+- 前提: 環境変数 `EDINET_API_KEY` = **公式 EDINET API v2 の Subscription-Key**（上記で無料発行）。**環境変数はコンテナ起動時に読み込まれる**ので、キー設定後は新セッションで有効。ネットワーク `api.edinet-fsa.go.jp` は許可済み（コード/ネットワーク変更不要）。
 - 手順:
   1. 疎通確認: 直近日の docTypeCode=170 を1-2件 `parse_edinet_csv` できるか。
   2. 小さく: `python -m scripts.edge_candidates.fetch_buyback_edinet --from 2025-01-01 --sleep 1.5`
