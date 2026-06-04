@@ -57,6 +57,7 @@ from scripts.analyze_delivery_long_filters import build_report as flt_build_repo
 from scripts.analyze_delivery_long_filters import build_observations as flt_build_obs
 from scripts.edge_candidates.enrich_buyback_pdf import parse_buyback_text, merge_decisions
 from scripts.edge_candidates.extract_mild_cases import build_events as mild_cases_build
+from scripts.edge_candidates.fetch_buyback_edinet import parse_edinet_csv, sec_to_code4
 
 
 class TestAnalyzeNewScripts(unittest.TestCase):
@@ -437,6 +438,22 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertEqual(got["buyback_max_amount"], 2000000000.0)
         # 規模%が無いテキストは None
         self.assertIsNone(parse_buyback_text("規模に関する記載なし")["buyback_ratio_pct"])
+
+    def test_edinet_buyback_parse_and_code(self) -> None:
+        """parse_edinet_csv は割合を%正規化(小数→×100)、secCode 5桁→4桁変換(依存なし)。"""
+        csv = "\n".join([
+            "\t".join(["要素ID", "項目名", "ctx", "yr", "ci", "pd", "u", "unit", "値"]),
+            "\t".join(["a", "発行済株式総数に対する割合", "", "", "", "", "", "純", "0.0308"]),
+            "\t".join(["b", "取得した株式の総数", "", "", "", "", "", "株", "1,000,000"]),
+            "\t".join(["c", "取得価額の総額", "", "", "", "", "", "円", "2,000,000,000"]),
+        ])
+        got = parse_edinet_csv(csv)
+        self.assertAlmostEqual(got["buyback_ratio_pct"], 3.08, places=2)
+        self.assertEqual(got["buyback_max_shares"], 1000000.0)
+        self.assertEqual(got["buyback_max_amount"], 2000000000.0)
+        self.assertEqual(sec_to_code4("72030"), "7203")
+        self.assertEqual(sec_to_code4("7203"), "7203")
+        self.assertIsNone(sec_to_code4(None))
 
     def test_buyback_merge_decisions_dedup(self) -> None:
         """merge_decisions は DiscNo で重複排除し新しい順に並べる(週次cron用)。"""
