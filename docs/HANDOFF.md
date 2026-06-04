@@ -15,17 +15,26 @@
 
 ---
 
-## 1. 🔴 今すぐやる残タスク: EDINET 自社株買い規模%の過去分取得
+## 1. 🟡 継続タスク: EDINET 自社株買い規模%（resumeで完走）＋ J-Quantsキー検証
 
-- スクリプト: `scripts/edge_candidates/fetch_buyback_edinet.py`（main 反映済み）。
-- 前提: 環境変数 `EDINET_API_KEY`（無料登録キー）。**環境変数はコンテナ起動時に読み込まれる**ので、キー追加後は新セッションで有効。ネットワーク `api.edinet-fsa.go.jp` は許可済み。
-- 手順:
-  1. 疎通確認: 直近日の docTypeCode=170 を1-2件 `parse_edinet_csv` できるか。
-  2. 小さく: `python -m scripts.edge_candidates.fetch_buyback_edinet --from 2025-01-01 --sleep 1.5`
-  3. 全期間: `python -m scripts.edge_candidates.fetch_buyback_edinet --from 2018-01-01 --sleep 1.5`
-  4. `data/edge_candidates/buyback_ratios.json` を commit → PR → merge。
-- 仕様: EDINET は「自己株券買付状況報告書(170)＝実施状況(実績/累計)」で、TDnet の「決定枠上限%」とは意味が違う。`source="edinet"` / 既存TDnet分は `source="tdnet"` を自動付与。失敗 docID は `failed[]` に記録、再実行で resume。rate limit 1.5秒/req。
-- 受け手（別repo stocks-Large-holding-report）は `source` で tdnet/edinet を区別してバッジ表示する。
+> 公式キー反映後に実APIへ初到達し、前提が2点ズレていたため**スクリプトを修正**済み。取得は**進行中（resume可能）**。新セッションは下記を続きから完走させる。170/8年分は誤り。
+
+### 1-0. 最初に: J-Quants キー検証（ユーザーが env を更新済み）
+- 旧キーが失効（403 `invalid or expired`）→ ユーザーが `JQUANTS_API_KEY` を更新。**env はコンテナ起動時読込なので新セッションで初めて有効**。
+- まず疎通: `python3 -c "import os,urllib.request,json; k=os.environ['JQUANTS_API_KEY']; print(json.loads(urllib.request.urlopen(urllib.request.Request('https://api.jquants.com/v2/td/list?date=2026-06-03',headers={'x-api-key':k})).read()).keys())"` が 200 で返れば有効（旧キーの tail は `l7NM`、変わっていること）。403 なら再度ユーザーへ。
+- J-Quants が復活すれば kouaku/PO/master 等の更新が再開可能。EDINET タスクには J-Quants 不要。
+
+### 1-1. EDINET バックフィルを resume で完走
+- スクリプト: `scripts/edge_candidates/fetch_buyback_edinet.py`。EDINET キー（公式・32桁hex。`edb_` 始まりは別サービスで弾く）。`api.edinet-fsa.go.jp` 許可済み。
+- **進行状況: `data/edge_candidates/buyback_ratios.json` に edinet 約2,660件（規模%取得 約2,600件 / failed 1）コミット済み**。窓 2025-06-01〜2026-06-04 を途中まで取得。
+- 続き: `python -m scripts.edge_candidates.fetch_buyback_edinet --from 2025-06-01 --to 2026-06-04 --sleep 0.7`（**docID 単位で resume**＝既取得はスキップ。完走まで数時間。バックグラウンド推奨）。完了後 commit → PR #20 を ready 化。
+- **訂正1: docTypeCode は 220/230**（自己株券買付状況報告書／訂正版）。`170` は訂正半期報告書で別物。
+- **訂正2: パーサは XBRL 要素名一致では取れない**。実 220 報告書は数値が**テキストブロック**（「取締役会(株主総会)決議による取得の状況」「保有状況」）に埋込で、決議枠の株数・金額は区切り無し連結→カンマ区切り `\d{1,3}(,\d{3})*` で分割。`parse_edinet_csv` を全面書換（実52件中51件で抽出確認、全角数字・全角括弧・（上限）注記対応）。
+- **訂正3: EDINET はこの報告書を約1年（縦覧期間）しか保持しない**。取得可能なのは概ね**直近12か月（2025-06〜）のみ**。8年遡及は物理的に不可能。TDnet PDF（5週間）よりは大幅に長い。継続蓄積は週次cronが本筋。
+- 指標: `buyback_ratio_pct = 取得枠株数 / 発行済株式総数 ×100`（=TDnet 取得枠上限%と**同一指標**でバッジ比較可）。他に `buyback_max_shares/amount`・`issued_shares`・`cumulative_shares/amount`・`decision_date`・`event_date`(報告対象月末)。`source="edinet"`／既存TDnet分は `source="tdnet"` 自動付与。
+- **既知の小不具合**: event_date が未来日になる稀ケース1件（code 5592 → 2026-08-31、報告期間 至 の解析エッジ）。failed 1件。完走後にまとめてクレンジング可（必須でない）。
+- 受け手（別repo stocks-Large-holding-report）は `source` で tdnet/edinet を区別してバッジ表示。
+- 既存 PR: **#20（draft, branch `claude/sleepy-ramanujan-3R30n`）** に修正＋データ反映済み。テスト 361 pass / audit 0。完走データを push 後に ready 化＆ squash merge。
 
 ---
 
