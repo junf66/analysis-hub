@@ -15,17 +15,19 @@
 
 ---
 
-## 1. 🔴 今すぐやる残タスク: EDINET 自社株買い規模%の過去分取得
+## 1. ✅ EDINET 自社株買い規模%取得（実装修正＋取得完了・2026-06-04）
 
-- スクリプト: `scripts/edge_candidates/fetch_buyback_edinet.py`（main 反映済み）。
-- 前提: 環境変数 `EDINET_API_KEY`（無料登録キー）。**環境変数はコンテナ起動時に読み込まれる**ので、キー追加後は新セッションで有効。ネットワーク `api.edinet-fsa.go.jp` は許可済み。
-- 手順:
-  1. 疎通確認: 直近日の docTypeCode=170 を1-2件 `parse_edinet_csv` できるか。
-  2. 小さく: `python -m scripts.edge_candidates.fetch_buyback_edinet --from 2025-01-01 --sleep 1.5`
-  3. 全期間: `python -m scripts.edge_candidates.fetch_buyback_edinet --from 2018-01-01 --sleep 1.5`
-  4. `data/edge_candidates/buyback_ratios.json` を commit → PR → merge。
-- 仕様: EDINET は「自己株券買付状況報告書(170)＝実施状況(実績/累計)」で、TDnet の「決定枠上限%」とは意味が違う。`source="edinet"` / 既存TDnet分は `source="tdnet"` を自動付与。失敗 docID は `failed[]` に記録、再実行で resume。rate limit 1.5秒/req。
+> 公式キー反映後に実APIへ初到達し、前提が2点ズレていたことが判明したため**スクリプトを修正**して取得した。次セッションは下記の確定事実を土台にすること（170/8年分は誤り）。
+
+- スクリプト: `scripts/edge_candidates/fetch_buyback_edinet.py`。
+- 前提: 環境変数 `EDINET_API_KEY`（公式 EDINET API のキー。32桁hex。**`edb_`始まりは別サービス edinetdb.jp のキーで弾く**）。`api.edinet-fsa.go.jp` 許可済み。J-Quants キーは本タスク不要。
+- **訂正1: docTypeCode は 220/230**（自己株券買付状況報告書／訂正版）。`170` は訂正半期報告書で別物だった。
+- **訂正2: パーサは XBRL 要素名一致では取れない**。実 220 報告書は数値が**テキストブロック**（「取締役会決議による取得の状況」「保有状況」）に埋込で、決議枠の株数・金額は区切り無し連結→カンマ区切りで分割。`parse_edinet_csv` を全面書換（実52件中51件で規模%抽出を確認、全角数字・全角括弧・（上限）注記対応）。
+- **訂正3: EDINET はこの報告書を約1年（縦覧期間）しか保持しない**。実測で取得可能なのは概ね**直近12か月（2025-06〜）のみ**。8年遡及は物理的に不可能。それでも TDnet PDF（5週間で消滅）より大幅に長い。
+- 指標: `buyback_ratio_pct = 取得枠株数 / 発行済株式総数 ×100`（=決定枠%。TDnet の取得枠上限%と**同一指標**でバッジ比較可）。他に `buyback_max_shares/amount`（取得枠）、`issued_shares`、`cumulative_shares/amount`（報告月末累計）、`decision_date`、`event_date`（報告対象月末）。`source="edinet"`、既存TDnet分は `source="tdnet"` 自動付与。docID 単位で resume（`failed[]` は再実行で再取得）。
+- 取得: `python -m scripts.edge_candidates.fetch_buyback_edinet --from 2025-06-01 --sleep 0.7`（既定 `--from` も 2025-06-01）。`data/edge_candidates/buyback_ratios.json` に追記。
 - 受け手（別repo stocks-Large-holding-report）は `source` で tdnet/edinet を区別してバッジ表示する。
+- 前進蓄積: EDINET は1年で消えるため、週次cron（`weekly_data.yml` / 要 Secrets `EDINET_API_KEY`）で**継続取得して過去を貯める**運用が本筋。
 
 ---
 

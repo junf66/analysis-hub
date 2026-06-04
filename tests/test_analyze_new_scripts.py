@@ -440,17 +440,48 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertIsNone(parse_buyback_text("規模に関する記載なし")["buyback_ratio_pct"])
 
     def test_edinet_buyback_parse_and_code(self) -> None:
-        """parse_edinet_csv は割合を%正規化(小数→×100)、secCode 5桁→4桁変換(依存なし)。"""
+        """parse_edinet_csv は実 220 報告書のテキストブロックから取得枠規模%等を抽出。
+
+        実データの癖を再現: 決議枠の株数・金額は区切り無し連結(カンマ区切りで分割)、
+        日付は全角数字、発行済株式総数は「保有状況」ブロックに在る。
+        """
+        # 取得枠 6,000,000株 / 7,500,000,000円(連結)、発行済 86,021,392 → 6.975%
+        res = ("区分株式数(株)価額の総額(円)取締役会(2026年５月８日)での決議状況"
+               "(取得期間2026年５月18日～2027年２月26日) 6,000,0007,500,000,000"
+               "報告月における取得自己株式(取得日)５月18日26,20042,525,500"
+               "計―260,100 423,753,800 報告月末現在の累計取得自己株式 260,100 423,753,800"
+               "自己株式取得の進捗状況(％) 4.3 5.7 (注)")
+        hold = "報告月末日における保有状況株式数(株)発行済株式総数86,021,392保有自己株式数670,186"
         csv = "\n".join([
             "\t".join(["要素ID", "項目名", "ctx", "yr", "ci", "pd", "u", "unit", "値"]),
-            "\t".join(["a", "発行済株式総数に対する割合", "", "", "", "", "", "純", "0.0308"]),
-            "\t".join(["b", "取得した株式の総数", "", "", "", "", "", "株", "1,000,000"]),
-            "\t".join(["c", "取得価額の総額", "", "", "", "", "", "円", "2,000,000,000"]),
+            "\t".join(["a", "報告期間、表紙", "", "", "", "", "", "", "自 2026年５月１日 至 2026年５月31日"]),
+            "\t".join(["b", "取締役会決議による取得の状況 [テキストブロック]", "", "", "", "", "", "", res]),
+            "\t".join(["c", "保有状況 [テキストブロック]", "", "", "", "", "", "", hold]),
         ])
         got = parse_edinet_csv(csv)
-        self.assertAlmostEqual(got["buyback_ratio_pct"], 3.08, places=2)
-        self.assertEqual(got["buyback_max_shares"], 1000000.0)
-        self.assertEqual(got["buyback_max_amount"], 2000000000.0)
+        self.assertAlmostEqual(got["buyback_ratio_pct"], 6.975, places=2)
+        self.assertEqual(got["buyback_max_shares"], 6000000.0)
+        self.assertEqual(got["buyback_max_amount"], 7500000000.0)
+        self.assertEqual(got["issued_shares"], 86021392.0)
+        self.assertEqual(got["cumulative_shares"], 260100.0)
+        self.assertEqual(got["cumulative_amount"], 423753800.0)
+        self.assertEqual(got["decision_date"], "2026-05-08")  # 全角→半角
+        self.assertEqual(got["report_end"], "2026-05-31")
+        # 取得枠が（上限）注記混じり・全角括弧でも分割できる
+        res2 = ("区分株式数（株）価額の総額（円）取締役会（2026年５月14日）での決議状況"
+                "（取得期間 2026年６月１日～2027年３月23日）750,000(上限)285,000,000(上限)"
+                "報告月における取得自己株式")
+        csv2 = "\n".join([
+            "\t".join(["要素ID", "項目名", "v"]),
+            "\t".join(["b", "取締役会決議による取得の状況 [テキストブロック]", res2]),
+            "\t".join(["c", "保有状況 [テキストブロック]", "発行済株式総数16,086,250保有自己株式数1"]),
+        ])
+        got2 = parse_edinet_csv(csv2)
+        self.assertEqual(got2["buyback_max_shares"], 750000.0)
+        self.assertEqual(got2["buyback_max_amount"], 285000000.0)
+        self.assertAlmostEqual(got2["buyback_ratio_pct"], 4.662, places=2)
+        # 発行済株式総数が無いテキストは ratio None
+        self.assertIsNone(parse_edinet_csv("項目名\t値")["buyback_ratio_pct"])
         self.assertEqual(sec_to_code4("72030"), "7203")
         self.assertEqual(sec_to_code4("7203"), "7203")
         self.assertIsNone(sec_to_code4(None))
