@@ -57,7 +57,8 @@ from scripts.analyze_delivery_long_filters import build_report as flt_build_repo
 from scripts.analyze_delivery_long_filters import build_observations as flt_build_obs
 from scripts.edge_candidates.enrich_buyback_pdf import parse_buyback_text, merge_decisions
 from scripts.edge_candidates.extract_mild_cases import build_events as mild_cases_build
-from scripts.edge_candidates.fetch_buyback_edinet import parse_edinet_csv, sec_to_code4
+from scripts.edge_candidates.fetch_buyback_edinet import (
+    _validate_official_key, parse_edinet_csv, sec_to_code4)
 
 
 class TestAnalyzeNewScripts(unittest.TestCase):
@@ -454,6 +455,14 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertEqual(sec_to_code4("72030"), "7203")
         self.assertEqual(sec_to_code4("7203"), "7203")
         self.assertIsNone(sec_to_code4(None))
+
+    def test_edinet_key_validation(self) -> None:
+        """公式キーは通し、edinetdb.jp(edb_)キーと未設定は分かりやすく弾く。"""
+        self.assertEqual(_validate_official_key("c650c0aabbcc"), "c650c0aabbcc")
+        with self.assertRaises(SystemExit):
+            _validate_official_key("edb_c650c0aabbcc")  # edinetdb.jp のキー
+        with self.assertRaises(SystemExit):
+            _validate_official_key(None)  # 未設定
 
     def test_buyback_merge_decisions_dedup(self) -> None:
         """merge_decisions は DiscNo で重複排除し新しい順に並べる(週次cron用)。"""
