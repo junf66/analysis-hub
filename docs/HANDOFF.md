@@ -17,6 +17,14 @@
 
 ## 1. 🔴 今すぐやる残タスク: EDINET 自社株買い規模%の過去分取得
 
+> **最新状態 (2026-06-04, セッション exciting-fermi)**: 🔴 **キー差し替え後も 401 で停止**。
+> 差し替え後の `EDINET_API_KEY` は **形式は正規(32桁hex・`edb_`始まりでない、前回の形式不一致は解消)** だが、
+> EDINET ゲートウェイ(Azure APIM)が **HTTP200本体で `{"StatusCode":401, "message":"Access denied due to invalid subscription key..."}`** を返す。
+> 認証3方式(query `Subscription-Key=` / header `Ocp-Apim-Subscription-Key` / header `Subscription-Key`)すべて同一401。
+> = transport でなく **キー値そのものが EDINET の有効な購読として登録されていない**(形式は合うが無効/未アクティベート/別物)。
+> → **要ユーザー対応**: EDINET API v2 のマイページで発行した正規キーか、購読が有効化済みか再確認の上で再差し替え。
+> 疎通(手順1)が `results` を返すまで手順2以降は実行不可。コード側の不具合ではない(同一の純関数CIは緑)。
+
 - スクリプト: `scripts/edge_candidates/fetch_buyback_edinet.py`（main 反映済み）。
 - 前提: 環境変数 `EDINET_API_KEY`（無料登録キー）。**環境変数はコンテナ起動時に読み込まれる**ので、キー追加後は新セッションで有効。ネットワーク `api.edinet-fsa.go.jp` は許可済み。
 - 手順:
