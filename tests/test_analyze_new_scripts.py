@@ -55,7 +55,7 @@ from scripts.analyze_delivery_long_filters import base_records, rank_filters
 from scripts.analyze_delivery_long_filters import load_records as flt_load_records
 from scripts.analyze_delivery_long_filters import build_report as flt_build_report
 from scripts.analyze_delivery_long_filters import build_observations as flt_build_obs
-from scripts.edge_candidates.enrich_buyback_pdf import parse_buyback_text
+from scripts.edge_candidates.enrich_buyback_pdf import parse_buyback_text, merge_decisions
 from scripts.edge_candidates.extract_mild_cases import build_events as mild_cases_build
 
 
@@ -437,6 +437,15 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertEqual(got["buyback_max_amount"], 2000000000.0)
         # 規模%が無いテキストは None
         self.assertIsNone(parse_buyback_text("規模に関する記載なし")["buyback_ratio_pct"])
+
+    def test_buyback_merge_decisions_dedup(self) -> None:
+        """merge_decisions は DiscNo で重複排除し新しい順に並べる(週次cron用)。"""
+        existing = [{"DiscNo": "1", "DiscDate": "2026-05-01"}]
+        new = [{"DiscNo": "1", "DiscDate": "2026-05-01"},  # 既存と重複
+               {"DiscNo": "2", "DiscDate": "2026-05-10"}]  # 新規
+        merged = merge_decisions(existing, new)
+        self.assertEqual(len(merged), 2)
+        self.assertEqual(merged[0]["DiscNo"], "2")  # 新しい順
 
     def test_mild_cases_build_events(self) -> None:
         """mild_bad=軽い増益×減配, mild_genhai=微減配×好材料 を正しく拾う。"""

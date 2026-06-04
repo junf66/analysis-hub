@@ -1,0 +1,48 @@
+name: weekly-data
+
+# 自社株買い規模%(buyback_ratios) と mild_* を週次で前進蓄積する。
+# TDnet PDF は約5週間で消えるため、毎週走らせて取れるうちに規模%を確定保存する。
+# 前提: リポジトリ Settings → Secrets に JQUANTS_API_KEY を登録すること。
+
+on:
+  schedule:
+    - cron: "0 0 * * 1"   # 毎週月曜 0:00 UTC
+  workflow_dispatch: {}    # 手動再実行用
+
+permissions:
+  contents: write          # data/*.json を commit & push する
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install PDF deps (batch only; CI tests stay stdlib)
+        run: pip install pypdf cffi
+      - name: Refresh buyback decisions + parse PDFs (前進蓄積)
+        run: |
+          python -m scripts.edge_candidates.enrich_buyback_pdf --refresh-list 14 --sleep 5
+      - name: Refresh mild cases (軽い○○×反対材料)
+        # mild_good は alpha_d3_ret(⑤依存)を持つため触らない。新3ケースのみ再生成。
+        run: |
+          python -m scripts.edge_candidates.extract_mild_cases || true
+      - name: Commit & push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/edge_candidates/buyback_ratios.json \
+                  data/edge_candidates/td_buyback_decisions.json \
+                  data/edge_candidates/mild_bad.json \
+                  data/edge_candidates/mild_zouhai.json \
+                  data/edge_candidates/mild_genhai.json
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "weekly data update $(date -u +%Y-%m-%d)"
+            git push
+          fi

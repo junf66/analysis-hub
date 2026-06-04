@@ -42,6 +42,35 @@ def _num(s: str | None) -> float | None:
     return float(s.replace(",", "")) if s else None
 
 
+BUYBACK_ITEM = "11105"  # 自己株式取得の DiscItems コード
+
+
+def merge_decisions(existing: list[dict[str, Any]], new: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """既存 + 新規の自社株買い決定を DiscNo で重複排除して返す(新しい順)。"""
+    by_no = {str(r.get("DiscNo")): r for r in existing}
+    for r in new:
+        by_no[str(r.get("DiscNo"))] = r
+    return sorted(by_no.values(), key=lambda r: r.get("DiscDate", ""), reverse=True)
+
+
+def fetch_recent_decisions(days_back: int = 14) -> list[dict[str, Any]]:
+    """直近 days_back 日の /td/list から DiscItems=11105(自社株買い決定)を集める(週次更新用)。"""
+    import datetime
+    from scripts import _jquants
+    out: list[dict[str, Any]] = []
+    today = datetime.date.today()
+    for d in range(days_back):
+        day = (today - datetime.timedelta(days=d)).isoformat()
+        try:
+            rows = _jquants.get_list("/td/list", date=day)
+        except Exception:  # noqa: BLE001  休日や一時失敗はスキップ
+            continue
+        for r in rows:
+            if BUYBACK_ITEM in (r.get("DiscItems") or "").split("|"):
+                out.append(r)
+    return out
+
+
 def parse_buyback_text(text: str) -> dict[str, float | None]:
     """PDF本文テキストから 規模%/取得上限株数/取得上限金額 を抽出する(純関数・依存なし)。"""
     t = text.replace("\n", "").replace(" ", "").replace("　", "")
@@ -130,8 +159,15 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--limit", type=int, default=None, help="先頭N件のみ(テスト用)")
     ap.add_argument("--sleep", type=float, default=5.0, help="req間スリープ秒")
+    ap.add_argument("--refresh-list", type=int, default=0, metavar="DAYS",
+                    help="直近DAYS日の自社株買い決定を /td/list から取得して td_buyback_decisions.json に追加(週次cron用)")
     args = ap.parse_args()
-    recs = json.loads(SRC_PATH.read_text()).get("records", [])
+    recs = json.loads(SRC_PATH.read_text()).get("records", []) if SRC_PATH.exists() else []
+    if args.refresh_list:
+        new = fetch_recent_decisions(args.refresh_list)
+        recs = merge_decisions(recs, new)
+        atomic_write_json(SRC_PATH, {"records": recs, "count": len(recs)}, indent=0)
+        print(f"[buyback_pdf] 決定リスト更新: 新規候補{len(new)}件 → 合計{len(recs)}件")
     # PDF実体は release.tdnet.info が約5週間しか保持しないため、新しい順に処理して
     # 取得可能ウィンドウを優先する。過去分は404=取得不能(将来の週次実行で前進蓄積する設計)。
     recs.sort(key=lambda r: r.get("DiscDate", ""), reverse=True)
