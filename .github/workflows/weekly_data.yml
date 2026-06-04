@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+      EDINET_API_KEY: ${{ secrets.EDINET_API_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -27,6 +28,14 @@ jobs:
       - name: Refresh buyback decisions + parse PDFs (前進蓄積)
         run: |
           python -m scripts.edge_candidates.enrich_buyback_pdf --refresh-list 14 --sleep 5
+      - name: EDINET 自己株券買付状況報告書(170) 直近分を補完 (規模%実績)
+        # EDINET_API_KEY secret がある時のみ。過去全期間のbackfillは別途手動(--from 2018-01-01)。
+        run: |
+          if [ -n "$EDINET_API_KEY" ]; then
+            python -m scripts.edge_candidates.fetch_buyback_edinet --from "$(date -u -d '45 days ago' +%Y-%m-%d)" --to "$(date -u +%Y-%m-%d)" --sleep 1.5 || true
+          else
+            echo "EDINET_API_KEY 未設定: skip"
+          fi
       - name: Refresh mild cases (軽い○○×反対材料)
         # mild_good は alpha_d3_ret(⑤依存)を持つため触らない。新3ケースのみ再生成。
         run: |
