@@ -60,14 +60,24 @@ def _decision_date(res: str) -> str | None:
     return f"{y:04d}-{mo:02d}-{da:02d}"
 
 
-def _report_end(blocks: dict[str, str], fallback: str | None) -> str | None:
-    """「報告期間、表紙」の至日(報告対象月末)を YYYY-MM-DD。無ければ fallback。"""
-    period = blocks.get("報告期間、表紙", "")
-    m = re.search(r"至\s*(\d{4})年(\d{1,2})月(\d{1,2})日", period)
-    if m:
-        y, mo, da = (int(g) for g in m.groups())
-        return f"{y:04d}-{mo:02d}-{da:02d}"
-    return fallback
+def _report_end(res: str, hold: str, blocks: dict[str, str]) -> str | None:
+    """報告対象月末日を YYYY-MM-DD。
+
+    各テキストブロック冒頭の「YYYY年MM月DD日現在」(=報告月末日)を採用。無ければ
+    提出日(FilingDateCoverPage)。さらに無ければ None(呼び出し側で提出日時を補完)。
+
+    注意: 「報告期間、表紙」の至日は買付プログラムの取得期間終了予定(将来日)であり
+    報告対象月末ではない。これを拾うと event_date が未来日になる(過去の不具合)。
+    """
+    for blk in (hold, res):
+        m = re.search(r"(\d{4})年(\d{1,2})月(\d{1,2})日現在", blk)
+        if m:
+            y, mo, da = (int(g) for g in m.groups())
+            return f"{y:04d}-{mo:02d}-{da:02d}"
+    fd = blocks.get("提出日、表紙", "").strip()
+    if re.match(r"\d{4}-\d{2}-\d{2}", fd):
+        return fd[:10]
+    return None
 
 
 def parse_edinet_csv(text: str) -> dict[str, Any]:
@@ -130,7 +140,7 @@ def parse_edinet_csv(text: str) -> dict[str, Any]:
         "cumulative_shares": cum_sh,
         "cumulative_amount": cum_amt,
         "decision_date": _decision_date(res),
-        "report_end": _report_end(blocks, None),
+        "report_end": _report_end(res, hold, blocks),
     }
 
 
