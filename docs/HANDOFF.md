@@ -17,15 +17,40 @@
 
 ## 1. 🔴 今すぐやる残タスク: EDINET 自社株買い規模%の過去分取得
 
+> **状態(2026-06-04 更新)**: ✅ ホスト遮断は解消 / 🔴 **EDINET_API_KEY が無効** で停止中。
+> キーを正規の 32桁hex に差し替え → 新セッション再起動で手順2から即再開可能。
+
+### 🔑 切り分け済みの現状（次セッションはここから）
+- **✅ ホスト到達 OK**: `api.edinet-fsa.go.jp` への到達は成功。前セッションの
+  プロキシ遮断(`x-deny-reason: host_not_allowed`)は消え、EDINET本体(Azure APIMゲートウェイ)まで届く。
+  allowlist 追加がコンテナに反映済み＝この問題は再調査不要。
+- **🔴 キー無効**: EDINET本体が **401 `invalid subscription key`** を返す(deny=None=サーバ本体まで到達した上での拒否)。
+  認証3方式すべて401＝transport でなくキー本体の問題:
+  query param `?Subscription-Key=` / header `Ocp-Apim-Subscription-Key` / header `Subscription-Key`。
+- **形式不一致(根本原因の疑い)**: 環境変数の値は `edb_…` 始まり・**36文字・非hex**。
+  正規の EDINET API v2 キーは **プレフィックスなし 32桁 hex**。別サービスのキー混入の可能性が高い。
+- **ユーザー対応待ち**: ユーザーは「キーを差し替えて再起動」を選択済み。32桁hexキーを `EDINET_API_KEY` に
+  設定し直し、**新セッション起動**(環境変数はコンテナ起動時読込)で反映される。
+
+### 前提・スクリプト
 - スクリプト: `scripts/edge_candidates/fetch_buyback_edinet.py`（main 反映済み）。
-- 前提: 環境変数 `EDINET_API_KEY`（無料登録キー）。**環境変数はコンテナ起動時に読み込まれる**ので、キー追加後は新セッションで有効。ネットワーク `api.edinet-fsa.go.jp` は許可済み。
-- 手順:
-  1. 疎通確認: 直近日の docTypeCode=170 を1-2件 `parse_edinet_csv` できるか。
+- ネットワーク `api.edinet-fsa.go.jp` は許可済み(到達実証済)。環境変数はコンテナ起動時読込。
+
+### 手順（キー有効化後・新セッションで）
+  1. **疎通確認(まずこれ)**: `documents.json?date=...&type=2&Subscription-Key=$EDINET_API_KEY` が
+     401 でなく `results` を返すか。401 `invalid subscription key` ならまだキー無効＝即停止して報告。
+     `results` が返れば docTypeCode=170 を1-2件 `parse_edinet_csv` できるか確認。
   2. 小さく: `python -m scripts.edge_candidates.fetch_buyback_edinet --from 2025-01-01 --sleep 1.5`
   3. 全期間: `python -m scripts.edge_candidates.fetch_buyback_edinet --from 2018-01-01 --sleep 1.5`
-  4. `data/edge_candidates/buyback_ratios.json` を commit → PR → merge。
+  4. `data/edge_candidates/buyback_ratios.json` を commit → draft PR → CI緑 → squash merge。
 - 仕様: EDINET は「自己株券買付状況報告書(170)＝実施状況(実績/累計)」で、TDnet の「決定枠上限%」とは意味が違う。`source="edinet"` / 既存TDnet分は `source="tdnet"` を自動付与。失敗 docID は `failed[]` に記録、再実行で resume。rate limit 1.5秒/req。
 - 受け手（別repo stocks-Large-holding-report）は `source` で tdnet/edinet を区別してバッジ表示する。
+
+### ⚠️ 地雷(このタスク固有)
+- stop-hook が「Unverified commits」で多数のSHAを列挙するが、それらは全て origin/main の既存マージ済み履歴。
+  自前コミットでなければ amend/rebase 厳禁(マージ済SHA書換=main分岐の害)。
+- ブランチ作成時は origin/main(現 c4ac9dc 系)から切る。旧ブートストラップ b9ca7ff(CLAUDE.md等が無い地雷)を
+  指していたら origin/main に reset すること。
 
 ---
 
