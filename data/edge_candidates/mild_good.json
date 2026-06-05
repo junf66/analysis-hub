@@ -12097,7 +12097,9 @@
 "d5_ret": -1.1946902654867309,
 "alpha_d1_ret": 0.2758801079375983,
 "alpha_d3_ret": -3.580605566574091,
-"alpha_d5_ret": -3.214339212641071
+"alpha_d5_ret": -3.214339212641071,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12119,7 +12121,9 @@
 "d5_ret": -6.441947565543071,
 "alpha_d1_ret": -5.692183261815698,
 "alpha_d3_ret": -3.966379237969353,
-"alpha_d5_ret": -6.3044730502055835
+"alpha_d5_ret": -6.3044730502055835,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12229,7 +12233,9 @@
 "d5_ret": -0.495662949194553,
 "alpha_d1_ret": -0.5840711630737849,
 "alpha_d3_ret": -1.2564520237949628,
-"alpha_d5_ret": -1.0883650183006632
+"alpha_d5_ret": -1.0883650183006632,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12317,7 +12323,9 @@
 "d5_ret": 3.271537622682663,
 "alpha_d1_ret": 3.210428176399427,
 "alpha_d3_ret": 1.141678097196186,
-"alpha_d5_ret": 1.5044315963210764
+"alpha_d5_ret": 1.5044315963210764,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12339,7 +12347,9 @@
 "d5_ret": 1.8803418803418737,
 "alpha_d1_ret": -1.5161859498726393,
 "alpha_d3_ret": 0.8746665708787127,
-"alpha_d5_ret": 2.2996249556105797
+"alpha_d5_ret": 2.2996249556105797,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12383,7 +12393,9 @@
 "d5_ret": 4.118404118404118,
 "alpha_d1_ret": 4.1587637250770415,
 "alpha_d3_ret": 7.796225492437637,
-"alpha_d5_ret": 4.537687193672824
+"alpha_d5_ret": 4.537687193672824,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12405,7 +12417,9 @@
 "d5_ret": -0.5072923272035457,
 "alpha_d1_ret": 0.3898683035605255,
 "alpha_d3_ret": 0.6707144014725608,
-"alpha_d5_ret": 1.2058836600318035
+"alpha_d5_ret": 1.2058836600318035,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12427,7 +12441,9 @@
 "d5_ret": 0.8733624454148492,
 "alpha_d1_ret": -0.271851904626752,
 "alpha_d3_ret": -1.218178902826228,
-"alpha_d5_ret": 0.8963005759084042
+"alpha_d5_ret": 0.8963005759084042,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12471,7 +12487,9 @@
 "d5_ret": 7.331730769230771,
 "alpha_d1_ret": 4.796652741888452,
 "alpha_d3_ret": 6.26116308542124,
-"alpha_d5_ret": 6.315905435851321
+"alpha_d5_ret": 6.315905435851321,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12493,7 +12511,9 @@
 "d5_ret": -5.71705426356589,
 "alpha_d1_ret": 0.3374249541723051,
 "alpha_d3_ret": -4.8766574273992775,
-"alpha_d5_ret": -6.73287959694534
+"alpha_d5_ret": -6.73287959694534,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12626,7 +12646,9 @@
 "d5_ret": 13.614603944596926,
 "alpha_d1_ret": 5.0230637467134525,
 "alpha_d3_ret": 12.26270978348547,
-"alpha_d5_ret": 11.761888082880855
+"alpha_d5_ret": 11.761888082880855,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12692,7 +12714,9 @@
 "d5_ret": -6.691449814126393,
 "alpha_d1_ret": -9.215575447220138,
 "alpha_d3_ret": -4.97987912510297,
-"alpha_d5_ret": -3.8006219655665197
+"alpha_d5_ret": -3.8006219655665197,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12714,7 +12738,9 @@
 "d5_ret": 17.620137299771166,
 "alpha_d1_ret": 6.31382135976879,
 "alpha_d3_ret": 10.188589005520399,
-"alpha_d5_ret": 14.784397690185935
+"alpha_d5_ret": 14.784397690185935,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12736,7 +12762,9 @@
 "d5_ret": -7.423580786026196,
 "alpha_d1_ret": -6.0078938942134235,
 "alpha_d3_ret": -7.85417409027186,
-"alpha_d5_ret": -9.664563697156748
+"alpha_d5_ret": -9.664563697156748,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12758,7 +12786,9 @@
 "d5_ret": 4.265159301130517,
 "alpha_d1_ret": 2.474462531972743,
 "alpha_d3_ret": 4.682186806211419,
-"alpha_d5_ret": 2.3256910707005085
+"alpha_d5_ret": 2.3256910707005085,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12802,7 +12832,9 @@
 "d5_ret": 5.324232081911262,
 "alpha_d1_ret": 1.4931797599436747,
 "alpha_d3_ret": 7.640527454107271,
-"alpha_d5_ret": 6.1082033123248225
+"alpha_d5_ret": 6.1082033123248225,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12846,7 +12878,9 @@
 "d5_ret": 5.7636887608069065,
 "alpha_d1_ret": 5.4324489431495815,
 "alpha_d3_ret": 8.581239905708149,
-"alpha_d5_ret": 7.772590052207084
+"alpha_d5_ret": 7.772590052207084,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12890,7 +12924,9 @@
 "d5_ret": 0.40650406504065817,
 "alpha_d1_ret": 2.965317349958374,
 "alpha_d3_ret": 1.0278625487141868,
-"alpha_d5_ret": 1.8177309294338806
+"alpha_d5_ret": 1.8177309294338806,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12912,7 +12948,9 @@
 "d5_ret": 2.3404255319148914,
 "alpha_d1_ret": 1.363374202867318,
 "alpha_d3_ret": 3.4354621566251575,
-"alpha_d5_ret": 3.751652396308114
+"alpha_d5_ret": 3.751652396308114,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -12934,7 +12972,9 @@
 "d5_ret": -1.991701244813282,
 "alpha_d1_ret": -1.2858268212343815,
 "alpha_d3_ret": -1.9318019027021127,
-"alpha_d5_ret": -0.5804743804200596
+"alpha_d5_ret": -0.5804743804200596,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -13110,7 +13150,9 @@
 "d5_ret": -4.1666666666666625,
 "alpha_d1_ret": 0.994281814278164,
 "alpha_d3_ret": 1.2512106637593723,
-"alpha_d5_ret": -8.193593676967247
+"alpha_d5_ret": -8.193593676967247,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -13396,7 +13438,9 @@
 "d5_ret": -2.2222222222222254,
 "alpha_d1_ret": -1.4842471842887228,
 "alpha_d3_ret": -2.787419569305749,
-"alpha_d5_ret": -2.7072793337853507
+"alpha_d5_ret": -2.7072793337853507,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -13507,7 +13551,9 @@
 "d5_ret": -8.65026099925429,
 "alpha_d1_ret": 1.5198074407455353,
 "alpha_d3_ret": -1.2306895986420763,
-"alpha_d5_ret": -4.926946333373617
+"alpha_d5_ret": -4.926946333373617,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -13595,7 +13641,9 @@
 "d5_ret": -2.123142250530785,
 "alpha_d1_ret": 3.8825730145294113,
 "alpha_d3_ret": -1.1639666069097165,
-"alpha_d5_ret": -0.19771695155824665
+"alpha_d5_ret": -0.19771695155824665,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -13640,7 +13688,9 @@
 "d5_ret": -0.15151515151514694,
 "alpha_d1_ret": 0.703778733814775,
 "alpha_d3_ret": 1.669371494935712,
-"alpha_d5_ret": -0.43516804203480586
+"alpha_d5_ret": -0.43516804203480586,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -13662,7 +13712,9 @@
 "d5_ret": 8.385416666666657,
 "alpha_d1_ret": 3.260596915632963,
 "alpha_d3_ret": 6.049106343420574,
-"alpha_d5_ret": 8.101763776147
+"alpha_d5_ret": 8.101763776147,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -13773,7 +13825,9 @@
 "d5_ret": 3.7276863843192176,
 "alpha_d1_ret": 1.55251825360897,
 "alpha_d3_ret": -1.877852574682226,
-"alpha_d5_ret": 2.0942739598153404
+"alpha_d5_ret": 2.0942739598153404,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -13884,7 +13938,9 @@
 "d5_ret": -6.31899505138942,
 "alpha_d1_ret": -7.60893572132868,
 "alpha_d3_ret": -10.069909737260584,
-"alpha_d5_ret": -8.529397006996264
+"alpha_d5_ret": -8.529397006996264,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -13928,7 +13984,9 @@
 "d5_ret": 0.9072580645161255,
 "alpha_d1_ret": -1.74462496577531,
 "alpha_d3_ret": -1.6008631122621297,
-"alpha_d5_ret": -1.303143891090719
+"alpha_d5_ret": -1.303143891090719,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -13994,7 +14052,9 @@
 "d5_ret": 2.943143812709037,
 "alpha_d1_ret": 0.18544210366764347,
 "alpha_d3_ret": 0.42340236046056745,
-"alpha_d5_ret": 0.7327418571021926
+"alpha_d5_ret": 0.7327418571021926,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -14302,7 +14362,9 @@
 "d5_ret": 9.554140127388532,
 "alpha_d1_ret": 3.436565200092734,
 "alpha_d3_ret": 7.397920618073439,
-"alpha_d5_ret": 8.9637342233295
+"alpha_d5_ret": 8.9637342233295,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -14412,7 +14474,9 @@
 "d5_ret": -5.737704918032782,
 "alpha_d1_ret": -1.3653038611999513,
 "alpha_d3_ret": -0.6034542035478041,
-"alpha_d5_ret": -6.328110822091815
+"alpha_d5_ret": -6.328110822091815,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -14478,7 +14542,9 @@
 "d5_ret": 0.12217470983506562,
 "alpha_d1_ret": 0.8277071445382589,
 "alpha_d3_ret": 1.301895446451684,
-"alpha_d5_ret": -0.468231194223967
+"alpha_d5_ret": -0.468231194223967,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -14655,7 +14721,9 @@
 "d5_ret": 4.402834008097156,
 "alpha_d1_ret": 0.9874887531825083,
 "alpha_d3_ret": 3.404199904306404,
-"alpha_d5_ret": 3.710738690864468
+"alpha_d5_ret": 3.710738690864468,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -14721,7 +14789,9 @@
 "d5_ret": 15.573770491803284,
 "alpha_d1_ret": 16.527447511762716,
 "alpha_d3_ret": 13.190660602020266,
-"alpha_d5_ret": 16.513038289860702
+"alpha_d5_ret": 16.513038289860702,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -14809,7 +14879,9 @@
 "d5_ret": 4.655252676770294,
 "alpha_d1_ret": 3.765245116725824,
 "alpha_d3_ret": 3.823877864435965,
-"alpha_d5_ret": 6.618657390631921
+"alpha_d5_ret": 6.618657390631921,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -14831,7 +14903,9 @@
 "d5_ret": 0.8099094807050955,
 "alpha_d1_ret": -1.3287597139088003,
 "alpha_d3_ret": -2.2526783841803066,
-"alpha_d5_ret": -0.48737796043698545
+"alpha_d5_ret": -0.48737796043698545,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -14853,7 +14927,9 @@
 "d5_ret": 2.6960784313725394,
 "alpha_d1_ret": -4.215599696844963,
 "alpha_d3_ret": -3.0082513772333286,
-"alpha_d5_ret": 1.3987909902304585
+"alpha_d5_ret": 1.3987909902304585,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -14897,7 +14973,9 @@
 "d5_ret": 4.739336492891,
 "alpha_d1_ret": -1.2766266924385206,
 "alpha_d3_ret": 0.11569965829814066,
-"alpha_d5_ret": 0.5559581512218026
+"alpha_d5_ret": 0.5559581512218026,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -14941,7 +15019,9 @@
 "d5_ret": 11.392405063291132,
 "alpha_d1_ret": 6.208864833884963,
 "alpha_d3_ret": 5.166429683182439,
-"alpha_d5_ret": 9.454548666109263
+"alpha_d5_ret": 9.454548666109263,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -14986,7 +15066,9 @@
 "d5_ret": -3.649635036496346,
 "alpha_d1_ret": -0.37242923067792866,
 "alpha_d3_ret": -0.8915241440454302,
-"alpha_d5_ret": -2.4370052672029963
+"alpha_d5_ret": -2.4370052672029963,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15008,7 +15090,9 @@
 "d5_ret": 6.324110671936767,
 "alpha_d1_ret": 3.4784193078483794,
 "alpha_d3_ret": 3.401343743039209,
-"alpha_d5_ret": 6.513258022336066
+"alpha_d5_ret": 6.513258022336066,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15030,7 +15114,9 @@
 "d5_ret": -5.625000000000002,
 "alpha_d1_ret": -5.214367279144616,
 "alpha_d3_ret": -9.03776082217379,
-"alpha_d5_ret": -5.990929616941775
+"alpha_d5_ret": -5.990929616941775,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15052,7 +15138,9 @@
 "d5_ret": -1.3961605584642212,
 "alpha_d1_ret": -3.4800104881152705,
 "alpha_d3_ret": -3.2617037166686735,
-"alpha_d5_ret": -3.207756630845504
+"alpha_d5_ret": -3.207756630845504,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15074,7 +15162,9 @@
 "d5_ret": 7.0132417851888285,
 "alpha_d1_ret": 2.424128294355077,
 "alpha_d3_ret": -2.1684679815423324,
-"alpha_d5_ret": 4.107564768083938
+"alpha_d5_ret": 4.107564768083938,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15097,7 +15187,9 @@
 "d5_ret": 0.7407407407407307,
 "alpha_d1_ret": 0.1714665948834515,
 "alpha_d3_ret": -1.1462737875151952,
-"alpha_d5_ret": -2.081246272850068
+"alpha_d5_ret": -2.081246272850068,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15119,7 +15211,9 @@
 "d5_ret": 2.8485757121439192,
 "alpha_d1_ret": -0.2195228436030039,
 "alpha_d3_ret": 0.6022448019709081,
-"alpha_d5_ret": 0.7905498205203143
+"alpha_d5_ret": 0.7905498205203143,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15141,7 +15235,9 @@
 "d5_ret": 0.6923076923077032,
 "alpha_d1_ret": 2.508074895988721,
 "alpha_d3_ret": 0.38081705430625945,
-"alpha_d5_ret": -1.3657181993159018
+"alpha_d5_ret": -1.3657181993159018,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15251,7 +15347,9 @@
 "d5_ret": -6.197737333989184,
 "alpha_d1_ret": -0.9660263439533412,
 "alpha_d3_ret": -3.300985145920654,
-"alpha_d5_ret": -1.8759291645862097
+"alpha_d5_ret": -1.8759291645862097,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15274,7 +15372,9 @@
 "d5_ret": -4.7861507128309615,
 "alpha_d1_ret": -1.260459970535177,
 "alpha_d3_ret": -0.9120129917671305,
-"alpha_d5_ret": -1.2688634096086342
+"alpha_d5_ret": -1.2688634096086342,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15340,7 +15440,9 @@
 "d5_ret": -3.765690376569042,
 "alpha_d1_ret": 0.9437430832426652,
 "alpha_d3_ret": -4.045493413055534,
-"alpha_d5_ret": -4.286543008092258
+"alpha_d5_ret": -4.286543008092258,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15406,7 +15508,9 @@
 "d5_ret": 2.9126213592232997,
 "alpha_d1_ret": 1.469252652113151,
 "alpha_d3_ret": 1.1512960249524418,
-"alpha_d5_ret": 2.1351393876034575
+"alpha_d5_ret": 2.1351393876034575,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15428,7 +15532,9 @@
 "d5_ret": 3.535353535353525,
 "alpha_d1_ret": -0.45686170390062397,
 "alpha_d3_ret": 0.014061543113697006,
-"alpha_d5_ret": 3.367774840605353
+"alpha_d5_ret": 3.367774840605353,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15450,7 +15556,9 @@
 "d5_ret": 2.4930747922437657,
 "alpha_d1_ret": -0.8394645150662239,
 "alpha_d3_ret": -0.25440634078850444,
-"alpha_d5_ret": -0.2455695995610796
+"alpha_d5_ret": -0.2455695995610796,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15472,7 +15580,9 @@
 "d5_ret": -0.4159733777038266,
 "alpha_d1_ret": 0.4628952833602762,
 "alpha_d3_ret": 1.213259457589344,
-"alpha_d5_ret": -1.8323511198951037
+"alpha_d5_ret": -1.8323511198951037,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15538,7 +15648,9 @@
 "d5_ret": 0.2865329512893977,
 "alpha_d1_ret": 1.1301831895757841,
 "alpha_d3_ret": 0.10651217949191327,
-"alpha_d5_ret": -0.7016418559085524
+"alpha_d5_ret": -0.7016418559085524,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15560,7 +15672,9 @@
 "d5_ret": 1.1976047904191711,
 "alpha_d1_ret": 1.5655588565798961,
 "alpha_d3_ret": 0.11208841956191762,
-"alpha_d5_ret": 0.20942998322122097
+"alpha_d5_ret": 0.20942998322122097,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15582,7 +15696,9 @@
 "d5_ret": -4.09090909090909,
 "alpha_d1_ret": 0.38179421779764855,
 "alpha_d3_ret": -3.60673370400163,
-"alpha_d5_ret": -4.387719275432034
+"alpha_d5_ret": -4.387719275432034,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15605,7 +15721,9 @@
 "d5_ret": 4.677419354838719,
 "alpha_d1_ret": 5.9023220770351825,
 "alpha_d3_ret": 4.223178319458787,
-"alpha_d5_ret": 4.380609170315775
+"alpha_d5_ret": 4.380609170315775,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15672,7 +15790,9 @@
 "d5_ret": 5.303444505194088,
 "alpha_d1_ret": 2.835612799040832,
 "alpha_d3_ret": 4.0981692760680755,
-"alpha_d5_ret": 5.419907867339447
+"alpha_d5_ret": 5.419907867339447,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15716,7 +15836,9 @@
 "d5_ret": 6.766917293233088,
 "alpha_d1_ret": 0.9226166410076564,
 "alpha_d3_ret": 3.73914566157052,
-"alpha_d5_ret": 4.901447632010147
+"alpha_d5_ret": 4.901447632010147,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15738,7 +15860,9 @@
 "d5_ret": -17.733990147783253,
 "alpha_d1_ret": -8.14068199968273,
 "alpha_d3_ret": -16.164184091383294,
-"alpha_d5_ret": -19.59945980900619
+"alpha_d5_ret": -19.59945980900619,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15782,7 +15906,9 @@
 "d5_ret": -0.8598452278589908,
 "alpha_d1_ret": -0.6459634456702501,
 "alpha_d3_ret": -1.5829275275201837,
-"alpha_d5_ret": 0.001733582014840085
+"alpha_d5_ret": 0.001733582014840085,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15848,7 +15974,9 @@
 "d5_ret": 0.6787330316742057,
 "alpha_d1_ret": -2.378626036930831,
 "alpha_d3_ret": -1.9201910710266779,
-"alpha_d5_ret": -2.1355556271388743
+"alpha_d5_ret": -2.1355556271388743,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15914,7 +16042,9 @@
 "d5_ret": 5.882352941176472,
 "alpha_d1_ret": 1.596540287718018,
 "alpha_d3_ret": 7.98849750351569,
-"alpha_d5_ret": 6.019088345555035
+"alpha_d5_ret": 6.019088345555035,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -15980,7 +16110,9 @@
 "d5_ret": 1.638747268754548,
 "alpha_d1_ret": 2.008962821971716,
 "alpha_d3_ret": 1.9988300074005871,
-"alpha_d5_ret": 1.8475470473764632
+"alpha_d5_ret": 1.8475470473764632,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16002,7 +16134,9 @@
 "d5_ret": -0.7102993404363267,
 "alpha_d1_ret": -0.7715660631775867,
 "alpha_d3_ret": -0.41877072396164783,
-"alpha_d5_ret": -0.5014995618144114
+"alpha_d5_ret": -0.5014995618144114,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16024,7 +16158,9 @@
 "d5_ret": 2.791461412151075,
 "alpha_d1_ret": 3.7264632435432654,
 "alpha_d3_ret": 3.66137663440963,
-"alpha_d5_ret": 3.0002611907729904
+"alpha_d5_ret": 3.0002611907729904,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16046,7 +16182,9 @@
 "d5_ret": 1.4388489208633004,
 "alpha_d1_ret": 1.027025807936588,
 "alpha_d3_ret": 1.2541551139065632,
-"alpha_d5_ret": 1.4464089474745867
+"alpha_d5_ret": 1.4464089474745867,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16090,7 +16228,9 @@
 "d5_ret": -1.61662817551963,
 "alpha_d1_ret": -0.19965104919201782,
 "alpha_d3_ret": -0.21493289513193625,
-"alpha_d5_ret": -1.6090681489083436
+"alpha_d5_ret": -1.6090681489083436,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16112,7 +16252,9 @@
 "d5_ret": -4.184549356223178,
 "alpha_d1_ret": -3.6277123392133515,
 "alpha_d3_ret": -3.059156904125304,
-"alpha_d5_ret": -4.695967655883926
+"alpha_d5_ret": -4.695967655883926,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16134,7 +16276,9 @@
 "d5_ret": 2.657689581856837,
 "alpha_d1_ret": 0.5758864962088883,
 "alpha_d3_ret": 0.42438099250328154,
-"alpha_d5_ret": 2.990807891772773
+"alpha_d5_ret": 2.990807891772773,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16156,7 +16300,9 @@
 "d5_ret": 6.159420289855078,
 "alpha_d1_ret": 2.5805804638954766,
 "alpha_d3_ret": 4.130381464981436,
-"alpha_d5_ret": 6.492538599771014
+"alpha_d5_ret": 6.492538599771014,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16201,7 +16347,9 @@
 "d5_ret": -1.1542679055808858,
 "alpha_d1_ret": -0.8851634416379928,
 "alpha_d3_ret": -1.2357368294955262,
-"alpha_d5_ret": -2.408119781045759
+"alpha_d5_ret": -2.408119781045759,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16223,7 +16371,9 @@
 "d5_ret": 9.321175278622086,
 "alpha_d1_ret": 3.756297655748475,
 "alpha_d3_ret": 7.706652189071117,
-"alpha_d5_ret": 8.913886421097562
+"alpha_d5_ret": 8.913886421097562,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16245,7 +16395,9 @@
 "d5_ret": 1.4224194179825123,
 "alpha_d1_ret": 4.383027950044105,
 "alpha_d3_ret": 2.727053779312305,
-"alpha_d5_ret": 1.0151305604579886
+"alpha_d5_ret": 1.0151305604579886,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16289,7 +16441,9 @@
 "d5_ret": 3.813559322033888,
 "alpha_d1_ret": -1.795366381491692,
 "alpha_d3_ret": -2.2832627663153637,
-"alpha_d5_ret": 3.040518004134496
+"alpha_d5_ret": 3.040518004134496,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16466,7 +16620,9 @@
 "d5_ret": 7.804878048780495,
 "alpha_d1_ret": 1.3162785332530236,
 "alpha_d3_ret": 3.8243668075897075,
-"alpha_d5_ret": 8.950938154378175
+"alpha_d5_ret": 8.950938154378175,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16599,7 +16755,9 @@
 "d5_ret": -1.1376564277588153,
 "alpha_d1_ret": -2.258790233288255,
 "alpha_d3_ret": -1.6544995893205128,
-"alpha_d5_ret": -0.5808962753716895
+"alpha_d5_ret": -0.5808962753716895,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16644,7 +16802,9 @@
 "d5_ret": 6.0830860534124565,
 "alpha_d1_ret": 1.690271435225843,
 "alpha_d3_ret": 2.8436291029154237,
-"alpha_d5_ret": 4.721801282591431
+"alpha_d5_ret": 4.721801282591431,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16733,7 +16893,9 @@
 "d5_ret": 13.338856669428335,
 "alpha_d1_ret": 4.690984166334289,
 "alpha_d3_ret": 5.1469681618723895,
-"alpha_d5_ret": 11.269842852658108
+"alpha_d5_ret": 11.269842852658108,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16777,7 +16939,9 @@
 "d5_ret": 0.49545829892649884,
 "alpha_d1_ret": -0.935936989461561,
 "alpha_d3_ret": -1.00250205074508,
-"alpha_d5_ret": -0.14125784619933857
+"alpha_d5_ret": -0.14125784619933857,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16844,7 +17008,9 @@
 "d5_ret": 2.1666666666666723,
 "alpha_d1_ret": 2.6786055113984464,
 "alpha_d3_ret": 2.1007332324810113,
-"alpha_d5_ret": 0.10494307757251686
+"alpha_d5_ret": 0.10494307757251686,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16866,7 +17032,9 @@
 "d5_ret": -0.588235294117645,
 "alpha_d1_ret": -0.20220050162711445,
 "alpha_d3_ret": -2.6621392043986947,
-"alpha_d5_ret": -2.3498705756085148
+"alpha_d5_ret": -2.3498705756085148,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -16999,7 +17167,9 @@
 "d5_ret": 0.8108108108108025,
 "alpha_d1_ret": 0.22476173085116402,
 "alpha_d3_ret": 0.4460080683964307,
-"alpha_d5_ret": 0.21338478127062022
+"alpha_d5_ret": 0.21338478127062022,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -17131,7 +17301,9 @@
 "d5_ret": 12.817089452603469,
 "alpha_d1_ret": 6.786846408611458,
 "alpha_d3_ret": 7.675231591201538,
-"alpha_d5_ret": 11.052821249495603
+"alpha_d5_ret": 11.052821249495603,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -17153,7 +17325,9 @@
 "d5_ret": 12.817089452603469,
 "alpha_d1_ret": 6.786846408611458,
 "alpha_d3_ret": 7.675231591201538,
-"alpha_d5_ret": 11.052821249495603
+"alpha_d5_ret": 11.052821249495603,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -17198,7 +17372,9 @@
 "d5_ret": 1.5772329847419941,
 "alpha_d1_ret": 0.9024819310990639,
 "alpha_d3_ret": 0.41629304876642514,
-"alpha_d5_ret": -0.1870352183658719
+"alpha_d5_ret": -0.1870352183658719,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -17353,7 +17529,9 @@
 "d5_ret": -0.7344632768361614,
 "alpha_d1_ret": -1.6738660842643194,
 "alpha_d3_ret": -3.1530593738479995,
-"alpha_d5_ret": -4.400499000386981
+"alpha_d5_ret": -4.400499000386981,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -17441,7 +17619,9 @@
 "d5_ret": 6.000000000000005,
 "alpha_d1_ret": 5.286585893136819,
 "alpha_d3_ret": 6.30739260355313,
-"alpha_d5_ret": 2.3339642764491852
+"alpha_d5_ret": 2.3339642764491852,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -17618,7 +17798,9 @@
 "d5_ret": 0.38006756756756577,
 "alpha_d1_ret": -0.8869371585611852,
 "alpha_d3_ret": -2.1230746434955927,
-"alpha_d5_ret": -3.129813249712732
+"alpha_d5_ret": -3.129813249712732,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -17640,7 +17822,9 @@
 "d5_ret": 7.528089887640443,
 "alpha_d1_ret": 3.5644559480285443,
 "alpha_d3_ret": 4.6324484357634255,
-"alpha_d5_ret": 4.018209070360146
+"alpha_d5_ret": 4.018209070360146,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -17662,7 +17846,9 @@
 "d5_ret": 4.283054003724396,
 "alpha_d1_ret": 0.9676321453796266,
 "alpha_d3_ret": -0.11688724100931136,
-"alpha_d5_ret": 0.7731731864440983
+"alpha_d5_ret": 0.7731731864440983,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -17684,7 +17870,9 @@
 "d5_ret": 5.5704208221843965,
 "alpha_d1_ret": 0.06276094321366887,
 "alpha_d3_ret": 1.272626381659947,
-"alpha_d5_ret": 2.060540004904099
+"alpha_d5_ret": 2.060540004904099,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -17816,7 +18004,9 @@
 "d5_ret": 12.632660047928802,
 "alpha_d1_ret": 6.572776170824346,
 "alpha_d3_ret": 8.242090354607612,
-"alpha_d5_ret": 9.122779230648504
+"alpha_d5_ret": 9.122779230648504,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -17838,7 +18028,9 @@
 "d5_ret": 1.366263794009459,
 "alpha_d1_ret": -0.5702781015753944,
 "alpha_d3_ret": -0.39661218635722584,
-"alpha_d5_ret": -1.8836970584112933
+"alpha_d5_ret": -1.8836970584112933,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -17860,7 +18052,9 @@
 "d5_ret": -2.3333333333333317,
 "alpha_d1_ret": -2.3825627982531516,
 "alpha_d3_ret": -3.837903714353952,
-"alpha_d5_ret": -5.5832941857540845
+"alpha_d5_ret": -5.5832941857540845,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -17970,7 +18164,9 @@
 "d5_ret": 1.403508771929829,
 "alpha_d1_ret": 3.0092500672439293,
 "alpha_d3_ret": 0.5889968704413828,
-"alpha_d5_ret": -1.8464520804909235
+"alpha_d5_ret": -1.8464520804909235,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -18190,7 +18386,9 @@
 "d5_ret": -0.4411764705882337,
 "alpha_d1_ret": -1.820471294985171,
 "alpha_d3_ret": -2.3934592699095036,
-"alpha_d5_ret": -3.691137323008986
+"alpha_d5_ret": -3.691137323008986,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -18300,7 +18498,9 @@
 "d5_ret": 3.3700137551581744,
 "alpha_d1_ret": -1.0967144816986796,
 "alpha_d3_ret": -1.5928665044847579,
-"alpha_d5_ret": 1.6490077878747122
+"alpha_d5_ret": 1.6490077878747122,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -18432,7 +18632,9 @@
 "d5_ret": 5.0605060506050625,
 "alpha_d1_ret": 7.731857508925422,
 "alpha_d3_ret": 4.760230978578539,
-"alpha_d5_ret": 3.3395000833216004
+"alpha_d5_ret": 3.3395000833216004,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -18520,7 +18722,9 @@
 "d5_ret": 2.535657686212356,
 "alpha_d1_ret": -0.09199936170618539,
 "alpha_d3_ret": 1.1221968106609692,
-"alpha_d5_ret": 0.8146517189288938
+"alpha_d5_ret": 0.8146517189288938,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -18653,7 +18857,9 @@
 "d5_ret": 4.347826086956519,
 "alpha_d1_ret": -0.43045817139322207,
 "alpha_d3_ret": -0.2694568168653877,
-"alpha_d5_ret": 1.4976827115570135
+"alpha_d5_ret": 1.4976827115570135,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -18829,7 +19035,9 @@
 "d5_ret": -2.4413368096705357,
 "alpha_d1_ret": -0.6534562618550233,
 "alpha_d3_ret": -0.7322853617919289,
-"alpha_d5_ret": -1.0255481765540253
+"alpha_d5_ret": -1.0255481765540253,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -18873,7 +19081,9 @@
 "d5_ret": 7.521773555027722,
 "alpha_d1_ret": -0.004390550001109883,
 "alpha_d3_ret": 6.610202383759711,
-"alpha_d5_ret": 6.64857938975143
+"alpha_d5_ret": 6.64857938975143,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -18895,7 +19105,9 @@
 "d5_ret": 2.960526315789469,
 "alpha_d1_ret": 2.2007027950003533,
 "alpha_d3_ret": 0.958454248576146,
-"alpha_d5_ret": 2.087332150513177
+"alpha_d5_ret": 2.087332150513177,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -18939,7 +19151,9 @@
 "d5_ret": 3.8181818181818095,
 "alpha_d1_ret": 0.7498020396306426,
 "alpha_d3_ret": 2.7564393972876022,
-"alpha_d5_ret": 2.5943793237284796
+"alpha_d5_ret": 2.5943793237284796,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -18961,7 +19175,9 @@
 "d5_ret": 9.051348999129672,
 "alpha_d1_ret": 6.082523865882394,
 "alpha_d3_ret": 8.83491430517298,
-"alpha_d5_ret": 10.636085211313107
+"alpha_d5_ret": 10.636085211313107,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19005,7 +19221,9 @@
 "d5_ret": -0.3973509933774877,
 "alpha_d1_ret": -0.12950297198344174,
 "alpha_d3_ret": 0.4857775821270338,
-"alpha_d5_ret": 1.3871560612420453
+"alpha_d5_ret": 1.3871560612420453,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19093,7 +19311,9 @@
 "d5_ret": -2.02360876897133,
 "alpha_d1_ret": 0.029115100253607196,
 "alpha_d3_ret": 0.9695519204860559,
-"alpha_d5_ret": 0.7966328049879401
+"alpha_d5_ret": 0.7966328049879401,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19203,7 +19423,9 @@
 "d5_ret": -2.4844720496894457,
 "alpha_d1_ret": -3.0735610816139736,
 "alpha_d3_ret": -2.5789622384894795,
-"alpha_d5_ret": -1.6575044370939707
+"alpha_d5_ret": -1.6575044370939707,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19292,7 +19514,9 @@
 "d5_ret": 6.598837209302322,
 "alpha_d1_ret": -0.9641086569247559,
 "alpha_d3_ret": 0.47950807383498883,
-"alpha_d5_ret": 0.9253672733655627
+"alpha_d5_ret": 0.9253672733655627,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19314,7 +19538,9 @@
 "d5_ret": 4.927975739196366,
 "alpha_d1_ret": 2.613368113708392,
 "alpha_d3_ret": -1.3220902123931122,
-"alpha_d5_ret": -0.7454941967403927
+"alpha_d5_ret": -0.7454941967403927,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19336,7 +19562,9 @@
 "d5_ret": 2.9079159935379684,
 "alpha_d1_ret": -2.5425046130576723,
 "alpha_d3_ret": -3.355999740073967,
-"alpha_d5_ret": -1.5653981729271793
+"alpha_d5_ret": -1.5653981729271793,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19403,7 +19631,9 @@
 "d5_ret": 2.1941854086670265,
 "alpha_d1_ret": 2.569977720067973,
 "alpha_d3_ret": 0.4641139759255175,
-"alpha_d5_ret": 0.038303982145504456
+"alpha_d5_ret": 0.038303982145504456,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19425,7 +19655,9 @@
 "d5_ret": 5.581395348837215,
 "alpha_d1_ret": 5.885440965730826,
 "alpha_d3_ret": 5.059617740864675,
-"alpha_d5_ret": 5.40090308942569
+"alpha_d5_ret": 5.40090308942569,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19447,7 +19679,9 @@
 "d5_ret": 1.8258426966292207,
 "alpha_d1_ret": 0.7680121703297127,
 "alpha_d3_ret": 2.0516088566211232,
-"alpha_d5_ret": 1.6453504372176964
+"alpha_d5_ret": 1.6453504372176964,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19469,7 +19703,9 @@
 "d5_ret": -2.1531100478468845,
 "alpha_d1_ret": -0.5036126791058471,
 "alpha_d3_ret": -3.0497690984206294,
-"alpha_d5_ret": -3.5671340550601505
+"alpha_d5_ret": -3.5671340550601505,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19491,7 +19727,9 @@
 "d5_ret": -4.06162464985994,
 "alpha_d1_ret": -4.687870114137283,
 "alpha_d3_ret": -3.3514088930944763,
-"alpha_d5_ret": -5.475648657073206
+"alpha_d5_ret": -5.475648657073206,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19513,7 +19751,9 @@
 "d5_ret": 5.298165137614674,
 "alpha_d1_ret": 0.6739151138059007,
 "alpha_d3_ret": 2.894983492587544,
-"alpha_d5_ret": 2.849203199898409
+"alpha_d5_ret": 2.849203199898409,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19535,7 +19775,9 @@
 "d5_ret": -0.3905013192612161,
 "alpha_d1_ret": 0.12340798495402705,
 "alpha_d3_ret": 1.7263480201952008,
-"alpha_d5_ret": -2.8394632569774814
+"alpha_d5_ret": -2.8394632569774814,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19557,7 +19799,9 @@
 "d5_ret": 3.038936372269707,
 "alpha_d1_ret": 2.62851861202984,
 "alpha_d3_ret": 1.2894229686241987,
-"alpha_d5_ret": 0.04657771997256255
+"alpha_d5_ret": 0.04657771997256255,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19645,7 +19889,9 @@
 "d5_ret": -2.3255813953488413,
 "alpha_d1_ret": -0.7775698291536348,
 "alpha_d3_ret": -1.3271820569850434,
-"alpha_d5_ret": -3.2683835940860995
+"alpha_d5_ret": -3.2683835940860995,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19733,7 +19979,9 @@
 "d5_ret": 1.3455815758830258,
 "alpha_d1_ret": 4.825137152232861,
 "alpha_d3_ret": -1.1486824480708369,
-"alpha_d5_ret": 0.4027793771457677
+"alpha_d5_ret": 0.4027793771457677,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19755,7 +20003,9 @@
 "d5_ret": -0.6813443839934985,
 "alpha_d1_ret": -0.4622364722833505,
 "alpha_d3_ret": -3.6564741839668513,
-"alpha_d5_ret": -1.6241465827307566
+"alpha_d5_ret": -1.6241465827307566,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19778,7 +20028,9 @@
 "d5_ret": 2.7412280701754277,
 "alpha_d1_ret": -0.1098394567109029,
 "alpha_d3_ret": 2.0774049920328386,
-"alpha_d5_ret": 1.7984258714381696
+"alpha_d5_ret": 1.7984258714381696,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19800,7 +20052,9 @@
 "d5_ret": 0.47058823529411153,
 "alpha_d1_ret": -0.8638083622603654,
 "alpha_d3_ret": -1.0574225224380118,
-"alpha_d5_ret": -0.23286737342465003
+"alpha_d5_ret": -0.23286737342465003,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19822,7 +20076,9 @@
 "d5_ret": -1.4823261117445807,
 "alpha_d1_ret": -3.3289233934495788,
 "alpha_d3_ret": -3.9732183504613605,
-"alpha_d5_ret": -2.1857817204633423
+"alpha_d5_ret": -2.1857817204633423,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -19866,7 +20122,9 @@
 "d5_ret": 6.121212121212127,
 "alpha_d1_ret": 2.8051854492549766,
 "alpha_d3_ret": 2.42506298767724,
-"alpha_d5_ret": 5.734555979246858
+"alpha_d5_ret": 5.734555979246858,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -20130,7 +20388,9 @@
 "d5_ret": 2.3567064300261897,
 "alpha_d1_ret": 2.591563061481472,
 "alpha_d3_ret": 0.7028065664026917,
-"alpha_d5_ret": 1.190941162172554
+"alpha_d5_ret": 1.190941162172554,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -20174,7 +20434,9 @@
 "d5_ret": -1.7636986301369895,
 "alpha_d1_ret": -4.557705972918546,
 "alpha_d3_ret": 0.33940626110300354,
-"alpha_d5_ret": -2.929463897990625
+"alpha_d5_ret": -2.929463897990625,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -20240,7 +20502,9 @@
 "d5_ret": 1.7615971814445075,
 "alpha_d1_ret": 2.7676195358044,
 "alpha_d3_ret": -0.08432208540396502,
-"alpha_d5_ret": -0.37176117662032215
+"alpha_d5_ret": -0.37176117662032215,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -20262,7 +20526,9 @@
 "d5_ret": 12.262044653349014,
 "alpha_d1_ret": 4.945703299902227,
 "alpha_d3_ret": 5.2043012519600085,
-"alpha_d5_ret": 10.794955041929487
+"alpha_d5_ret": 10.794955041929487,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -20328,7 +20594,9 @@
 "d5_ret": -4.831261101243333,
 "alpha_d1_ret": -2.486244491135292,
 "alpha_d3_ret": -5.6060936527009275,
-"alpha_d5_ret": -7.012999000955921
+"alpha_d5_ret": -7.012999000955921,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -20461,7 +20729,9 @@
 "d5_ret": 5.008403361344538,
 "alpha_d1_ret": 3.157415610535552,
 "alpha_d3_ret": 2.0045588674304504,
-"alpha_d5_ret": 2.9547692780748314
+"alpha_d5_ret": 2.9547692780748314,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -20616,7 +20886,9 @@
 "d5_ret": -0.35529715762273595,
 "alpha_d1_ret": 0.30285601505123383,
 "alpha_d3_ret": -3.411917121223207,
-"alpha_d5_ret": -1.4815307798918487
+"alpha_d5_ret": -1.4815307798918487,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -20660,7 +20932,9 @@
 "d5_ret": 3.150684931506853,
 "alpha_d1_ret": -0.8576338791118077,
 "alpha_d3_ret": -1.4661452901375993,
-"alpha_d5_ret": 2.0244513092377403
+"alpha_d5_ret": 2.0244513092377403,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -20726,7 +21000,9 @@
 "d5_ret": -0.12722646310432406,
 "alpha_d1_ret": 0.49270945805574007,
 "alpha_d3_ret": -1.603131591507445,
-"alpha_d5_ret": -1.2534600853734368
+"alpha_d5_ret": -1.2534600853734368,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -20903,7 +21179,9 @@
 "d5_ret": -3.286713286713283,
 "alpha_d1_ret": -4.596057839224111,
 "alpha_d3_ret": -4.607616879826459,
-"alpha_d5_ret": -5.665815053628265
+"alpha_d5_ret": -5.665815053628265,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -21014,7 +21292,9 @@
 "d5_ret": -3.409090909090906,
 "alpha_d1_ret": -4.5173865105527895,
 "alpha_d3_ret": -5.831393103602678,
-"alpha_d5_ret": -5.788192676005888
+"alpha_d5_ret": -5.788192676005888,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -21058,7 +21338,9 @@
 "d5_ret": 0.4868549172346581,
 "alpha_d1_ret": 0.7947157817082884,
 "alpha_d3_ret": -1.9784118510138393,
-"alpha_d5_ret": -0.6168018908537798
+"alpha_d5_ret": -0.6168018908537798,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -21477,7 +21759,9 @@
 "d5_ret": -15.495978552278821,
 "alpha_d1_ret": -8.20685946578711,
 "alpha_d3_ret": -13.418390722035744,
-"alpha_d5_ret": -10.583596220635094
+"alpha_d5_ret": -10.583596220635094,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -21500,7 +21784,9 @@
 "d5_ret": -1.9749335358906217,
 "alpha_d1_ret": 12.927800739953797,
 "alpha_d3_ret": 9.693626375862763,
-"alpha_d5_ret": 2.937448795753106
+"alpha_d5_ret": 2.937448795753106,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -21677,7 +21963,9 @@
 "d5_ret": -2.1608643457383003,
 "alpha_d1_ret": -1.0539199816737121,
 "alpha_d3_ret": -3.834572597126751,
-"alpha_d5_ret": -2.1472304777362505
+"alpha_d5_ret": -2.1472304777362505,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -21701,7 +21989,9 @@
 "d5_ret": -2.310344827586208,
 "alpha_d1_ret": -0.6426934220843616,
 "alpha_d3_ret": -0.021102381454274344,
-"alpha_d5_ret": -2.2967109595841584
+"alpha_d5_ret": -2.2967109595841584,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -21811,7 +22101,9 @@
 "d5_ret": -1.1805817907064586,
 "alpha_d1_ret": 0.4840733796300123,
 "alpha_d3_ret": 1.0448669006217326,
-"alpha_d5_ret": -1.1669479227044088
+"alpha_d5_ret": -1.1669479227044088,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -21833,7 +22125,9 @@
 "d5_ret": 0.0,
 "alpha_d1_ret": -0.3319588827904951,
 "alpha_d3_ret": -0.14101286937496793,
-"alpha_d5_ret": -0.01063081028769286
+"alpha_d5_ret": -0.01063081028769286,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -21901,7 +22195,9 @@
 "d5_ret": 2.954248366013079,
 "alpha_d1_ret": 0.3153358591639899,
 "alpha_d3_ret": 1.9898887987407021,
-"alpha_d5_ret": 2.8414226138107734
+"alpha_d5_ret": 2.8414226138107734,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22055,7 +22351,9 @@
 "d5_ret": -5.1875,
 "alpha_d1_ret": -2.0085882776238018,
 "alpha_d3_ret": -3.7719433371245836,
-"alpha_d5_ret": -5.952010797748796
+"alpha_d5_ret": -5.952010797748796,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22077,7 +22375,9 @@
 "d5_ret": 7.305071915215744,
 "alpha_d1_ret": 10.101243289370897,
 "alpha_d3_ret": 7.691531303299337,
-"alpha_d5_ret": 6.540561117466948
+"alpha_d5_ret": 6.540561117466948,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22099,7 +22399,9 @@
 "d5_ret": -4.516129032258065,
 "alpha_d1_ret": -2.341590918234293,
 "alpha_d3_ret": -3.23618365159114,
-"alpha_d5_ret": -5.2284758886882665
+"alpha_d5_ret": -5.2284758886882665,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22121,7 +22423,9 @@
 "d5_ret": 5.937444778229373,
 "alpha_d1_ret": 6.474653830353461,
 "alpha_d3_ret": 6.472615919745417,
-"alpha_d5_ret": 5.225097921799171
+"alpha_d5_ret": 5.225097921799171,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22276,7 +22580,9 @@
 "d5_ret": -11.537414965986393,
 "alpha_d1_ret": -9.86278998923077,
 "alpha_d3_ret": -12.118324401942981,
-"alpha_d5_ret": -13.15639335758092
+"alpha_d5_ret": -13.15639335758092,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22409,7 +22715,9 @@
 "d5_ret": -0.16657412548584105,
 "alpha_d1_ret": 0.7976216490503063,
 "alpha_d3_ret": 0.6667420955055237,
-"alpha_d5_ret": -1.7855525170803688
+"alpha_d5_ret": -1.7855525170803688,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22432,7 +22740,9 @@
 "d5_ret": 9.037162162162172,
 "alpha_d1_ret": 6.077111647099431,
 "alpha_d3_ret": 6.257479973861391,
-"alpha_d5_ret": 7.418183770567644
+"alpha_d5_ret": 7.418183770567644,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22454,7 +22764,9 @@
 "d5_ret": 4.2735042735042805,
 "alpha_d1_ret": 3.303905748893543,
 "alpha_d3_ret": 1.6374753538567655,
-"alpha_d5_ret": 2.654525881909753
+"alpha_d5_ret": 2.654525881909753,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22477,7 +22789,9 @@
 "d5_ret": -3.4375000000000044,
 "alpha_d1_ret": -1.0323478123600238,
 "alpha_d3_ret": -4.399276782895367,
-"alpha_d5_ret": -5.056478391594532
+"alpha_d5_ret": -5.056478391594532,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22521,7 +22835,9 @@
 "d5_ret": -0.7704509404033555,
 "alpha_d1_ret": -0.3933097430194321,
 "alpha_d3_ret": -2.6066867081163014,
-"alpha_d5_ret": -2.389429331997883
+"alpha_d5_ret": -2.389429331997883,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22610,7 +22926,9 @@
 "d5_ret": 1.8181818181818077,
 "alpha_d1_ret": 0.639678490167217,
 "alpha_d3_ret": 2.2812711259874163,
-"alpha_d5_ret": 0.6735926864642527
+"alpha_d5_ret": 0.6735926864642527,
+"buyback_ratio_pct": 5.87,
+"buyback_source": "edinet"
 }
 },
 {
@@ -22676,7 +22994,9 @@
 "d5_ret": -9.826923076923077,
 "alpha_d1_ret": -6.106825006336281,
 "alpha_d3_ret": -10.01243516771887,
-"alpha_d5_ret": -10.971512208640632
+"alpha_d5_ret": -10.971512208640632,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22699,7 +23019,9 @@
 "d5_ret": -4.414414414414414,
 "alpha_d1_ret": -1.3488554983667744,
 "alpha_d3_ret": -2.1593513146350163,
-"alpha_d5_ret": -5.559003546131969
+"alpha_d5_ret": -5.559003546131969,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22721,7 +23043,9 @@
 "d5_ret": -9.615384615384615,
 "alpha_d1_ret": -6.369645519156797,
 "alpha_d3_ret": -7.166281321565027,
-"alpha_d5_ret": -10.759973747102169
+"alpha_d5_ret": -10.759973747102169,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22744,7 +23068,9 @@
 "d5_ret": -4.239130434782612,
 "alpha_d1_ret": -8.565855106670728,
 "alpha_d3_ret": -5.388689348320885,
-"alpha_d5_ret": -5.383719566500167
+"alpha_d5_ret": -5.383719566500167,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22833,7 +23159,9 @@
 "d5_ret": -3.690036900369009,
 "alpha_d1_ret": -3.883060763199342,
 "alpha_d3_ret": -4.809861603521692,
-"alpha_d5_ret": -4.834626032086565
+"alpha_d5_ret": -4.834626032086565,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22943,7 +23271,9 @@
 "d5_ret": -0.5291005291005346,
 "alpha_d1_ret": -4.980783026011082,
 "alpha_d3_ret": -0.8512399543445959,
-"alpha_d5_ret": -0.4528078426123794
+"alpha_d5_ret": -0.4528078426123794,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -22965,7 +23295,9 @@
 "d5_ret": -4.320987654320985,
 "alpha_d1_ret": 0.0697220244939678,
 "alpha_d3_ret": -1.3522821220534276,
-"alpha_d5_ret": -4.24469496783283
+"alpha_d5_ret": -4.24469496783283,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -23009,7 +23341,9 @@
 "d5_ret": -3.5097813578826242,
 "alpha_d1_ret": -1.6563999547925645,
 "alpha_d3_ret": -4.4383467060083,
-"alpha_d5_ret": -3.433488671394469
+"alpha_d5_ret": -3.433488671394469,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -23031,7 +23365,9 @@
 "d5_ret": 0.7142857142857117,
 "alpha_d1_ret": -0.5017065469345994,
 "alpha_d3_ret": 3.099216996112353,
-"alpha_d5_ret": 0.790578400773867
+"alpha_d5_ret": 0.790578400773867,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -23141,7 +23477,9 @@
 "d5_ret": -4.041666666666666,
 "alpha_d1_ret": -2.8469446421726996,
 "alpha_d3_ret": -4.251973480078119,
-"alpha_d5_ret": -3.965373980178511
+"alpha_d5_ret": -3.965373980178511,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -23186,7 +23524,9 @@
 "d5_ret": -0.2803925495694082,
 "alpha_d1_ret": 0.6104790843778019,
 "alpha_d3_ret": 1.399780642359949,
-"alpha_d5_ret": -0.20409986308125294
+"alpha_d5_ret": -0.20409986308125294,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -23252,7 +23592,9 @@
 "d5_ret": 1.572327044025168,
 "alpha_d1_ret": 2.3614219853257623,
 "alpha_d3_ret": -0.03970808455271424,
-"alpha_d5_ret": 1.0849830324106247
+"alpha_d5_ret": 1.0849830324106247,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -23406,7 +23748,9 @@
 "d5_ret": 3.5051546391752675,
 "alpha_d1_ret": -5.958575753483319,
 "alpha_d3_ret": -1.739375048070202,
-"alpha_d5_ret": 2.812709124283641
+"alpha_d5_ret": 2.812709124283641,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -23500,7 +23844,9 @@
 "r_915": 0.6409082585607129,
 "r_930": 2.7101263504852646,
 "r_1000": 3.5707745834096416,
-"r_1130": 4.651162790697683
+"r_1130": 4.651162790697683,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -23527,7 +23873,9 @@
 "r_915": -1.5023474178403773,
 "r_930": -1.7840375586854473,
 "r_1000": -2.6291079812206575,
-"r_1130": -3.2863849765258246
+"r_1130": -3.2863849765258246,
+"buyback_ratio_pct": 1.398,
+"buyback_source": "edinet"
 }
 },
 {
@@ -23770,7 +24118,9 @@
 "r_915": 1.146496815286624,
 "r_930": -1.0828025477707004,
 "r_1000": -2.86624203821656,
-"r_1130": -5.095541401273884
+"r_1130": -5.095541401273884,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -23797,7 +24147,9 @@
 "r_915": -1.9729549988915962,
 "r_930": -6.20704943471514,
 "r_1000": -7.35978718687652,
-"r_1130": -8.29084460208379
+"r_1130": -8.29084460208379,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -23852,7 +24204,9 @@
 "r_915": 2.3941068139963217,
 "r_930": 4.23572744014733,
 "r_1000": 4.972375690607733,
-"r_1130": 5.340699815837935
+"r_1130": 5.340699815837935,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -23879,7 +24233,9 @@
 "r_915": -4.0150270016435785,
 "r_930": -3.6628316506222114,
 "r_1000": -2.55928621742193,
-"r_1130": -2.46536745714957
+"r_1130": -2.46536745714957,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -23906,7 +24262,9 @@
 "r_915": -0.6349206349206327,
 "r_930": 0.6349206349206327,
 "r_1000": 3.3333333333333437,
-"r_1130": 4.285714285714293
+"r_1130": 4.285714285714293,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -23960,7 +24318,9 @@
 "r_915": -3.183989083465999,
 "r_930": -1.9786217875824463,
 "r_1000": -3.6843302251535093,
-"r_1130": -5.9586081419149455
+"r_1130": -5.9586081419149455,
+"buyback_ratio_pct": 6.133,
+"buyback_source": "edinet"
 }
 },
 {
@@ -23987,7 +24347,9 @@
 "r_915": -2.1459899749373457,
 "r_930": -2.2556390977443663,
 "r_1000": 0.3446115288220586,
-"r_1130": -0.8458646616541388
+"r_1130": -0.8458646616541388,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24014,7 +24376,9 @@
 "r_915": 0.15873015873015817,
 "r_930": 0.6349206349206327,
 "r_1000": 1.0582010582010692,
-"r_1130": 0.8994708994708889
+"r_1130": 0.8994708994708889,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24041,7 +24405,9 @@
 "r_915": 0.8536585365853666,
 "r_930": 1.7073170731707332,
 "r_1000": 1.0365853658536484,
-"r_1130": 3.4146341463414664
+"r_1130": 3.4146341463414664,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24068,7 +24434,9 @@
 "r_915": 0.09781545484186527,
 "r_930": 1.467231822627979,
 "r_1000": 1.9889142484512456,
-"r_1130": 0.7173133355070194
+"r_1130": 0.7173133355070194,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24095,7 +24463,9 @@
 "r_915": 0.7751937984496138,
 "r_930": 0.0,
 "r_1000": -0.7751937984496138,
-"r_1130": 0.3875968992248069
+"r_1130": 0.3875968992248069,
+"buyback_ratio_pct": 4.721,
+"buyback_source": "edinet"
 }
 },
 {
@@ -24122,7 +24492,9 @@
 "r_915": -0.45801526717557106,
 "r_930": 0.3053435114503733,
 "r_1000": 0.9160305343511421,
-"r_1130": 1.0687022900763399
+"r_1130": 1.0687022900763399,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24149,7 +24521,9 @@
 "r_915": 1.1673151750972721,
 "r_930": 1.3618677042801508,
 "r_1000": 1.0700389105058328,
-"r_1130": 0.7782101167315147
+"r_1130": 0.7782101167315147,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24176,7 +24550,9 @@
 "r_915": -0.8307692307692349,
 "r_930": -1.4923076923076928,
 "r_1000": -1.3230769230769268,
-"r_1130": -0.9076923076923094
+"r_1130": -0.9076923076923094,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24203,7 +24579,9 @@
 "r_915": -0.4137931034482789,
 "r_930": -0.13793103448276334,
 "r_1000": 0.4827586206896495,
-"r_1130": -0.4827586206896606
+"r_1130": -0.4827586206896606,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24252,7 +24630,9 @@
 "r_915": 2.180974477958242,
 "r_930": 1.0672853828306295,
 "r_1000": 2.5058004640371223,
-"r_1130": 2.180974477958242
+"r_1130": 2.180974477958242,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24279,7 +24659,9 @@
 "r_915": 1.5919282511210664,
 "r_930": 2.959641255605372,
 "r_1000": 2.2421524663677195,
-"r_1130": 0.6726457399103047
+"r_1130": 0.6726457399103047,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24333,7 +24715,9 @@
 "r_915": 3.7800687285223455,
 "r_930": 4.467353951890041,
 "r_1000": 7.9037800687285165,
-"r_1130": 5.154639175257736
+"r_1130": 5.154639175257736,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24441,7 +24825,9 @@
 "r_915": 2.3270846800258482,
 "r_930": 1.7453135100193862,
 "r_1000": 0.9696186166774368,
-"r_1130": 3.749191984486111
+"r_1130": 3.749191984486111,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24522,7 +24908,9 @@
 "r_915": 0.16393442622950616,
 "r_930": -0.5737704918032827,
 "r_1000": 0.6147540983606481,
-"r_1130": 2.0081967213114726
+"r_1130": 2.0081967213114726,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24576,7 +24964,9 @@
 "r_915": -0.5945945945945996,
 "r_930": -2.405405405405403,
 "r_1000": -3.297297297297297,
-"r_1130": -3.378378378378377
+"r_1130": -3.378378378378377,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24603,7 +24993,9 @@
 "r_915": -0.5945945945945996,
 "r_930": -2.405405405405403,
 "r_1000": -3.297297297297297,
-"r_1130": -3.378378378378377
+"r_1130": -3.378378378378377,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24630,7 +25022,9 @@
 "r_915": 1.3440860215053752,
 "r_930": 0.5376344086021501,
 "r_1000": -1.4784946236559127,
-"r_1130": -0.9408602150537626
+"r_1130": -0.9408602150537626,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24657,7 +25051,9 @@
 "r_915": 0.8567931456548328,
 "r_930": 0.4895960832313362,
 "r_1000": 0.3671970624234966,
-"r_1130": 0.4895960832313362
+"r_1130": 0.4895960832313362,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24684,7 +25080,9 @@
 "r_915": -2.127659574468088,
 "r_930": -0.7092198581560294,
 "r_1000": -1.4184397163120588,
-"r_1130": -1.4184397163120588
+"r_1130": -1.4184397163120588,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24711,7 +25109,9 @@
 "r_915": -1.4619883040935644,
 "r_930": -1.3157894736842146,
 "r_1000": -1.0233918128654929,
-"r_1130": 0.43859649122806044
+"r_1130": 0.43859649122806044,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24738,7 +25138,9 @@
 "r_915": -1.3438735177865646,
 "r_930": -0.43478260869564966,
 "r_1000": -0.7905138339920903,
-"r_1130": -0.5533596837944632
+"r_1130": -0.5533596837944632,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24766,7 +25168,9 @@
 "r_915": -0.9433962264150941,
 "r_930": -4.043126684636123,
 "r_1000": -4.312668463611857,
-"r_1130": -2.5606469002695365
+"r_1130": -2.5606469002695365,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24793,7 +25197,9 @@
 "r_915": 1.82648401826484,
 "r_930": 2.1852576647097166,
 "r_1000": 2.8701891715590344,
-"r_1130": 3.816046966731901
+"r_1130": 3.816046966731901,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24821,7 +25227,9 @@
 "r_915": 0.6306495690561187,
 "r_930": 1.1561908766029028,
 "r_1000": 1.534580618036574,
-"r_1130": 0.7567794828673424
+"r_1130": 0.7567794828673424,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24875,7 +25283,9 @@
 "r_915": -1.5873015873015928,
 "r_930": -0.5291005291005346,
 "r_1000": -0.6613756613756627,
-"r_1130": -3.1746031746031744
+"r_1130": -3.1746031746031744,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24956,7 +25366,9 @@
 "r_915": -2.0780679584386452,
 "r_930": -2.218477955630438,
 "r_1000": -3.7068239258635227,
-"r_1130": -1.656837966863245
+"r_1130": -1.656837966863245,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -24983,7 +25395,9 @@
 "r_915": 0.5967922417008609,
 "r_930": -0.07459903021260761,
 "r_1000": 0.8205893323386837,
-"r_1130": 1.8649757553151902
+"r_1130": 1.8649757553151902,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25037,7 +25451,9 @@
 "r_915": -0.5988023952095856,
 "r_930": -0.6986027944111739,
 "r_1000": -1.2974051896207595,
-"r_1130": -1.0978043912175606
+"r_1130": -1.0978043912175606,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25086,7 +25502,9 @@
 "d5_ret": -6.525037936267076,
 "alpha_d1_ret": -3.256796168321774,
 "alpha_d3_ret": -4.251077225083078,
-"alpha_d5_ret": -4.816110616799918
+"alpha_d5_ret": -4.816110616799918,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25108,7 +25526,9 @@
 "d5_ret": 2.4031007751937894,
 "alpha_d1_ret": 4.310518649760597,
 "alpha_d3_ret": 7.642560068914173,
-"alpha_d5_ret": 4.112028094660946
+"alpha_d5_ret": 4.112028094660946,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25135,7 +25555,9 @@
 "r_915": 0.6345177664974555,
 "r_930": 0.685279187817267,
 "r_1000": 0.9898477157360475,
-"r_1130": 1.2690355329949332
+"r_1130": 1.2690355329949332,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25162,7 +25584,9 @@
 "r_915": -0.34632034632035014,
 "r_930": 0.17316017316018062,
 "r_1000": -0.2597402597402598,
-"r_1130": -0.08658008658009031
+"r_1130": -0.08658008658009031,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25189,7 +25613,9 @@
 "r_915": 2.5232403718459473,
 "r_930": 1.8592297476759612,
 "r_1000": 1.9920318725099584,
-"r_1130": 5.312084993359889
+"r_1130": 5.312084993359889,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25216,7 +25642,9 @@
 "r_915": 0.14040014040013205,
 "r_930": 0.14040014040013205,
 "r_1000": 0.14040014040013205,
-"r_1130": 0.03510003510003301
+"r_1130": 0.03510003510003301,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25243,7 +25671,9 @@
 "r_915": -2.7490653177919544,
 "r_930": -0.04398504508467127,
 "r_1000": -0.2639102705080276,
-"r_1130": -2.903012975588304
+"r_1130": -2.903012975588304,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25270,7 +25700,9 @@
 "r_915": -0.2762430939226568,
 "r_930": -0.2762430939226568,
 "r_1000": -0.4143646408839796,
-"r_1130": -0.5524861878453025
+"r_1130": -0.5524861878453025,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25297,7 +25729,9 @@
 "r_915": 0.0,
 "r_930": -0.7344414379590214,
 "r_1000": -1.236954000773094,
-"r_1130": 1.662156938538839
+"r_1130": 1.662156938538839,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25324,7 +25758,9 @@
 "r_915": -2.9253271747498033,
 "r_930": -3.5411855273287163,
 "r_1000": -3.002309468822173,
-"r_1130": -1.8475750577367167
+"r_1130": -1.8475750577367167,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25406,7 +25842,9 @@
 "r_915": 2.127659574468077,
 "r_930": 1.6548463356973908,
 "r_1000": 2.8368794326241176,
-"r_1130": 2.245862884160754
+"r_1130": 2.245862884160754,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25433,7 +25871,9 @@
 "r_915": -0.4615384615384577,
 "r_930": -0.07692307692307443,
 "r_1000": 0.9230769230769154,
-"r_1130": 0.8846153846153948
+"r_1130": 0.8846153846153948,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25568,7 +26008,9 @@
 "r_915": 1.3292433537832382,
 "r_930": 2.0449897750511203,
 "r_1000": 2.658486707566454,
-"r_1130": 2.147239263803691
+"r_1130": 2.147239263803691,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25676,7 +26118,9 @@
 "r_915": -1.8458197611292082,
 "r_930": -2.28013029315961,
 "r_1000": -2.062975027144409,
-"r_1130": -1.9543973941368087
+"r_1130": -1.9543973941368087,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25703,7 +26147,9 @@
 "r_915": -3.6856745479833086,
 "r_930": -3.894297635605004,
 "r_1000": -5.076495132127956,
-"r_1130": -5.006954102920725
+"r_1130": -5.006954102920725,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25730,7 +26176,9 @@
 "r_915": -0.3355704697986628,
 "r_930": 0.402684563758382,
 "r_1000": 1.2751677852349097,
-"r_1130": 1.0067114093959662
+"r_1130": 1.0067114093959662,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25757,7 +26205,9 @@
 "r_915": -0.21834061135370675,
 "r_930": 0.0,
 "r_1000": -0.10917030567685337,
-"r_1130": -0.4366812227074246
+"r_1130": -0.4366812227074246,
+"buyback_ratio_pct": 2.138,
+"buyback_source": "edinet"
 }
 },
 {
@@ -25811,7 +26261,9 @@
 "r_915": -1.2961859356376615,
 "r_930": -1.653754469606672,
 "r_1000": -1.5196662693682916,
-"r_1130": -0.20858164481525332
+"r_1130": -0.20858164481525332,
+"buyback_ratio_pct": 3.395,
+"buyback_source": "edinet"
 }
 },
 {
@@ -25865,7 +26317,9 @@
 "r_915": 0.10695187165774556,
 "r_930": 0.10695187165774556,
 "r_1000": 0.10695187165774556,
-"r_1130": 0.5347593582887722
+"r_1130": 0.5347593582887722,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -25919,7 +26373,9 @@
 "r_915": 2.7685950413223193,
 "r_930": 3.0991735537190035,
 "r_1000": 1.0330578512396604,
-"r_1130": 0.8677685950413183
+"r_1130": 0.8677685950413183,
+"buyback_ratio_pct": 19.207,
+"buyback_source": "edinet"
 }
 },
 {
@@ -25946,7 +26402,9 @@
 "r_915": -0.7575757575757569,
 "r_930": -0.7575757575757569,
 "r_1000": -1.0101010101010055,
-"r_1130": -0.35353535353535026
+"r_1130": -0.35353535353535026,
+"buyback_ratio_pct": 2.812,
+"buyback_source": "edinet"
 }
 },
 {
@@ -25973,7 +26431,9 @@
 "r_915": -0.9803921568627416,
 "r_930": 0.47058823529411153,
 "r_1000": -0.19607843137254832,
-"r_1130": 0.588235294117645
+"r_1130": 0.588235294117645,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -26027,7 +26487,9 @@
 "r_915": -1.051893408134641,
 "r_930": -1.051893408134641,
 "r_1000": -1.051893408134641,
-"r_1130": -0.8415147265077194
+"r_1130": -0.8415147265077194,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -26108,7 +26570,9 @@
 "r_915": 3.052064631956908,
 "r_930": 3.2495511669658805,
 "r_1000": 4.991023339317779,
-"r_1130": 5.278276481149002
+"r_1130": 5.278276481149002,
+"buyback_ratio_pct": 4.248,
+"buyback_source": "edinet"
 }
 },
 {
@@ -26135,7 +26599,9 @@
 "r_915": -0.27576697690451235,
 "r_930": -0.5170630816959676,
 "r_1000": -1.1030679076180605,
-"r_1130": -1.206480523957254
+"r_1130": -1.206480523957254,
+"buyback_ratio_pct": 5.133,
+"buyback_source": "edinet"
 }
 },
 {
@@ -26162,7 +26628,9 @@
 "r_915": -0.5144440047487153,
 "r_930": -0.4352987732489155,
 "r_1000": -0.27700831024930483,
-"r_1130": 0.1582904629995996
+"r_1130": 0.1582904629995996,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -26271,7 +26739,9 @@
 "r_915": 0.8431703204047292,
 "r_930": 0.1264755480607116,
 "r_1000": -1.0961214165261413,
-"r_1130": -0.3794266441821237
+"r_1130": -0.3794266441821237,
+"buyback_ratio_pct": 1.342,
+"buyback_source": "edinet"
 }
 },
 {
@@ -26325,7 +26795,9 @@
 "r_915": 1.0288065843621297,
 "r_930": 0.8230452674897082,
 "r_1000": 0.2057613168724215,
-"r_1130": 0.8230452674897082
+"r_1130": 0.8230452674897082,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -26379,7 +26851,9 @@
 "r_915": 1.9795657726692228,
 "r_930": 2.5542784163473886,
 "r_1000": 3.4482758620689724,
-"r_1130": 3.7675606641123904
+"r_1130": 3.7675606641123904,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -26434,7 +26908,9 @@
 "r_915": 1.4723926380368013,
 "r_930": 1.2269938650306678,
 "r_1000": 1.595092024539868,
-"r_1130": 2.3926380368098243
+"r_1130": 2.3926380368098243,
+"buyback_ratio_pct": 3.415,
+"buyback_source": "edinet"
 }
 },
 {
@@ -26516,7 +26992,9 @@
 "r_915": 0.39440659734673034,
 "r_930": 0.8605234851201127,
 "r_1000": 1.1832197920401688,
-"r_1130": 0.46611688777340454
+"r_1130": 0.46611688777340454,
+"buyback_ratio_pct": 2.561,
+"buyback_source": "edinet"
 }
 },
 {
@@ -26543,7 +27021,9 @@
 "r_915": -0.3144654088050314,
 "r_930": -0.3144654088050314,
 "r_1000": -0.6289308176100628,
-"r_1130": -0.15723270440252124
+"r_1130": -0.15723270440252124,
+"buyback_ratio_pct": 2.908,
+"buyback_source": "edinet"
 }
 },
 {
@@ -26624,7 +27104,9 @@
 "r_915": 2.095316351684473,
 "r_930": 2.4445357436318815,
 "r_1000": 2.1364009860312283,
-"r_1130": 2.855382087099434
+"r_1130": 2.855382087099434,
+"buyback_ratio_pct": 9.806,
+"buyback_source": "edinet"
 }
 },
 {
@@ -26949,7 +27431,9 @@
 "r_915": 2.100161550888524,
 "r_930": 0.1615508885298933,
 "r_1000": 1.1308562197092087,
-"r_1130": 1.292407108239102
+"r_1130": 1.292407108239102,
+"buyback_ratio_pct": 2.728,
+"buyback_source": "edinet"
 }
 },
 {
@@ -26977,7 +27461,9 @@
 "r_915": -0.8841321544904579,
 "r_930": -1.0237319683573776,
 "r_1000": -1.8613308515588622,
-"r_1130": 0.697999069334565
+"r_1130": 0.697999069334565,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -27059,7 +27545,9 @@
 "r_915": -0.575539568345329,
 "r_930": -1.8705035971222972,
 "r_1000": -1.8705035971222972,
-"r_1130": -1.8705035971222972
+"r_1130": -1.8705035971222972,
+"buyback_ratio_pct": 1.569,
+"buyback_source": "edinet"
 }
 },
 {
@@ -27086,7 +27574,9 @@
 "r_915": -1.9933554817275767,
 "r_930": 0.22148394241416902,
 "r_1000": 0.0,
-"r_1130": 0.0
+"r_1130": 0.0,
+"buyback_ratio_pct": 0.846,
+"buyback_source": "edinet"
 }
 },
 {
@@ -27600,7 +28090,9 @@
 "r_915": -0.25316455696202667,
 "r_930": 0.0,
 "r_1000": -0.5063291139240533,
-"r_1130": -0.37974683544304
+"r_1130": -0.37974683544304,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -27763,7 +28255,9 @@
 "r_915": -1.9535569480280124,
 "r_930": -1.4743826022852957,
 "r_1000": -2.5617397714706946,
-"r_1130": -1.9719867305565741
+"r_1130": -1.9719867305565741,
+"buyback_ratio_pct": 6.055,
+"buyback_source": "edinet"
 }
 },
 {
@@ -27817,7 +28311,9 @@
 "r_915": 2.6988636363636465,
 "r_930": 3.693181818181812,
 "r_1000": 3.8352272727272707,
-"r_1130": 5.397727272727271
+"r_1130": 5.397727272727271,
+"buyback_ratio_pct": 3.354,
+"buyback_source": "edinet"
 }
 },
 {
@@ -27898,7 +28394,9 @@
 "r_915": -0.15723270440252124,
 "r_930": -0.15723270440252124,
 "r_1000": -0.4716981132075526,
-"r_1130": 0.15723270440251014
+"r_1130": 0.15723270440251014,
+"buyback_ratio_pct": 1.828,
+"buyback_source": "edinet"
 }
 },
 {
@@ -27953,7 +28451,9 @@
 "r_915": 2.012537116463209,
 "r_930": 0.3959089409435901,
 "r_1000": -1.220719234576051,
-"r_1130": -1.9135598812273225
+"r_1130": -1.9135598812273225,
+"buyback_ratio_pct": 8.588,
+"buyback_source": "edinet"
 }
 },
 {
@@ -27980,7 +28480,9 @@
 "r_915": 1.6635859519408491,
 "r_930": 0.7393715341959428,
 "r_1000": 1.109057301293892,
-"r_1130": 0.9242144177449063
+"r_1130": 0.9242144177449063,
+"buyback_ratio_pct": 5.714,
+"buyback_source": "edinet"
 }
 },
 {
@@ -28115,7 +28617,9 @@
 "r_915": 1.8803418803418737,
 "r_930": 2.3931623931623847,
 "r_1000": 0.34188034188034067,
-"r_1130": 1.538461538461533
+"r_1130": 1.538461538461533,
+"buyback_ratio_pct": 1.841,
+"buyback_source": "edinet"
 }
 },
 {
@@ -28305,7 +28809,9 @@
 "r_915": 0.11806375442739991,
 "r_930": 0.7083825265643551,
 "r_1000": -1.4403778040141701,
-"r_1130": -1.6528925619834656
+"r_1130": -1.6528925619834656,
+"buyback_ratio_pct": 5.259,
+"buyback_source": "edinet"
 }
 },
 {
@@ -28387,7 +28893,9 @@
 "r_915": -0.6410256410256387,
 "r_930": -0.6410256410256387,
 "r_1000": -2.4038461538461564,
-"r_1130": -2.724358974358976
+"r_1130": -2.724358974358976,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -28491,7 +28999,9 @@
 "r_915": -2.470660901791233,
 "r_930": -4.797199917644635,
 "r_1000": -5.55898702903026,
-"r_1130": -6.691373275684576
+"r_1130": -6.691373275684576,
+"buyback_ratio_pct": 1.825,
+"buyback_source": "edinet"
 }
 },
 {
@@ -28518,7 +29028,9 @@
 "r_915": 2.331545814875269,
 "r_930": 1.2357192818838847,
 "r_1000": 1.8186057356027074,
-"r_1130": 1.9118675681977226
+"r_1130": 1.9118675681977226,
+"buyback_ratio_pct": 5.72,
+"buyback_source": "edinet"
 }
 },
 {
@@ -28788,7 +29300,9 @@
 "r_915": 4.275092936802971,
 "r_930": 3.977695167286255,
 "r_1000": 3.977695167286255,
-"r_1130": 4.832713754646845
+"r_1130": 4.832713754646845,
+"buyback_ratio_pct": 4.402,
+"buyback_source": "edinet"
 }
 },
 {
@@ -28924,7 +29438,9 @@
 "r_915": 2.770270270270281,
 "r_930": 2.6801801801801695,
 "r_1000": 2.9954954954954927,
-"r_1130": 3.851351351351351
+"r_1130": 3.851351351351351,
+"buyback_ratio_pct": 4.108,
+"buyback_source": "edinet"
 }
 },
 {
@@ -28951,7 +29467,9 @@
 "r_915": 0.8531994981179514,
 "r_930": 0.15056461731492998,
 "r_1000": -0.05018820577163963,
-"r_1130": -0.37641154328732496
+"r_1130": -0.37641154328732496,
+"buyback_ratio_pct": 0.672,
+"buyback_source": "edinet"
 }
 },
 {
@@ -29087,7 +29605,9 @@
 "r_915": -1.0138248847926246,
 "r_930": 0.55299539170508,
 "r_1000": 1.9354838709677358,
-"r_1130": 2.211981566820276
+"r_1130": 2.211981566820276,
+"buyback_ratio_pct": 5.405,
+"buyback_source": "edinet"
 }
 },
 {
@@ -29223,7 +29743,9 @@
 "r_915": 0.1607717041800738,
 "r_930": 0.3215434083601254,
 "r_1000": 0.3215434083601254,
-"r_1130": 0.1607717041800738
+"r_1130": 0.1607717041800738,
+"buyback_ratio_pct": 5.298,
+"buyback_source": "edinet"
 }
 },
 {
@@ -29278,7 +29800,9 @@
 "r_915": 0.23419203747072626,
 "r_930": 0.0,
 "r_1000": -0.3903200624512104,
-"r_1130": -0.31225604996096834
+"r_1130": -0.31225604996096834,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -29360,7 +29884,9 @@
 "r_915": 1.7012227538543367,
 "r_930": 1.674641148325362,
 "r_1000": 2.099946836788935,
-"r_1130": 1.6214779372674126
+"r_1130": 1.6214779372674126,
+"buyback_ratio_pct": 5.392,
+"buyback_source": "edinet"
 }
 },
 {
@@ -29792,7 +30318,9 @@
 "r_915": 4.096385542168668,
 "r_930": 4.578313253012056,
 "r_1000": 4.03614457831325,
-"r_1130": 5.12048192771084
+"r_1130": 5.12048192771084,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -29847,7 +30375,9 @@
 "r_915": 0.2259887005649608,
 "r_930": -0.28248587570621764,
 "r_1000": -0.028248587570622874,
-"r_1130": 0.25423728813558366
+"r_1130": 0.25423728813558366,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -29955,7 +30485,9 @@
 "r_915": -0.10750761512273721,
 "r_930": 1.3259272531804367,
 "r_1000": 2.490593083676762,
-"r_1130": 1.41551693244939
+"r_1130": 1.41551693244939,
+"buyback_ratio_pct": 0.27,
+"buyback_source": "edinet"
 }
 },
 {
@@ -29982,7 +30514,9 @@
 "r_915": -1.5580155801558027,
 "r_930": -2.337023370233704,
 "r_1000": -3.5260352603526,
-"r_1130": -3.2800328003280033
+"r_1130": -3.2800328003280033,
+"buyback_ratio_pct": 2.992,
+"buyback_source": "edinet"
 }
 },
 {
@@ -30036,7 +30570,9 @@
 "r_915": -0.983606557377048,
 "r_930": -1.1475409836065542,
 "r_1000": -0.4918032786885296,
-"r_1130": -0.8196721311475419
+"r_1130": -0.8196721311475419,
+"buyback_ratio_pct": 0.937,
+"buyback_source": "edinet"
 }
 },
 {
@@ -30090,7 +30626,9 @@
 "r_915": -1.4146341463414647,
 "r_930": -1.1219512195121961,
 "r_1000": -0.8780487804878057,
-"r_1130": -1.4634146341463428
+"r_1130": -1.4634146341463428,
+"buyback_ratio_pct": 4.006,
+"buyback_source": "edinet"
 }
 },
 {
@@ -30117,7 +30655,9 @@
 "r_915": 1.2977649603460817,
 "r_930": 0.8651766402307137,
 "r_1000": 1.0093727469358438,
-"r_1130": 1.2256669069935056
+"r_1130": 1.2256669069935056,
+"buyback_ratio_pct": 3.62,
+"buyback_source": "edinet"
 }
 },
 {
@@ -30144,7 +30684,9 @@
 "r_915": 2.7249683143219183,
 "r_930": 1.3941698352344822,
 "r_1000": 3.2953105196451116,
-"r_1130": 4.94296577946769
+"r_1130": 4.94296577946769,
+"buyback_ratio_pct": 1.379,
+"buyback_source": "edinet"
 }
 },
 {
@@ -30225,7 +30767,9 @@
 "r_915": -1.371308016877637,
 "r_930": -0.8438818565400852,
 "r_1000": -2.320675105485237,
-"r_1130": -2.742616033755274
+"r_1130": -2.742616033755274,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -30252,7 +30796,9 @@
 "r_915": -0.3751705320600318,
 "r_930": -0.5798090040927684,
 "r_1000": -0.5115961800818525,
-"r_1130": -1.1937244201910002
+"r_1130": -1.1937244201910002,
+"buyback_ratio_pct": 0.945,
+"buyback_source": "edinet"
 }
 },
 {
@@ -30279,7 +30825,9 @@
 "r_915": 0.0,
 "r_930": -1.1406844106463865,
 "r_1000": -1.1406844106463865,
-"r_1130": -1.2357414448669224
+"r_1130": -1.2357414448669224,
+"buyback_ratio_pct": 2.235,
+"buyback_source": "edinet"
 }
 },
 {
@@ -30495,7 +31043,9 @@
 "r_915": 1.9828155981493678,
 "r_930": 1.5201586252478583,
 "r_1000": 1.3879709187045508,
-"r_1130": 2.115003304692653
+"r_1130": 2.115003304692653,
+"buyback_ratio_pct": 4.504,
+"buyback_source": "edinet"
 }
 },
 {
@@ -30630,7 +31180,9 @@
 "r_915": 1.1173184357541999,
 "r_930": 2.3743016759776525,
 "r_1000": 2.0949720670391025,
-"r_1130": 1.5363128491620026
+"r_1130": 1.5363128491620026,
+"buyback_ratio_pct": 5.0,
+"buyback_source": "edinet"
 }
 },
 {
@@ -30657,7 +31209,9 @@
 "r_915": 4.285714285714293,
 "r_930": 5.1948051948051965,
 "r_1000": 6.233766233766236,
-"r_1130": 6.1038961038961
+"r_1130": 6.1038961038961,
+"buyback_ratio_pct": 9.986,
+"buyback_source": "edinet"
 }
 },
 {
@@ -30684,7 +31238,9 @@
 "r_915": -2.1376085504342,
 "r_930": -3.0728122912491607,
 "r_1000": -1.8036072144288595,
-"r_1130": -1.2024048096192397
+"r_1130": -1.2024048096192397,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -30711,7 +31267,9 @@
 "r_915": 1.6830294530154388,
 "r_930": 3.0855539971949453,
 "r_1000": 1.8232819074333717,
-"r_1130": 0.42075736325386526
+"r_1130": 0.42075736325386526,
+"buyback_ratio_pct": 3.488,
+"buyback_source": "edinet"
 }
 },
 {
@@ -30738,7 +31296,9 @@
 "r_915": 2.6330125295078943,
 "r_930": 3.032504085709098,
 "r_1000": 5.5928817868167835,
-"r_1130": 5.865262393317594
+"r_1130": 5.865262393317594,
+"buyback_ratio_pct": 0.846,
+"buyback_source": "edinet"
 }
 },
 {
@@ -30765,7 +31325,9 @@
 "r_915": 2.200000000000002,
 "r_930": 1.5428571428571347,
 "r_1000": 1.7714285714285793,
-"r_1130": 0.2571428571428669
+"r_1130": 0.2571428571428669,
+"buyback_ratio_pct": 3.184,
+"buyback_source": "edinet"
 }
 },
 {
@@ -30819,7 +31381,9 @@
 "r_915": 1.430030643513791,
 "r_930": 0.7150153217568844,
 "r_1000": 1.97480422199523,
-"r_1130": 2.2812393598910408
+"r_1130": 2.2812393598910408,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -30873,7 +31437,9 @@
 "r_915": 2.3255813953488413,
 "r_930": 1.3289036544850585,
 "r_1000": 1.4950166112956742,
-"r_1130": 1.3289036544850585
+"r_1130": 1.3289036544850585,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -30927,7 +31493,9 @@
 "r_915": 0.0,
 "r_930": 0.1400560224089631,
 "r_1000": 0.42016806722688926,
-"r_1130": 0.8403361344537785
+"r_1130": 0.8403361344537785,
+"buyback_ratio_pct": 2.5,
+"buyback_source": "edinet"
 }
 },
 {
@@ -30954,7 +31522,9 @@
 "r_915": -1.3993541442411161,
 "r_930": -1.9375672766415497,
 "r_1000": -1.0333692142088235,
-"r_1130": -0.09687836383207582
+"r_1130": -0.09687836383207582,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -31035,7 +31605,9 @@
 "r_915": -0.19342359767892114,
 "r_930": -0.3868471953578312,
 "r_1000": 0.0,
-"r_1130": 0.0
+"r_1130": 0.0,
+"buyback_ratio_pct": 1.501,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31062,7 +31634,9 @@
 "r_915": -0.48661800486617945,
 "r_930": -1.338199513381999,
 "r_1000": -0.8515815085158196,
-"r_1130": -0.24330900243308973
+"r_1130": -0.24330900243308973,
+"buyback_ratio_pct": 1.745,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31089,7 +31663,9 @@
 "r_915": 2.857142857142847,
 "r_930": 3.4285714285714253,
 "r_1000": 3.4285714285714253,
-"r_1130": 3.4285714285714253
+"r_1130": 3.4285714285714253,
+"buyback_ratio_pct": 2.726,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31116,7 +31692,9 @@
 "r_915": -1.2944983818770184,
 "r_930": -1.2944983818770184,
 "r_1000": -1.6990291262135915,
-"r_1130": -1.9822006472491882
+"r_1130": -1.9822006472491882,
+"buyback_ratio_pct": 2.228,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31143,7 +31721,9 @@
 "r_915": 0.13094718463553257,
 "r_930": -1.9642077695329552,
 "r_1000": -0.4364906154517678,
-"r_1130": -2.444347446529904
+"r_1130": -2.444347446529904,
+"buyback_ratio_pct": 4.837,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31170,7 +31750,9 @@
 "r_915": -0.9569377990430672,
 "r_930": 0.21265284423179764,
 "r_1000": -0.10632642211589882,
-"r_1130": -0.4253056884635842
+"r_1130": -0.4253056884635842,
+"buyback_ratio_pct": 3.871,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31251,7 +31833,9 @@
 "r_915": 0.6100942872989457,
 "r_930": 1.0537992235163607,
 "r_1000": 0.7395082270290176,
-"r_1130": -0.3697541135145088
+"r_1130": -0.3697541135145088,
+"buyback_ratio_pct": 4.137,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31413,7 +31997,9 @@
 "r_915": -4.601048340128133,
 "r_930": -5.474665113570176,
 "r_1000": -4.834012813046007,
-"r_1130": -4.892253931275481
+"r_1130": -4.892253931275481,
+"buyback_ratio_pct": 2.048,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31440,7 +32026,9 @@
 "r_915": 0.9836065573770592,
 "r_930": 0.5464480874316946,
 "r_1000": 0.3278688524590123,
-"r_1130": 0.43715846994536456
+"r_1130": 0.43715846994536456,
+"buyback_ratio_pct": 0.215,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31521,7 +32109,9 @@
 "r_915": 0.06671114076051143,
 "r_930": 0.5670446964643139,
 "r_1000": 1.2341561040693838,
-"r_1130": 1.2341561040693838
+"r_1130": 1.2341561040693838,
+"buyback_ratio_pct": 0.837,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31548,7 +32138,9 @@
 "r_915": 2.442029797244305,
 "r_930": 0.7505320936484816,
 "r_1000": -0.10081774392294296,
-"r_1130": -1.3554385571860728
+"r_1130": -1.3554385571860728,
+"buyback_ratio_pct": 2.953,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31575,7 +32167,9 @@
 "r_915": 1.0204081632652962,
 "r_930": 2.0408163265306145,
 "r_1000": 2.186588921282806,
-"r_1130": 0.8746355685131268
+"r_1130": 0.8746355685131268,
+"buyback_ratio_pct": 5.472,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31629,7 +32223,9 @@
 "r_915": -0.6772009029345383,
 "r_930": 0.9029345372460584,
 "r_1000": 0.5643340857787837,
-"r_1130": 3.724604966139955
+"r_1130": 3.724604966139955,
+"buyback_ratio_pct": 0.84,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31683,7 +32279,9 @@
 "r_915": 0.15091492171288579,
 "r_930": 0.9432182607055362,
 "r_1000": 0.9432182607055362,
-"r_1130": 0.9432182607055362
+"r_1130": 0.9432182607055362,
+"buyback_ratio_pct": 3.571,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31710,7 +32308,9 @@
 "r_915": -0.21888680425266038,
 "r_930": -0.5628517823639823,
 "r_1000": -0.8755472170106304,
-"r_1130": -1.5322076297686005
+"r_1130": -1.5322076297686005,
+"buyback_ratio_pct": 2.612,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31737,7 +32337,9 @@
 "r_915": -0.6863417982155062,
 "r_930": -0.6177076183939589,
 "r_1000": -0.6177076183939589,
-"r_1130": -0.6863417982155062
+"r_1130": -0.6863417982155062,
+"buyback_ratio_pct": 3.507,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31818,7 +32420,9 @@
 "r_915": -0.060606060606060996,
 "r_930": -0.9090909090909038,
 "r_1000": -0.9090909090909038,
-"r_1130": -0.060606060606060996
+"r_1130": -0.060606060606060996,
+"buyback_ratio_pct": 1.1,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31845,7 +32449,9 @@
 "r_915": 0.5455712451861272,
 "r_930": -0.03209242618742447,
 "r_1000": -0.5776636713735517,
-"r_1130": -1.3157894736842146
+"r_1130": -1.3157894736842146,
+"buyback_ratio_pct": 0.964,
+"buyback_source": "edinet"
 }
 },
 {
@@ -31926,7 +32532,9 @@
 "r_915": -2.3060796645702264,
 "r_930": -2.4109014675052443,
 "r_1000": -1.6771488469601636,
-"r_1130": -1.6771488469601636
+"r_1130": -1.6771488469601636,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -31953,7 +32561,9 @@
 "r_915": 1.5141955835962229,
 "r_930": 1.0094637223974745,
 "r_1000": 1.1987381703470135,
-"r_1130": 0.18927444794951676
+"r_1130": 0.18927444794951676,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -32007,7 +32617,9 @@
 "r_915": -0.7502679528403,
 "r_930": 0.3483386923901488,
 "r_1000": 0.0803858520900258,
-"r_1130": -0.937834941050375
+"r_1130": -0.937834941050375,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -32034,7 +32646,9 @@
 "r_915": -0.2057613168724326,
 "r_930": -0.2057613168724326,
 "r_1000": 0.0,
-"r_1130": 0.2057613168724215
+"r_1130": 0.2057613168724215,
+"buyback_ratio_pct": 1.056,
+"buyback_source": "edinet"
 }
 },
 {
@@ -32088,7 +32702,9 @@
 "r_915": -0.7276119402985115,
 "r_930": -2.201492537313432,
 "r_1000": -1.455223880597012,
-"r_1130": -1.6417910447761197
+"r_1130": -1.6417910447761197,
+"buyback_ratio_pct": 2.433,
+"buyback_source": "edinet"
 }
 },
 {
@@ -32115,7 +32731,9 @@
 "r_915": -1.2030075187969946,
 "r_930": 1.0526315789473717,
 "r_1000": -0.15037593984962294,
-"r_1130": 1.5037593984962516
+"r_1130": 1.5037593984962516,
+"buyback_ratio_pct": 0.715,
+"buyback_source": "edinet"
 }
 },
 {
@@ -32223,7 +32841,9 @@
 "r_915": 4.739884393063587,
 "r_930": 5.028901734104041,
 "r_1000": 7.1098265895953805,
-"r_1130": 7.3988439306358345
+"r_1130": 7.3988439306358345,
+"buyback_ratio_pct": 0.58,
+"buyback_source": "edinet"
 }
 },
 {
@@ -32250,7 +32870,9 @@
 "r_915": 0.2676659528907832,
 "r_930": -0.5353319057815886,
 "r_1000": 0.6423982869379063,
-"r_1130": 0.9100642398286896
+"r_1130": 0.9100642398286896,
+"buyback_ratio_pct": 1.719,
+"buyback_source": "edinet"
 }
 },
 {
@@ -32331,7 +32953,9 @@
 "r_915": 1.9480519480519431,
 "r_930": 3.0735930735930728,
 "r_1000": 3.8528138528138633,
-"r_1130": 4.761904761904767
+"r_1130": 4.761904761904767,
+"buyback_ratio_pct": 0.794,
+"buyback_source": "edinet"
 }
 },
 {
@@ -32466,7 +33090,9 @@
 "r_915": -1.8612521150592198,
 "r_930": -2.030456852791873,
 "r_1000": -4.060913705583758,
-"r_1130": -1.6920473773265665
+"r_1130": -1.6920473773265665,
+"buyback_ratio_pct": 3.234,
+"buyback_source": "edinet"
 }
 },
 {
@@ -32494,7 +33120,9 @@
 "r_915": 0.5069124423963123,
 "r_930": -0.8755760368663545,
 "r_1000": -1.8894009216589902,
-"r_1130": -2.027649769585249
+"r_1130": -2.027649769585249,
+"buyback_ratio_pct": 0.058,
+"buyback_source": "edinet"
 }
 },
 {
@@ -32549,7 +33177,9 @@
 "r_915": 0.6112469437652868,
 "r_930": -1.833740831295838,
 "r_1000": -0.3667481662591676,
-"r_1130": -1.58924205378973
+"r_1130": -1.58924205378973,
+"buyback_ratio_pct": 0.378,
+"buyback_source": "edinet"
 }
 },
 {
@@ -32576,7 +33206,9 @@
 "r_915": 1.120573733751673,
 "r_930": 0.6275212909009342,
 "r_1000": 2.2411474675033682,
-"r_1130": 3.092783505154628
+"r_1130": 3.092783505154628,
+"buyback_ratio_pct": 0.0,
+"buyback_source": "edinet"
 }
 },
 {
@@ -32630,7 +33262,9 @@
 "r_915": -1.6691957511380862,
 "r_930": -1.5933232169954459,
 "r_1000": -1.5933232169954459,
-"r_1130": -2.0485584218512876
+"r_1130": -2.0485584218512876,
+"buyback_ratio_pct": 3.015,
+"buyback_source": "edinet"
 }
 },
 {
@@ -32684,7 +33318,9 @@
 "r_915": -2.8976175144880822,
 "r_930": -3.0264005151319995,
 "r_1000": -2.0927237604636217,
-"r_1130": -4.555698647778494
+"r_1130": -4.555698647778494,
+"buyback_ratio_pct": 0.761,
+"buyback_source": "edinet"
 }
 },
 {
@@ -32738,7 +33374,9 @@
 "r_915": -3.3816425120772986,
 "r_930": -3.5573122529644285,
 "r_1000": -2.2837066315327226,
-"r_1130": -3.469477382520858
+"r_1130": -3.469477382520858,
+"buyback_ratio_pct": 1.47,
+"buyback_source": "edinet"
 }
 },
 {
@@ -32927,7 +33565,9 @@
 "r_915": 0.30800821355236874,
 "r_930": -0.051334702258731824,
 "r_1000": -0.462012320328542,
-"r_1130": -0.6160164271047264
+"r_1130": -0.6160164271047264,
+"buyback_ratio_pct": 0.282,
+"buyback_source": "edinet"
 }
 },
 {
@@ -33008,7 +33648,9 @@
 "r_915": 0.0,
 "r_930": 0.0,
 "r_1000": 0.0,
-"r_1130": 0.0
+"r_1130": 0.0,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -33063,7 +33705,9 @@
 "r_915": 0.5797101449275255,
 "r_930": -1.7391304347826098,
 "r_1000": -1.0144927536231862,
-"r_1130": -2.0289855072463725
+"r_1130": -2.0289855072463725,
+"buyback_ratio_pct": 10.944,
+"buyback_source": "edinet"
 }
 },
 {
@@ -33117,7 +33761,9 @@
 "r_915": 0.22075055187638082,
 "r_930": 0.14716703458426128,
 "r_1000": -0.07358351729213064,
-"r_1130": -0.5886681383370118
+"r_1130": -0.5886681383370118,
+"buyback_ratio_pct": 3.43,
+"buyback_source": "edinet"
 }
 },
 {
@@ -33171,7 +33817,9 @@
 "r_915": 1.3464337700145546,
 "r_930": 4.8034934497816595,
 "r_1000": 6.331877729257651,
-"r_1130": 6.695778748180503
+"r_1130": 6.695778748180503,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -33360,7 +34008,9 @@
 "r_915": -1.5955242436800687,
 "r_930": -1.2639867384997894,
 "r_1000": -1.5126398673850017,
-"r_1130": -1.84417737256527
+"r_1130": -1.84417737256527,
+"buyback_ratio_pct": 0.929,
+"buyback_source": "edinet"
 }
 },
 {
@@ -33739,7 +34389,9 @@
 "r_915": 1.083333333333325,
 "r_930": 2.1666666666666723,
 "r_1000": -0.666666666666671,
-"r_1130": -1.5000000000000013
+"r_1130": -1.5000000000000013,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -33821,7 +34473,9 @@
 "r_915": -3.3388981636060078,
 "r_930": -1.1686143572620988,
 "r_1000": -3.6727879799666074,
-"r_1130": -3.3388981636060078
+"r_1130": -3.3388981636060078,
+"buyback_ratio_pct": 0.698,
+"buyback_source": "edinet"
 }
 },
 {
@@ -33876,7 +34530,9 @@
 "r_915": 3.409090909090917,
 "r_930": 3.213778409090917,
 "r_1000": 3.107244318181812,
-"r_1130": 3.3203125
+"r_1130": 3.3203125,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -33931,7 +34587,9 @@
 "r_915": 4.285714285714293,
 "r_930": 7.571428571428562,
 "r_1000": 10.742857142857144,
-"r_1130": 8.342857142857142
+"r_1130": 8.342857142857142,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -34040,7 +34698,9 @@
 "r_915": 0.0,
 "r_930": 0.0,
 "r_1000": 0.0,
-"r_1130": 0.0
+"r_1130": 0.0,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -34068,7 +34728,9 @@
 "r_915": 1.610486891385765,
 "r_930": 2.7715355805243425,
 "r_1000": 2.921348314606731,
-"r_1130": 5.074906367041199
+"r_1130": 5.074906367041199,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -34365,7 +35027,9 @@
 "r_915": 4.805077062556662,
 "r_930": 6.678754910849194,
 "r_1000": 7.948020550015111,
-"r_1130": 8.37110909640375
+"r_1130": 8.37110909640375,
+"buyback_ratio_pct": 2.381,
+"buyback_source": "edinet"
 }
 },
 {
@@ -34420,7 +35084,9 @@
 "r_915": 0.8881578947368407,
 "r_930": 3.322368421052624,
 "r_1000": 4.013157894736841,
-"r_1130": 4.7039473684210575
+"r_1130": 4.7039473684210575,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -34555,7 +35221,9 @@
 "r_915": -2.976000000000001,
 "r_930": -3.935999999999995,
 "r_1000": -5.264000000000002,
-"r_1130": -6.608000000000002
+"r_1130": -6.608000000000002,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -34582,7 +35250,9 @@
 "r_915": 3.230769230769237,
 "r_930": 4.76923076923077,
 "r_1000": 2.0000000000000018,
-"r_1130": 1.846153846153853
+"r_1130": 1.846153846153853,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -34718,7 +35388,9 @@
 "r_915": 0.0,
 "r_930": 1.6181229773462702,
 "r_1000": 0.7551240560949246,
-"r_1130": 1.4023732470334505
+"r_1130": 1.4023732470334505,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -34745,7 +35417,9 @@
 "r_915": 1.3071895424836555,
 "r_930": 0.8496732026143761,
 "r_1000": 0.6535947712418277,
-"r_1130": 1.1111111111111072
+"r_1130": 1.1111111111111072,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -34853,7 +35527,9 @@
 "r_915": 2.6162790697674465,
 "r_930": 2.6162790697674465,
 "r_1000": 2.9069767441860517,
-"r_1130": 2.6162790697674465
+"r_1130": 2.6162790697674465,
+"buyback_ratio_pct": 0.966,
+"buyback_source": "edinet"
 }
 },
 {
@@ -34907,7 +35583,9 @@
 "r_915": -2.6985111662531036,
 "r_930": -5.459057071960293,
 "r_1000": -6.854838709677424,
-"r_1130": -10.127171215880892
+"r_1130": -10.127171215880892,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -34935,7 +35613,9 @@
 "r_915": -0.8827238335435084,
 "r_930": -1.6393442622950838,
 "r_1000": -1.261034047919296,
-"r_1130": -1.1349306431273631
+"r_1130": -1.1349306431273631,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -35179,7 +35859,9 @@
 "r_915": 0.17809439002671734,
 "r_930": 0.17809439002671734,
 "r_1000": 0.17809439002671734,
-"r_1130": 0.04452359750668489
+"r_1130": 0.04452359750668489,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -35341,7 +36023,9 @@
 "r_915": 1.333333333333342,
 "r_930": 1.4999999999999902,
 "r_1000": 2.833333333333332,
-"r_1130": 2.333333333333343
+"r_1130": 2.333333333333343,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -35396,7 +36080,9 @@
 "r_915": -1.8689533861037777,
 "r_930": -2.726473175021993,
 "r_1000": -3.232189973614774,
-"r_1130": -3.4080914687774855
+"r_1130": -3.4080914687774855,
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -35694,7 +36380,9 @@
 "r_915": 0.6666666666666599,
 "r_930": 1.2948717948717992,
 "r_1000": 1.2307692307692353,
-"r_1130": -0.12820512820512775
+"r_1130": -0.12820512820512775,
+"buyback_ratio_pct": 6.9,
+"buyback_source": "tdnet"
 }
 }
 ],

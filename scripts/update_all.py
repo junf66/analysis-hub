@@ -89,6 +89,10 @@ def _run_kouaku(py: str, args: argparse.Namespace) -> None:
     #    (extract_mild_good は最小スキーマで上書きし alpha を失うため手動運用のまま)。新3ケースのみ。
     if not args.skip_fetch:
         _run([py, "-m", "scripts.edge_candidates.extract_mild_cases"], allow_fail=True)
+    # 同日 jisha 決定の規模%(buyback_ratio_pct)を mild_* に in-place 添付。
+    # extract_mild_cases が mild_bad/genhai を再生成して ratio を消すため、その後に必ず実行。
+    # mild_good は再生成しないが新規 EDINET 報告分を拾うため同様に enrich (alpha は非破壊)。
+    _run([py, "-m", "scripts.edge_candidates.enrich_mild_buyback"], allow_fail=True)
 
 
 def _run_po(py: str, args: argparse.Namespace) -> None:

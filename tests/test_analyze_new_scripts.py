@@ -1,6 +1,8 @@
 """Smoke tests for newly added analysis scripts."""
 from __future__ import annotations
 
+import json
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -61,6 +63,9 @@ from scripts.edge_candidates.scan_title_keywords import scan as title_scan
 from scripts.edge_candidates.analyze_mild_nx_band import band_of, build_events as nx_build_events
 from scripts.edge_candidates.analyze_zouhai_kahou_nx_beta import (
     short_cell as zk_short_cell, build_rows as zk_build_rows,
+)
+from scripts.edge_candidates.enrich_mild_buyback import (
+    load_buyback_decision_map, enrich_record as mb_enrich_record,
 )
 from scripts.edge_candidates.fetch_buyback_edinet import parse_edinet_csv, sec_to_code4
 
@@ -602,6 +607,42 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         groups = zk_build_rows(records, topix, scale, "大引け後")
         self.assertEqual(groups["中型"]["raw"], [("2024-01-04", -3.0)])
         self.assertAlmostEqual(groups["中型"]["alpha"][0][1], -3.0 - 1.0, places=6)  # ret - TOPIX
+
+    def test_mild_buyback_enrich(self) -> None:
+        """同日 jisha 決定の ratio を mild record に添付 (edinet=decision_date / tdnet=event_date)。"""
+        bb = {"records": [
+            # edinet: 月次報告で複数行・decision_date が決議日
+            {"code": "21630", "event_date": "2026-03-31", "decision_date": "2026-03-13",
+             "buyback_ratio_pct": 0.282, "source": "edinet"},
+            {"code": "21630", "event_date": "2026-04-30", "decision_date": "2026-03-13",
+             "buyback_ratio_pct": 0.282, "source": "edinet"},
+            # tdnet: decision_date 無し、event_date=開示日
+            {"code": "4318", "event_date": "2026-04-30", "buyback_ratio_pct": 2.65, "source": "tdnet"},
+        ]}
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
+            json.dump(bb, f)
+            bb_path = Path(f.name)
+        try:
+            m = load_buyback_decision_map(bb_path)
+        finally:
+            bb_path.unlink()
+        self.assertEqual(m[("2163", "2026-03-13")], (0.282, "edinet"))  # 5桁→4桁 + decision_date
+        self.assertEqual(m[("4318", "2026-04-30")], (2.65, "tdnet"))    # tdnet=event_date
+
+        # jisha record にヒット → ratio 付与
+        rec = {"code": "2163", "event_date": "2026-03-13", "attrs": {"goods": ["jisha"], "np_yoy": -0.1}}
+        self.assertTrue(mb_enrich_record(rec, m))
+        self.assertEqual(rec["attrs"]["buyback_ratio_pct"], 0.282)
+        self.assertEqual(rec["attrs"]["buyback_source"], "edinet")
+        # 別日決定 → null (キッコーマン型: 決算日 ≠ 既存決定日)
+        rec2 = {"code": "2801", "event_date": "2026-04-24", "attrs": {"goods": ["jisha"]}}
+        self.assertTrue(mb_enrich_record(rec2, m))
+        self.assertIsNone(rec2["attrs"]["buyback_ratio_pct"])
+        self.assertIsNone(rec2["attrs"]["buyback_source"])
+        # jisha 以外 → 触らない (no-op)
+        rec3 = {"code": "2163", "event_date": "2026-03-13", "attrs": {"goods": ["split"]}}
+        self.assertFalse(mb_enrich_record(rec3, m))
+        self.assertNotIn("buyback_ratio_pct", rec3["attrs"])
 
 
 if __name__ == "__main__":

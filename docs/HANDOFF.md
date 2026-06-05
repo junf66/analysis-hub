@@ -51,6 +51,14 @@
 ### 関連リポジトリ（クロスrepo）
 - **po-tracker**（公開）: PO の生データ。market_cap 等。raw `https://raw.githubusercontent.com/junf66/po-tracker/main/data/po_records.json`。
 - **stocks-Large-holding-report**（好悪ページの受け手）: analysis-hub が公開する raw JSON を fetch する。公開済み: `mild_good.json` / `mild_bad.json` / `mild_zouhai.json` / `mild_genhai.json` / `buyback_ratios.json`（いずれも `data/edge_candidates/` 直下、main raw URL）。
+  - **規模%の同日埋め込み（2026-06）**: jisha(自社株買い)を goods に持つ mild record は
+    `attrs.buyback_ratio_pct`（発行済株式数比%、無ければ null）と `attrs.buyback_source`
+    （`tdnet`/`edinet`/null）を持つ。受け手はこの新フィールドを優先 lookup（null なら従来の
+    テキスト表示にフォールバック）。突合は mild.event_date を buyback_ratios の
+    (code, decision_date or event_date) と照合。`scripts.edge_candidates.enrich_mild_buyback`
+    が in-place で付与（extract 再実行と違い alpha_d3_ret 等を壊さない）。update_all と
+    weekly cron で extract_mild_cases の**後**に必ず実行（再生成で ratio が消えるため）。
+    例: アルトナー2163/2026-03-13=0.282(edinet)、キッコーマン2801/2026-04-24=null(EDINET月次報告未提出)。
 
 ---
 
