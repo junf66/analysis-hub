@@ -1,4 +1,4 @@
-name: weekly-data
+　name: weekly-data
 
 # 自社株買い規模%(buyback_ratios) と mild_* を週次で前進蓄積する。
 # TDnet PDF は約5週間、EDINET 自己株券買付状況報告書は約1年(縦覧期間)で消えるため、
