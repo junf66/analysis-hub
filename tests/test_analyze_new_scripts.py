@@ -355,6 +355,16 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         rec = {"bad_factors": [{"metric": {"NP_YoY_pct": -20.0}}], "good_factors": []}
         self.assertEqual(mag_bucket(rec), "程度:中(-30〜-10%)")
         self.assertIsNone(mag_bucket({"bad_factors": [], "good_factors": []}))
+        # --fine-mag: 3/5/8/10% カットで軽い帯を分解 (モジュールフラグ切替)
+        import scripts.scan_kouaku_candidates as sk
+        mild = {"bad_factors": [{"metric": {"NP_YoY_pct": -2.0}}], "good_factors": []}
+        self.assertEqual(mag_bucket(mild), "程度:浅(-10〜0%)")  # 粗バンドでは軽い帯が潰れる
+        sk._FINE_MAG = True
+        try:
+            self.assertEqual(mag_bucket(mild), "程度:減≤3%")       # 細バンドで分解される
+            self.assertEqual(mag_bucket(rec), "程度:減≥10%")
+        finally:
+            sk._FINE_MAG = False
         records = load_kouaku()
         master = k_load_master()
         obs = k_build_obs(records[:200], master, max_combo=2)

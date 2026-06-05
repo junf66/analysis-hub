@@ -44,14 +44,26 @@ def primary_mag(r: dict[str, Any]) -> float | None:
     return None
 
 
+_COARSE_BANDS = [(-1e9, -30, "程度:深(≤-30%)"), (-30, -10, "程度:中(-30〜-10%)"),
+                 (-10, 0, "程度:浅(-10〜0%)"), (0, 10, "程度:小(0〜10%)"),
+                 (10, 1e9, "程度:大(≥10%)")]
+# 細刻み: 3/5/8/10% カットで符号別の disjoint 10 バンド (軽い帯を分解)。
+_FINE_BANDS = [(-1e9, -10, "程度:減≥10%"), (-10, -8, "程度:減8〜10%"), (-8, -5, "程度:減5〜8%"),
+               (-5, -3, "程度:減3〜5%"), (-3, 0, "程度:減≤3%"),
+               (0, 3, "程度:増≤3%"), (3, 5, "程度:増3〜5%"), (5, 8, "程度:増5〜8%"),
+               (8, 10, "程度:増8〜10%"), (10, 1e9, "程度:増≥10%")]
+_FINE_MAG = False   # main() で --fine-mag によって切替
+
+
 def mag_bucket(r: dict[str, Any]) -> str | None:
-    """程度を符号付き粗バンドに割り当てる。pct metric が無ければ None。"""
+    """程度を符号付きバンドに割り当てる。pct metric が無ければ None。
+
+    既定は粗5バンド。`--fine-mag` 指定時は 3/5/8/10% カットの細10バンド (軽い帯を分解)。
+    """
     m = primary_mag(r)
     if m is None:
         return None
-    for lo, hi, lab in [(-1e9, -30, "程度:深(≤-30%)"), (-30, -10, "程度:中(-30〜-10%)"),
-                        (-10, 0, "程度:浅(-10〜0%)"), (0, 10, "程度:小(0〜10%)"),
-                        (10, 1e9, "程度:大(≥10%)")]:
+    for lo, hi, lab in (_FINE_BANDS if _FINE_MAG else _COARSE_BANDS):
         if lo <= m < hi:
             return lab
     return None
@@ -186,7 +198,14 @@ def build_report(records: list[dict[str, Any]], master: dict[str, dict[str, Any]
 
 
 if __name__ == "__main__":
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--fine-mag", action="store_true",
+                    help="程度軸を 3/5/8/10%% カットの細10バンドにする (軽い帯を分解)")
+    ap.add_argument("--out", default=str(REPORT_PATH), help="レポート出力先 (既定 reports/kouaku_candidate_scan.md)")
+    args = ap.parse_args()
+    _FINE_MAG = args.fine_mag
     records = load_kouaku()
     master = load_master()
-    REPORT_PATH.write_text(build_report(records, master))
-    print(f"wrote {REPORT_PATH}")
+    Path(args.out).write_text(build_report(records, master))
+    print(f"wrote {args.out} (fine_mag={_FINE_MAG})")
