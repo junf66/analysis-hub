@@ -58,12 +58,18 @@ KEYWORD_BUCKETS: dict[str, str] = {
 }
 
 
+def _norm_code(code: str) -> str:
+    """5桁(末尾0)銘柄コードを4桁に正規化 (/td/bulk と tdnet_index の表記差を吸収)。"""
+    code = str(code)
+    return code[:-1] if len(code) == 5 and code.endswith("0") else code
+
+
 def _covered_keys(index_path: Path) -> set[tuple[str, str]]:
     """tdnet_index.json から既存分類済みの (code, event_date) 集合を作る。"""
     if not index_path.exists():
         return set()
     recs = json.loads(index_path.read_text()).get("records", [])
-    return {(str(r.get("code")), str(r.get("event_date"))) for r in recs if r.get("tags")}
+    return {(_norm_code(r.get("code")), str(r.get("event_date"))) for r in recs if r.get("tags")}
 
 
 def scan(rows: Iterable[dict[str, Any]], covered: set[tuple[str, str]],
@@ -78,7 +84,7 @@ def scan(rows: Iterable[dict[str, Any]], covered: set[tuple[str, str]],
         title = r.get("Title") or r.get("title") or ""
         if not title:
             continue
-        code = str(r.get("Code") or r.get("code") or "")
+        code = _norm_code(r.get("Code") or r.get("code") or "")
         date = str(r.get("DiscDate") or r.get("event_date") or "")
         is_covered = (code, date) in covered
         disc = r.get("DiscItems")
