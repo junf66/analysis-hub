@@ -43,6 +43,7 @@ data/edge_candidates/buyback_standalone_enriched.json
 data/edge_candidates/zouhai_genshu_d3.json
 data/edge_candidates/po_enriched.json
 data/edge_candidates/fins_summary.json
+data/edge_candidates/mild_nx_events.json
 # data/edge_candidates/mild_good.json  (公開: stocks-Large-holding-report の好悪フィルタで raw URL 利用)
 data/edge_candidates/kouaku_official.json
 data/edge_candidates/reit_daily.json

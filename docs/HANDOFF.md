@@ -97,7 +97,14 @@
 ## 6. 宿題（優先度順・任意）
 
 1. **④中型decideショートのβ確認**（⑦と同手法 `analyze_decide_beta` で可能・未実施）。
-2. **mild_kahou_nx / mild_kouhou_nx**（軽い来期上方/下方帯）: 来期予想NPが /fins で 403のため未作成。株探等の外部ソース要判断。
+2. ~~**mild_kahou_nx / mild_kouhou_nx**（軽い来期上方/下方帯）: 来期予想NPが /fins で 403のため未作成~~
+   → **【訂正 2026-06】誤り。/fins/summary は NxFNp(来期予想当期純利益)を持ち、
+   extract_mixed_disclosures は既にこれで kahou_nx(≤-10%)/kouhou_nx(≥+10%) を分類済み**。
+   中立帯(-10〜+10%)だけが閾値で捨てられていた死角。`scripts.edge_candidates.analyze_mild_nx_band`
+   で炙り出し済(FY決算19,595件中 mild帯6,627件=33.8%)。一次EV(既存price結合)で
+   **mild_kouhou_nx short t+2.62/p0.009/n478** が出た=要 validate_edges 事前登録(FDR+OOS)。
+   ※ fins slim cache(`data/edge_candidates/fins_summary.json`)は KEEP列で NxFNp を落とすため
+   不可。NxFNp 在りは kouaku 本cache `cache/disclosures/fins_summary.json`(by_date)。
 3. **mild 反対材料の「特損/下方修正」DiscItems コード特定**（現状 減配/減益のみ対応）。
 4. **buyback 週次cron の Secrets 登録**（`JQUANTS_API_KEY` / `EDINET_API_KEY`）→ 前進蓄積を自動化。
 5. **候補スキャナーの基線超過の芽**を深掘り（医薬品ファミリー等）。

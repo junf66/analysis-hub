@@ -58,6 +58,7 @@ from scripts.analyze_delivery_long_filters import build_observations as flt_buil
 from scripts.edge_candidates.enrich_buyback_pdf import parse_buyback_text, merge_decisions
 from scripts.edge_candidates.extract_mild_cases import build_events as mild_cases_build
 from scripts.edge_candidates.scan_title_keywords import scan as title_scan
+from scripts.edge_candidates.analyze_mild_nx_band import band_of, build_events as nx_build_events
 from scripts.edge_candidates.fetch_buyback_edinet import parse_edinet_csv, sec_to_code4
 
 
@@ -557,6 +558,26 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertEqual(res["業績予想_下方"]["uncovered"], 1)        # 未被覆
         self.assertEqual(res["特別損失_減損"]["n"], 1)
         self.assertEqual(res["特別損失_減損"]["uncovered"], 0)        # 被覆済み
+
+    def test_mild_nx_band_classification(self) -> None:
+        """NxFNp vs NP の中立帯を mild_kahou_nx/mild_kouhou_nx に割る。"""
+        self.assertEqual(band_of(-20), "kahou_nx")       # 大幅来期減益
+        self.assertEqual(band_of(-5), "mild_kahou_nx")   # 軽い来期減益(死角)
+        self.assertEqual(band_of(0), "mild_kouhou_nx")   # 横ばい→軽い増益側
+        self.assertEqual(band_of(5), "mild_kouhou_nx")   # 軽い来期増益(死角)
+        self.assertEqual(band_of(20), "kouhou_nx")       # 大幅来期増益
+        # build_events: FY行のみ・NP/NxFNp/DiscDate 揃いを採用 (行リストを渡す)
+        rows = [
+            {"Code": "12340", "CurPerType": "FY", "CurPerEn": "2025-03-31", "DiscDate": "2025-05-10",
+             "DiscTime": "15:00", "NP": 100, "NxFNp": 95},   # nx_delta -5% → mild_kahou_nx
+            {"Code": "12340", "CurPerType": "1Q", "DiscDate": "2025-08-01", "NP": 50, "NxFNp": 80},  # FY以外=除外
+            {"Code": "12340", "CurPerType": "FY", "DiscDate": "2024-05-10", "NP": 0, "NxFNp": 10},   # NP=0=除外
+        ]
+        ev = nx_build_events(rows)
+        self.assertEqual(len(ev), 1)
+        self.assertEqual(ev[0]["band"], "mild_kahou_nx")
+        self.assertEqual(ev[0]["code"], "1234")  # 5桁→4桁正規化
+        self.assertAlmostEqual(ev[0]["nx_delta"], -5.0, places=2)
 
 
 if __name__ == "__main__":
