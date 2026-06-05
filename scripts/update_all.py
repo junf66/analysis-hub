@@ -139,8 +139,12 @@ def main() -> None:
         _run_holdings(py, args)
 
     # 全ソース横断のエッジ検証 (FDR + walk-forward)。欠損ソースは自動 skip。
+    # validate_edges は方向別コスト (--long-cost / --short-cost) を採り、
+    # backtest_* の単一往復 --cost とは引数体系が異なる。ここでは canonical な
+    # 方向別デフォルト (short 0.15% / long 0.20%) をそのまま使わせる
+    # (以前 --cost を渡して returncode=2 で常に失敗していたバグを修正)。
     print("\n### エッジ検証 (過剰最適化ガード) ###")
-    _run([py, "-m", "scripts.validate_edges", "--cost", str(args.cost)], allow_fail=True)
+    _run([py, "-m", "scripts.validate_edges"], allow_fail=True)
 
     print("\n=== update_all done ===")
     print(f"  kouaku data:   {REPO_ROOT / 'data' / 'kouaku_records.json'}")

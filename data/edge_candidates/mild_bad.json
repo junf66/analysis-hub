@@ -4616,19 +4616,6 @@
 }
 },
 {
-"code": "1515",
-"event_date": "2022-08-26",
-"source": "official",
-"attrs": {
-"np_yoy": 5.399288716456518,
-"div_yoy": -44.99999999999999,
-"bads": [
-"genhai"
-],
-"disc_time": "15:00:00"
-}
-},
-{
 "code": "6508",
 "event_date": "2022-08-31",
 "source": "official",
@@ -5084,19 +5071,6 @@
 }
 },
 {
-"code": "1515",
-"event_date": "2023-05-10",
-"source": "official",
-"attrs": {
-"np_yoy": 5.399288716456518,
-"div_yoy": -44.99999999999999,
-"bads": [
-"genhai"
-],
-"disc_time": "13:30:00"
-}
-},
-{
 "code": "1929",
 "event_date": "2023-05-10",
 "source": "official",
@@ -5162,19 +5136,6 @@
 }
 },
 {
-"code": "1515",
-"event_date": "2023-05-12",
-"source": "official",
-"attrs": {
-"np_yoy": 5.399288716456518,
-"div_yoy": -44.99999999999999,
-"bads": [
-"genhai"
-],
-"disc_time": "13:30:00"
-}
-},
-{
 "code": "4386",
 "event_date": "2023-05-12",
 "source": "official",
@@ -5234,7 +5195,8 @@
 "np_yoy": 5.866627060745588,
 "div_yoy": -12.0,
 "bads": [
-"genhai"
+"genhai",
+"tokuson"
 ],
 "disc_time": "15:00:00"
 }
@@ -5897,7 +5859,8 @@
 "np_yoy": 2.2699386503067576,
 "div_yoy": -33.333333333333336,
 "bads": [
-"genhai"
+"genhai",
+"tokuson"
 ],
 "disc_time": "18:00:00"
 }
@@ -5988,7 +5951,8 @@
 "np_yoy": 0.5790807093738692,
 "div_yoy": -16.470588235294116,
 "bads": [
-"genhai"
+"genhai",
+"tokuson"
 ],
 "disc_time": "14:00:00"
 }
@@ -6417,7 +6381,8 @@
 "np_yoy": 7.874519846350836,
 "div_yoy": -11.111111111111116,
 "bads": [
-"genhai"
+"genhai",
+"tokuson"
 ],
 "disc_time": "15:30:00"
 }
@@ -7119,7 +7084,8 @@
 "np_yoy": 7.5118858954041245,
 "div_yoy": -67.56756756756756,
 "bads": [
-"genhai"
+"genhai",
+"tokuson"
 ],
 "disc_time": "16:00:00"
 }
@@ -7145,7 +7111,8 @@
 "np_yoy": 0.646203554119551,
 "div_yoy": -37.5,
 "bads": [
-"genhai"
+"genhai",
+"tokuson"
 ],
 "disc_time": "15:30:00"
 }
@@ -7171,7 +7138,8 @@
 "np_yoy": 5.877773452705326,
 "div_yoy": -15.384615384615385,
 "bads": [
-"genhai"
+"genhai",
+"tokuson"
 ],
 "disc_time": "13:00:00"
 }
@@ -8289,7 +8257,8 @@
 "np_yoy": 6.372968349016261,
 "div_yoy": -12.5,
 "bads": [
-"genhai"
+"genhai",
+"tokuson"
 ],
 "disc_time": "15:30:00"
 }
@@ -8640,11 +8609,12 @@
 "np_yoy": 4.385964912280693,
 "div_yoy": -45.833333333333336,
 "bads": [
-"genhai"
+"genhai",
+"tokuson"
 ],
 "disc_time": "18:00:00"
 }
 }
 ],
-"count": 665
+"count": 662
 }

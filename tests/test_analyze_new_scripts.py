@@ -57,6 +57,11 @@ from scripts.analyze_delivery_long_filters import build_report as flt_build_repo
 from scripts.analyze_delivery_long_filters import build_observations as flt_build_obs
 from scripts.edge_candidates.enrich_buyback_pdf import parse_buyback_text, merge_decisions
 from scripts.edge_candidates.extract_mild_cases import build_events as mild_cases_build
+from scripts.edge_candidates.scan_title_keywords import scan as title_scan
+from scripts.edge_candidates.analyze_mild_nx_band import band_of, build_events as nx_build_events
+from scripts.edge_candidates.analyze_zouhai_kahou_nx_beta import (
+    short_cell as zk_short_cell, build_rows as zk_build_rows,
+)
 from scripts.edge_candidates.fetch_buyback_edinet import parse_edinet_csv, sec_to_code4
 
 
@@ -522,6 +527,81 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertEqual(genhai[0]["attrs"]["goods"], ["jisha"])
         # 好材料が無ければ mild_genhai は採用しない
         self.assertEqual(len(mild_cases_build(fins2, {}, "mild_genhai")), 0)
+
+    def test_mild_cases_extra_bads_from_td(self) -> None:
+        """同日開示の特損/下方修正(td_bad)が bads に加点される。"""
+        fins = {"12340": [
+            {"DiscDate": "2024-05-10", "CurPerType": "FY", "CurPerEn": "2024-03-31",
+             "NP": 105, "DivFY": 90, "DiscTime": "15:00"},  # 軽増益×減配
+            {"DiscDate": "2023-05-10", "CurPerType": "FY", "CurPerEn": "2023-03-31",
+             "NP": 100, "DivFY": 100},
+        ]}
+        td_bad = {("12340", "2024-05-10"): {"tokuson", "kabu_geho"}}
+        bad = mild_cases_build(fins, {}, "mild_bad", td_bad)
+        self.assertEqual(len(bad), 1)
+        # 既存の genhai + 同日の特損/下方修正(ソート済み)が並ぶ
+        self.assertEqual(bad[0]["attrs"]["bads"], ["genhai", "kabu_geho", "tokuson"])
+        # td_bad が無ければ従来どおり genhai のみ
+        self.assertEqual(mild_cases_build(fins, {}, "mild_bad")[0]["attrs"]["bads"], ["genhai"])
+
+    def test_title_scan_buckets_and_coverage(self) -> None:
+        """Title 走査が材料バケットに割り、未被覆率を計算する。"""
+        rows = [
+            {"code": "1111", "event_date": "2024-01-05",
+             "title": "通期業績予想の下方修正に関するお知らせ", "DiscItems": "11350"},
+            {"code": "2222", "event_date": "2024-01-06",
+             "title": "特別損失（減損損失）の計上に関するお知らせ", "DiscItems": "11201"},
+            {"code": "3333", "event_date": "2024-01-07",
+             "title": "本日は晴天なり"},  # どのバケットにも該当しない
+        ]
+        covered = {("2222", "2024-01-06")}  # 特損だけ既存被覆
+        res = {d["bucket"]: d for d in title_scan(rows, covered, sample_n=2)}
+        self.assertIn("業績予想_下方", res)
+        self.assertEqual(res["業績予想_下方"]["n"], 1)
+        self.assertEqual(res["業績予想_下方"]["uncovered"], 1)        # 未被覆
+        self.assertEqual(res["特別損失_減損"]["n"], 1)
+        self.assertEqual(res["特別損失_減損"]["uncovered"], 0)        # 被覆済み
+
+    def test_mild_nx_band_classification(self) -> None:
+        """NxFNp vs NP の中立帯を mild_kahou_nx/mild_kouhou_nx に割る。"""
+        self.assertEqual(band_of(-20), "kahou_nx")       # 大幅来期減益
+        self.assertEqual(band_of(-5), "mild_kahou_nx")   # 軽い来期減益(死角)
+        self.assertEqual(band_of(0), "mild_kouhou_nx")   # 横ばい→軽い増益側
+        self.assertEqual(band_of(5), "mild_kouhou_nx")   # 軽い来期増益(死角)
+        self.assertEqual(band_of(20), "kouhou_nx")       # 大幅来期増益
+        # build_events: FY行のみ・NP/NxFNp/DiscDate 揃いを採用 (行リストを渡す)
+        rows = [
+            {"Code": "12340", "CurPerType": "FY", "CurPerEn": "2025-03-31", "DiscDate": "2025-05-10",
+             "DiscTime": "15:00", "NP": 100, "NxFNp": 95},   # nx_delta -5% → mild_kahou_nx
+            {"Code": "12340", "CurPerType": "1Q", "DiscDate": "2025-08-01", "NP": 50, "NxFNp": 80},  # FY以外=除外
+            {"Code": "12340", "CurPerType": "FY", "DiscDate": "2024-05-10", "NP": 0, "NxFNp": 10},   # NP=0=除外
+        ]
+        ev = nx_build_events(rows)
+        self.assertEqual(len(ev), 1)
+        self.assertEqual(ev[0]["band"], "mild_kahou_nx")
+        self.assertEqual(ev[0]["code"], "1234")  # 5桁→4桁正規化
+        self.assertAlmostEqual(ev[0]["nx_delta"], -5.0, places=2)
+
+    def test_zouhai_kahou_nx_beta_short_cell_and_demean(self) -> None:
+        """ショート net 計算と β=1 demean(個別−TOPIX)の結合を検証。"""
+        # ショート net = -ret - 0.15。全日マイナス株価(=ショート利)で勝率100%。
+        obs = [(f"2024-01-{i:02d}", -2.0) for i in range(1, 13)]  # n=12 ≥ MIN_CELL_N
+        s = zk_short_cell(obs)
+        self.assertEqual(s["n"], 12)
+        self.assertAlmostEqual(s["net_ev"], 2.0 - 0.15, places=6)  # -(-2)-0.15
+        self.assertEqual(s["win"], 100.0)
+        self.assertIsNone(zk_short_cell(obs[:5]))  # n<MIN_CELL_N
+        # build_rows: subpattern一致+大引け後+TOPIX同日でαが ret-TOPIX になる
+        records = [{
+            "subpattern": "zouhai_kahou_nx", "code": "70110", "event_date": "2024-01-04",
+            "good_factors": [{"disc_time": "16:00:00"}],
+            "attrs": {"next_day_open_to_close_ret": -3.0, "next_bar_date": "2024-01-05"},
+        }]
+        topix = {"2024-01-05": (100.0, 101.0)}  # TOPIX +1%
+        scale = {"7011": "中型"}
+        groups = zk_build_rows(records, topix, scale, "大引け後")
+        self.assertEqual(groups["中型"]["raw"], [("2024-01-04", -3.0)])
+        self.assertAlmostEqual(groups["中型"]["alpha"][0][1], -3.0 - 1.0, places=6)  # ret - TOPIX
 
 
 if __name__ == "__main__":
