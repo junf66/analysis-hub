@@ -57,6 +57,7 @@ from scripts.analyze_delivery_long_filters import build_report as flt_build_repo
 from scripts.analyze_delivery_long_filters import build_observations as flt_build_obs
 from scripts.edge_candidates.enrich_buyback_pdf import parse_buyback_text, merge_decisions
 from scripts.edge_candidates.extract_mild_cases import build_events as mild_cases_build
+from scripts.edge_candidates.scan_title_keywords import scan as title_scan
 from scripts.edge_candidates.fetch_buyback_edinet import parse_edinet_csv, sec_to_code4
 
 
@@ -522,6 +523,40 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertEqual(genhai[0]["attrs"]["goods"], ["jisha"])
         # 好材料が無ければ mild_genhai は採用しない
         self.assertEqual(len(mild_cases_build(fins2, {}, "mild_genhai")), 0)
+
+    def test_mild_cases_extra_bads_from_td(self) -> None:
+        """同日開示の特損/下方修正(td_bad)が bads に加点される。"""
+        fins = {"12340": [
+            {"DiscDate": "2024-05-10", "CurPerType": "FY", "CurPerEn": "2024-03-31",
+             "NP": 105, "DivFY": 90, "DiscTime": "15:00"},  # 軽増益×減配
+            {"DiscDate": "2023-05-10", "CurPerType": "FY", "CurPerEn": "2023-03-31",
+             "NP": 100, "DivFY": 100},
+        ]}
+        td_bad = {("12340", "2024-05-10"): {"tokuson", "kabu_geho"}}
+        bad = mild_cases_build(fins, {}, "mild_bad", td_bad)
+        self.assertEqual(len(bad), 1)
+        # 既存の genhai + 同日の特損/下方修正(ソート済み)が並ぶ
+        self.assertEqual(bad[0]["attrs"]["bads"], ["genhai", "kabu_geho", "tokuson"])
+        # td_bad が無ければ従来どおり genhai のみ
+        self.assertEqual(mild_cases_build(fins, {}, "mild_bad")[0]["attrs"]["bads"], ["genhai"])
+
+    def test_title_scan_buckets_and_coverage(self) -> None:
+        """Title 走査が材料バケットに割り、未被覆率を計算する。"""
+        rows = [
+            {"code": "1111", "event_date": "2024-01-05",
+             "title": "通期業績予想の下方修正に関するお知らせ", "DiscItems": "11350"},
+            {"code": "2222", "event_date": "2024-01-06",
+             "title": "特別損失（減損損失）の計上に関するお知らせ", "DiscItems": "11201"},
+            {"code": "3333", "event_date": "2024-01-07",
+             "title": "本日は晴天なり"},  # どのバケットにも該当しない
+        ]
+        covered = {("2222", "2024-01-06")}  # 特損だけ既存被覆
+        res = {d["bucket"]: d for d in title_scan(rows, covered, sample_n=2)}
+        self.assertIn("業績予想_下方", res)
+        self.assertEqual(res["業績予想_下方"]["n"], 1)
+        self.assertEqual(res["業績予想_下方"]["uncovered"], 1)        # 未被覆
+        self.assertEqual(res["特別損失_減損"]["n"], 1)
+        self.assertEqual(res["特別損失_減損"]["uncovered"], 0)        # 被覆済み
 
 
 if __name__ == "__main__":

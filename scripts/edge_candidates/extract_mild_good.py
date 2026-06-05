@@ -31,14 +31,22 @@ DIV_UP = 3.0          # 増配判定閾値
 NP_MILD_LO = -10.0    # 軽い減益の下限 (-10%, 0)
 
 
-def fetch_td_gooditems() -> dict[tuple[str, str], set[str]]:
-    """(code, DiscDate) → {自己株式/分割 のうち存在する DiscItems} を /td/bulk から構成。"""
+def iter_td_bulk_rows():
+    """/td/bulk(5年一括 CSV.gz)の各行 dict を yield する共通ヘルパ。
+
+    DiscItems/Title 等のテキストを使う抽出器 (好材料/反対材料) で共有する。
+    """
     key = os.environ["JQUANTS_API_KEY"]
     meta = json.load(urllib.request.urlopen(
         urllib.request.Request(f"{_jquants.BASE_URL}/td/bulk", headers={"x-api-key": key}), timeout=60))
     txt = gzip.decompress(urllib.request.urlopen(meta["url"], timeout=180).read()).decode("utf-8", "ignore")
+    yield from csv.DictReader(io.StringIO(txt))
+
+
+def fetch_td_gooditems() -> dict[tuple[str, str], set[str]]:
+    """(code, DiscDate) → {自己株式/分割 のうち存在する DiscItems} を /td/bulk から構成。"""
     out: dict[tuple[str, str], set[str]] = defaultdict(set)
-    for r in csv.DictReader(io.StringIO(txt)):
+    for r in iter_td_bulk_rows():
         items = set((r.get("DiscItems") or "").split("|"))
         good = items & {JISHA_ITEM, SPLIT_ITEM}
         if good:
