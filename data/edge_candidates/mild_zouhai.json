@@ -853,7 +853,9 @@
 "div_yoy": 2.564102564102555,
 "np_yoy": -57.27190605239385,
 "bads": [
-"genshu"
+"genshu",
+"kabu_geho",
+"tokuson"
 ],
 "disc_time": "15:00:00"
 }
@@ -944,7 +946,8 @@
 "div_yoy": 2.5974025974025983,
 "np_yoy": -73.94176845663362,
 "bads": [
-"genshu"
+"genshu",
+"tokuson"
 ],
 "disc_time": "15:15:00"
 }
@@ -1048,7 +1051,8 @@
 "div_yoy": 2.6315789473684292,
 "np_yoy": -86.16071428571428,
 "bads": [
-"genshu"
+"genshu",
+"tokuson"
 ],
 "disc_time": "15:30:00"
 }
@@ -1295,7 +1299,9 @@
 "div_yoy": 2.777777777777768,
 "np_yoy": -14.794455066921607,
 "bads": [
-"genshu"
+"genshu",
+"kabu_geho",
+"tokuson"
 ],
 "disc_time": "15:00:00"
 }
@@ -1568,7 +1574,9 @@
 "div_yoy": 1.6949152542372836,
 "np_yoy": -15.285226718673817,
 "bads": [
-"genshu"
+"genshu",
+"kabu_geho",
+"tokuson"
 ],
 "disc_time": "15:30:00"
 }
@@ -1581,7 +1589,9 @@
 "div_yoy": 1.724137931034475,
 "np_yoy": -50.50152424033828,
 "bads": [
-"genshu"
+"genshu",
+"kabu_geho",
+"tokuson"
 ],
 "disc_time": "15:30:00"
 }
@@ -1659,7 +1669,9 @@
 "div_yoy": 2.7027027027026973,
 "np_yoy": -56.75675675675676,
 "bads": [
-"genshu"
+"genshu",
+"kabu_geho",
+"tokuson"
 ],
 "disc_time": "15:00:00"
 }
@@ -1672,7 +1684,8 @@
 "div_yoy": 2.777777777777768,
 "np_yoy": -50.81723625557206,
 "bads": [
-"genshu"
+"genshu",
+"tokuson"
 ],
 "disc_time": "16:30:00"
 }
@@ -1763,7 +1776,9 @@
 "div_yoy": 1.2820512820512997,
 "np_yoy": -308.8235294117647,
 "bads": [
-"genshu"
+"genshu",
+"kabu_geho",
+"tokuson"
 ],
 "disc_time": "15:30:00"
 }
@@ -1776,7 +1791,8 @@
 "div_yoy": 1.2820512820512997,
 "np_yoy": -308.8235294117647,
 "bads": [
-"genshu"
+"genshu",
+"tokuson"
 ],
 "disc_time": "15:30:00"
 }
@@ -1802,7 +1818,8 @@
 "div_yoy": 1.6949152542372836,
 "np_yoy": -63.683321744313105,
 "bads": [
-"genshu"
+"genshu",
+"tokuson"
 ],
 "disc_time": "15:30:00"
 }
@@ -1841,7 +1858,8 @@
 "div_yoy": 2.941176470588225,
 "np_yoy": -150.72053522397312,
 "bads": [
-"genshu"
+"genshu",
+"tokuson"
 ],
 "disc_time": "15:30:00"
 }
@@ -1906,7 +1924,8 @@
 "div_yoy": 2.2222222222222143,
 "np_yoy": -25.062761506276154,
 "bads": [
-"genshu"
+"genshu",
+"tokuson"
 ],
 "disc_time": "16:00:00"
 }
@@ -1945,7 +1964,8 @@
 "div_yoy": 2.941176470588225,
 "np_yoy": -150.72053522397312,
 "bads": [
-"genshu"
+"genshu",
+"tokuson"
 ],
 "disc_time": "13:25:00"
 }
