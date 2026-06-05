@@ -1,8 +1,9 @@
 name: weekly-data
 
 # 自社株買い規模%(buyback_ratios) と mild_* を週次で前進蓄積する。
-# TDnet PDF は約5週間で消えるため、毎週走らせて取れるうちに規模%を確定保存する。
-# 前提: リポジトリ Settings → Secrets に JQUANTS_API_KEY を登録すること。
+# TDnet PDF は約5週間、EDINET 自己株券買付状況報告書は約1年(縦覧期間)で消えるため、
+# 毎週走らせて取れるうちに規模%を確定保存する(EDINET は遡及不能=継続蓄積が本筋)。
+# 前提: リポジトリ Settings → Secrets に JQUANTS_API_KEY と EDINET_API_KEY を登録すること。
 
 on:
   schedule:
@@ -28,8 +29,9 @@ jobs:
       - name: Refresh buyback decisions + parse PDFs (前進蓄積)
         run: |
           python -m scripts.edge_candidates.enrich_buyback_pdf --refresh-list 14 --sleep 5
-      - name: EDINET 自己株券買付状況報告書(170) 直近分を補完 (規模%実績)
-        # EDINET_API_KEY secret がある時のみ。過去全期間のbackfillは別途手動(--from 2018-01-01)。
+      - name: EDINET 自己株券買付状況報告書(220/230) 直近分を補完 (規模%実績)
+        # EDINET_API_KEY secret がある時のみ。EDINET は縦覧約1年で遡及不能のため
+        # 8年backfill等は不可。本ステップで直近45日を毎週前進蓄積するのが本筋。
         run: |
           if [ -n "$EDINET_API_KEY" ]; then
             python -m scripts.edge_candidates.fetch_buyback_edinet --from "$(date -u -d '45 days ago' +%Y-%m-%d)" --to "$(date -u +%Y-%m-%d)" --sleep 1.5 || true
