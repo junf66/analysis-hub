@@ -59,6 +59,9 @@ from scripts.edge_candidates.enrich_buyback_pdf import parse_buyback_text, merge
 from scripts.edge_candidates.extract_mild_cases import build_events as mild_cases_build
 from scripts.edge_candidates.scan_title_keywords import scan as title_scan
 from scripts.edge_candidates.analyze_mild_nx_band import band_of, build_events as nx_build_events
+from scripts.edge_candidates.analyze_zouhai_kahou_nx_beta import (
+    short_cell as zk_short_cell, build_rows as zk_build_rows,
+)
 from scripts.edge_candidates.fetch_buyback_edinet import parse_edinet_csv, sec_to_code4
 
 
@@ -578,6 +581,27 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         self.assertEqual(ev[0]["band"], "mild_kahou_nx")
         self.assertEqual(ev[0]["code"], "1234")  # 5桁→4桁正規化
         self.assertAlmostEqual(ev[0]["nx_delta"], -5.0, places=2)
+
+    def test_zouhai_kahou_nx_beta_short_cell_and_demean(self) -> None:
+        """ショート net 計算と β=1 demean(個別−TOPIX)の結合を検証。"""
+        # ショート net = -ret - 0.15。全日マイナス株価(=ショート利)で勝率100%。
+        obs = [(f"2024-01-{i:02d}", -2.0) for i in range(1, 13)]  # n=12 ≥ MIN_CELL_N
+        s = zk_short_cell(obs)
+        self.assertEqual(s["n"], 12)
+        self.assertAlmostEqual(s["net_ev"], 2.0 - 0.15, places=6)  # -(-2)-0.15
+        self.assertEqual(s["win"], 100.0)
+        self.assertIsNone(zk_short_cell(obs[:5]))  # n<MIN_CELL_N
+        # build_rows: subpattern一致+大引け後+TOPIX同日でαが ret-TOPIX になる
+        records = [{
+            "subpattern": "zouhai_kahou_nx", "code": "70110", "event_date": "2024-01-04",
+            "good_factors": [{"disc_time": "16:00:00"}],
+            "attrs": {"next_day_open_to_close_ret": -3.0, "next_bar_date": "2024-01-05"},
+        }]
+        topix = {"2024-01-05": (100.0, 101.0)}  # TOPIX +1%
+        scale = {"7011": "中型"}
+        groups = zk_build_rows(records, topix, scale, "大引け後")
+        self.assertEqual(groups["中型"]["raw"], [("2024-01-04", -3.0)])
+        self.assertAlmostEqual(groups["中型"]["alpha"][0][1], -3.0 - 1.0, places=6)  # ret - TOPIX
 
 
 if __name__ == "__main__":

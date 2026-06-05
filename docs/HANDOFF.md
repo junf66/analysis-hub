@@ -96,7 +96,8 @@
 
 ## 6. 宿題（優先度順・任意）
 
-1. **④中型decideショートのβ確認**（⑦と同手法 `analyze_decide_beta` で可能・未実施）。
+1. ~~**④中型のβ確認**~~ → **完了 2026-06**（`analyze_zouhai_kahou_nx_beta.py`、β=1 TOPIX-demean）。
+   大引け後 中型 raw+1.29%/t+2.43/n30 → α+1.36%/t+2.33＝β交絡否定（④中型は本物）。小型もα健在。
 2. ~~**mild_kahou_nx / mild_kouhou_nx**（軽い来期上方/下方帯）: 来期予想NPが /fins で 403のため未作成~~
    → **【訂正 2026-06】誤り。/fins/summary は NxFNp(来期予想当期純利益)を持ち、
    extract_mixed_disclosures は既にこれで kahou_nx(≤-10%)/kouhou_nx(≥+10%) を分類済み**。
