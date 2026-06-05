@@ -181,7 +181,12 @@ def main() -> None:
     tdnet = json.loads(args.tdnet.read_text())["records"]
     events = select_split_events(tdnet)
     sameday = build_sameday_tags(tdnet)
-    isstype_idx = build_isstype_index(json.loads(args.margin.read_text())["records"])
+    # 信用区分(軸A)は margin_interest.json があれば付与、無ければ skip (alpha_d{N} は影響なし)。
+    if args.margin.exists():
+        isstype_idx = build_isstype_index(json.loads(args.margin.read_text())["records"])
+    else:
+        print(f"[split_axes] margin なし ({args.margin.name}) → 軸A(信用区分) skip")
+        isstype_idx = {}
     print(f"[split_axes] {len(events)}件 enrich開始")
     enrich(events, sameday, isstype_idx, out_path=args.out)
 

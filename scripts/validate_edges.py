@@ -208,6 +208,18 @@ def new_edges_observations(_ignored: list[dict[str, Any]]) -> Iterator[dict[str,
                 o = _obs("好悪×医薬品×信用 翌寄→引 long", a.get("next_day_open_to_close_ret"), r)
                 if o:
                     yield o
+    # ⑦ 増配×優待廃止 LONG (候補・事前登録): 増配と同時に株主優待を廃止 → 翌寄→翌引け long。
+    #   候補スキャン(基線demeanα +0.86%/t2.14/OOS+1.1, n35)で浮上。n小につき要確認枠。
+    for r in json.loads(KOUAKU_PATH.read_text()).get("records", []):
+        a = r.get("attrs") or {}
+        if a.get("limit_locked"):
+            continue
+        goods = {f.get("subpattern_hint") for f in (r.get("good_factors") or [])}
+        bads = {f.get("subpattern_hint") for f in (r.get("bad_factors") or [])}
+        if "zouhai" in goods and "yutai_end" in bads:
+            o = _obs("増配×優待廃止 翌寄→引 long", a.get("next_day_open_to_close_ret"), r)
+            if o:
+                yield o
 
 
 _SOURCES = {
