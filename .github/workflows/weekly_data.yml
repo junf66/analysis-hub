@@ -42,12 +42,18 @@ jobs:
         # mild_good は alpha_d3_ret(⑤依存)を持つため触らない。新3ケースのみ再生成。
         run: |
           python -m scripts.edge_candidates.extract_mild_cases || true
+      - name: Attach buyback ratio% to mild_* (同日 jisha 決定)
+        # extract_mild_cases が mild_bad/genhai を再生成し ratio を消すため、その後に実行。
+        # mild_good も新規 EDINET 報告分を拾う (alpha_d3_ret は非破壊)。
+        run: |
+          python -m scripts.edge_candidates.enrich_mild_buyback || true
       - name: Commit & push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/edge_candidates/buyback_ratios.json \
                   data/edge_candidates/td_buyback_decisions.json \
+                  data/edge_candidates/mild_good.json \
                   data/edge_candidates/mild_bad.json \
                   data/edge_candidates/mild_zouhai.json \
                   data/edge_candidates/mild_genhai.json

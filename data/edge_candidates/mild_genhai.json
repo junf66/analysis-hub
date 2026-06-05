@@ -10,7 +10,9 @@
 "goods": [
 "jisha"
 ],
-"disc_time": "15:30:00"
+"disc_time": "15:30:00",
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -23,7 +25,9 @@
 "goods": [
 "jisha"
 ],
-"disc_time": "16:00:00"
+"disc_time": "16:00:00",
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -36,7 +40,9 @@
 "goods": [
 "jisha"
 ],
-"disc_time": "14:00:00"
+"disc_time": "14:00:00",
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -49,7 +55,9 @@
 "goods": [
 "jisha"
 ],
-"disc_time": "16:00:00"
+"disc_time": "16:00:00",
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -75,7 +83,9 @@
 "goods": [
 "jisha"
 ],
-"disc_time": "15:30:00"
+"disc_time": "15:30:00",
+"buyback_ratio_pct": 1.121,
+"buyback_source": "edinet"
 }
 },
 {
@@ -88,7 +98,9 @@
 "goods": [
 "jisha"
 ],
-"disc_time": "16:30:00"
+"disc_time": "16:30:00",
+"buyback_ratio_pct": 3.0,
+"buyback_source": "tdnet"
 }
 },
 {
@@ -101,7 +113,9 @@
 "goods": [
 "jisha"
 ],
-"disc_time": "13:20:00"
+"disc_time": "13:20:00",
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -115,7 +129,9 @@
 "jisha",
 "split"
 ],
-"disc_time": "15:30:00"
+"disc_time": "15:30:00",
+"buyback_ratio_pct": null,
+"buyback_source": null
 }
 },
 {
@@ -128,7 +144,9 @@
 "goods": [
 "jisha"
 ],
-"disc_time": "16:30:00"
+"disc_time": "16:30:00",
+"buyback_ratio_pct": 1.82,
+"buyback_source": "edinet"
 }
 }
 ],
