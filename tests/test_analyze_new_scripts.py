@@ -67,6 +67,7 @@ from scripts.edge_candidates.analyze_zouhai_kahou_nx_beta import (
 from scripts.edge_candidates.enrich_mild_buyback import (
     load_buyback_decision_map, enrich_record as mb_enrich_record,
 )
+from scripts.edge_candidates.gen_chat_assistant import build_prompt as chat_build_prompt
 from scripts.edge_candidates.fetch_buyback_edinet import parse_edinet_csv, sec_to_code4
 
 
@@ -643,6 +644,21 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         rec3 = {"code": "2163", "event_date": "2026-03-13", "attrs": {"goods": ["split"]}}
         self.assertFalse(mb_enrich_record(rec3, m))
         self.assertNotIn("buyback_ratio_pct", rec3["attrs"])
+
+    def test_chat_assistant_prompt(self) -> None:
+        """判定プロンプトに①A2版・口座/デバイス・リストが入る。"""
+        master = {"as_of": "2026-06-02", "records": [
+            {"Code": "43850", "CoName": "メルカリ", "scale_band": "中型", "S17Nm": "情報通信・サービスその他", "MrgnNm": "信用"},
+            {"Code": "89510", "CoName": "日本ビルファンド投資法人", "scale_band": "大型", "MrgnNm": "貸借"},
+            {"Code": "45230", "CoName": "エーザイ", "scale_band": "中型", "S17Nm": "医薬品", "MrgnNm": "信用"},
+        ]}
+        p = chat_build_prompt(master)
+        self.assertIn("4385 メルカリ", p)                       # 中型Mid400リスト
+        self.assertIn("4523 エーザイ", p)                       # 医薬品×信用リスト
+        self.assertIn("9:05〜9:15", p)                          # ①Aスキャル版の出口
+        self.assertIn("持ち切り版", p)                          # ①A持ち切り版
+        self.assertIn("楽天マーケットスピード", p)               # 口座/デバイス指針
+        self.assertIn("日興スマホでも可", p)
 
 
 if __name__ == "__main__":
