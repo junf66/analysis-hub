@@ -159,6 +159,13 @@ def new_edges_observations(_ignored: list[dict[str, Any]]) -> Iterator[dict[str,
                 o = _obs("PO中型×翌日GD×引け long", oc, r)
                 if o:
                     yield o
+            # ①A 再定義版: PO大型(円≥5000億) × 翌日GD × 翌寄→引け long (持ち切り版)。
+            #   原典(9:05-9:30/t4.05)は再現不能で撤回。再現可能なこの版を登録しnを蓄積。
+            #   raw は t<2 だが β=1調整で α+1.14%/t2.52(別途)。raw でも登録し自動追跡する。
+            if (r.get("market_cap") or 0) >= 5000 and gap is not None and gap <= -0.5 and oc is not None:
+                o = _obs("PO大型(≥5000億)×翌日GD×引け long", oc, r)
+                if o:
+                    yield o
     # ③ 増配 × 軽い減益(3%未満) × +3日α (mild_good)
     if _MILD_PATH.exists():
         for r in json.loads(_MILD_PATH.read_text()).get("records", []):
