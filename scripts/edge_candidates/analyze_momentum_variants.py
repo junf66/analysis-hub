@@ -51,6 +51,7 @@ def _trend_ok(m: dict[str, float], cal: list[str], idx: int) -> bool:
 
 
 def metric_12_1(m: dict[str, float], cal: list[str], idx: int) -> float | None:
+    """12-1モメンタム値(過去12か月騰落・直近1か月除外)。データ欠損は None。"""
     fe, fs = cal[idx - SKIP], cal[idx - LOOKBACK]
     if not (fe in m and fs in m and m[fs]):
         return None
@@ -58,6 +59,7 @@ def metric_12_1(m: dict[str, float], cal: list[str], idx: int) -> float | None:
 
 
 def metric_52wh(m: dict[str, float], cal: list[str], idx: int) -> float | None:
+    """52週高値接近度(現値/52週高値, 1.0=高値更新中)。データ欠損は None。"""
     window = [m[cal[k]] for k in range(idx - LOOKBACK, idx + 1) if cal[k] in m]
     if len(window) < LOOKBACK * 0.75 or cal[idx] not in m:
         return None
@@ -168,6 +170,7 @@ def _split(months: list[dict[str, Any]]) -> tuple[list, list]:
 
 
 def fetch_closes(codes: list[str], frm: str, to: str) -> dict[str, dict[str, float]]:
+    """各 code の調整後終値 {date: AdjC} を取得(cache 併用・大型キャッシュ流用・resume 可)。"""
     from scripts import _jquants
     cache: dict[str, dict[str, float]] = {}
     if CACHE_PATH.exists():
