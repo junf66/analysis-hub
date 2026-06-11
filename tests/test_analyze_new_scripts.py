@@ -67,6 +67,8 @@ from scripts.edge_candidates.analyze_zouhai_kahou_nx_beta import (
 from scripts.edge_candidates.enrich_mild_buyback import (
     load_buyback_decision_map, enrich_record as mb_enrich_record,
 )
+from scripts.edge_candidates.gen_chat_assistant import build_prompt as chat_build_prompt
+from scripts.edge_candidates.screen_momentum import rank_momentum as mom_rank
 from scripts.edge_candidates.fetch_buyback_edinet import parse_edinet_csv, sec_to_code4
 
 
@@ -643,6 +645,41 @@ class TestAnalyzeNewScripts(unittest.TestCase):
         rec3 = {"code": "2163", "event_date": "2026-03-13", "attrs": {"goods": ["split"]}}
         self.assertFalse(mb_enrich_record(rec3, m))
         self.assertNotIn("buyback_ratio_pct", rec3["attrs"])
+
+    def test_chat_assistant_prompt(self) -> None:
+        """判定プロンプトに①A2版・口座/デバイス・リストが入る。"""
+        master = {"as_of": "2026-06-02", "records": [
+            {"Code": "43850", "CoName": "メルカリ", "scale_band": "中型", "S17Nm": "情報通信・サービスその他", "MrgnNm": "信用"},
+            {"Code": "89510", "CoName": "日本ビルファンド投資法人", "scale_band": "大型", "MrgnNm": "貸借"},
+            {"Code": "45230", "CoName": "エーザイ", "scale_band": "中型", "S17Nm": "医薬品", "MrgnNm": "信用"},
+        ]}
+        p = chat_build_prompt(master)
+        self.assertIn("4385 メルカリ", p)                       # 中型Mid400リスト
+        self.assertIn("4523 エーザイ", p)                       # 医薬品×信用リスト
+        self.assertIn("9:05〜9:15", p)                          # ①Aスキャル版の出口
+        self.assertIn("持ち切り版", p)                          # ①A持ち切り版
+        self.assertIn("楽天マーケットスピード", p)               # 口座/デバイス指針
+        self.assertIn("日興スマホでも可", p)
+
+    def test_momentum_rank(self) -> None:
+        """12-1モメンタムで強い順に並び、200日線割れと欠損を除外。"""
+        cal = [f"2024-{m:02d}-01" for m in range(1, 13)] + [f"2025-{m:02d}-01" for m in range(1, 13)]
+        # 簡易: lookback/skip/trend を小さくして検証
+        def series(start, step):  # 直線的に変化する終値列
+            return {cal[i]: start + step * i for i in range(len(cal))}
+        closes = {
+            "13010": series(100, 10),   # 強い上昇(モメンタム最大・トレンド上)
+            "56780": series(100, 3),    # 緩い上昇
+            "99990": series(300, -10),  # 下降(200線割れ→除外)
+        }
+        names = {"13010": "強い", "56780": "緩い", "99990": "弱い"}
+        rows = mom_rank(closes, cal, asof_idx=len(cal) - 1, names=names,
+                        lookback=12, skip=2, trend_n=6, top_n=10)
+        codes = [r["code"] for r in rows]
+        self.assertEqual(codes[0], "1301")         # 最強が先頭(5桁→4桁正規化)
+        self.assertIn("5678", codes)
+        self.assertNotIn("9999", codes)            # 下降トレンドは除外
+        self.assertGreater(rows[0]["mom_pct"], rows[1]["mom_pct"])  # 強い順
 
 
 if __name__ == "__main__":

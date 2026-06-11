@@ -111,6 +111,8 @@ def holdings_observations(records: list[dict[str, Any]]) -> Iterator[dict[str, A
 _MASTER_PATH = REPO_ROOT / "data" / "edge_candidates" / "equities_master.json"
 _PO_ENR_PATH = REPO_ROOT / "data" / "edge_candidates" / "po_enriched.json"
 _MILD_PATH = REPO_ROOT / "data" / "edge_candidates" / "mild_good.json"
+_TOPIX_PATH = REPO_ROOT / "data" / "edge_candidates" / "topix_daily.json"
+_LIMIT_UL_PATH = REPO_ROOT / "cache" / "limit_ul_events.json"
 
 
 def _primary_mag(r: dict[str, Any]) -> float | None:
@@ -157,6 +159,13 @@ def new_edges_observations(_ignored: list[dict[str, Any]]) -> Iterator[dict[str,
             oc = (enr.get(r["id"]) or {}).get("next_day_open_to_close_ret")
             if scale.get(code5) == "中型" and gap is not None and gap <= -0.5 and oc is not None:
                 o = _obs("PO中型×翌日GD×引け long", oc, r)
+                if o:
+                    yield o
+            # ①A 再定義版: PO大型(円≥5000億) × 翌日GD × 翌寄→引け long (持ち切り版)。
+            #   原典(9:05-9:30/t4.05)は再現不能で撤回。再現可能なこの版を登録しnを蓄積。
+            #   raw は t<2 だが β=1調整で α+1.14%/t2.52(別途)。raw でも登録し自動追跡する。
+            if (r.get("market_cap") or 0) >= 5000 and gap is not None and gap <= -0.5 and oc is not None:
+                o = _obs("PO大型(≥5000億)×翌日GD×引け long", oc, r)
                 if o:
                     yield o
     # ③ 増配 × 軽い減益(3%未満) × +3日α (mild_good)
@@ -208,6 +217,28 @@ def new_edges_observations(_ignored: list[dict[str, Any]]) -> Iterator[dict[str,
                 o = _obs("好悪×医薬品×信用 翌寄→引 long", a.get("next_day_open_to_close_ret"), r)
                 if o:
                     yield o
+    # ⑦ 中型S高×翌寄→大引け long (伝説アーカイブ C2 由来。S高で引けた中型を翌寄り買い→翌引け売り)
+    #   集計の-1.38%は小型仕手(空売り不能)の反転に支配されるが、中型に絞ると継続。
+    #   対TOPIX(翌日寄→引)を控除した α を ret に渡す (= β調整済で FDR にかける)。
+    if _LIMIT_UL_PATH.exists() and _MASTER_PATH.exists() and _TOPIX_PATH.exists():
+        scale = {m["Code"]: m.get("scale_band")
+                 for m in json.loads(_MASTER_PATH.read_text()).get("records", [])}
+        tpx = {r["Date"]: r for r in json.loads(_TOPIX_PATH.read_text()).get("records", [])}
+        cal = sorted(tpx)
+        nxt = {cal[i]: cal[i + 1] for i in range(len(cal) - 1)}
+        for e in json.loads(_LIMIT_UL_PATH.read_text()):
+            code5 = e["code"] + "0" if len(e["code"]) == 4 else e["code"]
+            if scale.get(code5) != "中型":
+                continue
+            d1 = nxt.get(e["date"])
+            tr = tpx.get(d1) or {}
+            if not (tr.get("O") and tr.get("C")):
+                continue
+            alpha = e["io"] - (tr["C"] / tr["O"] - 1.0) * 100.0
+            o = _obs("中型S高×翌寄→大引け long", alpha,
+                     {"event_date": e["date"], "code": e["code"]})
+            if o:
+                yield o
 
 
 _SOURCES = {
