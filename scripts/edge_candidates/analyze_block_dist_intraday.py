@@ -5,8 +5,9 @@
 日中の自律反発を 9:10/9:15/9:30/前場引け/大引け で利確した場合の期待値を測る。
 
 分足は J-Quants サブスク開始の 2024-06-11 以降のみ → D+1 がそれ以降のイベントのみ対象。
-エントリ=当日始値(寄り auction, daily AdjO)。利確=各時刻時点の分足終値(無ければ直前バー)。
-リターンは raw(コスト前)。短時間窓は β ほぼ無視可、大引けのみ TOPIX 日中で β=1 控除も併記。
+エントリ・利確とも**分足の生値で統一**（日足AdjOと混ぜると分割調整係数でズレ巨大化）。
+エントリ=分足初バーの寄り。利確=各時刻時点の分足終値(無ければ直前バー)。
+リターンは raw(コスト前)。短時間窓のため β は無視（大引け≒寄→引で d1 と一致）。
 コスト: ロング往復 0.20% を net 列で控除。クラスタ=発表日。
 
 出力: reports/block_dist_intraday.md
@@ -26,7 +27,6 @@ from scripts._atomic import atomic_write_json, atomic_write_text
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 TDNET_PATH = REPO_ROOT / "cache" / "disclosures" / "tdnet_all.json"
 TOPIX_PATH = REPO_ROOT / "data" / "edge_candidates" / "topix_daily.json"
-DAILY_CACHE = REPO_ROOT / "cache" / "block_dist_bars.json"
 MIN_CACHE = REPO_ROOT / "cache" / "block_dist_minute.json"
 REPORT_PATH = REPO_ROOT / "reports" / "block_dist_intraday.md"
 
@@ -136,7 +136,6 @@ def main() -> None:
     tdnet = json.loads(TDNET_PATH.read_text())
     cal = sorted(r["Date"] for r in json.loads(TOPIX_PATH.read_text())["records"])
     events = minute_eligible_events(tdnet, cal)
-    daily = json.loads(DAILY_CACHE.read_text()) if DAILY_CACHE.exists() else {}
     minute = json.loads(MIN_CACHE.read_text()) if (args.no_fetch and MIN_CACHE.exists()) \
         else fetch_minute(events)
 
@@ -144,9 +143,8 @@ def main() -> None:
     for ev in events:
         key = f"{ev['code']}|{ev['d1']}"
         bars = minute.get(key) or []
-        opn = (daily.get(ev["code"], {}) or {}).get(ev["d1"], {}).get("O")
-        if not opn and bars:
-            opn = bars[0].get("O")
+        # エントリ・利確とも分足の生値で統一（日足AdjOと混ぜると分割調整でズレる）
+        opn = bars[0].get("O") if bars else None
         if not opn or not bars:
             continue
         rec: dict[str, Any] = {"code": ev["code"], "ann": ev["ann"], "d1": ev["d1"]}
