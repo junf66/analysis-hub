@@ -111,6 +111,8 @@ def holdings_observations(records: list[dict[str, Any]]) -> Iterator[dict[str, A
 _MASTER_PATH = REPO_ROOT / "data" / "edge_candidates" / "equities_master.json"
 _PO_ENR_PATH = REPO_ROOT / "data" / "edge_candidates" / "po_enriched.json"
 _MILD_PATH = REPO_ROOT / "data" / "edge_candidates" / "mild_good.json"
+_TOPIX_PATH = REPO_ROOT / "data" / "edge_candidates" / "topix_daily.json"
+_LIMIT_UL_PATH = REPO_ROOT / "cache" / "limit_ul_events.json"
 
 
 def _primary_mag(r: dict[str, Any]) -> float | None:
@@ -215,6 +217,28 @@ def new_edges_observations(_ignored: list[dict[str, Any]]) -> Iterator[dict[str,
                 o = _obs("好悪×医薬品×信用 翌寄→引 long", a.get("next_day_open_to_close_ret"), r)
                 if o:
                     yield o
+    # ⑦ 中型S高×翌寄→大引け long (伝説アーカイブ C2 由来。S高で引けた中型を翌寄り買い→翌引け売り)
+    #   集計の-1.38%は小型仕手(空売り不能)の反転に支配されるが、中型に絞ると継続。
+    #   対TOPIX(翌日寄→引)を控除した α を ret に渡す (= β調整済で FDR にかける)。
+    if _LIMIT_UL_PATH.exists() and _MASTER_PATH.exists() and _TOPIX_PATH.exists():
+        scale = {m["Code"]: m.get("scale_band")
+                 for m in json.loads(_MASTER_PATH.read_text()).get("records", [])}
+        tpx = {r["Date"]: r for r in json.loads(_TOPIX_PATH.read_text()).get("records", [])}
+        cal = sorted(tpx)
+        nxt = {cal[i]: cal[i + 1] for i in range(len(cal) - 1)}
+        for e in json.loads(_LIMIT_UL_PATH.read_text()):
+            code5 = e["code"] + "0" if len(e["code"]) == 4 else e["code"]
+            if scale.get(code5) != "中型":
+                continue
+            d1 = nxt.get(e["date"])
+            tr = tpx.get(d1) or {}
+            if not (tr.get("O") and tr.get("C")):
+                continue
+            alpha = e["io"] - (tr["C"] / tr["O"] - 1.0) * 100.0
+            o = _obs("中型S高×翌寄→大引け long", alpha,
+                     {"event_date": e["date"], "code": e["code"]})
+            if o:
+                yield o
 
 
 _SOURCES = {
