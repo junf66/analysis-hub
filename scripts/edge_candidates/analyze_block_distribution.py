@@ -81,8 +81,9 @@ def fetch_bars(codes: list[str], frm: str, to: str) -> dict[str, dict[str, dict[
 
 
 def enrich(events: list[dict[str, str]], bars: dict, topix: dict[str, dict[str, float]],
-           cal: list[str]) -> list[dict[str, Any]]:
-    """各イベントに gap / d1_io / to_3 / to_5 と対TOPIX α を付与。"""
+           cal: list[str], master: dict[str, dict] | None = None) -> list[dict[str, Any]]:
+    """各イベントに gap / d1_io / to_3 / to_5 と対TOPIX α・信用区分/規模を付与。"""
+    master = master or {}
     idx = {d: i for i, d in enumerate(cal)}
     out: list[dict[str, Any]] = []
     for ev in events:
@@ -109,7 +110,9 @@ def enrich(events: list[dict[str, str]], bars: dict, topix: dict[str, dict[str, 
             ta, tb = topix.get(a, {}).get("C"), topix.get(bb, {}).get("C")
             return (tb / ta - 1.0) * 100.0 if (ta and tb) else 0.0
 
-        rec: dict[str, Any] = {"code": ev["code"], "date": ev["date"]}
+        mr = master.get(ev["code"]) or {}
+        rec: dict[str, Any] = {"code": ev["code"], "date": ev["date"],
+                               "mrgn": mr.get("MrgnNm"), "scale": mr.get("scale_band")}
         rec["gap"] = (o1 / cD - 1.0) * 100.0 - tx(d, dates[1])
         if c1:
             rec["d1_io"] = (c1 / o1 - 1.0) * 100.0 - tx(dates[1], dates[1])
@@ -168,10 +171,24 @@ def build_report(recs: list[dict[str, Any]], n_events: int, n_codes: int) -> str
         mte, tte, nte = s["te"]
         L.append(f"| {lab} | {key} | {s['mean']:+.2f} | {s['t']:+.2f} | {s['win']:.0f} | {s['n']} | "
                  f"{mtr:+.2f}(t{ttr:+.1f})→{mte:+.2f}(t{tte:+.1f}) |")
-    L += ["", "## 読み方",
-          "- α平均が負＝発表後に下押し＝**ショート余地**(往復コスト short0.15%/long0.20%を別途控除)。",
-          "- |t_clust|≥2 かつ OOS test も同符号で残れば PO 類似エッジ候補。次段で売出率/時価総額/信用区分で層別。",
-          "- 立会外分売は小型銘柄が多く流動性が薄い → 実約定可能性(出来高)は別途要確認。"]
+    # 約定の肝: to_5 を信用区分で層別（空売りできるのは貸借のみ）
+    L += ["", "## to_5 を信用区分で層別（★ 約定可能性の核心 ★）", "",
+          "空売りできるのは **貸借** 銘柄のみ。制度信用『信用』は原則 空売り不可。", "",
+          "| 信用区分 | 空売り | α平均% | t_clust | 空売り勝率% | n |", "|---|---|--:|--:|--:|--:|"]
+    for mrgn, shortable in (("貸借", "可"), ("信用", "原則不可"), ("その他", "不可")):
+        sub = [r for r in recs if r.get("mrgn") == mrgn and "to_5" in r]
+        byd: dict[str, list[float]] = {}
+        for r in sub:
+            byd.setdefault(r["date"], []).append(r["to_5"])
+        m, t, n, _ = _clustered_t(byd)
+        sw = (sum(1 for vs in byd.values() for v in vs if v < 0) / n * 100) if n else 0.0
+        L.append(f"| {mrgn} | {shortable} | {m:+.2f} | {t:+.2f} | {sw:.0f} | {n} |")
+    L += ["", "## 読み方・結論",
+          "- 全体の to_5 は大きく負（下押し）だが、それは**空売り不可の制度信用『信用』小型に偏在**。",
+          "- **空売り可の『貸借』だけだと α≈-0.7%/|t|<1.5＝有意でない**＝取れる所にはエッジが無い。",
+          "- 経済的解釈: 貸借(空売り可)はアービトラージャーが既に供給過剰を売り崩して効率化済み。",
+          "  非貸借は空売り不能ゆえ歪みが残るが、まさにその理由で**個人も取れない**。",
+          "- → PO類似の需給ドリフトは実在するが、**ショート・エッジとしては約定フィルタで脱落**。"]
     return "\n".join(L) + "\n"
 
 
@@ -187,10 +204,11 @@ def main() -> None:
     cal = sorted(topix)
     frm = max(cal[0], "2016-06-13")
     codes = sorted({e["code"] for e in events})
+    master = {str(r["Code"])[:4]: r for r in json.loads(MASTER_PATH.read_text())["records"]}
     bars = json.loads(CACHE_PATH.read_text()) if (args.no_fetch and CACHE_PATH.exists()) \
         else fetch_bars(codes, frm, cal[-1])
 
-    recs = enrich(events, bars, topix, cal)
+    recs = enrich(events, bars, topix, cal, master)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     atomic_write_text(args.out, build_report(recs, len(events), len(codes)))
     print(f"[block_dist] 発表{len(events)} / 価格化{len(recs)} / {len(codes)}銘柄 → {args.out}")
