@@ -103,6 +103,34 @@ def voladj_score(m: dict[str, float], cal: list[str], i: int) -> float | None:
     return mo / vol
 
 
+def run_volfilter(closes: dict, cal: list[str], rebs: list[int], topix: dict,
+                  excl_pct: float, top_n: int) -> list[dict[str, Any]]:
+    """12-1ランクは保ち、ボラ上位 excl_pct% を除外した残りから上位 top_n を等加重・月次。"""
+    months: list[dict[str, Any]] = []
+    for r in range(len(rebs) - 1):
+        i, nxt = rebs[r], rebs[r + 1]
+        if i < LOOKBACK:
+            continue
+        cand = []
+        for code, m in closes.items():
+            mo, vol = mom_12_1(m, cal, i), realized_vol(m, cal, i)
+            if mo is not None and vol:
+                cand.append((mo, vol, m))
+        if len(cand) < 50:
+            continue
+        vcut = sorted(v for _, v, _ in cand)[int(len(cand) * (1 - excl_pct)) - 1]  # 上位excl_pctの下限
+        kept = [(mo, m) for mo, v, m in cand if v <= vcut]   # 高ボラを除外
+        kept.sort(key=lambda x: x[0], reverse=True)
+        rets = [fwd(m, cal, i, nxt) for _, m in kept[:top_n]]
+        rets = [x for x in rets if x is not None]
+        if not rets:
+            continue
+        port = statistics.fmean(rets) * 100.0
+        tret = (fwd(topix, cal, i, nxt) or 0.0) * 100.0
+        months.append({"date": cal[nxt][:7], "port": port, "alpha": port - tret - COST_PCT})
+    return months
+
+
 def stats(months: list[dict[str, Any]], key: str = "alpha") -> dict[str, float]:
     """月次系列の平均・t・勝月。"""
     v = [x[key] for x in months]
@@ -141,10 +169,11 @@ def main() -> None:
     rebs = rebalance_idx(cal)
 
     rows = [
-        ("S1 12-1 top10%", run(closes, cal, rebs, topix, mom_12_1, 0.10)),
-        ("S2 ボラ調整 top10%", run(closes, cal, rebs, topix, voladj_score, 0.10)),
-        ("12-1 top20本", run(closes, cal, rebs, topix, mom_12_1, 20 / len(closes))),
-        ("ボラ調整 top20本", run(closes, cal, rebs, topix, voladj_score, 20 / len(closes))),
+        ("12-1 top20本(素)", run(closes, cal, rebs, topix, mom_12_1, 20 / len(closes))),
+        ("ボラ調整(再ランク) top20", run(closes, cal, rebs, topix, voladj_score, 20 / len(closes))),
+        ("12-1 top20 / 高ボラ上位10%除外", run_volfilter(closes, cal, rebs, topix, 0.10, 20)),
+        ("12-1 top20 / 高ボラ上位20%除外", run_volfilter(closes, cal, rebs, topix, 0.20, 20)),
+        ("12-1 top20 / 高ボラ上位30%除外", run_volfilter(closes, cal, rebs, topix, 0.30, 20)),
     ]
     L = ["# ボラ調整モメンタム vs 12-1（同一土俵比較）", "",
          f"大型+中型 {len(closes)}銘柄 / 月末等加重 / 対TOPIX α(β=1) / コスト{COST_PCT}%・月 / OOS={OOS_SPLIT}。", "",
