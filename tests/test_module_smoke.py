@@ -82,6 +82,12 @@ class TestImportable(unittest.TestCase):
     def test_validate_edges(self) -> None:
         self._check("scripts.validate_edges")
 
+    def test_analyze_survival(self) -> None:
+        self._check("scripts.edge_candidates.analyze_survival")
+
+    def test_audit_deflated_sharpe(self) -> None:
+        self._check("scripts.edge_candidates.audit_deflated_sharpe")
+
 
 class TestHelpExitsCleanly(unittest.TestCase):
     """全 CLI が --help で exit 0 (argparse の format-string バグ等を検出)。"""
@@ -149,6 +155,12 @@ class TestHelpExitsCleanly(unittest.TestCase):
 
     def test_validate_edges(self) -> None:
         self._run_help("scripts.validate_edges")
+
+    def test_analyze_survival(self) -> None:
+        self._run_help("scripts.edge_candidates.analyze_survival")
+
+    def test_audit_deflated_sharpe(self) -> None:
+        self._run_help("scripts.edge_candidates.audit_deflated_sharpe")
 
 
 if __name__ == "__main__":
