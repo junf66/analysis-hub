@@ -88,6 +88,14 @@ class TestImportable(unittest.TestCase):
     def test_audit_deflated_sharpe(self) -> None:
         self._check("scripts.edge_candidates.audit_deflated_sharpe")
 
+    def test_fetch_master_history(self) -> None:
+        self._check("scripts.edge_candidates.fetch_master_history")
+
+    def test_pit_master(self) -> None:
+        import importlib
+        m = importlib.import_module("scripts._pit_master")
+        self.assertTrue(hasattr(m, "PitMaster"))
+
 
 class TestHelpExitsCleanly(unittest.TestCase):
     """全 CLI が --help で exit 0 (argparse の format-string バグ等を検出)。"""

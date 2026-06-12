@@ -25,6 +25,7 @@ from typing import Any, Iterator
 
 from analyzers.stats import evaluate_cells
 from scripts._buckets import disc_bucket as _disc_bucket
+from scripts._pit_master import PitMaster
 from scripts.analyze_holdings_edge import is_eligible_for_ev as _hold_eligible
 from scripts.analyze_po_edge import GD_THRESHOLD_PCT, _is_eligible_for_ev as _po_eligible
 from scripts.backtest_po import _STAGE_METRIC
@@ -123,26 +124,53 @@ def _primary_mag(r: dict[str, Any]) -> float | None:
     return None
 
 
+# サブパターン正準の magnitude 軸 (hint, metric-key)。_primary_mag が「最初の pct」を
+# 拾うと、当期減益(genshu)も併記する zouhai_kahou_nx で来期下方率でなく当期減益率を
+# 拾う取り違えが起きる(2026-06 発見: 547中215=39%汚染)。確定エッジは軸を明示する。
+_SUBPATTERN_MAG_KEY = {
+    "zouhai_kahou_nx": ("kahou_nx", "NxFNp_vs_NP_pct"),   # 来期予想の下方率
+    "kouhou_nx_genshu": ("genshu", "NP_YoY_pct"),         # 当期の減益率
+}
+
+
+def _subpattern_mag(r: dict[str, Any]) -> float | None:
+    """サブパターンの正準 magnitude を、対応する factor から明示キーで拾う。"""
+    spec = _SUBPATTERN_MAG_KEY.get(r.get("subpattern"))
+    if not spec:
+        return None
+    hint, key = spec
+    for fac in (r.get("bad_factors") or []) + (r.get("good_factors") or []):
+        if hint in (fac.get("subpattern_hint") or ""):
+            v = (fac.get("metric") or {}).get(key)
+            if isinstance(v, (int, float)):
+                return float(v)
+    return None
+
+
 def new_edges_observations(_ignored: list[dict[str, Any]]) -> Iterator[dict[str, Any]]:
     """発見済み新エッジを事前登録 named cell で検証する (公式データ拡張)。
 
     複数データ源 (kouaku 程度別 / PO 規模別 / mild_good 軽い減益×増配 / 受渡日ロング) を跨ぐため、
     渡された records は無視し各ファイルを直接読む。事前登録仮説独立の FDR + walk-forward OOS。
+
+    規模/業種/信用は **point-in-time** (PitMaster, cache/master_history.json) でイベント日時点を
+    引く。未取得時は単一スナップショット(equities_master.json)へフォールバック (遡及+生存バイアス残存)。
     """
-    # ① kouaku 程度別 (大引け後)
+    pit = PitMaster()
+    # ① kouaku 程度別 (大引け後)。magnitude はサブパターン正準軸を明示的に拾う(取り違え防止)。
     for r in json.loads(KOUAKU_PATH.read_text()).get("records", []):
         a = r.get("attrs") or {}
         if a.get("limit_locked") or _disc_bucket(r) != "大引け後":
             continue
-        sp, mag, ret = r.get("subpattern"), _primary_mag(r), a.get("next_day_open_to_close_ret")
+        sp, mag, ret = r.get("subpattern"), _subpattern_mag(r), a.get("next_day_open_to_close_ret")
         if mag is None or ret is None:
             continue
         if sp == "kouhou_nx_genshu" and mag <= -10:
-            o = _obs("kouhou_nx_genshu×大引け後×深減益(NP≤-10%) short", ret, r)
+            o = _obs("kouhou_nx_genshu×大引け後×深減益(当期NP≤-10%) short", ret, r)
             if o:
                 yield o
         elif sp == "zouhai_kahou_nx" and -30 <= mag <= -17:
-            o = _obs("zouhai_kahou_nx×大引け後×中magnitude(-30〜-17%) short", ret, r)
+            o = _obs("zouhai_kahou_nx×大引け後×来期下方中程度(-30〜-17%) short", ret, r)
             if o:
                 yield o
     # ② PO 中型(Mid400) × 翌日GD × 引け (master 規模 + po_enriched 引けリターン)
@@ -157,7 +185,8 @@ def new_edges_observations(_ignored: list[dict[str, Any]]) -> Iterator[dict[str,
             code5 = r["code"] + "0" if len(r["code"]) == 4 else r["code"]
             gap = a.get("gap_pct")
             oc = (enr.get(r["id"]) or {}).get("next_day_open_to_close_ret")
-            if scale.get(code5) == "中型" and gap is not None and gap <= -0.5 and oc is not None:
+            band = pit.scale_band(r["code"], r.get("event_date")) if pit.available() else scale.get(code5)
+            if band == "中型" and gap is not None and gap <= -0.5 and oc is not None:
                 o = _obs("PO中型×翌日GD×引け long", oc, r)
                 if o:
                     yield o
@@ -212,7 +241,7 @@ def new_edges_observations(_ignored: list[dict[str, Any]]) -> Iterator[dict[str,
             if a.get("limit_locked"):
                 continue
             code5 = r["code"] + "0" if len(r["code"]) == 4 else r["code"]
-            mm = m_attr.get(code5) or {}
+            mm = pit.attrs(r["code"], r.get("event_date")) if pit.available() else (m_attr.get(code5) or {})
             if mm.get("S17Nm") == "医薬品" and mm.get("MrgnNm") == "信用":
                 o = _obs("好悪×医薬品×信用 翌寄→引 long", a.get("next_day_open_to_close_ret"), r)
                 if o:
@@ -228,7 +257,8 @@ def new_edges_observations(_ignored: list[dict[str, Any]]) -> Iterator[dict[str,
         nxt = {cal[i]: cal[i + 1] for i in range(len(cal) - 1)}
         for e in json.loads(_LIMIT_UL_PATH.read_text()):
             code5 = e["code"] + "0" if len(e["code"]) == 4 else e["code"]
-            if scale.get(code5) != "中型":
+            band = pit.scale_band(e["code"], e["date"]) if pit.available() else scale.get(code5)
+            if band != "中型":
                 continue
             d1 = nxt.get(e["date"])
             tr = tpx.get(d1) or {}
