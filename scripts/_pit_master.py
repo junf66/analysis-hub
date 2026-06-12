@@ -25,6 +25,7 @@ class PitMaster:
         self._snap = raw                          # {date: {code5: attrs}}
 
     def available(self) -> bool:
+        """履歴スナップショットが1枚以上あるか (無ければ呼び出し側はフォールバック)。"""
         return bool(self._dates)
 
     @staticmethod
@@ -49,4 +50,5 @@ class PitMaster:
         return self._snapshot_for(date).get(self._c5(code), {})
 
     def scale_band(self, code: str, date: str) -> str | None:
+        """イベント日時点の規模区分 (大型/中型/小型、無ければ None)。"""
         return self.attrs(code, date).get("scale_band")
