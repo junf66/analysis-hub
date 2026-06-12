@@ -239,6 +239,26 @@ def new_edges_observations(_ignored: list[dict[str, Any]]) -> Iterator[dict[str,
                      {"event_date": e["date"], "code": e["code"]})
             if o:
                 yield o
+    # ⑧ ⑦短縮版: 売出のみ(dilution=0)×普通×決定日場中(寄→引) short (1日完結)
+    #   dilution分解で判明: 公募(希薄化>0)は発表ギャップ(-6.4%)で織込み完了し場中エッジなし、
+    #   売出は発行価格決定日の場中だけ下げる(t_clust-4.4)。decide の event_date=決定日
+    #   (announce→decide中央10日で確認済) なので決定日クラスタ。TOPIX同日寄→引を控除したα。
+    if _TOPIX_PATH.exists():
+        tpx = {r["Date"]: r for r in json.loads(_TOPIX_PATH.read_text()).get("records", [])}
+        for r in json.loads(PO_PATH.read_text()).get("records", []):
+            if r.get("stage") != "decide" or r.get("po_type") != "普通":
+                continue
+            if r.get("dilution") is None or r["dilution"] > 0:
+                continue  # 売出のみ (希薄化ゼロ)
+            a = r.get("attrs") or {}
+            do, dc = a.get("dec_open"), a.get("dec_close")
+            tr = tpx.get(r.get("event_date")) or {}
+            if not (do and dc and tr.get("O") and tr.get("C")):
+                continue
+            alpha = (dc / do - 1.0) * 100.0 - (tr["C"] / tr["O"] - 1.0) * 100.0
+            o = _obs("PO売出のみ×普通×決定日場中 short", alpha, r)
+            if o:
+                yield o
 
 
 _SOURCES = {
