@@ -35,6 +35,18 @@ LONG_COST, SHORT_COST = 0.20, 0.15
 
 # ---- インライン統計 (第三者が1行ずつ監査できるよう自前実装) -----------------
 
+def dedup(rows: list[tuple]) -> list[tuple]:
+    """(date, code) 完全重複を除去。同一銘柄・同日の複数トランシェ(例: REIT PO の第2弾)が
+    同じ価格リターンを二重計上するのを防ぐ(価格ベースのエッジでは1観測)。"""
+    seen, out = set(), []
+    for r in rows:
+        k = (r[1], r[2])
+        if k not in seen:
+            seen.add(k)
+            out.append(r)
+    return out
+
+
 def clustered_t(values: list[float], clusters: list[Any]) -> float:
     """日付クラスタ頑健 t。同一クラスタ内相関で素朴 t が水増しされるのを補正。"""
     n = len(values)
@@ -67,6 +79,7 @@ def oos_test(rows: list[tuple], cost: float, short: bool, frac: float = 0.7) -> 
 
 def metrics(rows: list[tuple], cost: float, short: bool) -> dict[str, float]:
     """rows=[(生リターン%, 日付, code, ...)] → n/EV/勝率/t_clust/OOS/直近3年頻度 を net 基準で。"""
+    rows = dedup(rows)
     nets = [(-r[0] if short else r[0]) - cost for r in rows]
     dates = [r[1] for r in rows]
     yr = Counter(d[:4] for d in dates)
@@ -214,7 +227,7 @@ def edge_rows(key: str, D: dict[str, Any]) -> tuple[list[tuple], float, bool]:
 # 主張値 (チートシート/共有資料の数値。検証で一致を確認する対象)
 CLAIMED = {
     "⑦":  {"dir": "S", "n": 211, "ev": 0.68, "win": 58, "t": 3.77, "oos": 0.43},
-    "②":  {"dir": "S", "n": 131, "ev": 0.98, "win": 60, "t": 3.49, "oos": 0.93},  # raw版
+    "②":  {"dir": "S", "n": 128, "ev": 0.93, "win": 59, "t": 3.33, "oos": 0.84},  # raw・重複除去後
     "④":  {"dir": "S", "n": 239, "ev": 0.88, "win": 63, "t": 4.98, "oos": 1.28},  # raw実現EV
     "①B": {"dir": "L", "n": 34,  "ev": 1.05, "win": 68, "t": 2.81, "oos": 1.39},
     "⑥":  {"dir": "L", "n": 61,  "ev": 0.78, "win": 61, "t": 2.72, "oos": 0.50},

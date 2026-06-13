@@ -76,7 +76,10 @@ def po_named_observations(records: list[dict[str, Any]]) -> Iterator[dict[str, A
     ①9:10利確 ②受渡日 GD のギャップ条件 を再現しない。ここでは当時の仕掛けを
     そのまま 3 セルとして評価し、過剰最適化ガード後も生き残るかをフェアに判定する。
     3 セル独立の FDR (= 事前登録 3 仮説の補正) になる。
+    リート決定セルは同一銘柄・同日の複数トランシェ(第2弾 _2)が同じ価格リターンを二重計上
+    するため (code,event_date) で重複除去する (価格ベースのエッジは1観測)。
     """
+    seen_reit: set[tuple[str, str]] = set()
     for r in records:
         if not _po_eligible(r):
             continue
@@ -91,6 +94,10 @@ def po_named_observations(records: list[dict[str, Any]]) -> Iterator[dict[str, A
             o = _obs(f"② 受渡日GD 普通 (gap≤{GD_THRESHOLD_PCT}% 寄→引 long)",
                      a.get("next_day_open_to_close_ret"), r)
         elif stage == "decide" and po_type == "リート":
+            key = (r.get("code"), r.get("event_date"))
+            if key in seen_reit:
+                continue  # 同一銘柄・同日の重複トランシェを除外
+            seen_reit.add(key)
             o = _obs("③ 決定 リート (翌寄り→決定引 short)", a.get("ret_close"), r)
         else:
             continue
