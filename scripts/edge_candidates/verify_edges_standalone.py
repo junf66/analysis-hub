@@ -2,7 +2,8 @@
 
 第三者(別AI/別実装)が「主張されたエッジの数値」を生JSONから再計算して突合できるよう、
 統計関数(クラスタ頑健t・OOS分割)を**インライン**で持つ自己完結スクリプト。
-analyzers/ 等の自前モジュールに依存しない（=検証器ごと疑える）。
+統計ロジックは analyzers/ 等に依存しない（=検証器ごと疑える）。ファイル書き込みのみ
+scripts._atomic を使う（リポ規約: 中断耐性のため）。
 
 2モード:
   (既定) 検証   : 生JSONから定義どおり再計算 → CLAIMED と突合し ✅/⚠ を出す。
@@ -25,6 +26,8 @@ import statistics
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
+
+from scripts._atomic import atomic_write_json, atomic_write_text
 
 REPO = Path(__file__).resolve().parent.parent.parent
 LONG_COST, SHORT_COST = 0.20, 0.15
@@ -270,7 +273,7 @@ def export_bundle(D: dict[str, Any], path: Path) -> None:
             "claimed": c, "recomputed": metrics(rows, cost, short),
             "rows": [[round(r[0], 4), r[1], r[2], r[3], r[4]] for r in rows],
         }
-    path.write_text(json.dumps(out, ensure_ascii=False, indent=1))
+    atomic_write_json(path, out, indent=1)
 
 
 def main() -> None:
@@ -286,7 +289,7 @@ def main() -> None:
     report = build_report(D)
     print(report)
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(report)
+    atomic_write_text(args.out, report)
     print(f"[verify] → {args.out}")
 
 
