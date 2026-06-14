@@ -22,7 +22,7 @@ from scripts.edge_candidates.fetch_equities_master import scale_band
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 CACHE_PATH = REPO_ROOT / "cache" / "master_history.json"
-_KEEP = ("ScaleCat", "S17Nm", "MrgnNm")
+_KEEP = ("ScaleCat", "S17Nm", "MrgnNm", "MktNm")
 
 
 def fetch_history(years: list[int]) -> dict[str, dict]:

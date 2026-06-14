@@ -209,17 +209,18 @@ def edge_rows(key: str, D: dict[str, Any]) -> tuple[list[tuple], float, bool]:
                     rows.append((float(oc), r["event_date"], r["code"], nm(r["code"]), mk(r["code"])))
         return rows, LONG_COST, False
 
-    if key == "⑩R":  # スタ/グロ×貸借(PIT)×S高×翌朝中GU(5-10%) 翌寄→引 short
+    if key == "⑩R":  # 非プライム小型×貸借(PIT)×S高×翌朝中GU(5-10%) 翌寄→引 short
+        # 市場は point-in-time(MktNm)で判定し再編(2022)跨ぎ。機関の場(プライム/東証一部)と
+        # ETF/その他/PRO を除外＝個人小型のみ。廃止銘柄も当時のスナップで拾い生存バイアス回避。
+        inst = {"プライム", "東証一部", "その他", "TOKYO PRO MARKET", None}
         for e in ul:
             p = _pit(D["hist"], hd, e["code"], e["date"])
-            if p.get("scale_band") != "小型" or p.get("MrgnNm") != "貸借":
-                continue
-            if mk(e["code"]) not in ("スタンダード", "グロース"):
+            if p.get("scale_band") != "小型" or p.get("MrgnNm") != "貸借" or p.get("MktNm") in inst:
                 continue
             g = e.get("gap")
             if g is None or not (5 < g <= 10) or not (nxt.get(e["date"]) and tpx.get(nxt.get(e["date"]))):
                 continue
-            rows.append((e["io"], e["date"], e["code"], nm(e["code"]), mk(e["code"])))
+            rows.append((e["io"], e["date"], e["code"], nm(e["code"]), p.get("MktNm")))
         return rows, SHORT_COST, True
 
     raise ValueError(key)
@@ -233,7 +234,7 @@ CLAIMED = {
     "①B": {"dir": "L", "n": 34,  "ev": 1.05, "win": 68, "t": 2.81, "oos": 1.39},
     "⑥":  {"dir": "L", "n": 61,  "ev": 0.78, "win": 61, "t": 2.72, "oos": 0.50},
     "①A": {"dir": "L", "n": 27,  "ev": 0.83, "win": 56, "t": 1.79, "oos": 1.17},  # raw(候補)
-    "⑩R": {"dir": "S", "n": 397, "ev": 2.86, "win": 62, "t": 5.23, "oos": 2.15},  # 中GU(候補・_snap先読み修正後)
+    "⑩R": {"dir": "S", "n": 377, "ev": 2.56, "win": 59, "t": 4.70, "oos": 1.73},  # 中GU(候補・PIT市場/生存バイアス解消)
 }
 _DEF = {
     "⑦": "売出のみ(dilution=0)×普通株×PO発行価格決定日。決定日 寄→引 を空売り。α=同日TOPIX寄→引控除。cost0.15。",
@@ -242,7 +243,7 @@ _DEF = {
     "①B": "普通株×イベント日時点TOPIX中型(Mid400)×翌日GD(gap≤-0.5%)。翌寄→当日引け を買い。cost0.20。",
     "⑥": "普通株×PO受渡日×gap<+0.5%×調達額≥300億。受渡日 寄→引け を買い。cost0.20。",
     "①A": "普通株×時価総額≥5000億円×翌日GD(gap≤-0.5%)。翌寄→当日引け を買い。cost0.20。raw(候補)。",
-    "⑩R": "スタンダード/グロース×貸借(イベント日時点)×当日S高×翌朝中GU(寄り前日比+5〜10%)。翌寄→当日引け を空売り。cost0.15。",
+    "⑩R": "非プライム小型(PIT・プライム/東証一部/ETF除外=マザーズ/JASDAQ/スタ/グロ等の個人銘柄)×貸借(PIT)×当日S高×翌朝中GU(寄り+5〜10%)。翌寄→当日引け を空売り。cost0.15。市場は2022再編跨ぎでPIT判定・廃止含む(生存バイアス無)。",
 }
 _TOL = {"ev": 0.06, "oos": 0.06, "t": 0.12, "win": 2.5}
 
