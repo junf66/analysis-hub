@@ -34,7 +34,13 @@ class PitMaster:
         return code + "0" if len(code) == 4 else code
 
     def _snapshot_for(self, date: str) -> dict:
-        """date 以前で最新のスナップショット。date が最古より前なら最古を使う。"""
+        """date 以前で最新のスナップショット。date が最古スナップより前なら {} (先読み防止)。
+
+        最古より前のイベントに最古(=未来)の区分を当てるとルックアヘッド/生存バイアスに
+        なるため空を返す。呼び出し側は属性 None として除外する(時点不明の一律除外)。
+        """
+        if date < self._dates[0]:
+            return {}
         chosen = self._dates[0]
         for d in self._dates:
             if d <= date:

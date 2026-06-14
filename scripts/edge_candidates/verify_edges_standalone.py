@@ -121,7 +121,8 @@ def _disc_after_close(r: dict) -> bool:
 
 
 def _snap(dates_sorted: list[str], date: str) -> str | None:
-    if not dates_sorted:
+    """date 以前で最新のスナップショット日。date が最古より前なら None (先読み防止)。"""
+    if not dates_sorted or date < dates_sorted[0]:
         return None
     chosen = dates_sorted[0]
     for d in dates_sorted:
@@ -232,7 +233,7 @@ CLAIMED = {
     "①B": {"dir": "L", "n": 34,  "ev": 1.05, "win": 68, "t": 2.81, "oos": 1.39},
     "⑥":  {"dir": "L", "n": 61,  "ev": 0.78, "win": 61, "t": 2.72, "oos": 0.50},
     "①A": {"dir": "L", "n": 27,  "ev": 0.83, "win": 56, "t": 1.79, "oos": 1.17},  # raw(候補)
-    "⑩R": {"dir": "S", "n": 430, "ev": 2.68, "win": 61, "t": 5.11, "oos": 2.01},  # 中GUクリーン(候補)
+    "⑩R": {"dir": "S", "n": 397, "ev": 2.86, "win": 62, "t": 5.23, "oos": 2.15},  # 中GU(候補・_snap先読み修正後)
 }
 _DEF = {
     "⑦": "売出のみ(dilution=0)×普通株×PO発行価格決定日。決定日 寄→引 を空売り。α=同日TOPIX寄→引控除。cost0.15。",
@@ -281,6 +282,7 @@ def export_bundle(D: dict[str, Any], path: Path) -> None:
                            "cost": {"long": LONG_COST, "short": SHORT_COST}, "edges": {}}
     for k, c in CLAIMED.items():
         rows, cost, short = edge_rows(k, D)
+        rows = dedup(rows)  # 統計対象と同一(第三者が rows だけから再計算できるよう一致させる)
         out["edges"][k] = {
             "definition": _DEF[k], "direction": "short" if short else "long", "cost": cost,
             "claimed": c, "recomputed": metrics(rows, cost, short),
