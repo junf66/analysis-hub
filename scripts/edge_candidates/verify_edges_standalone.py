@@ -199,15 +199,7 @@ def edge_rows(key: str, D: dict[str, Any]) -> tuple[list[tuple], float, bool]:
                              nm(r["code"]), mk(r["code"])))
         return rows, LONG_COST, False
 
-    if key == "①A":  # 普通×時価≥5000億×翌日GD 翌寄→引 long (raw)
-        for r in po:
-            if r.get("stage") == "announce" and r.get("po_type") == "普通" and (r.get("market_cap") or 0) >= 5000:
-                a = r.get("attrs") or {}
-                gap = a.get("gap_pct")
-                oc = (enr.get(r["id"]) or {}).get("next_day_open_to_close_ret")
-                if gap is not None and gap <= -0.5 and oc is not None:
-                    rows.append((float(oc), r["event_date"], r["code"], nm(r["code"]), mk(r["code"])))
-        return rows, LONG_COST, False
+    # 注: ①A は 2026-06 棄却(損益分岐0.1%・Codex監査でも棄却推奨)につき検証対象から除外。
 
     if key == "⑩R":  # 非プライム小型×貸借(PIT)×S高×翌朝中GU(5-10%) 翌寄→引 short
         # 市場は point-in-time(MktNm)で判定し再編(2022)跨ぎ。機関の場(プライム/東証一部)と
@@ -233,7 +225,6 @@ CLAIMED = {
     "④":  {"dir": "S", "n": 239, "ev": 0.88, "win": 63, "t": 4.98, "oos": 1.28},  # raw実現EV
     "①B": {"dir": "L", "n": 34,  "ev": 1.05, "win": 68, "t": 2.81, "oos": 1.39},
     "⑥":  {"dir": "L", "n": 61,  "ev": 0.78, "win": 61, "t": 2.72, "oos": 0.50},
-    "①A": {"dir": "L", "n": 27,  "ev": 0.83, "win": 56, "t": 1.79, "oos": 1.17},  # raw(候補)
     "⑩R": {"dir": "S", "n": 377, "ev": 2.56, "win": 59, "t": 4.70, "oos": 1.73},  # 中GU(候補・PIT市場/生存バイアス解消)
 }
 _DEF = {
@@ -242,7 +233,6 @@ _DEF = {
     "④": "増配+来期下方修正(zouhai_kahou_nx)×大引け後(15:30+)開示。翌寄→当日引け を空売り。cost0.15。raw。",
     "①B": "普通株×イベント日時点TOPIX中型(Mid400)×翌日GD(gap≤-0.5%)。翌寄→当日引け を買い。cost0.20。",
     "⑥": "普通株×PO受渡日×gap<+0.5%×調達額≥300億。受渡日 寄→引け を買い。cost0.20。",
-    "①A": "普通株×時価総額≥5000億円×翌日GD(gap≤-0.5%)。翌寄→当日引け を買い。cost0.20。raw(候補)。",
     "⑩R": "非プライム小型(PIT・プライム/東証一部/ETF除外=マザーズ/JASDAQ/スタ/グロ等の個人銘柄)×貸借(PIT)×当日S高×翌朝中GU(寄り+5〜10%)。翌寄→当日引け を空売り。cost0.15。市場は2022再編跨ぎでPIT判定・廃止含む(生存バイアス無)。",
 }
 _TOL = {"ev": 0.06, "oos": 0.06, "t": 0.12, "win": 2.5}
