@@ -26,7 +26,7 @@ from typing import Any
 
 from scripts._atomic import atomic_write_text
 from scripts.edge_candidates.verify_edges_standalone import (
-    LONG_COST, SHORT_COST, _load, _pit, edge_rows,
+    LONG_COST, _load, _pit, edge_rows,
 )
 
 REPO = Path(__file__).resolve().parent.parent.parent
@@ -38,6 +38,7 @@ REPORT = REPO / "reports" / "archive_regime.md"
 # ---- インライン統計 (verify_edges_standalone と同方式) -----------------------
 
 def clustered_t(values: list[float], clusters: list[Any]) -> float:
+    """日付クラスタ頑健 t（同一クラスタ内相関で素朴 t が水増しされるのを補正）。"""
     n = len(values)
     if n < 2:
         return 0.0
@@ -55,6 +56,7 @@ def clustered_t(values: list[float], clusters: list[Any]) -> float:
 
 
 def oos_test(rows: list[tuple], cost: float, short: bool, frac: float = 0.7) -> float:
+    """walk-forward: 日付順 frac で train/test 分割、方向は train で決め test の net EV。"""
     rows = sorted(rows, key=lambda x: x[1])
     cut = int(len(rows) * frac)
     tr, te = rows[:cut], rows[cut:]
@@ -121,6 +123,7 @@ def split_report(title: str, rows: list[tuple], cost: float, short: bool,
 
 
 def analyze_10R_regime(D: dict[str, Any], cal, idx, ma25, ret20, n_ul) -> list[str]:
+    """⑩R の正確なトレード集合を地合い(25日線/20日モメンタム/S高breadth)で層別した md 行を返す。"""
     rows, cost, short = edge_rows("⑩R", D)
     # (date,code) 重複除去 (verify と同一基準)
     seen, ded = set(), []
@@ -188,6 +191,7 @@ def analyze_10R_regime(D: dict[str, Any], cal, idx, ma25, ret20, n_ul) -> list[s
 
 
 def analyze_Sdown_rebound(D: dict[str, Any], cal, idx, ma25, ret20, n_ul) -> list[str]:
+    """S安(LL)銘柄の翌日リバウンドロングを gap帯/地合いで層別した md 行を返す(データ未取得なら注記)。"""
     L = ["## (B) S安リバウンドロング (uoa「ストップ安買い」・⑩Rの鏡像)", ""]
     if not DL_PATH.exists():
         return L + ["⏳ `cache/limit_dl_events.json` 未取得 (fetch_limit_down_events 実行中/未完)。"
@@ -237,6 +241,7 @@ def analyze_Sdown_rebound(D: dict[str, Any], cal, idx, ma25, ret20, n_ul) -> lis
 
 
 def build(D: dict[str, Any]) -> str:
+    """(A)⑩R地合い + (B)S安リバウンド を集計した Markdown レポート全文を返す。"""
     cal, idx, ma25, ret20, n_ul = build_regime(D["tpx"])
     L = ["# アーカイブ由来の地合い依存検証 (びびりおん/uoa)", "",
          "net=方向別cost控除後(long0.20/short0.15)。t_clust=日付クラスタ頑健。OOS=日付順70%訓練/30%test。", ""]
