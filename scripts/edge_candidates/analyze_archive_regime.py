@@ -205,7 +205,8 @@ def analyze_Sdown_rebound(D: dict[str, Any], cal, idx, ma25, ret20, n_ul) -> lis
     rows_all: list[tuple] = []
     for e in dl:
         p = _pit(hist, hd, e["code"], e["date"])
-        if p.get("scale_band") != "小型" or p.get("MrgnNm") != "貸借" or p.get("MktNm") in inst:
+        # ロングは空売り不要＝貸借フィルタを掛けない(⑩Rショートとの違い)。非プライム小型のみ。
+        if p.get("scale_band") != "小型" or p.get("MktNm") in inst:
             continue
         if not (nxt.get(e["date"]) and tpx.get(nxt.get(e["date"]))):
             continue
@@ -220,30 +221,42 @@ def analyze_Sdown_rebound(D: dict[str, Any], cal, idx, ma25, ret20, n_ul) -> lis
     rows_all = ded
     cost, short = LONG_COST, False
     base = stat_block(rows_all, cost, short)
-    L += [f"母体: 非プライム小型×貸借×S安 翌寄→引 long(cost{cost}%): "
+    L += [f"母体: 非プライム小型×S安 翌寄→引 long(信用含む・cost{cost}%): "
           f"n{base['n']} / net{base['ev']:+.2f}% / 勝率{base['win']:.0f}% / "
           f"t_clust{base['t']:+.2f} / OOS{base['oos']:+.2f}%", "",
-          "### gap帯別 (翌朝の寄りギャップ。uoa『売り尽くし＝売り板に戻る』の代理)", "",
+          "### gap帯別 (翌朝の寄りギャップ。uoa『売り尽くし＝投げのクライマックス』の代理)", "",
           "| 翌朝gap帯 | n | net EV% | 勝率% | t_clust | OOS% |", "|---|--:|--:|--:|--:|--:|"]
-    bands = [("大GD(≤-10%さらに売られ)", lambda g: g <= -10),
+    bands = [("大GD(≤-10%さらに投げ)", lambda g: g <= -10),
              ("中GD(-10〜-5%)", lambda g: -10 < g <= -5),
              ("小GD(-5〜0%)", lambda g: -5 < g <= 0),
              ("GU(>0=翌朝反発済)", lambda g: g > 0)]
+    tail: list[tuple] = []
     for label, pred in bands:
         sub = [r for r in rows_all if pred(r[4])]
+        if label.startswith("大GD"):
+            tail = sub
         L.append(f"| {label} | {_row(stat_block(sub, cost, short))} |")
-    L += ["", "### 地合い別 (S安リバウンドは bad地合いで深い=リバウンド大の仮説)", ""]
-    L += split_report("TOPIX 25日線", rows_all, cost, short, lambda d: ma25.get(d),
-                      [("good(上)", lambda v: v is True), ("bad(下)", lambda v: v is False)])
-    L += ["**所見＝エッジなし**:", "",
-          "- 母体 net−0.53%/勝率45%/t−0.89/OOS−0.11% ＝負け。gap帯/地合いのどこもプラスに立たない"
-          "(小GD −1.01%/t−2.46・good地合い −1.35%/t−3.30 は有意に負、大GD≤−10%は±0でリバウンドせず)。",
-          "- **重要な非対称性**: ⑩R(小型S高の翌朝ショート)は効くのに、その鏡像(小型S安の翌朝ロング)は"
-          "効かない。＝小型の構造的下方バイアス(リテール期待先行→出尽くし下方ドリフト。正本『決算持ち越し"
-          "ロング×小型』棄却・kouaku全般ショート優位と同根)で一貫説明できる。"
-          "**小型では『上の行き過ぎ』は戻る(ショート○)が『下の行き過ぎ』は戻らない/さらに下げる(ロング×)**。",
-          "- uoaのS安買いは板の即時性(売り尽くしを板で見て即日スキャル)に妙味があり、翌日寄→引の機械執行"
-          "ロングには移植できない＝当時(2001-03 低位/仕手/板読み)と現代の小型貸借翌日リターン構造の差。", ""]
+    # 大GD裾のコスト感応(パニックGD寄りは滑り大ゆえ実コスト要確認)
+    L += ["", "### 大GD裾(≤-10%投げ)のコスト感応 ── 唯一プラスの帯", "",
+          "| cost%/回 | EV% | 勝率% | t_clust |", "|--:|--:|--:|--:|"]
+    for c in (0.20, 0.30, 0.50, 1.00, 1.50):
+        nets = [r[0] - c for r in tail]
+        if not nets:
+            continue
+        t = clustered_t(nets, [r[1] for r in tail])
+        win = sum(1 for x in nets if x > 0) / len(nets) * 100
+        L.append(f"| {c:.2f} | {statistics.fmean(nets):+.2f} | {win:.0f} | {t:+.2f} |")
+    L += ["", "**所見＝全体エッジなし／裾(大GD)に薄い候補(コスト脆弱)**:", "",
+          "- 母体(信用含む n3704) net−0.55%/勝率42%/t−1.21 ＝負け。小GD(-5〜0) −0.89%/t−2.75 は有意に負"
+          "(緩いS安は下げ続ける)。**素直なS安リバウンドロングはエッジなし**。",
+          "- **裾だけ薄く有**: 大GD(≤-10%＝翌朝さらに投げ) のみ net+1.07%/t+2.35/n522/OOS+0.70・8/10年プラス。"
+          "＝uoaの『売り尽くし(投げのクライマックス)を買う』が実在(どんなS安でなく極値だけ)。勝率33%=宝くじ型。",
+          "- **ただしコストに脆弱**: 損益分岐≈0.4%/回(cost0.5%でt+1.69・cost1.0%で消滅)。パニックGD寄りは"
+          "滑り大ゆえ実コストで容易に食われる＝**確定でなく『要・実コスト実測の候補』**。複数帯検定の最良値ゆえ"
+          "データスヌーピング注意(FDR/DSR要)。",
+          "- **非対称性が再確認**: 小型は『上の行き過ぎ＝⑩R short(+2.56%/損益分岐1.62%=頑健)』≫"
+          "『下の行き過ぎ＝S安 long(裾+1.07%/損益分岐0.4%=脆弱)』。**ショート側が遥かに取りやすい**"
+          "(リテール先行→出尽くし下方ドリフトと同根)。", ""]
     return L
 
 
