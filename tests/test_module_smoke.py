@@ -91,6 +91,12 @@ class TestImportable(unittest.TestCase):
     def test_fetch_master_history(self) -> None:
         self._check("scripts.edge_candidates.fetch_master_history")
 
+    def test_analyze_archive_regime(self) -> None:
+        self._check("scripts.edge_candidates.analyze_archive_regime")
+
+    def test_fetch_limit_down_events(self) -> None:
+        self._check("scripts.edge_candidates.fetch_limit_down_events")
+
     def test_pit_master(self) -> None:
         import importlib
         m = importlib.import_module("scripts._pit_master")
