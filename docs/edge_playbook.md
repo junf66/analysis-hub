@@ -6,6 +6,7 @@
 >
 > 最終更新: 2026-06-12
 > 共有用1ページ要約は [edge_summary_share.md](edge_summary_share.md)（本書から派生・数値更新は本書が先）。
+> 日次運用の手順書は [daily_checklist.md](daily_checklist.md)（1日完結5本の引け後スキャン→寄り発注→引け決済）。
 
 ---
 
