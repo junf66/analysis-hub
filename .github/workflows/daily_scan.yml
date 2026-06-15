@@ -1,0 +1,43 @@
+name: daily-scan
+
+# 引け後スキャン: 翌営業日に仕掛ける1日完結エッジ(⑩R/④/①B)の候補を毎日抽出し、
+# 候補があれば GitHub Issue を作成→リポオーナーに割当=メール通知(GitHubの通知メール)。
+# ⑩R はライブ(/equities/bars/daily)で当日S高から直接抽出。④/①B は data/*.json を
+# best-effort 更新して鮮度を上げる(失敗してもスキャンは続行)。
+# 前提: Settings → Secrets に JQUANTS_API_KEY 登録済(weekly-data と共用)。
+
+on:
+  schedule:
+    - cron: "30 7 * * 1-5"   # 毎平日 07:30 UTC = JST 16:30 (引け後)
+  workflow_dispatch: {}        # 手動実行(--date 引数は使わず本日)
+
+permissions:
+  contents: read
+  issues: write                # 候補 Issue を作成する
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    env:
+      JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Refresh kouaku/PO (best-effort・④①B の鮮度向上)
+        run: |
+          python -m scripts.update_all --source kouaku || true
+          python -m scripts.update_all --source po --refresh-po-raw || true
+      - name: Run daily scan
+        id: scan
+        run: python -m scripts.daily_scan --out reports/daily_scan.md
+      - name: Create issue if candidates
+        if: steps.scan.outputs.candidates != '0' && steps.scan.outputs.candidates != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "引け後スキャン $(TZ=Asia/Tokyo date +%Y-%m-%d): 候補${{ steps.scan.outputs.candidates }}件" \
+            --body-file reports/daily_scan.md \
+            --assignee "${{ github.repository_owner }}"

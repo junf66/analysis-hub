@@ -100,6 +100,9 @@ class TestImportable(unittest.TestCase):
     def test_analyze_momentum_guards(self) -> None:
         self._check("scripts.edge_candidates.analyze_momentum_guards")
 
+    def test_daily_scan(self) -> None:
+        self._check("scripts.daily_scan")
+
     def test_pit_master(self) -> None:
         import importlib
         m = importlib.import_module("scripts._pit_master")
