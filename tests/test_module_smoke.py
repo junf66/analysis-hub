@@ -106,6 +106,9 @@ class TestImportable(unittest.TestCase):
     def test_mine_disclosure_titles(self) -> None:
         self._check("scripts.edge_candidates.mine_disclosure_titles")
 
+    def test_analyze_disclosure_event(self) -> None:
+        self._check("scripts.edge_candidates.analyze_disclosure_event")
+
     def test_pit_master(self) -> None:
         import importlib
         m = importlib.import_module("scripts._pit_master")
