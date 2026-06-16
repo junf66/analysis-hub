@@ -112,6 +112,9 @@ class TestImportable(unittest.TestCase):
     def test_analyze_ipo_rating_gu(self) -> None:
         self._check("scripts.edge_candidates.analyze_ipo_rating_gu")
 
+    def test_analyze_ipo_intraday(self) -> None:
+        self._check("scripts.edge_candidates.analyze_ipo_intraday")
+
     def test_pit_master(self) -> None:
         import importlib
         m = importlib.import_module("scripts._pit_master")
