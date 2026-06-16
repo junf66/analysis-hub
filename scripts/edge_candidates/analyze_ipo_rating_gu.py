@@ -45,17 +45,19 @@ def fetch_bars(codes: list[str]) -> dict[str, list]:
     return cache
 
 
-def daytrade_rows(recs: list[dict], cache: dict[str, list]) -> tuple[list[tuple], list[str]]:
-    """各IPOの (rank, gu, 初値→引け%, code) と未照合code。"""
+def daytrade_rows(recs: list[dict], cache: dict[str, list], day: int = 1) -> tuple[list[tuple], list[str]]:
+    """各IPOの (rank, gu, 寄→引%, code)。day=1:上場日 / day=2:上場翌日。未照合code も返す。"""
     rows, un = [], []
     for r in recs:
         code, rank, h, gu = r["code"], r["rank"], r["hatsune"], r["gu_pct"]
-        best = next(((d, o, c) for d, o, c in cache.get(code, []) if o and abs(o - h) / h < 0.015), None)
-        if not best:
+        bars = cache.get(code, [])
+        idx = next((k for k, (d, o, c) in enumerate(bars) if o and abs(o - h) / h < 0.015), None)
+        if idx is None or idx + (day - 1) >= len(bars):
             un.append(code)
             continue
-        _, o, c = best
-        rows.append((rank, gu, (c / o - 1) * 100, code))
+        _, o, c = bars[idx + (day - 1)]
+        if o:
+            rows.append((rank, gu, (c / o - 1) * 100, code))
     return rows, un
 
 
@@ -70,12 +72,12 @@ def _stat(sub: list[tuple]) -> str:
     return f"n{len(net)} / raw{statistics.fmean(raw):+.2f}% / net{statistics.fmean(net):+.2f}% / 勝{win:.0f}% / t{t:+.2f}"
 
 
-def build(recs: list[dict], cache: dict[str, list]) -> str:
-    """評価×GU の初値→引けデイトレ表を md で返す。"""
-    rows, un = daytrade_rows(recs, cache)
+def build(recs: list[dict], cache: dict[str, list], day: int = 1) -> str:
+    """評価×GU の寄→引デイトレ表を md で返す (day=1:上場日 / 2:上場翌日)。"""
+    rows, un = daytrade_rows(recs, cache, day)
     gb = [("GD≤0", lambda g: g <= 0), ("0-5", lambda g: 0 < g <= 5), ("5-10", lambda g: 5 < g <= 10),
           ("10-20", lambda g: 10 < g <= 20), (">20", lambda g: g > 20)]
-    L = ["# IPO 評価×初値GU: 初値→当日引けデイトレ検証", "",
+    L = [f"# IPO 評価×初値GU: {'上場日(初値→引け)' if day == 1 else '上場翌日(2日目寄→引)'}デイトレ検証", "",
          f"96ut評価/初値GUは手動転記、初値→引けは生始値→終値(分割不変)。cost{COST}%。",
          f"照合 {len(rows)}/{len(recs)} (未照合{len(un)}: 転記/分割/コード差)。", "",
          "| 評価 | GU帯 | 成績 |", "|---|---|---|"]
@@ -100,12 +102,13 @@ def build(recs: list[dict], cache: dict[str, list]) -> str:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--no-fetch", action="store_true", help="キャッシュのみで集計")
+    ap.add_argument("--day2", action="store_true", help="上場翌日(2日目)寄→引で集計(既定は上場日)")
     ap.add_argument("--out", type=Path, default=REPORT, help="出力 md (既定 reports/ipo_rating_gu.md)")
     args = ap.parse_args()
     recs = json.loads(DATA.read_text())["records"]
     cache = (json.loads(CACHE.read_text()) if (args.no_fetch and CACHE.exists())
              else fetch_bars([r["code"] for r in recs]))
-    report = build(recs, cache)
+    report = build(recs, cache, day=2 if args.day2 else 1)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     atomic_write_text(args.out, report)
     print(report)
