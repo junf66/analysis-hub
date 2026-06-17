@@ -49,6 +49,21 @@ def jst_today() -> str:
     return (datetime.datetime.utcnow() + datetime.timedelta(hours=9)).date().isoformat()
 
 
+def _margin_banned(target_date: str) -> set[str]:
+    """margin-alert から売り禁(日証金貸借停止/規制)銘柄コード集合を取得(取れなければ空)。"""
+    try:
+        from scripts import _jquants
+        rows = _jquants.get_list("/markets/margin-alert", date=target_date)
+    except Exception:  # noqa: BLE001
+        return set()
+    banned = set()
+    for r in rows:
+        pr = r.get("PubReason") or {}
+        if pr.get("RestrictedByJSF") == "1" or pr.get("Restricted") == "1" or pr.get("DailyPublication") == "1":
+            banned.add(str(r.get("Code")))
+    return banned
+
+
 def scan_10R(master: dict[str, dict], target_date: str) -> tuple[list[dict[str, Any]], int, str]:
     """ライブ daily bars から当日S高引けの ⑩R 候補と市場breadth。"""
     from scripts import _jquants
@@ -59,6 +74,7 @@ def scan_10R(master: dict[str, dict], target_date: str) -> tuple[list[dict[str, 
     if not bars:
         return [], 0, "データなし(非営業日)"
     breadth = sum(1 for b in bars if b.get("UL") == "1")
+    banned = _margin_banned(target_date)  # 売り禁(新規売建停止)コード集合
     cands = []
     for b in bars:
         if b.get("UL") != "1":
@@ -67,8 +83,12 @@ def scan_10R(master: dict[str, dict], target_date: str) -> tuple[list[dict[str, 
         if not m or m.get("scale_band") != "小型" or m.get("MrgnNm") != "貸借" or m.get("MktNm") in _INST_MKT:
             continue
         c = b.get("AdjC") or b.get("C")
+        h = b.get("AdjH") or b.get("H")
+        # S高型: 終値=高値=S高引け(本命) / 終値<高値=タッチ剥がれ(弱・対象外)
+        sh_close = bool(c and h and abs(c - h) < 1e-9)
         cands.append({"code": str(b["Code"])[:4], "name": m.get("CoName", "?"),
-                      "close": c, "mkt": m.get("MktNm")})
+                      "close": c, "mkt": m.get("MktNm"), "sh_close": sh_close,
+                      "banned": str(b["Code"]) in banned or str(b["Code"])[:4] in banned})
     tier = ("閑散=厚張りOK(+3.18%/勝64%)" if breadth <= 9
             else "中位(+2.69%/勝61%)" if breadth <= 15
             else "過熱=薄く/見送り(+1.70%/勝52%・非有意)")
@@ -109,11 +129,17 @@ def build_body(target_date: str, r10: tuple, z4: list, b1: list) -> tuple[str, i
 
     L += [f"## ⑩R 小型貸借S高ショート（市場S高 {breadth}件＝{tier}）", ""]
     if cands:
-        L += ["翌朝 **+5〜10%(中GU)** で寄れば**寄り成行売り→当日引け買戻**(極小サイズ)。GD/小GU/大GU(>10%)は見送り。", "",
-              "| コード | 銘柄 | 市場 | 当日S高終値 |", "|---|---|---|--:|"]
-        L += [f"| {c['code']} | {c['name']} | {c['mkt']} | {c['close']:,.0f} |" for c in cands]
-        if breadth > 15:
-            L += ["", "> ⚠️ 過熱日(S高>15)＝⑩Rは非有意・踏み上げ増。**薄く or 見送り**推奨。"]
+        L += ["翌朝 **+5〜10%(中GU)** で寄れば**寄り成行売り→当日引け買戻**(極小サイズ)。GD/小GU/大GU(>10%)は見送り。",
+              "**S高引け(C=上限)が本命**。タッチ剥がれ(終値<高値)は弱く対象外。売り禁(margin-alert)はスキップ。", "",
+              "| コード | 銘柄 | 市場 | S高終値 | 型 | 売り禁 |", "|---|---|---|--:|---|---|"]
+        # S高引け本命を上に
+        for c in sorted(cands, key=lambda x: (not x["sh_close"], x["banned"])):
+            typ = "✅S高引け" if c["sh_close"] else "△剥がれ(対象外)"
+            ban = "🚫売り禁" if c["banned"] else "可"
+            L.append(f"| {c['code']} | {c['name']} | {c['mkt']} | {c['close']:,.0f} | {typ} | {ban} |")
+        nstrong = sum(1 for c in cands if c["sh_close"] and not c["banned"])
+        L += ["", f"→ 本命(S高引け×売建可)= **{nstrong}件**。" + ("" if breadth <= 15 else
+              "⚠️ 過熱日(S高>15)＝⑩Rは非有意・踏み上げ増。**薄く or 見送り**。")]
     else:
         L += ["該当なし。", ""]
 
