@@ -1,9 +1,11 @@
 """引け後スキャナ: 翌営業日に仕掛ける1日完結エッジの候補を抽出 (毎日Actions想定)。
 
 前日(=当日引け後)に確定情報から『明日の候補』を出せる3本のみ対象:
-  ⑩R 小型貸借S高ショート : 当日S高引け(非プライム小型×貸借) → 翌朝 中GU で寄り売り。
+  ⑩R 小型貸借S高ショート : 当日S高引け(小型×貸借) → 翌朝 中GU で寄り売り。
                            ★ライブ: /equities/bars/daily(本日)の UL=1 から直接抽出。市場S高総数=
                              breadth で厚/薄を判定(≤9厚・9-15中・>15薄/見送り)。
+                           本体=非プライム小型(スタ/グロ・+2.56%だが逆日歩/売り禁の執行難)、
+                           別枠=プライム小型(+0.97%/t2.0と弱いが売り禁/逆日歩になりにくく執行クリーン)。
   ④ 増配+来期下方ショート : 当日大引け後に zouhai_kahou_nx 開示 → 翌寄り売り。data/kouaku_records.json。
   ①B 中型PO・GD買い       : 当日 普通株PO発表(中型) → 翌営業日GD(≤-0.5%)で寄れば買い。data/po_records.json。
 
@@ -28,8 +30,9 @@ MASTER_PATH = REPO / "data" / "edge_candidates" / "equities_master.json"
 KOUAKU_PATH = REPO / "data" / "kouaku_records.json"
 PO_PATH = REPO / "data" / "po_records.json"
 
-# ⑩R: 機関の場/ETF/PRO を除外＝個人小型のみ
-_INST_MKT = {"プライム", "東証一部", "その他", "TOKYO PRO MARKET", None}
+# ⑩R: ETF/PRO/再編前は常に除外。プライムは「弱・執行クリーン」別枠として残す(規模が効くのであって
+# プライム形式での除外ではない: 非プライム小型+2.56% / プライム小型+0.97%・t2.0=弱いが+)。
+_DROP_MKT = {"東証一部", "その他", "TOKYO PRO MARKET", None}
 
 
 def _c5(code: str) -> str:
@@ -82,14 +85,16 @@ def scan_10R(master: dict[str, dict], target_date: str) -> tuple[list[dict[str, 
         if b.get("UL") != "1":
             continue
         m = master.get(str(b["Code"]))
-        if not m or m.get("scale_band") != "小型" or m.get("MrgnNm") != "貸借" or m.get("MktNm") in _INST_MKT:
+        if not m or m.get("scale_band") != "小型" or m.get("MrgnNm") != "貸借" or m.get("MktNm") in _DROP_MKT:
             continue
         c = b.get("AdjC") or b.get("C")
         h = b.get("AdjH") or b.get("H")
         # S高型: 終値=高値=S高引け(本命) / 終値<高値=タッチ剥がれ(弱・対象外)
         sh_close = bool(c and h and abs(c - h) < 1e-9)
+        # tier: プライム小型=弱・執行クリーン別枠 / それ以外(スタ/グロ等)=本体
         cands.append({"code": str(b["Code"])[:4], "name": m.get("CoName", "?"),
                       "close": c, "mkt": m.get("MktNm"), "sh_close": sh_close,
+                      "tier": "prime" if m.get("MktNm") == "プライム" else "core",
                       "banned": str(b["Code"]) in banned or str(b["Code"])[:4] in banned})
     tier = ("閑散=厚張りOK(+3.18%/勝64%)" if breadth <= 9
             else "中位(+2.69%/勝61%)" if breadth <= 15
@@ -122,6 +127,18 @@ def scan_po_announce(master: dict[str, dict], target_date: str) -> list[dict[str
     return out
 
 
+def _r10_table(title: str, cands: list[dict[str, Any]]) -> list[str]:
+    """⑩R の1ティア(本体 or プライム小型)を S高引け本命を上にしてテーブル化。"""
+    if not cands:
+        return [f"### {title}", "", "該当なし。", ""]
+    L = [f"### {title}", "", "| コード | 銘柄 | 市場 | S高終値 | 型 | 売り禁 |", "|---|---|---|--:|---|---|"]
+    for c in sorted(cands, key=lambda x: (not x.get("sh_close"), x.get("banned"))):
+        typ = "✅S高引け" if c.get("sh_close") else "△剥がれ(対象外)"
+        ban = "🚫売り禁" if c.get("banned") else "可"
+        L.append(f"| {c['code']} | {c['name']} | {c['mkt']} | {c['close']:,.0f} | {typ} | {ban} |")
+    return L + [""]
+
+
 def build_body(target_date: str, r10: tuple, z4: list, b1: list) -> tuple[str, int]:
     """Issue 本文(Markdown)と候補総数を返す。"""
     cands, breadth, tier = r10
@@ -129,21 +146,17 @@ def build_body(target_date: str, r10: tuple, z4: list, b1: list) -> tuple[str, i
     L = [f"# 引け後スキャン {target_date}（翌営業日の1日完結エッジ候補）", "",
          f"候補 **{n}件**。すべて寄り成行→当日引け(楽天「大引不成」)。ショートは楽天信用・**売り禁スキップ(手動確認)**。", ""]
 
-    L += [f"## ⑩R 小型貸借S高ショート（市場S高 {breadth}件＝{tier}）", ""]
-    if cands:
-        L += ["翌朝 **+5〜10%(中GU)** で寄れば**寄り成行売り→当日引け買戻**(極小サイズ)。GD/小GU/大GU(>10%)は見送り。",
-              "**S高引け(C=上限)が本命**。タッチ剥がれ(終値<高値)は弱く対象外。売り禁(margin-alert)はスキップ。", "",
-              "| コード | 銘柄 | 市場 | S高終値 | 型 | 売り禁 |", "|---|---|---|--:|---|---|"]
-        # S高引け本命を上に
-        for c in sorted(cands, key=lambda x: (not x.get("sh_close"), x.get("banned"))):
-            typ = "✅S高引け" if c.get("sh_close") else "△剥がれ(対象外)"
-            ban = "🚫売り禁" if c.get("banned") else "可"
-            L.append(f"| {c['code']} | {c['name']} | {c['mkt']} | {c['close']:,.0f} | {typ} | {ban} |")
-        nstrong = sum(1 for c in cands if c.get("sh_close") and not c.get("banned"))
-        L += ["", f"→ 本命(S高引け×売建可)= **{nstrong}件**。" + ("" if breadth <= 15 else
-              "⚠️ 過熱日(S高>15)＝⑩Rは非有意・踏み上げ増。**薄く or 見送り**。")]
-    else:
-        L += ["該当なし。", ""]
+    L += [f"## ⑩R 小型貸借S高ショート（市場S高 {breadth}件＝{tier}）", "",
+          "翌朝 **+5〜10%(中GU)** で寄れば**寄り成行売り→当日引け買戻**(極小サイズ)。GD/小GU/大GU(>10%)は見送り。",
+          "**S高引け(C=上限)が本命**。タッチ剥がれ(終値<高値)は弱く対象外。売り禁(margin-alert)はスキップ。", ""]
+    core = [c for c in cands if c.get("tier") != "prime"]
+    prime = [c for c in cands if c.get("tier") == "prime"]
+    L += _r10_table("本体（非プライム小型＝スタ/グロ・EV強+2.56%／逆日歩・売り禁の執行難あり）", core)
+    L += _r10_table("別枠（プライム小型＝弱+0.97%/t2.0だが売り禁/逆日歩になりにくく**執行クリーン**）", prime)
+    nstrong = sum(1 for c in core if c.get("sh_close") and not c.get("banned"))
+    nprime = sum(1 for c in prime if c.get("sh_close") and not c.get("banned"))
+    L += [f"→ 本体の本命(S高引け×売建可)= **{nstrong}件** / プライム小型(同)= **{nprime}件**。"
+          + ("" if breadth <= 15 else " ⚠️ 過熱日(S高>15)＝⑩Rは非有意・踏み上げ増。**薄く or 見送り**。")]
 
     L += ["", "## ④ 増配+来期下方ショート（当日大引け後 zouhai_kahou_nx）", ""]
     if z4:
