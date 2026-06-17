@@ -121,6 +121,9 @@ class TestImportable(unittest.TestCase):
     def test_analyze_buyback_gu_intraday(self) -> None:
         self._check("scripts.edge_candidates.analyze_buyback_gu_intraday")
 
+    def test_analyze_lockup_short(self) -> None:
+        self._check("scripts.edge_candidates.analyze_lockup_short")
+
     def test_pit_master(self) -> None:
         import importlib
         m = importlib.import_module("scripts._pit_master")
