@@ -85,7 +85,8 @@ def _extract_lockup(docid: str) -> dict:
     z = zipfile.ZipFile(io.BytesIO(raw))
     txt = ""
     for n in z.namelist():
-        if n.startswith("PublicDoc/") and n.lower().endswith((".htm", ".html")):
+        # 本文は PublicDoc/*.htm だが、新規IPOの030等は XBRL/PublicDoc/*ixbrl.htm のみのことがある
+        if "PublicDoc/" in n and n.lower().endswith((".htm", ".html")):
             txt += html.unescape(re.sub(r"\s+", " ", re.sub("<[^>]+>", " ", z.read(n).decode("utf-8", "ignore"))))
     days: set[int] = set()
     dates: set[str] = set()
@@ -123,7 +124,7 @@ def main() -> None:
     todo = []
     for r in ratings:
         code = r["code"]
-        if code in out:
+        if out.get(code, {}).get("status") == "ok":   # ok は確定済みゆえ skip(非okは再試行)
             continue
         m = master.get(_c5(code))
         rows = bars.get(code) or []
