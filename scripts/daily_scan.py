@@ -133,11 +133,11 @@ def build_body(target_date: str, r10: tuple, z4: list, b1: list) -> tuple[str, i
               "**S高引け(C=上限)が本命**。タッチ剥がれ(終値<高値)は弱く対象外。売り禁(margin-alert)はスキップ。", "",
               "| コード | 銘柄 | 市場 | S高終値 | 型 | 売り禁 |", "|---|---|---|--:|---|---|"]
         # S高引け本命を上に
-        for c in sorted(cands, key=lambda x: (not x["sh_close"], x["banned"])):
-            typ = "✅S高引け" if c["sh_close"] else "△剥がれ(対象外)"
-            ban = "🚫売り禁" if c["banned"] else "可"
+        for c in sorted(cands, key=lambda x: (not x.get("sh_close"), x.get("banned"))):
+            typ = "✅S高引け" if c.get("sh_close") else "△剥がれ(対象外)"
+            ban = "🚫売り禁" if c.get("banned") else "可"
             L.append(f"| {c['code']} | {c['name']} | {c['mkt']} | {c['close']:,.0f} | {typ} | {ban} |")
-        nstrong = sum(1 for c in cands if c["sh_close"] and not c["banned"])
+        nstrong = sum(1 for c in cands if c.get("sh_close") and not c.get("banned"))
         L += ["", f"→ 本命(S高引け×売建可)= **{nstrong}件**。" + ("" if breadth <= 15 else
               "⚠️ 過熱日(S高>15)＝⑩Rは非有意・踏み上げ増。**薄く or 見送り**。")]
     else:

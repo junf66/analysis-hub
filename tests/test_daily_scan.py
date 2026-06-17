@@ -70,7 +70,8 @@ class DailyScanTest(unittest.TestCase):
         self.assertEqual([r["code"] for r in out], ["1111"])
 
     def test_build_body_counts_and_breadth_tier(self) -> None:
-        r10 = ([{"code": "6227", "name": "テスト", "close": 8000, "mkt": "グロース"}], 20,
+        r10 = ([{"code": "6227", "name": "テスト", "close": 8000, "mkt": "グロース",
+                 "sh_close": True, "banned": False}], 20,
                "過熱=薄く/見送り(+1.70%/勝52%・非有意)")
         z4 = [{"code": "1111", "name": "増配社"}]
         b1: list = []
