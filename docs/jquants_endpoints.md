@@ -36,13 +36,41 @@ yanoshin と日時 160/160 一致・主要材料捕捉率 99.6〜100%。
 
 ### `/markets/calendar` ── 営業日カレンダー（`Date`/`HolDiv`）
 
+### `/td/files` ── 適時開示ファイルDL URL（本文PDF）── 2026-06: パラメータ不明で400(要特定)。取れれば本文からPO日程/ロックアップ条件抽出可。
+
+### `/markets/margin-interest` ── 週次信用取引残高（2016-・**全history**）── 2026-06確認
+`code`指定。`LongVol`(信用買残)/`LongStdVol`(制度買残)/`LongNegVol`(一般買残)・`ShrtVol`系・`Date`(毎週金)・`IssType`。
+信用期日プレー(26週)・取組の検証に。※検証結果=反発ロングは負け(正本 不採用)。
+
+### `/markets/margin-alert` ── 日々公表信用取引残高＋**信用規制区分** ── 2026-06確認（高価値）
+`date`指定で当日の規制銘柄。`TSEMrgnRegCls`＋`PubReason{Restricted/DailyPublication/Monitoring/
+RestrictedByJSF(=日証金貸借停止≒売り禁)/PrecautionByJSF(注意喚起)}`・日次`LongStdOut`等。
+**⑩Rの売り禁を自動判定できる**（daily_scanの規制フラグ自動化）。
+
+### `/markets/short-sale-report` ── 空売り残高報告（0.5%以上）── 2026-06確認
+`code`指定。`SSName`(空売り主)・`ShrtPosToSO`(対発行済%)・`ShrtPosShares`・`DiscDate`。機関の大口空売り→踏み上げ/オーバーハング検証。
+
+### `/markets/short-ratio` ── 業種別空売り比率 ── 2026-06確認
+`date`指定。`S33`(33業種)・`ShrtWithResVa`/`ShrtNoResVa`(価格規制有無別空売り額)・`SellExShortVa`。セクター需給。
+
+### `/indices/bars/daily` ── 指数四本値（TOPIX以外も）── 2026-06確認（高価値）
+`code`指定で各種指数のOHLC。**マザーズ/グロース/JASDAQ等の新興指数が取れる**＝⑩Rの地合いを
+breadth代理でなく実新興指数で検証可能(びびり「新興一方通行」)。※index codeの対応表は要特定(0028等)。
+
+### `/equities/investor-types` ── 投資部門別売買状況 ── 2026-06確認
+`from`/`to`指定。海外/個人/銀行/証券自己 等の売買代金(`*Buy`/`*Sell`/`*Bal`)。**cis「フォース(機関継続買い)」の代理**フロー。
+
 ## ❌ 契約外（403・使用不可）
-- `/fins/details`（BS/PL/CF 明細）
-- `/fins/dividend`（配当明細）
+- `/fins/details`（BS/PL/CF 明細）・`/fins/dividend`（配当明細）── 2026-06再確認も403
+- `/equities/trades`（ティック）── **403。板/歩み値=cis型は再現不能**
+- `/markets/breakdown`（売買内訳）── 403
+- `/derivatives/bars/daily/futures`・`/options`・`/options/225`（先物・オプション）── 403
 - `/listed/info`（→ 銘柄属性は `/equities/master` で代替）
 - Pro 専用（自社株買い TDnet 等, `api.jquants-pro.com`）は Light 契約のため未取得
 
+> ⚠️ **取得範囲の制限**: `/equities/bars/daily` は `from` が約2017年より前だと **HTTP400(subscription)**。古い期間は2017-01-01開始で。
+
 ## 💡 未活用の伸びしろ
-`/td/list` の **`Title`（開示タイトル全文）** はテキストとして最も使えるが現状ほぼ未活用。
-タイトル文言で材料を直接分類（増配/減配・上方/下方修正・自己株取得 等）し、
-既存の分類器（DiscItems コード＋好悪ルール）の死角を埋める新サブパターンを切り出せる可能性。
+`/td/list` の **`Title`（開示タイトル全文）** で材料分類（Titleマイニング・2026-06実施）。
+**新規(2026-06)**: `/indices/bars/daily`(新興指数→⑩R地合い実測)・`/equities/investor-types`(主体別→cisフォース)・
+`/markets/margin-alert`(売り禁自動判定→⑩R執行)・`short-sale-report`/`short-ratio`(踏み上げ/需給)。
