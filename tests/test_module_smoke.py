@@ -127,6 +127,9 @@ class TestImportable(unittest.TestCase):
     def test_analyze_edge_refine(self) -> None:
         self._check("scripts.edge_candidates.analyze_edge_refine")
 
+    def test_fetch_lockup_terms(self) -> None:
+        self._check("scripts.edge_candidates.fetch_lockup_terms")
+
     def test_pit_master(self) -> None:
         import importlib
         m = importlib.import_module("scripts._pit_master")
