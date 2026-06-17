@@ -50,18 +50,20 @@ def jst_today() -> str:
 
 
 def _margin_banned(target_date: str) -> set[str]:
-    """margin-alert から売り禁(日証金貸借停止/規制)銘柄コード集合を取得(取れなければ空)。"""
+    """margin-alert から『制度信用で新規売り建て不可』の銘柄コード集合を取得(取れなければ空)。
+
+    真の売り禁は **RestrictedByJSF=1**(日証金=貸株の新規貸付停止)のみ。以下は売建を禁止しないので除外:
+      - Restricted(取引所の増担保規制): 保証金率引上げだけ。両方向に課され売建は可能。
+      - DailyPublication(日々公表銘柄): 信用残の毎日公表=監視段階。売買自由。
+      - PrecautionByJSF(日証金の貸株注意喚起): 在庫タイトの警告(=逆日歩リスク)。停止ではない。
+    """
     try:
         from scripts import _jquants
         rows = _jquants.get_list("/markets/margin-alert", date=target_date)
     except Exception:  # noqa: BLE001
         return set()
-    banned = set()
-    for r in rows:
-        pr = r.get("PubReason") or {}
-        if pr.get("RestrictedByJSF") == "1" or pr.get("Restricted") == "1" or pr.get("DailyPublication") == "1":
-            banned.add(str(r.get("Code")))
-    return banned
+    return {str(r.get("Code")) for r in rows
+            if (r.get("PubReason") or {}).get("RestrictedByJSF") == "1"}
 
 
 def scan_10R(master: dict[str, dict], target_date: str) -> tuple[list[dict[str, Any]], int, str]:
