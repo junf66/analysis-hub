@@ -73,6 +73,74 @@ def clustered_se(values: Sequence[float], clusters: Sequence[Any]) -> float:
     return math.sqrt(var) if var > 0 else 0.0
 
 
+_EULER_GAMMA = 0.5772156649015329  # オイラー・マスケローニ定数
+
+
+def sharpe_moments(returns: Sequence[float]) -> tuple[float, float, float, int]:
+    """net 損益列の (per-obs Sharpe, skew, kurt(正規=3), n) を返す。
+
+    Sharpe = mean/std (年率化しない素のトレード単位)。歪度・尖度は
+    Deflated Sharpe の補正項に使う (非正規性を罰する)。
+    """
+    n = len(returns)
+    if n < 2:
+        return 0.0, 0.0, 3.0, n
+    mu = statistics.fmean(returns)
+    sd = statistics.stdev(returns)
+    if sd == 0:
+        return 0.0, 0.0, 3.0, n
+    sr = mu / sd
+    z = [(x - mu) / sd for x in returns]
+    skew = sum(v ** 3 for v in z) / n
+    kurt = sum(v ** 4 for v in z) / n
+    return sr, skew, kurt, n
+
+
+def expected_max_sharpe(sr_std: float, n_trials: int) -> float:
+    """N 個の試行(エッジ探索)で偶然得られる Sharpe 最大値の期待値 SR0。
+
+    Bailey & López de Prado (2014) "The Deflated Sharpe Ratio":
+      SR0 = sr_std * [(1-γ)·Z⁻¹(1-1/N) + γ·Z⁻¹(1-1/(N·e))]
+    sr_std = 試行間の Sharpe のばらつき(標準偏差)。多数のセルを叩くほど
+    SR0 は上がり、「その程度の Sharpe はノイズでも出る」閾値が厳しくなる。
+    """
+    if n_trials < 2 or sr_std <= 0:
+        return 0.0
+    nd = statistics.NormalDist()
+    a = nd.inv_cdf(1.0 - 1.0 / n_trials)
+    b = nd.inv_cdf(1.0 - 1.0 / (n_trials * math.e))
+    return sr_std * ((1.0 - _EULER_GAMMA) * a + _EULER_GAMMA * b)
+
+
+def deflated_sharpe(sr: float, n_obs: int, skew: float, kurt: float, sr0: float) -> float:
+    """Deflated Sharpe Ratio = P(真の Sharpe > SR0)。0.95 超で試行回数補正後も有意。
+
+      DSR = Φ( (SR - SR0)·√(T-1) / √(1 - skew·SR + (kurt-1)/4·SR²) )
+    SR/SR0 は per-obs。試行回数(SR0)と非正規性(skew/kurt)の両方を罰する。
+    """
+    if n_obs < 2:
+        return 0.0
+    denom = 1.0 - skew * sr + (kurt - 1.0) / 4.0 * sr * sr
+    if denom <= 0:
+        return 0.0
+    z = (sr - sr0) * math.sqrt(n_obs - 1) / math.sqrt(denom)
+    return statistics.NormalDist().cdf(z)
+
+
+def min_track_record_length(sr: float, skew: float, kurt: float, sr0: float,
+                            conf: float = 0.95) -> float | None:
+    """MinBTL: SR0 を有意に超えるのに必要な最小観測数(トレード数)。
+
+    minTRL = 1 + [1 - skew·SR + (kurt-1)/4·SR²]·(Z_conf/(SR - SR0))²
+    SR <= SR0 なら到達不能 (None)。現状 n がこれ未満なら「データ不足」。
+    """
+    if sr <= sr0:
+        return None
+    z = statistics.NormalDist().inv_cdf(conf)
+    denom = 1.0 - skew * sr + (kurt - 1.0) / 4.0 * sr * sr
+    return 1.0 + denom * (z / (sr - sr0)) ** 2
+
+
 def _direction(rets: Sequence[float]) -> str:
     return "short" if statistics.fmean(rets) < 0 else "long"
 

@@ -82,6 +82,50 @@ class TestImportable(unittest.TestCase):
     def test_validate_edges(self) -> None:
         self._check("scripts.validate_edges")
 
+    def test_analyze_survival(self) -> None:
+        self._check("scripts.edge_candidates.analyze_survival")
+
+    def test_audit_deflated_sharpe(self) -> None:
+        self._check("scripts.edge_candidates.audit_deflated_sharpe")
+
+    def test_fetch_master_history(self) -> None:
+        self._check("scripts.edge_candidates.fetch_master_history")
+
+    def test_analyze_archive_regime(self) -> None:
+        self._check("scripts.edge_candidates.analyze_archive_regime")
+
+    def test_fetch_limit_down_events(self) -> None:
+        self._check("scripts.edge_candidates.fetch_limit_down_events")
+
+    def test_analyze_momentum_guards(self) -> None:
+        self._check("scripts.edge_candidates.analyze_momentum_guards")
+
+    def test_daily_scan(self) -> None:
+        self._check("scripts.daily_scan")
+
+    def test_mine_disclosure_titles(self) -> None:
+        self._check("scripts.edge_candidates.mine_disclosure_titles")
+
+    def test_analyze_disclosure_event(self) -> None:
+        self._check("scripts.edge_candidates.analyze_disclosure_event")
+
+    def test_analyze_ipo_rating_gu(self) -> None:
+        self._check("scripts.edge_candidates.analyze_ipo_rating_gu")
+
+    def test_analyze_ipo_intraday(self) -> None:
+        self._check("scripts.edge_candidates.analyze_ipo_intraday")
+
+    def test_analyze_r10_sh_close(self) -> None:
+        self._check("scripts.edge_candidates.analyze_r10_sh_close")
+
+    def test_analyze_buyback_gu_intraday(self) -> None:
+        self._check("scripts.edge_candidates.analyze_buyback_gu_intraday")
+
+    def test_pit_master(self) -> None:
+        import importlib
+        m = importlib.import_module("scripts._pit_master")
+        self.assertTrue(hasattr(m, "PitMaster"))
+
 
 class TestHelpExitsCleanly(unittest.TestCase):
     """全 CLI が --help で exit 0 (argparse の format-string バグ等を検出)。"""
@@ -149,6 +193,12 @@ class TestHelpExitsCleanly(unittest.TestCase):
 
     def test_validate_edges(self) -> None:
         self._run_help("scripts.validate_edges")
+
+    def test_analyze_survival(self) -> None:
+        self._run_help("scripts.edge_candidates.analyze_survival")
+
+    def test_audit_deflated_sharpe(self) -> None:
+        self._run_help("scripts.edge_candidates.audit_deflated_sharpe")
 
 
 if __name__ == "__main__":

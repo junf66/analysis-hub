@@ -1,0 +1,1001 @@
+{
+  "source": "96ut.com IPO初値結果一覧(2024-2026)・手動転記",
+  "records": [
+    {
+      "code": "581A",
+      "rank": "B",
+      "hatsune": 2910,
+      "gu_pct": 21.3
+    },
+    {
+      "code": "559A",
+      "rank": "C",
+      "hatsune": 900,
+      "gu_pct": 50.0
+    },
+    {
+      "code": "556A",
+      "rank": "C",
+      "hatsune": 3500,
+      "gu_pct": 17.1
+    },
+    {
+      "code": "558A",
+      "rank": "C",
+      "hatsune": 3250,
+      "gu_pct": 4.5
+    },
+    {
+      "code": "554A",
+      "rank": "B",
+      "hatsune": 1674,
+      "gu_pct": 153.6
+    },
+    {
+      "code": "550A",
+      "rank": "C",
+      "hatsune": 3200,
+      "gu_pct": 64.9
+    },
+    {
+      "code": "549A",
+      "rank": "C",
+      "hatsune": 422,
+      "gu_pct": -1.9
+    },
+    {
+      "code": "548A",
+      "rank": "C",
+      "hatsune": 1061,
+      "gu_pct": 11.7
+    },
+    {
+      "code": "542A",
+      "rank": "C",
+      "hatsune": 1301,
+      "gu_pct": -5.0
+    },
+    {
+      "code": "523A",
+      "rank": "B",
+      "hatsune": 1220,
+      "gu_pct": -2.4
+    },
+    {
+      "code": "520A",
+      "rank": "D",
+      "hatsune": 809,
+      "gu_pct": -8.1
+    },
+    {
+      "code": "519A",
+      "rank": "C",
+      "hatsune": 800,
+      "gu_pct": -8.0
+    },
+    {
+      "code": "509A",
+      "rank": "D",
+      "hatsune": 80000,
+      "gu_pct": 0.0
+    },
+    {
+      "code": "505A",
+      "rank": "C",
+      "hatsune": 1757,
+      "gu_pct": -7.5
+    },
+    {
+      "code": "480A",
+      "rank": "B",
+      "hatsune": 1400,
+      "gu_pct": 40.0
+    },
+    {
+      "code": "479A",
+      "rank": "B",
+      "hatsune": 1875,
+      "gu_pct": 7.1
+    },
+    {
+      "code": "478A",
+      "rank": "B",
+      "hatsune": 1344,
+      "gu_pct": 31.8
+    },
+    {
+      "code": "483A",
+      "rank": "B",
+      "hatsune": 2904,
+      "gu_pct": 38.9
+    },
+    {
+      "code": "477A",
+      "rank": "A",
+      "hatsune": 935,
+      "gu_pct": 94.8
+    },
+    {
+      "code": "485A",
+      "rank": "C",
+      "hatsune": 1130,
+      "gu_pct": -7.4
+    },
+    {
+      "code": "476A",
+      "rank": "B",
+      "hatsune": 2980,
+      "gu_pct": 61.1
+    },
+    {
+      "code": "475A",
+      "rank": "B",
+      "hatsune": 1090,
+      "gu_pct": -5.2
+    },
+    {
+      "code": "472A",
+      "rank": "C",
+      "hatsune": 751,
+      "gu_pct": -12.7
+    },
+    {
+      "code": "8303",
+      "rank": "B",
+      "hatsune": 1586,
+      "gu_pct": 9.4
+    },
+    {
+      "code": "471A",
+      "rank": "C",
+      "hatsune": 1406,
+      "gu_pct": -5.0
+    },
+    {
+      "code": "5537",
+      "rank": "B",
+      "hatsune": 1850,
+      "gu_pct": 42.3
+    },
+    {
+      "code": "469A",
+      "rank": "B",
+      "hatsune": 3000,
+      "gu_pct": 36.4
+    },
+    {
+      "code": "462A",
+      "rank": "C",
+      "hatsune": 883,
+      "gu_pct": 42.4
+    },
+    {
+      "code": "460A",
+      "rank": "B",
+      "hatsune": 1655,
+      "gu_pct": 68.9
+    },
+    {
+      "code": "456A",
+      "rank": "C",
+      "hatsune": 3440,
+      "gu_pct": 9.9
+    },
+    {
+      "code": "446A",
+      "rank": "C",
+      "hatsune": 1200,
+      "gu_pct": 7.1
+    },
+    {
+      "code": "275A",
+      "rank": "C",
+      "hatsune": 298,
+      "gu_pct": 10.4
+    },
+    {
+      "code": "442A",
+      "rank": "B",
+      "hatsune": 3270,
+      "gu_pct": 135.3
+    },
+    {
+      "code": "441A",
+      "rank": "B",
+      "hatsune": 750,
+      "gu_pct": 0.0
+    },
+    {
+      "code": "438A",
+      "rank": "B",
+      "hatsune": 1560,
+      "gu_pct": -7.1
+    },
+    {
+      "code": "436A",
+      "rank": "B",
+      "hatsune": 1914,
+      "gu_pct": 38.7
+    },
+    {
+      "code": "431A",
+      "rank": "B",
+      "hatsune": 2350,
+      "gu_pct": 17.5
+    },
+    {
+      "code": "429A",
+      "rank": "B",
+      "hatsune": 3570,
+      "gu_pct": 19.0
+    },
+    {
+      "code": "423A",
+      "rank": "B",
+      "hatsune": 374,
+      "gu_pct": 75.6
+    },
+    {
+      "code": "428A",
+      "rank": "C",
+      "hatsune": 675,
+      "gu_pct": -4.9
+    },
+    {
+      "code": "418A",
+      "rank": "C",
+      "hatsune": 1290,
+      "gu_pct": 7.5
+    },
+    {
+      "code": "421A",
+      "rank": "B",
+      "hatsune": 2502,
+      "gu_pct": 20.3
+    },
+    {
+      "code": "414A",
+      "rank": "C",
+      "hatsune": 1533,
+      "gu_pct": -7.1
+    },
+    {
+      "code": "407A",
+      "rank": "C",
+      "hatsune": 1385,
+      "gu_pct": 30.7
+    },
+    {
+      "code": "410A",
+      "rank": "B",
+      "hatsune": 2131,
+      "gu_pct": 80.6
+    },
+    {
+      "code": "409A",
+      "rank": "B",
+      "hatsune": 1863,
+      "gu_pct": 119.2
+    },
+    {
+      "code": "402A",
+      "rank": "A",
+      "hatsune": 751,
+      "gu_pct": 100.3
+    },
+    {
+      "code": "401A",
+      "rank": "C",
+      "hatsune": 103800,
+      "gu_pct": 3.8
+    },
+    {
+      "code": "391A",
+      "rank": "B",
+      "hatsune": 2600,
+      "gu_pct": 0.0
+    },
+    {
+      "code": "387A",
+      "rank": "A",
+      "hatsune": 5200,
+      "gu_pct": 344.4
+    },
+    {
+      "code": "386A",
+      "rank": "B",
+      "hatsune": 2531,
+      "gu_pct": 64.4
+    },
+    {
+      "code": "378A",
+      "rank": "B",
+      "hatsune": 2166,
+      "gu_pct": 44.4
+    },
+    {
+      "code": "373A",
+      "rank": "C",
+      "hatsune": 3200,
+      "gu_pct": 2.2
+    },
+    {
+      "code": "372A",
+      "rank": "C",
+      "hatsune": 5730,
+      "gu_pct": 32.3
+    },
+    {
+      "code": "369A",
+      "rank": "B",
+      "hatsune": 2547,
+      "gu_pct": 68.7
+    },
+    {
+      "code": "368A",
+      "rank": "B",
+      "hatsune": 2001,
+      "gu_pct": 49.3
+    },
+    {
+      "code": "367A",
+      "rank": "D",
+      "hatsune": 2013,
+      "gu_pct": -6.4
+    },
+    {
+      "code": "366A",
+      "rank": "B",
+      "hatsune": 3300,
+      "gu_pct": 33.1
+    },
+    {
+      "code": "365A",
+      "rank": "C",
+      "hatsune": 765,
+      "gu_pct": 2.0
+    },
+    {
+      "code": "353A",
+      "rank": "C",
+      "hatsune": 2200,
+      "gu_pct": 29.4
+    },
+    {
+      "code": "352A",
+      "rank": "C",
+      "hatsune": 1280,
+      "gu_pct": 2.4
+    },
+    {
+      "code": "350A",
+      "rank": "C",
+      "hatsune": 5310,
+      "gu_pct": 17.5
+    },
+    {
+      "code": "343A",
+      "rank": "C",
+      "hatsune": 864,
+      "gu_pct": -13.6
+    },
+    {
+      "code": "340A",
+      "rank": "B",
+      "hatsune": 2030,
+      "gu_pct": 35.3
+    },
+    {
+      "code": "339A",
+      "rank": "C",
+      "hatsune": 1980,
+      "gu_pct": 1.5
+    },
+    {
+      "code": "341A",
+      "rank": "C",
+      "hatsune": 871,
+      "gu_pct": 19.3
+    },
+    {
+      "code": "338A",
+      "rank": "A",
+      "hatsune": 5000,
+      "gu_pct": 216.5
+    },
+    {
+      "code": "336A",
+      "rank": "B",
+      "hatsune": 1530,
+      "gu_pct": 27.5
+    },
+    {
+      "code": "334A",
+      "rank": "B",
+      "hatsune": 3040,
+      "gu_pct": 112.6
+    },
+    {
+      "code": "335A",
+      "rank": "B",
+      "hatsune": 661,
+      "gu_pct": 144.8
+    },
+    {
+      "code": "332A",
+      "rank": "B",
+      "hatsune": 845,
+      "gu_pct": 5.6
+    },
+    {
+      "code": "9388",
+      "rank": "C",
+      "hatsune": 830,
+      "gu_pct": 18.6
+    },
+    {
+      "code": "5016",
+      "rank": "C",
+      "hatsune": 843,
+      "gu_pct": 2.8
+    },
+    {
+      "code": "331A",
+      "rank": "C",
+      "hatsune": 760,
+      "gu_pct": -5.0
+    },
+    {
+      "code": "330A",
+      "rank": "B",
+      "hatsune": 1026,
+      "gu_pct": 36.8
+    },
+    {
+      "code": "325A",
+      "rank": "B",
+      "hatsune": 2600,
+      "gu_pct": 30.0
+    },
+    {
+      "code": "324A",
+      "rank": "B",
+      "hatsune": 1550,
+      "gu_pct": 25.0
+    },
+    {
+      "code": "323A",
+      "rank": "B",
+      "hatsune": 1178,
+      "gu_pct": 73.2
+    },
+    {
+      "code": "319A",
+      "rank": "B",
+      "hatsune": 2700,
+      "gu_pct": 35.0
+    },
+    {
+      "code": "7790",
+      "rank": "C",
+      "hatsune": 1401,
+      "gu_pct": 0.1
+    },
+    {
+      "code": "302A",
+      "rank": "B",
+      "hatsune": 3325,
+      "gu_pct": 60.6
+    },
+    {
+      "code": "303A",
+      "rank": "B",
+      "hatsune": 1036,
+      "gu_pct": 34.5
+    },
+    {
+      "code": "304A",
+      "rank": "B",
+      "hatsune": 3640,
+      "gu_pct": 108.0
+    },
+    {
+      "code": "298A",
+      "rank": "C",
+      "hatsune": 700,
+      "gu_pct": 1.4
+    },
+    {
+      "code": "300A",
+      "rank": "C",
+      "hatsune": 960,
+      "gu_pct": 0.0
+    },
+    {
+      "code": "297A",
+      "rank": "C",
+      "hatsune": 201,
+      "gu_pct": 5.2
+    },
+    {
+      "code": "5241",
+      "rank": "C",
+      "hatsune": 600,
+      "gu_pct": 9.1
+    },
+    {
+      "code": "296A",
+      "rank": "B",
+      "hatsune": 521,
+      "gu_pct": 44.7
+    },
+    {
+      "code": "299A",
+      "rank": "C",
+      "hatsune": 1001,
+      "gu_pct": -16.6
+    },
+    {
+      "code": "290A",
+      "rank": "B",
+      "hatsune": 736,
+      "gu_pct": 53.3
+    },
+    {
+      "code": "285A",
+      "rank": "D",
+      "hatsune": 1440,
+      "gu_pct": -1.0
+    },
+    {
+      "code": "291A",
+      "rank": "B",
+      "hatsune": 4840,
+      "gu_pct": 29.8
+    },
+    {
+      "code": "287A",
+      "rank": "C",
+      "hatsune": 885,
+      "gu_pct": 26.4
+    },
+    {
+      "code": "288A",
+      "rank": "A",
+      "hatsune": 426,
+      "gu_pct": 51.6
+    },
+    {
+      "code": "286A",
+      "rank": "C",
+      "hatsune": 975,
+      "gu_pct": -8.0
+    },
+    {
+      "code": "281A",
+      "rank": "C",
+      "hatsune": 993,
+      "gu_pct": -8.1
+    },
+    {
+      "code": "280A",
+      "rank": "B",
+      "hatsune": 2128,
+      "gu_pct": 41.9
+    },
+    {
+      "code": "278A",
+      "rank": "C",
+      "hatsune": 2162,
+      "gu_pct": -8.0
+    },
+    {
+      "code": "277A",
+      "rank": "C",
+      "hatsune": 5600,
+      "gu_pct": 23.6
+    },
+    {
+      "code": "276A",
+      "rank": "B",
+      "hatsune": 1250,
+      "gu_pct": 31.6
+    },
+    {
+      "code": "274A",
+      "rank": "C",
+      "hatsune": 3060,
+      "gu_pct": -4.4
+    },
+    {
+      "code": "269A",
+      "rank": "B",
+      "hatsune": 2285,
+      "gu_pct": 52.3
+    },
+    {
+      "code": "265A",
+      "rank": "B",
+      "hatsune": 1128,
+      "gu_pct": 32.7
+    },
+    {
+      "code": "268A",
+      "rank": "D",
+      "hatsune": 1205,
+      "gu_pct": -4.4
+    },
+    {
+      "code": "9023",
+      "rank": "B",
+      "hatsune": 1630,
+      "gu_pct": 35.8
+    },
+    {
+      "code": "264A",
+      "rank": "C",
+      "hatsune": 761,
+      "gu_pct": 10.3
+    },
+    {
+      "code": "7118",
+      "rank": "D",
+      "hatsune": 1530,
+      "gu_pct": -7.3
+    },
+    {
+      "code": "262A",
+      "rank": "C",
+      "hatsune": 2038,
+      "gu_pct": 25.0
+    },
+    {
+      "code": "261A",
+      "rank": "D",
+      "hatsune": 1341,
+      "gu_pct": -6.2
+    },
+    {
+      "code": "260A",
+      "rank": "C",
+      "hatsune": 570,
+      "gu_pct": 5.6
+    },
+    {
+      "code": "259A",
+      "rank": "D",
+      "hatsune": 2134,
+      "gu_pct": -8.0
+    },
+    {
+      "code": "250A",
+      "rank": "C",
+      "hatsune": 1760,
+      "gu_pct": -6.4
+    },
+    {
+      "code": "247A",
+      "rank": "C",
+      "hatsune": 2514,
+      "gu_pct": 42.8
+    },
+    {
+      "code": "248A",
+      "rank": "C",
+      "hatsune": 2210,
+      "gu_pct": -13.7
+    },
+    {
+      "code": "246A",
+      "rank": "B",
+      "hatsune": 1004,
+      "gu_pct": 47.6
+    },
+    {
+      "code": "245A",
+      "rank": "B",
+      "hatsune": 2700,
+      "gu_pct": 39.2
+    },
+    {
+      "code": "244A",
+      "rank": "B",
+      "hatsune": 1841,
+      "gu_pct": 20.3
+    },
+    {
+      "code": "241A",
+      "rank": "C",
+      "hatsune": 1941,
+      "gu_pct": -8.0
+    },
+    {
+      "code": "242A",
+      "rank": "C",
+      "hatsune": 1398,
+      "gu_pct": -8.0
+    },
+    {
+      "code": "231A",
+      "rank": "C",
+      "hatsune": 1085,
+      "gu_pct": -8.1
+    },
+    {
+      "code": "228A",
+      "rank": "B",
+      "hatsune": 1673,
+      "gu_pct": 28.7
+    },
+    {
+      "code": "220A",
+      "rank": "B",
+      "hatsune": 1190,
+      "gu_pct": 19.0
+    },
+    {
+      "code": "219A",
+      "rank": "C",
+      "hatsune": 1548,
+      "gu_pct": 33.4
+    },
+    {
+      "code": "218A",
+      "rank": "B",
+      "hatsune": 454,
+      "gu_pct": 46.5
+    },
+    {
+      "code": "215A",
+      "rank": "B",
+      "hatsune": 1850,
+      "gu_pct": 27.6
+    },
+    {
+      "code": "212A",
+      "rank": "B",
+      "hatsune": 1213,
+      "gu_pct": 22.5
+    },
+    {
+      "code": "211A",
+      "rank": "C",
+      "hatsune": 3210,
+      "gu_pct": 10.7
+    },
+    {
+      "code": "206A",
+      "rank": "D",
+      "hatsune": 489,
+      "gu_pct": 8.7
+    },
+    {
+      "code": "205A",
+      "rank": "D",
+      "hatsune": 2290,
+      "gu_pct": 0.0
+    },
+    {
+      "code": "202A",
+      "rank": "C",
+      "hatsune": 1348,
+      "gu_pct": 1.4
+    },
+    {
+      "code": "196A",
+      "rank": "C",
+      "hatsune": 368,
+      "gu_pct": -8.0
+    },
+    {
+      "code": "198A",
+      "rank": "C",
+      "hatsune": 450,
+      "gu_pct": 0.0
+    },
+    {
+      "code": "197A",
+      "rank": "D",
+      "hatsune": 430,
+      "gu_pct": -6.5
+    },
+    {
+      "code": "194A",
+      "rank": "B",
+      "hatsune": 875,
+      "gu_pct": 13.6
+    },
+    {
+      "code": "195A",
+      "rank": "B",
+      "hatsune": 1560,
+      "gu_pct": 9.9
+    },
+    {
+      "code": "192A",
+      "rank": "A",
+      "hatsune": 5940,
+      "gu_pct": 50.0
+    },
+    {
+      "code": "190A",
+      "rank": "D",
+      "hatsune": 255,
+      "gu_pct": 66.7
+    },
+    {
+      "code": "189A",
+      "rank": "B",
+      "hatsune": 1308,
+      "gu_pct": 30.8
+    },
+    {
+      "code": "186A",
+      "rank": "B",
+      "hatsune": 1281,
+      "gu_pct": 50.7
+    },
+    {
+      "code": "184A",
+      "rank": "B",
+      "hatsune": 1282,
+      "gu_pct": 32.2
+    },
+    {
+      "code": "177A",
+      "rank": "B",
+      "hatsune": 2030,
+      "gu_pct": 6.8
+    },
+    {
+      "code": "176A",
+      "rank": "C",
+      "hatsune": 1205,
+      "gu_pct": 0.4
+    },
+    {
+      "code": "175A",
+      "rank": "B",
+      "hatsune": 1580,
+      "gu_pct": -4.6
+    },
+    {
+      "code": "173A",
+      "rank": "B",
+      "hatsune": 2160,
+      "gu_pct": 4.9
+    },
+    {
+      "code": "168A",
+      "rank": "B",
+      "hatsune": 2000,
+      "gu_pct": 25.0
+    },
+    {
+      "code": "160A",
+      "rank": "B",
+      "hatsune": 2923,
+      "gu_pct": 52.2
+    },
+    {
+      "code": "157A",
+      "rank": "B",
+      "hatsune": 1700,
+      "gu_pct": 73.5
+    },
+    {
+      "code": "156A",
+      "rank": "C",
+      "hatsune": 1085,
+      "gu_pct": -8.1
+    },
+    {
+      "code": "155A",
+      "rank": "B",
+      "hatsune": 1021,
+      "gu_pct": 122.0
+    },
+    {
+      "code": "153A",
+      "rank": "B",
+      "hatsune": 2875,
+      "gu_pct": 87.9
+    },
+    {
+      "code": "149A",
+      "rank": "B",
+      "hatsune": 1671,
+      "gu_pct": 26.6
+    },
+    {
+      "code": "151A",
+      "rank": "B",
+      "hatsune": 3225,
+      "gu_pct": 77.2
+    },
+    {
+      "code": "146A",
+      "rank": "C",
+      "hatsune": 3745,
+      "gu_pct": 13.5
+    },
+    {
+      "code": "150A",
+      "rank": "B",
+      "hatsune": 893,
+      "gu_pct": 95.8
+    },
+    {
+      "code": "148A",
+      "rank": "B",
+      "hatsune": 2815,
+      "gu_pct": 30.3
+    },
+    {
+      "code": "147A",
+      "rank": "B",
+      "hatsune": 1563,
+      "gu_pct": 79.7
+    },
+    {
+      "code": "145A",
+      "rank": "B",
+      "hatsune": 1553,
+      "gu_pct": 30.7
+    },
+    {
+      "code": "143A",
+      "rank": "A",
+      "hatsune": 2234,
+      "gu_pct": 106.9
+    },
+    {
+      "code": "142A",
+      "rank": "A",
+      "hatsune": 3980,
+      "gu_pct": 127.4
+    },
+    {
+      "code": "141A",
+      "rank": "B",
+      "hatsune": 2215,
+      "gu_pct": 30.3
+    },
+    {
+      "code": "5858",
+      "rank": "B",
+      "hatsune": 3215,
+      "gu_pct": 67.4
+    },
+    {
+      "code": "138A",
+      "rank": "B",
+      "hatsune": 5850,
+      "gu_pct": 119.9
+    },
+    {
+      "code": "137A",
+      "rank": "B",
+      "hatsune": 3990,
+      "gu_pct": 124.2
+    },
+    {
+      "code": "135A",
+      "rank": "B",
+      "hatsune": 5190,
+      "gu_pct": 73.6
+    },
+    {
+      "code": "130A",
+      "rank": "C",
+      "hatsune": 2001,
+      "gu_pct": 100.1
+    },
+    {
+      "code": "5871",
+      "rank": "B",
+      "hatsune": 2020,
+      "gu_pct": 37.4
+    }
+  ]
+}

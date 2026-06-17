@@ -63,6 +63,11 @@ python -m scripts.backtest_holdings       # reports/holdings_backtest.md
 # 方向別コスト (short 0.15%=楽天滑りのみ / long 0.20%=日興込み)、既知3エッジ監査セクション付き
 python -m scripts.validate_edges          # reports/edge_validation.md (3ソース横断)
 
+# 生存・DD分布 (MC trade-bootstrap: 最大DD分布/P(DD≥30%)/P(資金半減)/最大連敗 → サイズ上限決定)
+python -m scripts.edge_candidates.analyze_survival       # reports/edge_survival.md (⑩中型S高 + 月次モメンタム)
+# Deflated Sharpe / MinBTL (試行回数補正の絶対判定。FDR=相対の上に重ねる。PBO/DSR論文)
+python -m scripts.edge_candidates.audit_deflated_sharpe  # reports/deflated_sharpe.md
+
 # 好悪サイト用 slim JSON 生成 + プレビュー
 python -m scripts.export_kouaku_site                 # data/kouaku_site.json
 python -m http.server                                # → http://localhost:8000/site/kouaku.html
