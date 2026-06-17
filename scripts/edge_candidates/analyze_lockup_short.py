@@ -134,6 +134,7 @@ def _gu_band(g) -> str:
 
 
 def report(exits=(3, 7)) -> str:
+    """90日解除ショートを初値GU/評価/規模/信用区分で層別したMarkdownレポートを返す。"""
     ratings_list = json.loads(RATINGS.read_text())["records"]
     ratings = {r["code"]: r for r in ratings_list}
     bars = json.loads(BARS.read_text())
