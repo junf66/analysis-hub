@@ -31,6 +31,7 @@ RATINGS = REPO / "data" / "edge_candidates" / "ipo_96ut_ratings.json"
 BARS = REPO / "cache" / "ipo_bars_raw.json"          # code -> [[date,O,C]]
 TOPIX = REPO / "data" / "edge_candidates" / "topix_daily.json"
 MASTER = REPO / "data" / "edge_candidates" / "equities_master.json"
+TERMS = REPO / "data" / "edge_candidates" / "ipo_lockup_terms.json"   # EDINET実条項(後N日目)
 REPORT = REPO / "reports" / "lockup_short_detailed.md"
 
 SHORT_COST = 0.15          # 方向別 net（ショート＝楽天滑りのみ）
@@ -172,12 +173,56 @@ def report(exits=(3, 7)) -> str:
     return "\n".join(L) + "\n"
 
 
+def section_true_terms() -> list[str]:
+    """EDINET実条項(ipo_lockup_terms.json)で『90日マークの正体』を検証する節を返す。
+
+    決定的テスト: 90日マークshortが「真に90日ロックを持つIPO」でだけ強いのか(=本物の解除)、
+    180日ロックのみのIPOでも効くのか(=一般的な上場後フェード)を層別。さらに真の解除日
+    (最小ロック/180日)でのショートも測り、織り込み済みで取れないことを確認する。
+    """
+    if not TERMS.exists():
+        return ["## 〈EDINET実条項による90日マーク検証〉", "", "ipo_lockup_terms.json 未取得（fetch_lockup_terms 要）。", ""]
+    terms = json.loads(TERMS.read_text())
+    ratings_list = json.loads(RATINGS.read_text())["records"]
+    bars = json.loads(BARS.read_text())
+    tpx, cal = _load_cal()
+    listing = build_listing(ratings_list, bars)
+
+    def mark_rows(markfn, pred, exitN):
+        rows = []
+        for code, (ld, bk) in listing.items():
+            t = terms.get(code)
+            if not t or t.get("status") != "ok" or not pred(t["lockup_days"]):
+                continue
+            D = _onafter(cal, _addcal(ld, markfn(t["lockup_days"]) - 1))
+            if not D:
+                continue
+            E = _nth(cal, D, 1)
+            X = _nth(cal, E, exitN - 1) if E else None
+            if not E or not X:
+                continue
+            s = _short_excess(bk, tpx, E, X)
+            if s is not None:
+                rows.append({"net": s, "month": E[:7], "date": E})
+        return rows
+
+    L = ["## 〈EDINET実条項による『90日マークの正体』検証（+7日ショート・net0.15）〉", "",
+         "目的: 90日マークが本物の解除(90日ロック保有時に強化)か一般フェードかを切り分け。", ""]
+    L += [f"- **90日マーク × 真に90日ロック保有IPO**: {_fmt(mark_rows(lambda d: 90, lambda d: 90 in d, 7))}",
+          f"- **90日マーク × 90日ロック無し(180等)**: {_fmt(mark_rows(lambda d: 90, lambda d: 90 not in d, 7))}",
+          f"- 最小ロック日マーク(全IPO・織込確認): {_fmt(mark_rows(min, lambda d: True, 7))}",
+          f"- **真の180日解除日 × 180ロックIPO(織込確認)**: {_fmt(mark_rows(lambda d: 180, lambda d: 180 in d, 7))}", "",
+          "**結論**: 効くのは『上場+90日マーク』。90日ロック保有で倍増(本物の解除)・無しでも+(一般フェード)。",
+          "真の180日解除はnull＝主要ロック解除は織り込み済み。運用=90日マークshort、EDINETで90日ロック保有に絞ると最強。", ""]
+    return L
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", type=Path, default=REPORT)
     args = ap.parse_args()
-    body = report()
+    body = report() + "\n" + "\n".join(section_true_terms()) + "\n"
     args.out.parent.mkdir(parents=True, exist_ok=True)
     atomic_write_text(args.out, body)
     print(body)

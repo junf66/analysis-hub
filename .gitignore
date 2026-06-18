@@ -42,7 +42,6 @@ data/edge_candidates/buyback_earnings.json
 data/edge_candidates/buyback_standalone_enriched.json
 data/edge_candidates/zouhai_genshu_d3.json
 data/edge_candidates/po_enriched.json
-data/edge_candidates/ipo_lockup_terms.json
 data/edge_candidates/fins_summary.json
 data/edge_candidates/mild_nx_events.json
 data/edge_candidates/momentum_bars.json
