@@ -148,6 +148,39 @@ def main() -> None:
         if b in grp and len(grp[b]) >= 5:
             x = grp[b]
             print(f"  {b}: EV{statistics.fmean(x):+.2f}% 勝{sum(1 for a in x if a>0)/len(x)*100:.0f}% n{len(x)}")
+    _intraday(rows)
+
+
+def _intraday(rows: list[dict]) -> None:
+    """実施日の分足で 寄→{9:15,9:30,10:00,11:30} の long/short raw を検証(2024-05〜のみ)。"""
+    times = ["09:15", "09:30", "10:00", "11:30"]
+    L = {t: [] for t in times}; S = {t: [] for t in times}
+    ok = 0
+    for e in rows:
+        try:
+            b = _jquants.get_list("/equities/bars/minute", code=e["code"], date=e["effective_date"])
+        except Exception:  # noqa: BLE001
+            continue
+        b = [x for x in b if x.get("O") and x.get("C")]
+        if not b:
+            continue
+        o = b[0]["O"]; tmap = {x["Time"]: x["C"] for x in b}; ok += 1
+        for t in times:
+            p = tmap.get(t) or next((x["C"] for x in reversed(b) if x["Time"] <= t), None)
+            if p and o:
+                r = (p / o - 1) * 100
+                L[t].append((r - 0.20, e["effective_date"][:7]))
+                S[t].append((-r - 0.15, e["effective_date"][:7]))
+    if ok < 5:
+        return
+    def rep(rs):
+        v = [x[0] for x in rs]
+        return f"EV{statistics.fmean(v):+.2f}% 勝{sum(1 for x in v if x>0)/len(v)*100:.0f}% t{clustered_t(v,[m for _,m in rs]):+.2f} n{len(v)}"
+    print(f"--- 分足出口 (raw・取得{ok}件) ---")
+    for t in times:
+        print(f"  long 寄→{t}: {rep(L[t])}")
+    for t in times:
+        print(f"  short寄→{t}: {rep(S[t])}")
 
 
 if __name__ == "__main__":
