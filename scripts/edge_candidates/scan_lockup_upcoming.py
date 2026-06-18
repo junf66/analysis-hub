@@ -59,10 +59,13 @@ def scan(today: datetime.date, back: int, ahead: int) -> list[dict]:
             continue
         ld = min(d for d, *_ in rows)
         y, m, dd = map(int, ld.split("-"))
-        release = datetime.date(y, m, dd) + datetime.timedelta(days=89)   # 90日目=上場+89暦日
+        release = datetime.date(y, m, dd) + datetime.timedelta(days=89)   # 90日目=上場+89暦日(最終ロック日)
         if not (today - datetime.timedelta(days=back) <= release <= today + datetime.timedelta(days=ahead)):
             continue
-        entry = _next_bizday(release)
+        # 最初に売れるのは上場+90暦日以降の最初の営業日(=エントリ寄り)。週末/祝日でズレないよう+90から営業日化。
+        entry = datetime.date(y, m, dd) + datetime.timedelta(days=90)
+        while entry.weekday() >= 5:
+            entry += datetime.timedelta(days=1)
         out.append({
             "code": code, "name": master.get(_c5(code), {}).get("CoName", "?"),
             "mkt": master.get(_c5(code), {}).get("MktNm"),
