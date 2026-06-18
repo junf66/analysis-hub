@@ -1,5 +1,5 @@
 # 設計原則: cache/ と reports/ は再生成可能なため除外
-cache/
+cache/*
 reports/
 
 # 自社株買いフェッチの中間キャッシュ (イベント一覧。再生成可能・最終データは buyback_records.json)
@@ -49,3 +49,9 @@ data/edge_candidates/momentum_bars.json
 data/edge_candidates/kouaku_official.json
 data/edge_candidates/reit_daily.json
 data/edge_candidates/po_gd_minute.json
+
+# Codex総合監査の再現データ(永続化・edges_audit_master.md用)
+!cache/master_history.json
+!cache/limit_ul_events.json
+!cache/limit_dl_events.json
+!cache/sdown_minute.json
