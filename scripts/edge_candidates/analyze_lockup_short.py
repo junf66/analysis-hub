@@ -97,10 +97,9 @@ def trades(listing: dict, ratings: dict, master: dict, tpx: dict, cal: list,
     """90日解除→翌日寄り→+exitN日引けの short net 1トレード/IPO。属性付き。"""
     out = []
     for code, (ld, bk) in listing.items():
-        D = _onafter(cal, _addcal(ld, LOCK_DAYS - 1))   # 解除日（暦日カウント）
-        if not D:
-            continue
-        E = _nth(cal, D, 1)                              # 解除翌営業日（寄りで売り）
+        # 「後N日目(=上場+N-1暦日)まで」ロック→最初に売れるのは上場+N暦日以降の最初の営業日(=E寄り)。
+        # 旧 onafter(+N-1)→翌営業日 は90日目が週末/祝日だと1営業日遅れる(Codex監査指摘)ので直接 onafter(+N)。
+        E = _onafter(cal, _addcal(ld, LOCK_DAYS))        # 解除翌・最初の取引可能日(寄りで売り)
         X = _nth(cal, E, exitN - 1) if E else None       # 出口（+exitN日引け）
         if not E or not X:
             continue
@@ -197,10 +196,7 @@ def section_true_terms() -> list[str]:
             t = terms.get(code)
             if not t or t.get("status") != "ok" or not pred(t["lockup_days"]):
                 continue
-            D = _onafter(cal, _addcal(ld, markfn(t["lockup_days"]) - 1))
-            if not D:
-                continue
-            E = _nth(cal, D, 1)
+            E = _onafter(cal, _addcal(ld, markfn(t["lockup_days"])))  # 解除翌・最初の取引可能日
             X = _nth(cal, E, exitN - 1) if E else None
             if not E or not X:
                 continue

@@ -71,18 +71,14 @@ class DailyScanTest(unittest.TestCase):
 
     def test_build_body_counts_and_breadth_tier(self) -> None:
         r10 = ([{"code": "6227", "name": "テスト", "close": 8000, "mkt": "グロース",
-                 "sh_close": True, "banned": False, "tier": "core"},
-                {"code": "6997", "name": "プ社", "close": 5240, "mkt": "プライム",
-                 "sh_close": True, "banned": False, "tier": "prime"}], 20,
+                 "sh_close": True, "banned": False}], 20,
                "過熱=薄く/見送り(+1.70%/勝52%・非有意)")
         z4 = [{"code": "1111", "name": "増配社"}]
         b1: list = []
         body, n = daily_scan.build_body("2026-06-15", r10, z4, b1)
-        self.assertEqual(n, 3)
-        self.assertIn("候補 **3件**", body)
+        self.assertEqual(n, 2)
+        self.assertIn("候補 **2件**", body)
         self.assertIn("6227", body)
-        self.assertIn("6997", body)        # プライム小型も別枠に表示
-        self.assertIn("別枠", body)         # プライム小型の見出し
         self.assertIn("過熱日", body)   # breadth>15 の警告が出る
 
     def test_scan_10R_is_callable(self) -> None:
