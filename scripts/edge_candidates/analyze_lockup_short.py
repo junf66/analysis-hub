@@ -28,7 +28,10 @@ from scripts.edge_candidates.analyze_archive_regime import clustered_t, oos_test
 
 REPO = Path(__file__).resolve().parent.parent.parent
 RATINGS = REPO / "data" / "edge_candidates" / "ipo_96ut_ratings.json"
-BARS = REPO / "cache" / "ipo_bars_raw.json"          # code -> [[date,O,C]]
+# IPO日足: 監査再現のため永続(data/)を優先、無ければ取得キャッシュ(cache/)
+BARS = (REPO / "data" / "edge_candidates" / "ipo_bars_raw.json"
+        if (REPO / "data" / "edge_candidates" / "ipo_bars_raw.json").exists()
+        else REPO / "cache" / "ipo_bars_raw.json")
 TOPIX = REPO / "data" / "edge_candidates" / "topix_daily.json"
 MASTER = REPO / "data" / "edge_candidates" / "equities_master.json"
 TERMS = REPO / "data" / "edge_candidates" / "ipo_lockup_terms.json"   # EDINET実条項(後N日目)
