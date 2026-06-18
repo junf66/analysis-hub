@@ -99,6 +99,41 @@ def main() -> None:
         iostr = f"{statistics.fmean(iox):+.2f}/{sum(1 for a in iox if a>0)/len(iox)*100:.0f}"
         print(f"{lab:<12}{len(sub):>4} {openrate:>6.0f} | " + " | ".join(cells) + f" | {iostr}")
     print("\n注: EV/勝率/t は long net0.20 raw(対TOPIX未)。寄率=10:00までに寄った%(執行可能性の目安)。")
+    _validate(rows, bands)
+
+
+def _validate(rows: list[dict], bands: list) -> None:
+    """grid全セルに FDR(BH)・DSR(試行回数補正)・walk-forward OOS を適用(過剰最適化ガード)。"""
+    from analyzers.stats import (benjamini_hochberg, t_to_p, clustered_se,
+                                 sharpe_moments, expected_max_sharpe, deflated_sharpe)
+    cells = []
+    for lo, hi, lab in bands:
+        for t in EXITS:
+            v = [(r[t], r["month"]) for r in rows if lo <= r["gap"] < hi and r[t] is not None]
+            if len(v) < MIN_N:
+                continue
+            nets = [a for a, _ in v]; mon = [m for _, m in v]
+            se = clustered_se(nets, mon); mu = statistics.fmean(nets)
+            tcl = mu / se if se else 0.0
+            cells.append({"cell": f"{lab}×{t}", "n": len(v), "ev": mu, "t": tcl,
+                          "p": t_to_p(tcl), "nets": nets, "mon": mon})
+    if not cells:
+        return
+    flags = benjamini_hochberg([c["p"] for c in cells], 0.05)
+    srs = [sharpe_moments(c["nets"])[0] for c in cells]
+    sr_std = statistics.pstdev(srs); sr0 = expected_max_sharpe(sr_std, len(cells))
+
+    def _oos(nets, mon):
+        z = sorted(zip(mon, nets)); cut = int(len(z) * 0.7); te = [n for _, n in z[cut:]]
+        return statistics.fmean(te) if te else float("nan")
+
+    print(f"\n=== 過剰最適化ガード (試行{len(cells)}セル・sr0={sr0:.2f}) ===")
+    print(f"{'cell':<14}{'n':>4}{'EV':>7}{'t_cl':>6}{'p':>7}{'FDR':>4}{'DSR':>6}{'OOS':>7}")
+    for c, f in sorted(zip(cells, flags), key=lambda z: -z[0]["t"]):
+        sr, sk, ku, n = sharpe_moments(c["nets"]); d = deflated_sharpe(sr, n, sk, ku, sr0)
+        print(f"{c['cell']:<14}{c['n']:>4}{c['ev']:>+7.2f}{c['t']:>+6.1f}{c['p']:>7.3f}"
+              f"{('★' if f else ''):>4}{d:>6.2f}{_oos(c['nets'], c['mon']):>+7.2f}")
+    print("判定: FDR★かつOOS+かつDSR>0.9 で確定級。S安候補はFDR★/OOS+だがDSR<0.6=候補止まり(低Sharpe宝くじ型)。")
 
 
 if __name__ == "__main__":
