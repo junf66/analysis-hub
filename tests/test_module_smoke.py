@@ -136,6 +136,9 @@ class TestImportable(unittest.TestCase):
     def test_dump_lockup_trades(self) -> None:
         self._check("scripts.edge_candidates.dump_lockup_trades")
 
+    def test_analyze_sdown_intraday(self) -> None:
+        self._check("scripts.edge_candidates.analyze_sdown_intraday")
+
     def test_fetch_margin_promotion(self) -> None:
         self._check("scripts.edge_candidates.fetch_margin_promotion")
 
