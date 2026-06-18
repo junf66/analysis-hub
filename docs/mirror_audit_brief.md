@@ -21,10 +21,12 @@
 
 ## 2. 再現手順（committed CSVで自己完結）
 `data/edge_candidates/mirror_trades.csv` 列: edge,code,date,dir,net_905,net_915,net_930,net_1000,net_1130,net_close。
-- net_* は **元方向のraw open→time リターン(%)**(cost未控除・dir列が元エッジ方向)。
-- **鏡のnet = (dir=='S'なら +net_t、dir=='L'なら −net_t) − mirror_cost**。mirror_cost: 鏡がLONG=0.20 / 鏡がSHORT=0.15。
-  （元④short→鏡long: 元net_*はlong方向のraw、鏡long net = net_* − 0.20。元①Blong→鏡short: 鏡short net = −net_* − 0.15。等）
+- **dir列＝鏡の方向**(例 `④鏡(LONG)` は dir=`L`)。net_* は **long視点のraw open→time リターン(%)**(価格上昇=+・cost未控除)。
+- **鏡net = (dir=='L' なら net_t − 0.20) / (dir=='S' なら −net_t − 0.15)**。
+  ＝dir=L(鏡long)は素直に net_t を long・cost0.20、dir=S(鏡short)は符号反転・cost0.15。
+  (Codex監査2026-06でdir列説明の誤り訂正: 旧版「dir=元エッジ方向」は誤りで、CSVのdirは鏡方向)
 - クラスタは date の月。各 edge×exit で平均/勝率/クラスタtを出し上表と突合。
+- 注: ④のnは出口で異なる(引け241・分足144〜147)。①B(n39)②(n25)は小n。
 - 注: ④①Bは記録の時刻別リターン由来(対TOPIX未/raw)、②⑦⑥⑩Rは分足(`mirror_intraday.py`)由来(raw)。②はannounce翌寄→決定日intraday(多日)。
 
 ## 3. 点検してほしいこと
