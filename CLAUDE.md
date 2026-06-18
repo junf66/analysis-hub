@@ -190,6 +190,7 @@ python -m scripts.disaster_event.analyze_typhoon_edge    # reports/typhoon_event
 手順: ドラフトPR作成 → **CI green確認** → ready化 → squash merge（マージコミットにモデル識別子を入れない）。
 ただし以下は従来どおり**確認する**: (1)CIが赤 (2)未解決のレビュー指摘でユーザー判断が要る (3)破壊的・不可逆・外部影響が大きい変更
 (4)複数解釈があり方向性が曖昧。＝自作PR・CI green・通常の追加/修正なら無確認マージ、リスク時のみ確認。
+**報告は最小限（2026-06）**: マージ手順(CIチェック/ready化/マージ実行/webhook受領)は逐一報告しない。結果だけ簡潔に伝える。
 
 
 ## 公式 J-Quants データ基盤 (TDnet/財務/銘柄属性アドオン — 2026-06 稼働確認)
