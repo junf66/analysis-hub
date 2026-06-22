@@ -55,3 +55,4 @@ data/edge_candidates/po_gd_minute.json
 !cache/limit_ul_events.json
 !cache/limit_dl_events.json
 !cache/sdown_minute.json
+!cache/po_announce_minute.json
