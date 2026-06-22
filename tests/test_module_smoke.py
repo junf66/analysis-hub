@@ -142,6 +142,9 @@ class TestImportable(unittest.TestCase):
     def test_dump_sdown_trades(self) -> None:
         self._check("scripts.edge_candidates.dump_sdown_trades")
 
+    def test_analyze_r10_stops(self) -> None:
+        self._check("scripts.edge_candidates.analyze_r10_stops")
+
     def test_mirror_intraday(self) -> None:
         self._check("scripts.edge_candidates.mirror_intraday")
 
