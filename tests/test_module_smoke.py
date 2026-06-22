@@ -151,6 +151,9 @@ class TestImportable(unittest.TestCase):
     def test_fetch_margin_promotion(self) -> None:
         self._check("scripts.edge_candidates.fetch_margin_promotion")
 
+    def test_analyze_regime_alledges(self) -> None:
+        self._check("scripts.edge_candidates.analyze_regime_alledges")
+
     def test_pit_master(self) -> None:
         import importlib
         m = importlib.import_module("scripts._pit_master")
