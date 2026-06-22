@@ -1,15 +1,21 @@
-"""PO発表翌日「朝場ロング」を分足で検証（①A再現＋規模/gap横断）。
+"""PO発表翌日「朝場ロング」(①A) を分足で検証 — 実行faithful版。
 
-①Aスキャル(大型PO×翌寄り→9:05-9:15売り)を実定義(market_cap≥5000億円)で分足から再計算し、
-さらに規模(円閾値/ScaleCat)×gap(GD/フラット/GU)×出口時刻を横断して「どこで効くか」を切り分ける。
+①Aスキャル(大型PO×翌寄り買い→朝場で利確)を実定義(market_cap≥5000億円)で分足から再計算し、
+規模×gap深さ×出口で「どこが実際に取れるか」を切り分ける。
+
+⚠️ **出口は固定時計(9:05/9:15等)でなく「寄り+N分」(実際の寄りからの相対)で測る**。
+理由: 深GDは特別売り気配で寄りが遅延(9:06-9:24)する。固定9:15だと早寄り銘柄に長い反発窓を
+与え遅寄りを落とす=見かけのプラスが出る(2026-06に固定時計版で誤判定→本版で訂正)。実約定は
+「寄って成行買い→N分後成行売り」なので寄り+N分が忠実。
 
 データ: cache/po_announce_minute.json (code5|date -> [[Time,O,C]])。announce普通の翌営業日(分足期
-2024-05-21以降)を J-Quants /equities/bars/minute からfetch。再fetchは scripts/_jquants で
-get_list("/equities/bars/minute", code=, date=YYYYMMDD)。long往復0.20% net。
+2024-05-21+)を J-Quants /equities/bars/minute からfetch。long往復0.20% net。
 
-所見(2026-06): ①A再現=≥5000億×GD×9:05 +0.82%/勝92%/t3.5/n19・9:30で消失(完全スキャル)。
-GD不要(gap不問でも9:05+0.62%/t3.0)。スイートスポット≥5000億(≥1兆は弱・超大型ScaleCatのみだと死)。
-規模が決定的・gapは副次。中型(ScaleCat)は朝も引けも+(=①B朝版)、小型はジリ下げ。
+所見(2026-06・実行faithful): 取れるのは2帯=**浅GD(-0.5~-2%・9:00-03早寄り) +0.66%/勝73%/t2.2**
+と**深GD(-5~-10%・9:06-14遅寄り)寄り+10分 +0.64~0.72%/勝85-91%/t2.2**。
+**激深(≤-10%)は寄りが9:21+に超遅延し戻らず落ち続ける=-3.9%/勝0/t-6で災害(除外)**。
+中GD(-2~-5%)は弱・フラット(勝33-40%)/GUはノイズ。≥5000億が芯で≥1兆は弱・小型はジリ下げ。
+n小(各帯5-17)・分足2年・超スキャル執行依存ゆえ🟡裁量/候補。
 
 使い方: python -m scripts.edge_candidates.analyze_po_morning_long
 """
@@ -30,15 +36,29 @@ MASTER = REPO / "data" / "edge_candidates" / "equities_master.json"
 TOPIX = REPO / "data" / "edge_candidates" / "topix_daily.json"
 CACHE = REPO / "cache" / "po_announce_minute.json"
 COST = 0.20
-EXITS = ["09:05", "09:10", "09:15", "09:30", "11:30", "15:30"]
-MIN_DATE = "2024-05-21"   # 分足の存在開始
+HOLDS = [5, 10, 15]   # 寄り+N分(実行faithful)
+MIN_DATE = "2024-05-21"
+# gap深さ帯 (lo<=gap<hi)
+GAP_BANDS = [("フラ -0.5~0.5", -0.5, 0.5), ("浅GD -2~-0.5", -2, -0.5),
+             ("中GD -5~-2", -5, -2), ("深GD -10~-5", -10, -5), ("激深 <=-10", -1e9, -10)]
 
 
 def _c5(c: str) -> str:
     return c + "0" if len(c) == 4 else c
 
 
-def _rows() -> list[dict]:
+def _tmin(t: str) -> int:
+    h, m = t.split(":")
+    return int(h) * 60 + int(m)
+
+
+def _px_at(bars: list, target_min: int) -> float | None:
+    """target_min(分)以前で最も新しい Close。"""
+    cands = [c for tt, oo, c in bars if tt and _tmin(tt) <= target_min and c]
+    return cands[-1] if cands else None
+
+
+def _rows(min_mc: float) -> list[dict]:
     po = json.loads(PO.read_text())["records"]
     mst = {m["Code"]: m.get("scale_band") for m in json.loads(MASTER.read_text())["records"]}
     cal = sorted(r["Date"] for r in json.loads(TOPIX.read_text())["records"] if r.get("O"))
@@ -48,14 +68,12 @@ def _rows() -> list[dict]:
         i = bisect.bisect_right(cal, d)
         return cal[i] if i < len(cal) else None
 
-    def px(bars: list, t: str) -> tuple:
-        o = bars[0][1]
-        cands = [c for tt, oo, c in bars if tt and tt <= t and c]
-        return (cands[-1], o) if cands and o else (None, None)
-
     out = []
     for r in po:
         if r.get("stage") != "announce" or r.get("po_type") != "普通":
+            continue
+        mc = r.get("market_cap")
+        if not mc or mc < min_mc:
             continue
         nd = nxt(r.get("event_date", ""))
         if not nd or nd < MIN_DATE:
@@ -64,50 +82,52 @@ def _rows() -> list[dict]:
         bars = cache.get(f"{code}|{nd}")
         if not bars or not bars[0][1]:
             continue
-        row = {"date": nd, "mc": r.get("market_cap"), "size": mst.get(code),
-               "gap": (r.get("attrs") or {}).get("gap_pct")}
-        for t in EXITS:
-            p, o = px(bars, t)
-            row[t] = ((p / o - 1) * 100 - COST) if p else None
-        out.append(row)
+        gap = (r.get("attrs") or {}).get("gap_pct")
+        if gap is None:
+            continue
+        out.append({"gap": gap, "date": nd, "o": bars[0][1], "size": mst.get(code),
+                    "otm": _tmin(bars[0][0]), "opent": bars[0][0], "bars": bars})
     return out
 
 
-def _line(label: str, sub: list[dict]) -> list[str]:
-    if len(sub) < 3:
-        return [f"### {label} — n={len(sub)}（小・略）", ""]
-    L = [f"### {label} — n={len(sub)}", "", "| 出口 | EV | 勝率 | t_clust |", "|---|--:|--:|--:|"]
-    for t in EXITS:
-        v = [(x[t], x["date"]) for x in sub if x.get(t) is not None]
-        if not v:
-            continue
-        nets = [a for a, _ in v]
-        dates = [d for _, d in v]
-        L.append(f"| {t} | {st.fmean(nets):+.2f}% | "
-                 f"{sum(1 for a in nets if a > 0) / len(nets) * 100:.0f}% | {clustered_t(nets, dates):+.2f} |")
-    L.append("")
-    return L
+def _cell(rows: list[dict], hold: int) -> str:
+    v = []
+    for r in rows:
+        p = _px_at(r["bars"], r["otm"] + hold)
+        if p:
+            v.append(((p / r["o"] - 1) * 100 - COST, r["date"]))
+    if not v:
+        return "—"
+    nets = [a for a, _ in v]
+    return (f"{st.fmean(nets):+.2f}%/勝{sum(1 for a in nets if a > 0) / len(nets) * 100:.0f}/"
+            f"t{clustered_t(nets, [d for _, d in v]):+.1f}/n{len(v)}")
 
 
 def build_report() -> str:
-    """PO朝場ロングの規模×gap×出口グリッドを md で返す。"""
-    rows = _rows()
-    L = ["# PO発表翌日「朝場ロング」分足検証（①A再現＋規模/gap横断）", "",
-         f"announce普通・分足期({MIN_DATE}+)・long往復{COST}% net・n={len(rows)}。"
-         "出口は翌寄り買い→各時刻売り。", ""]
-    if not rows:
+    """①A朝場ロングをgap深さ×寄り+N分(実行faithful)で切り分けた md を返す。"""
+    L = ["# PO発表翌日「朝場ロング」(①A) 分足検証 — 実行faithful版", "",
+         f"announce普通・分足期({MIN_DATE}+)・long往復{COST}% net。"
+         "**出口は寄り+N分(実際の寄りからの相対・固定時計でない)**。", ""]
+    cache = json.loads(CACHE.read_text()) if CACHE.exists() else {}
+    if not cache:
         return "\n".join(L + ["_(cache/po_announce_minute.json 未生成。fetch要)_"])
-    L += _line("≥5000億 × GD（①A実定義）", [r for r in rows if r["mc"] and r["mc"] >= 5000
-                                          and r["gap"] is not None and r["gap"] <= -0.5])
-    L += _line("≥5000億 × gap不問（GD緩和）", [r for r in rows if r["mc"] and r["mc"] >= 5000])
-    L += _line("≥1兆 × gap不問", [r for r in rows if r["mc"] and r["mc"] >= 10000])
-    for sz in ["大型", "中型", "小型"]:
-        L += _line(f"ScaleCat={sz} × gap不問", [r for r in rows if r["size"] == sz])
-    L += ["## 結論", "",
-          "- **①A再現**: ≥5000億×GD×9:05 で勝率9割・t3超、9:30で消失＝完全スキャル(9:05-9:15)。",
-          "- **GD不要**: ≥5000億 gap不問でも9:05有意＝大型POは朝場ポップ(GDは加点)。スイートスポット≥5000億(≥1兆は弱)。",
-          "- **規模が決定的**: 中型(ScaleCat)は朝も引けも+(①B朝版)、小型はジリ下げ。gapより規模。",
-          "- n19-23・分足2年・超スキャル執行依存ゆえFDR確定には未達＝🟡裁量/候補据置。"]
+    for mc, lab in [(5000, "≥5000億"), (1500, "≥1500億"), (1000, "≥1000億")]:
+        rows = _rows(mc)
+        L.append(f"## {lab}（n={len(rows)}）")
+        L.append("")
+        L.append("| gap帯 | n | " + " | ".join(f"寄り+{h}分" for h in HOLDS) + " |")
+        L.append("|---|--:|" + "---|" * len(HOLDS))
+        for nm, lo, hi in GAP_BANDS:
+            sub = [r for r in rows if lo <= r["gap"] < hi]
+            cells = " | ".join(_cell(sub, h) for h in HOLDS)
+            L.append(f"| {nm} | {len(sub)} | {cells} |")
+        L.append("")
+    L += ["## 結論（実行faithful）", "",
+          "- **出口は寄り+5〜10分**（固定9:15は早寄りに長い窓を与える幻＝2026-06訂正）。",
+          "- **取れる2帯**: 浅GD(-0.5~-2%・9:00-03早寄り)+0.66%/勝73%/t2.2 ＋ 深GD(-5~-10%・遅寄り)寄り+10分+0.6~0.7%/勝85-91%/t2.2。",
+          "- **激深(≤-10%)は災害**: 寄りが9:21+に超遅延し戻らず落ち続ける(-3.9%/勝0/t-6)＝S安と同じ『深すぎ=本物の異常』。ハード除外。",
+          "- 中GD(-2~-5%)は弱・フラット(勝33-40%)/GUはノイズ。≥5000億が芯・≥1兆弱・小型はジリ下げ。",
+          "- 執行トリガー=gap数値より『特別売り気配で寄りが遅れたか＋深さ』。n小(5-17)・分足2年で🟡裁量/候補。"]
     return "\n".join(L) + "\n"
 
 
