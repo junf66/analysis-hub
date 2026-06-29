@@ -16,7 +16,7 @@ import datetime as _dt
 import json
 import statistics
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from analyzers.stats import benjamini_hochberg, clustered_se, t_to_p
 from scripts.edge_candidates import topix_adjust
