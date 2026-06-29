@@ -21,6 +21,11 @@
   （`scripts/_pit_master.py`・確定5本は全イベント2017以降で影響ゼロ・再計算で不変）。②重複3件除去・①A棄却も同監査由来。
   検証器 `scripts/edge_candidates/verify_edges_standalone.py`(自己完結・第三者用 --export)。
 - ベータ調整：β=1 近似 → **2026-06-03 実推定完了**（daily_bars_po 2017-、`analyze_decide_beta.py`）。
+- 📐 **粗利でなくα（マルチファクター残差）で判断（2026-06 方針）**: 「儲かった(Gross)」≠「勝てる(net α)」。我々は net方向別コスト＋FDR＋OOS＋
+  非重複＋PIT＋PBO＋単一指数(TOPIX)β控除まで実装済。**残る精緻化＝市場だけでなく size/value/momentum 等の因子β残差でα評価**（単一指数だと
+  "小型βやモメンタムβに偏ってただけ"を見逃す）。但し: **1日完結の事象エッジ(④⑦②①B⑥⑩R)は保有が短く日次の因子露出が極小＝マルチファクター補正で
+  ほぼ不変**(TOPIXβで十分)。**効くのは多日/保有型(⑪=モメンタム因子そのもの・番外と既に認識/③+5日/⑫PEAD=既知アノマリー/ロックアップ+7日)**で、
+  これらは因子βを含み得る前提で運用(⑪βフル明記・⑫は公知の過小反応factor)。完全なFFC因子系列構築は未実装(留保・size/value/momentumのJP factor作成が要)。
 - **point-in-time 属性（2026-06 追加・重要）**: 規模/業種/信用は**イベント日時点**のマスタで判定する
   (`scripts/edge_candidates/fetch_master_history.py`→`cache/master_history.json`、`scripts/_pit_master.py`)。
   単一スナップショット遡及は (1)年次入替の誤分類 (2)上場廃止脱落=生存バイアス を生む。
