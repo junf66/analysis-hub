@@ -102,7 +102,7 @@ def _verdict(s: dict, executable: bool) -> str:
     core = s["net"] > 0.5 and s["t"] > 2 and s["honest_t"] > 2 and (s["oos"] or 0) > 0
     if executable:
         if core:
-            return "🟡執行候補(小サイズ)"
+            return "🟡弱い監視候補(2021依存・要フォワード)"
         if s["net"] > 0 and s["t"] > 1.5:
             return "△弱(執行)"
         return "✕(執行)"
@@ -166,6 +166,18 @@ def build_report(recs: list[dict]) -> str:
         for cost in (0.15, 0.30, 0.50, 0.80):
             vv = [p - (cost - SHORT) for p in v]
             L.append(f"- コスト{cost:.2f}%: net{st.fmean(vv):+.2f}% / 勝率{sum(1 for x in vv if x>0)/n*100:.0f}%")
+        # ★ 2021(個人マニア年・外れ値)を抜いて生き残るか = 最重要の頑健性
+        L += ["", "### ★2021除外/直近の頑健性 (ヘッドラインが2021依存でないかの検算)", "",
+              "| 期間 | net | 勝率 | t_clust | 正直t | OOS | n |", "|---|---|---|---|---|---|---|"]
+        for tag, sub in [("全体(21-26)", main),
+                         ("2021除外(22-26)", [x for x in main if x[0][:4] != "2021"]),
+                         ("2024以降(直近3年)", [x for x in main if x[0][:4] >= "2024"])]:
+            s = _stat(sub)
+            if s:
+                L.append(f"| {tag} | {s['net']:+.2f}% | {s['win']:.0f}% | {s['t']:+.1f} | "
+                         f"{s['honest_t']:+.1f} | {s['oos'] or 0:+.2f}% | {s['n']} |")
+        L += ["", "→ **執行可能(貸借)版は2021を抜くと t_clust が ~1.5 に低下=ヘッドラインの有意性は2021が主因**。",
+              "正直t>2・OOS+・全年プラス・中央≈平均は残るが、**強い確証でなく『弱い監視候補・要フォワード』**。"]
     # 年次 (主候補・全体と貸借)
     L += ["", "## 3. 年次安定", "", "| 年 | 全体 net(n) | 貸借 net(n) |", "|---|---|---|"]
     full = short_rows(recs, ebars, tpx, cal, cidx, 1, 3, master_hist=mh)
