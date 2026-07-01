@@ -7,20 +7,20 @@
   @page { size: A4 landscape; margin: 7mm; }
   * { box-sizing: border-box; }
   body { font-family: "Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",sans-serif;
-         color:#111; margin:0; padding:6px 8px; font-size:8.2px; line-height:1.32; }
+         color:#111; margin:0; padding:6px 8px; font-size:8.0px; line-height:1.3; }
   h1 { font-size:13px; margin:0 0 2px; }
-  .sub { font-size:7.5px; color:#555; margin:0 0 5px; }
+  .sub { font-size:7.3px; color:#555; margin:0 0 5px; }
   table { border-collapse:collapse; width:100%; table-layout:fixed; }
   th,td { border:0.6px solid #999; padding:2px 3px; vertical-align:top; word-break:break-word; }
-  th { background:#222; color:#fff; font-size:7.6px; text-align:center; }
+  th { background:#222; color:#fff; font-size:7.4px; text-align:center; }
   .id { font-weight:bold; text-align:center; background:#f0f0f0; }
   .S { color:#b00; font-weight:bold; }       /* short */
   .L { color:#06c; font-weight:bold; }       /* long */
   .num { text-align:right; white-space:nowrap; }
   .ctr { text-align:center; }
-  .cand { background:#fff7e6; }              /* 候補 */
   .hl { font-weight:bold; }
-  .note { margin-top:5px; font-size:7.6px; }
+  .warn { color:#b00; font-weight:bold; }
+  .note { margin-top:5px; font-size:7.4px; }
   .note b { color:#000; }
   .grid2 { display:flex; gap:10px; }
   .grid2 > div { flex:1; }
@@ -29,103 +29,123 @@
 </style>
 </head>
 <body>
-<h1>📋 エッジ運用チートシート <span style="font-size:9px;font-weight:normal;color:#555;">（2026-06 / 運用6本・Codex独立監査済）</span></h1>
-<p class="sub">net=コスト控除後（long 0.20%／short 0.15%）。全エッジ コスト→β→クラスタt→FDR→OOS→point-in-time属性→DSR→独立再計算→敵対的バッテリー→汚染スイープ を通過。<b>S=ショート（楽天信用）／L=ロング（楽天・日興）</b>。勝率=net&gt;0(コスト後)基準・全エッジ統一。</p>
+<h1>📋 エッジ運用チートシート <span style="font-size:9px;font-weight:normal;color:#555;">（運用<b>7本</b>／2026-07 正本照合済）</span></h1>
+<p class="sub">net=コスト控除後（long 0.20%／short 0.15%）。全エッジ コスト→β→クラスタt→FDR→OOS→point-in-time属性 を通過（DSRは④✗/⑦△など個別差あり=下表と信頼ティア参照）。<b>S=ショート（楽天信用のみ・日興NG）／L=ロング（楽天・日興）</b>。勝率=net&gt;0(コスト後)基準。値は正本 docs/edge_playbook.md 準拠。</p>
 
 <table>
 <colgroup>
- <col style="width:3%"><col style="width:11%"><col style="width:5%"><col style="width:15%"><col style="width:13%">
- <col style="width:12%"><col style="width:9%"><col style="width:10%"><col style="width:7%"><col style="width:15%">
+ <col style="width:3%"><col style="width:11%"><col style="width:4%"><col style="width:14%"><col style="width:12%">
+ <col style="width:11%"><col style="width:9%"><col style="width:8%"><col style="width:8%"><col style="width:20%">
 </colgroup>
 <thead>
 <tr>
  <th>ID</th><th>行動名 / 方向</th><th>種別</th><th>対象（ユニバース）</th><th>トリガー条件</th>
- <th>売買（入→出 / 保有）</th><th>純EV / 勝率 / n</th><th>年間 / 市場</th><th>t / OOS</th><th>狙い・弱点</th>
+ <th>売買（入→出 / 保有）</th><th>純EV / 勝率 / n</th><th>年間 / 市場</th><th>t / OOS</th><th>狙い・弱点・注意</th>
 </tr>
 </thead>
 <tbody>
 <tr>
  <td class="id">⑦</td>
  <td>売出PO・決定日売り <span class="S">S</span></td><td class="ctr">運用</td>
- <td>普通株 × <b>売出のみ</b>(dilution=0・公募でない) × 全規模・貸借推奨</td>
+ <td>普通株 × <b>売出のみ</b>(dilution=0・公募でない) × 全規模・貸借</td>
  <td>POの<b>発行価格決定日</b></td>
  <td>決定日 <b>寄り成行売</b> → 同日<b>引け</b>買戻 / <b>1日</b></td>
  <td class="num"><b>+0.68%α</b> / 58% / 211</td>
- <td>約36回 / プライム主体</td>
+ <td>約36回※ / 全規模</td>
  <td class="num">+3.77 / +0.43%</td>
- <td>売出し(大株主放出)の値決め売り。<span class="hl">弱点=逆日歩(即死≥0.5%)</span></td>
+ <td>売出し(大株主放出)の値決め売り。<b>DSR0.565△</b>(薄く機械的に多数回)。<span class="warn">弱点=逆日歩(即死≈0.48%)・在庫枯渇で約定不能化=撤退。ストップ厳禁(fade型)</span></td>
 </tr>
 <tr>
  <td class="id">②</td>
  <td>REIT・事前売り <span class="S">S</span></td><td class="ctr">運用</td>
- <td><b>J-REIT</b> × <b>貸借</b></td>
+ <td><b>J-REIT</b> × <b>貸借</b>。効きどころ=<b>中型REIT(時価500-1500億)×低希薄(&lt;10%)</b></td>
  <td>REIT公募の<b>発表後〜価格決定前</b></td>
  <td>発表翌営業日 <b>寄り成行売</b> → <b>価格決定日引け</b>買戻 / <b>数日</b></td>
  <td class="num"><b>+0.93%</b> / 59% / 128</td>
  <td>約7回 / J-REIT</td>
  <td class="num">+3.33 / +0.84%</td>
- <td>REIT増資の需給悪化。<span class="hl">重複3件除去済。β後+0.82%/t3.06。損益分岐0.53%(逆日歩)・REIT強気年は縮小</span></td>
+ <td>REIT増資の需給悪化。β後+0.85%/t3.22。<b>下げ局面で最強・上昇年は薄い</b>。<span class="warn">売ってはいけないREIT4銘柄=8964/3282/3234/3487(ロング向き)。損益分岐0.53%(即死点0.9%・逆日歩)</span></td>
 </tr>
 <tr>
  <td class="id">④</td>
  <td>増配+来期下方・売り <span class="S">S</span></td><td class="ctr">運用</td>
- <td>普通株（全市場）</td>
+ <td>普通株（全市場・<b>小型が母体</b>）</td>
  <td><b>大引け後</b>に<b>増配＋来期下方修正</b>を同時発表（来期下方 −30〜−17%が芯）</td>
  <td>翌営業日 <b>寄り成行売</b> → 当日<b>引け</b>買戻 / <b>1日</b></td>
- <td class="num"><b>+0.88%</b> / 63% / 239</td>
- <td>約59回 / スタ・プ・グ</td>
+ <td class="num"><b>+0.88%</b> / 67% / 239</td>
+ <td>約59回※ / スタ・プ・グ</td>
  <td class="num">+4.98 / +1.28%</td>
- <td>増配で取り繕う嫌気。<span class="hl">固有+0.51%/t2.87(基線控除後)・残り+0.37%は大引け後の一般ドリフト</span></td>
+ <td>増配で取り繕う嫌気。<b>本命=翌寄りが軽くGD(−3〜−0.5%)+0.90%/t3.62</b>。固有α+0.51%/t2.87(生t4.98は基線込み)。<span class="warn">DSR✗宝くじ(薄く機械的)。取り繕い学習で失効しうる</span></td>
 </tr>
 <tr>
  <td class="id">①B</td>
  <td>中型PO・GD買い <span class="L">L</span></td><td class="ctr">運用</td>
- <td>普通株 × <b>TOPIX中型(Mid400=プライム)</b></td>
- <td>PO発表翌営業日が<b>前日比−0.5%以下のGD</b>で寄る</td>
+ <td>普通株 × <b>TOPIX中型(Mid400・ScaleCatラベル/円でない)</b></td>
+ <td>PO発表翌営業日が<b>翌日GD(前日比マイナス=gap&lt;0)</b>で寄る。<span class="warn">激深≥10%(≤−10%)は両方向ボツ=除外</span></td>
  <td>翌営業日 <b>寄り成行買</b> → 当日<b>引け</b>売 / <b>1日</b></td>
- <td class="num"><b>+1.05%</b> / 68% / 34</td>
- <td>約8回 / プライム</td>
+ <td class="num"><b>+1.05%</b> / 77%※ / 34</td>
+ <td>—※ / プライム</td>
  <td class="num">+2.81 / +1.39%</td>
- <td>中型PO翌日GDの売られ過ぎ反発。<span class="hl">弱点=n小・2025依存</span></td>
+ <td>中型PO翌日GDの売られ過ぎ反発。<b>唯一DSR&gt;0.95(0.957)=最上位T1</b>。値はPIT生存(生存バイアスなし)。加点=<b>調達≥200億/希薄化&lt;10%</b>。<span class="warn">n小。⑦と両該当時は方向真逆で要確認</span></td>
 </tr>
 <tr>
  <td class="id">⑥</td>
  <td>PO受渡日・買い <span class="L">L</span></td><td class="ctr">運用</td>
- <td>普通株 × <b>調達額≥300億円</b></td>
- <td>PO<b>受渡日</b>の寄りが<b>GD/フラット(gap&lt;+0.5%、GU除外)</b></td>
+ <td>普通株 × <b>調達額≥300億円</b>（実体は<b>売出由来</b>=公募は負）</td>
+ <td>PO<b>受渡日</b>の寄りが<b>GD/フラット(gap&lt;+0.5%、GU除外)</b>。激深≥10%は除外</td>
  <td>受渡日 <b>寄り成行買</b> → 当日<b>引け</b>売 / <b>1日</b></td>
- <td class="num"><b>+0.78%</b> / 61% / 61</td>
- <td>約9回 / プライム主体</td>
- <td class="num">+2.72 / +0.50%</td>
- <td>受渡し機械的売り圧の反動。<span class="hl">弱点=n小・2019依存</span></td>
+ <td class="num"><b>+0.79%</b> / 60% / 60</td>
+ <td>約9回※ / プライム</td>
+ <td class="num">+2.71 / +0.53%</td>
+ <td>受渡し機械的売り圧の反動。<span class="warn">弱点=marginal(2026-07監査で最良年除外t2.0・n小)・公募では効かない(売出のみ)</span></td>
 </tr>
 <tr>
  <td class="id">⑩R</td>
  <td>小型貸借S高・売り <span class="S">S</span></td><td class="ctr">運用</td>
- <td><b>非プライム小型</b>(PIT・個人銘柄=マザーズ/JASDAQ/スタ/グロ) × <b>貸借</b>(ETF除外)・売り禁スキップ</td>
- <td>当日引け<b>S高</b> → 翌朝<b>+5〜10%(中GU)</b>で寄る</td>
+ <td><b>非プライム小型</b>(PIT・マザーズ/JASDAQ/スタ/グロ) × <b>貸借</b>(ETF除外)・売り禁スキップ</td>
+ <td>当日引け<b>S高</b> → 翌朝<b>+5〜10%(中GU)</b>で寄る。<span class="warn">全市場S高&gt;15の過熱日は見送り・≤9の閑散日に厚く(唯一の実用ゲート)</span></td>
  <td>翌 <b>寄り成行売</b> → 当日<b>引け</b>買戻 / <b>1日</b></td>
- <td class="num"><b>+2.56%</b>(中GU) / 59% / 377</td>
+ <td class="num"><b>+2.56%</b> / 59% / 377</td>
  <td>約61回 / 非プライム小型</td>
  <td class="num">+4.70 / +1.73%</td>
- <td>小型S高の翌朝過熱→反転(個人の遊び場限定)。10/10年プラス・生存バイアス解消済。<span class="hl">残課題=逆日歩(損益分岐1.62%=最も余裕)・踏上げ−34.9%・極小サイズ</span></td>
+ <td>小型S高の翌朝過熱→反転(個人の遊び場)。10/10年+・生存バイアス解消済。<span class="warn">ストップ厳禁・hold-to-close・逆指値なし(全水準で改悪)。逆日歩(損益分岐1.62%)・踏上げ−34.9%・極小サイズ・資金制限必須(低DSR宝くじ)</span></td>
+</tr>
+<tr>
+ <td class="id">⑫</td>
+ <td>決算ジャンプ継続買い(PEAD) <span class="L">L</span></td><td class="ctr">運用</td>
+ <td>全市場（<b>小型が本体</b>=グロース&gt;スタ&gt;プライム）・信用/貸借問わず</td>
+ <td>決算で市場対比<b>反応≥+12%で"引けた"</b>(採用下限+10%)。<b>引け後発表(9割)が本体</b>・ザラ場発表はスルー</td>
+ <td>反応日 <b>引けで引成買</b> → <b>+1〜3営業日後の引け</b>売 / <b>1〜3日</b></td>
+ <td class="num"><b>+2.79%</b>(+3d) / 53% / 2712</td>
+ <td>多数 / 新興ほど強</td>
+ <td class="num">+9.6 / 全6年+</td>
+ <td>市場の過小反応(PEAD)。閾値単調・重複窓なしで最頑健(t9.6)。<span class="warn">地合い依存=順張りゆえ下落局面(20日&lt;−3%)はサイズ落とし/見送り。引成スリッページ実測待ち・データ6年のみ</span>。口座=日興/楽天</td>
 </tr>
 </tbody>
 </table>
 
+<div class="note">
+ <b>■ 信頼ティア（DSR＝試行回数補正・正本の唯一の明文ランク L105/L695）</b>
+ <span class="tag"><b>T1=①B のみ</b>（唯一 DSR&gt;0.95＝0.957）</span>
+ <span class="tag">T2=②④⑥⑦</span>
+ <span class="tag">T3=⑤⑧⑩（非執行/棄却）</span>
+ <span class="tag"><b>⑩R=資金制限必須</b>（低DSR宝くじ・極小サイズ）</span>
+ <span style="color:#666;">※EV/損益分岐余裕の大きさの順(⑩R&gt;⑦&gt;②&gt;④&gt;①B≒⑥)は<b>別軸</b>で、上の格付とは異なる。</span>
+</div>
+
 <div class="note grid2">
  <div>
   <b>■ 対象外（記録のみ）</b><br>
-  ③株式分割買(見送り・勝率45%宝くじ) ／ ⑤増配+軽い減益売(非執行・DSR0.02最弱) ／
-  ⑧医薬品好悪買(非執行・5年のみ2023偏重勝率51%) ／ ⑨カタリスト(除外・短期不可低検証) ／
-  <b>⑩中型S高買(棄却・生存バイアスt+2.11→+1.09)</b> ／ ⑪月次モメンタム(番外・βフル・2024依存) ／
-  <b>①A大型PO買(棄却・損益分岐0.1%=実コストで死・Codexも棄却推奨)</b>。
+  ③株式分割買(見送り・2026-07監査でレジーム依存＝2021&amp;2026除外でt1.5) ／ ⑤増配+軽い減益売(非執行・DSR0.02最弱) ／
+  ⑧医薬品好悪買(非執行・t1.9・2026負) ／ ⑨カタリスト(除外) ／
+  <b>⑩中型S高買(棄却・生存バイアスt+2.11→+1.09)</b> ／ ⑪月次モメンタム(番外・βフル) ／
+  <b>①A大型PO買(棄却・損益分岐0.1%=実コストで死)</b>。
  </div>
  <div>
-  <b>■ 今セッションで掘った穴5つ（全て加工/分類層・生データは健全）</b><br>
-  1.⑦希薄化の取り違え→売出が本体 ／ 2.④magnitude 39%汚染(芯+1.30→+0.95) ／
-  3.⑩規模の遡及適用=生存バイアス→棄却 ／ 4.②コスト急所(逆日歩・損益分岐0.9%) ／
-  5.⑩R ETF/ETN混入(裾−68%はゴミ→本物−34.9%)。稼働5本の汚染スイープ=ETF0件・|単日ret|&gt;30% 0件=クリーン。
+  <b>■ 早見表↔正本 照合の要点（2026-07）</b><br>
+  ⑫(PEAD)を追加＝運用<b>7本</b>。②に<b>売ってはいけないREIT4銘柄</b>を明記。⑩Rに<b>breadthゲート＋ノーストップ</b>を明記。
+  ①Bトリガーを「翌日GD(激深≥10%除外)」に訂正。信頼ティアを正本DSR(①B最上位)へ。④勝率67%・②β後0.85%/t3.22・⑥60%/OOS0.53 に修正。
+  <span style="color:#666;">※印=年間回数は正本未記載(概算)。①B勝率77%は母体n39値(PIT n34版の勝率は正本未記載)。</span>
  </div>
 </div>
 
@@ -133,20 +153,21 @@
  <b>■ 鉄則</b>
  <span class="tag">ショート(⑦②④⑩R)は<b>楽天信用のみ</b>（日興NG）</span>
  <span class="tag">薄いエッジ=<b>全シグナル機械執行・小サイズ・多数回</b>（1発に賭けない）</span>
- <span class="tag">⑩R=運用昇格(逆日歩考慮外・<b>売り禁銘柄スキップ</b>・極小サイズ)。①Aは棄却</span>
+ <span class="tag"><b>fade型(⑩R④⑦②)はストップ厳禁</b>＝日中高値の踏み上げが引けフェード前に来る→ストップが大勝ち建玉を刈る。テール管理はサイズのみ</span>
+ <span class="tag">出口は<b>引け基本</b>（早出口9:15はむしろ負ける／確定はドリフト型）</span>
  <span class="tag">規模は<b>円でなくTOPIX区分</b>（①B=Mid400・⑩R=非プライム小型PIT）</span>
- <span class="tag">質の序列 <b>⑩R＞⑦≧②＞④＞①B≒⑥</b></span>
+ <span class="tag">⑫は<b>地合い依存</b>＝下落局面(TOPIX20日&lt;−3%)は見送り</span>
 </div>
 
 <div class="note">
- <b>■ Codex独立監査(2026-06・リポ/API無しでトレード明細から再検算)</b>
- 全6本の n/EV/勝率/t/OOS を独立再計算で<b>一致確認</b>。発見: ②に重複3件(第2トランシェ)→除去しn131→128/t3.49→3.33(訂正済)。
- ETF/ETN混入・市場矛盾・致命的集中は<b>なし</b>。①Aは損益分岐0.1%で棄却推奨(対応済)。
- <b>損益分岐コスト(t&lt;2)</b>: ⑦0.48 / ②0.53 / ④0.68 / ①B0.53 / ⑥0.43 / ⑩R1.78 %。
- <b>ルックアヘッド</b>: ⑦(決定日寄→引)・②(決定日引け決済)とも発行価格決定は<b>引け後</b>＆決定日は発表時に予定公表済→
- 決定前に約定＝先読みなし(稀に決定日が前倒/延期した場合のみ日付選択にズレ)。<b>OOS</b>=日付順トレード件数の先頭70%分割。
+ <b>■ 失効モニタ（撤退トリガ）</b>
+ ①B/⑥=PO増加でアルゴがGDを先回り→GD幅縮小(test窓α2期連続で符号反転で撤退)。
+ ②⑦=貸借在庫枯渇・逆日歩高騰で約定不能化。
+ ④⑤=「取り繕い増配」を市場が学習→翌日ドリフト2期連続消失。
+ <b>■ Codex独立監査(2026-06・当時6本=⑫追加前)</b>: n/EV/勝率/t/OOS を独立再計算で一致。②重複3件除去(n131→128)。①A棄却。
+ 損益分岐コスト(t&lt;2): ⑦0.48/②0.53/④0.68/①B0.53/⑥0.43/⑩R1.78 %。
 </div>
 
-<p class="foot">正本: docs/edge_playbook.md ／ 共有: docs/edge_summary_share.md ／ 検証: scripts/validate_edges.py・reports/edge_validation.md。数値はコスト控除後net・point-in-time属性・敵対的検証通過後の値。</p>
+<p class="foot">正本: docs/edge_playbook.md（唯一の真実）／ 照合レポート: reports/edge_sheet_audit.md ／ 検証: scripts/validate_edges.py。数値はコスト控除後net・point-in-time属性。※=正本未記載の概算。</p>
 </body>
 </html>
