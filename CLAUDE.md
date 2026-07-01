@@ -1,5 +1,6 @@
 # analysis-hub - Claude Code 用コンテキスト
 
+> **本書の規約は全エージェント共通**（Codex 等は [AGENTS.md](AGENTS.md) を入口に本書を読む＝規約の正典は本書、二重管理しない）。
 > **新セッション/引き継ぎ時は [docs/HANDOFF.md](docs/HANDOFF.md) を読む**（全体地図・残タスク・地雷・規約）。
 
 ## ⚠️ エッジ台帳の正本（最重要・厳守）
