@@ -34,6 +34,21 @@ python -m scripts.fetch_disclosures --skip-tdnet                # /fins/summary 
 python -m scripts.fetch_disclosures --skip-fins --skip-buyback  # TDnet (yanoshin) だけ
 ```
 
+## 2b. edge_candidates 研究キャッシュ (validate_edges/DSR/PBO・エッジ検証に必須)
+
+上記の核パイプラインとは別に、`scripts/edge_candidates/*` のエッジ検証・探索は以下の
+補助キャッシュ (すべて .gitignore = 再生成前提) を使う。**新環境 (Codex 等) では核パイプラインの後にこれも回す**:
+
+```bash
+python -m scripts.edge_candidates.fetch_master_history   # cache/master_history.json = PIT規模/信用区分(先読み/生存バイアス回避に必須)
+python -m scripts.edge_candidates.fetch_equities_master  # data/edge_candidates/equities_master.json = ScaleCat規模区分(①B/⑩R等の規模フィルタ)
+python -m scripts.edge_candidates.fetch_topix            # data/edge_candidates/topix_daily.json = 市場控除α(β=1)用
+```
+
+- `cache/event_bars.json` (調整後日足O/C・4桁コード) は **analyze_* / validate_edges 実行時に `/equities/bars/daily` を銘柄ごと都度 fetch して蓄積** される (単一コマンドでなく on-demand・増分)。初回は該当エッジの analyze を一度回すと埋まる。
+- 分足 (`cache/*_minute.json`) も同様に該当 analyze が `/equities/bars/minute` を fetch (分足は 2024-05 以降のみ・J-Quants サブスク要)。
+- 検証本体: `python -m scripts.validate_edges`(FDR) / `scripts.edge_candidates.audit_deflated_sharpe`(DSR) / `scripts.edge_candidates.audit_pbo`(PBO)。
+
 ## 3. 日次更新 (~2 分)
 
 J-Quants は当日分が翌日の午前に取れる想定。

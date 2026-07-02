@@ -130,14 +130,14 @@ def section_xref() -> None:
     if code_buckets != doc_buckets:
         add("X-bucket", f"code {sorted(code_buckets)} vs doc {sorted(doc_buckets)}")
 
-    # RUNBOOK / README に書かれている CLI コマンドが実在するか (scripts.X 形式)
+    # RUNBOOK / README に書かれている CLI コマンドが実在するか (scripts.X / scripts.pkg.X 形式)
     for md_name in ("README.md", "docs/RUNBOOK.md"):
         md = (REPO_ROOT / md_name).read_text()
-        for m in re.finditer(r"python -m scripts\.([\w_]+)", md):
-            modname = m.group(1)
-            path = REPO_ROOT / "scripts" / f"{modname}.py"
+        for m in re.finditer(r"python -m (scripts(?:\.[\w_]+)+)", md):
+            dotted = m.group(1)                       # 例: scripts.edge_candidates.fetch_master_history
+            path = REPO_ROOT / (dotted.replace(".", "/") + ".py")
             if not path.exists():
-                add("X-cli-doc", f"{md_name} に書かれた `scripts.{modname}` が存在しない")
+                add("X-cli-doc", f"{md_name} に書かれた `{dotted}` が存在しない")
 
 
 # ============================================================
